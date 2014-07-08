@@ -12,19 +12,10 @@ Author URI: http://www.tott.com
 // Originally developed by Dann Blair
 // boldinnovationgroup.net
 
-// Shortcodes
 add_shortcode("panno", "panno_handler");
-
-// Add actions
 add_action('admin_menu', 'panno_create_menu');
-
-// Process the apps
 add_action( 'admin_post_panno', 'process_panno' );
-
-// Activiation Hook
 register_activation_hook( __FILE__, 'panno_install' );
-
-// Install functions
 define( 'PANNO_DB_VERSION', '1.0' );
 
 // The function that actually handles replacing the short code
@@ -36,11 +27,11 @@ function panno_handler($incomingfrompost) {
     "headingstart" => $script_text
   ), $incomingfrompost);
 
-  $demolph_output = script_output($incomingfrompost);
+  $demolph_output = panno_script_output($incomingfrompost);
   return $demolph_output;
 }
 
-function build_script_text(){
+function build_panno(){
 
   $script = "blank pano";
 
@@ -48,7 +39,7 @@ function build_script_text(){
 }
 
 // build the script to replace the short code
-function script_output($incomingfromhandler) {
+function panno_script_output($incomingfromhandler) {
   $demolp_output = wp_specialchars_decode($incomingfromhandler["headingstart"]);
   $demolp_output .= wp_specialchars_decode($incomingfromhandler["liststart"]);
 

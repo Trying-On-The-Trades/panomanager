@@ -1,11 +1,6 @@
 <?php
 
-// Create the row to store the keys
-function create_first_row(){
-  global $wpdb;
-  $table_name = get_table_name();
-  $wpdb->insert( $table_name, array('mapply_api' => '', 'google_api' => '', 'display_refferal' => '0'), array());
-}
+// reusable functions for the panno manager
 
 function get_pannos(){
 	global $wpdb;
