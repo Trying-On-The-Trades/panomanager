@@ -2,22 +2,12 @@
 
 // Build the settings page
 function panno_settings_page() {
-  $default_link = "<a href='http://mapply.net'>Mapply by Mapply!</a>";
-
-  $image    = WP_PLUGIN_URL . '/mapply/images/logo.png';
-  $image2   = WP_PLUGIN_URL . '/mapply/images/logo2.png';
-  $nav_bg   = WP_PLUGIN_URL . '/mapply/images/banner-bg.jpg';
-  $styles   = WP_PLUGIN_URL . '/mapply/css/mapply_styles.css';
   $semantic = WP_PLUGIN_URL . '/mapply/css/semantic.css';
-
-  $api         = get_mapply_api();
-  $gapi        = get_google_api();
-  $display_ref = get_display_ref();
 
 ?>
 
+<!-- style sheet so our admin page looks nice -->
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo $styles ?>"/>
 
 <div class="navbar" style="background: url('<?php echo $nav_bg ?>') center center #757994 no-repeat;">
     <a class="logo" href="http://mapply.net" target="_blank"><img src="<?php echo $image2 ?>" width="150"></a>
