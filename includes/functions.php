@@ -7,7 +7,8 @@ function get_pannos(){
 	$table_name = get_panno_table_name();
 
 	// DB query
-	// Return
+	$pannos = $wpdb->get_results( "SELECT * FROM " . $table_name );
+	return $pannos;
 }
 
 function get_quest($panno_id){
