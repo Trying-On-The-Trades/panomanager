@@ -45,7 +45,7 @@ function build_pano_sql(){
 }
 
 function build_quest_sql(){
-    $table_name = get_step_table_name();
+    $table_name = get_quest_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ function build_hotspot_sql(){
 }
 
 function build_type_sql(){
-    $table_name = get_user_progress_table_name();
+    $table_name = get_type_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

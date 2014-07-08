@@ -10,7 +10,6 @@ function panno_install () {
   if( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name || $installed_ver != PANNO_DB_VERSION ) {
 
     // Create tables
-
     $panno_sql    = build_pano_sql();
     $quest_sql    = build_quest_sql();
     $mission_sql  = build_mission_sql();
@@ -20,6 +19,7 @@ function panno_install () {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
+    // Run the sql for the database
     dbDelta( $panno_sql );
     dbDelta( $quest_sql );
     dbDelta( $mission_sql );

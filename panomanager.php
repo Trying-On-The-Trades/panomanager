@@ -67,4 +67,5 @@ function panno_create_menu() {
 require("includes/database.php");
 require("includes/functions.php");
 require("includes/processing.php");
+require("includes/install.php");
 require("includes/admin_page.php");
