@@ -12,14 +12,14 @@ Author URI: http://www.tott.com
 // Originally developed by Dann Blair
 // boldinnovationgroup.net
 
-add_shortcode("panno", "panno_handler");
-add_action('admin_menu', 'panno_create_menu');
-add_action( 'admin_post_panno', 'process_panno' );
-register_activation_hook( __FILE__, 'panno_install' );
-define( 'PANNO_DB_VERSION', '1.0' );
+add_shortcode("pano", "pano_handler");
+add_action('admin_menu', 'pano_create_menu');
+add_action( 'admin_post_pano', 'process_pano' );
+register_activation_hook( __FILE__, 'pano_install' );
+define( 'pano_DB_VERSION', '1.0' );
 
 // The function that actually handles replacing the short code
-function panno_handler($incomingfrompost) {
+function pano_handler($incomingfrompost) {
 
   $script_text;
 
@@ -27,11 +27,11 @@ function panno_handler($incomingfrompost) {
     "headingstart" => $script_text
   ), $incomingfrompost);
 
-  $demolph_output = panno_script_output($incomingfrompost);
+  $demolph_output = pano_script_output($incomingfrompost);
   return $demolph_output;
 }
 
-function build_panno(){
+function build_pano(){
 
   $script = "blank pano";
 
@@ -39,7 +39,7 @@ function build_panno(){
 }
 
 // build the script to replace the short code
-function panno_script_output($incomingfromhandler) {
+function pano_script_output($incomingfromhandler) {
   $demolp_output = wp_specialchars_decode($incomingfromhandler["headingstart"]);
   $demolp_output .= wp_specialchars_decode($incomingfromhandler["liststart"]);
 
@@ -58,9 +58,9 @@ function panno_script_output($incomingfromhandler) {
 }
 
 // Create the admin menu
-function panno_create_menu() {
+function pano_create_menu() {
   //create new top-level menu
-  add_menu_page('Panno Settings', 'Panno', 'administrator', __FILE__, 'panno_settings_page',plugins_url('/images/icon.png', __FILE__));
+  add_menu_page('pano Settings', 'pano', 'administrator', __FILE__, 'pano_settings_page',plugins_url('/images/icon.png', __FILE__));
 }
 
 // Require the important files

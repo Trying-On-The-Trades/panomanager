@@ -1,19 +1,19 @@
 <?php
 
 // Get the table prefix and return the name
-function get_panno_table_name(){
+function get_pano_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "panno";
+  return $wpdb->prefix . "pano";
 }
 
 function get_mission_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "panno_mission";
+  return $wpdb->prefix . "pano_mission";
 }
 
 function get_quest_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "panno_quest";
+  return $wpdb->prefix . "pano_quest";
 }
 
 function get_user_progress_table_name(){
@@ -32,7 +32,7 @@ function get_type_table_name(){
 }
 
 function build_pano_sql(){
-    $table_name = get_panno_table_name();
+    $table_name = get_pano_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -49,7 +49,7 @@ function build_quest_sql(){
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-      `panno_id` bigint(20) NOT NULL,
+      `pano_id` bigint(20) NOT NULL,
       `trigger_id` bigint(20) DEFAULT NULL,
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,

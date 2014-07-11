@@ -1,17 +1,26 @@
 <?php
 
-// reusable functions for the panno manager
+// reusable functions for the pano manager
 
-function get_pannos(){
+function get_panos(){
 	global $wpdb;
-	$table_name = get_panno_table_name();
+	$table_name = get_pano_table_name();
 
 	// DB query
-	$pannos = $wpdb->get_results( "SELECT * FROM " . $table_name );
-	return $pannos;
+	$panos = $wpdb->get_results( "SELECT * FROM " . $table_name );
+	return $panos;
 }
 
-function get_quest($panno_id){
+function get_pano($id){
+	global $wpdb;
+	$table_name = get_pano_table_name();
+
+	// DB query
+	$pano = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $table_name . " WHERE id = %d", $id));
+	return $pano;
+}
+
+function get_quest($pano_id){
 	global $wpdb;
 	$table_name = get_quest_table_name();
 
