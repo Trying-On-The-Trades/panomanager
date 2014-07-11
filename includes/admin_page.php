@@ -32,7 +32,7 @@ function panno_settings_page() {
         <?php else : ?>
             <tr><td>No pannos yet!</td></tr>
         <?php endif; ?>
-      <? endforeach; ?>
+      <?php endforeach; ?>
     </table>
 
     <?php submit_button(); ?>
