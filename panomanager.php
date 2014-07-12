@@ -64,8 +64,12 @@ function pano_create_menu() {
 }
 
 // Require the important files
-require("includes/database.php");
-require("includes/functions.php");
-require("includes/processing.php");
-require("includes/install.php");
-require("includes/admin_page.php");
+require("functions/database.php");
+require("functions/functions.php");
+require("functions/processing.php");
+require("functions/install.php");
+require("functions/admin_page.php");
+
+// Include the objects
+require("includes/pano.php");
+require("includes/quest.php");
