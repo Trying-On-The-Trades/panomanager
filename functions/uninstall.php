@@ -26,6 +26,9 @@ function panno_uninstall() {
   $wpdb->query( "DROP TABLE IF EXISTS $hotspot_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $progress_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $type_table_name" );
+
+  // Update the db version to 0 so the next time the plugin is run it will reinstall
+  update_option( "panno_db_version", PANO_DB_VERSION );
 }
 
 // Hook is commented out so we don't lose data for now

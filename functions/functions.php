@@ -59,3 +59,14 @@ function get_hotspot_type($hotspot_id){
 	// DB query
 	// Return
 }
+
+function build_pano(){
+  $script = "blank pano";
+  return $script;
+}
+
+// build the script to replace the short code
+function pano_script_output($incomingfromhandler) {
+  $pano_output = "";
+  return $pano_output;
+}
