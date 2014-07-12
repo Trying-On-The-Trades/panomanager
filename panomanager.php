@@ -27,34 +27,8 @@ function pano_handler($incomingfrompost) {
     "headingstart" => $script_text
   ), $incomingfrompost);
 
-  $demolph_output = pano_script_output($incomingfrompost);
-  return $demolph_output;
-}
-
-function build_pano(){
-
-  $script = "blank pano";
-
-  return $script;
-}
-
-// build the script to replace the short code
-function pano_script_output($incomingfromhandler) {
-  $demolp_output = wp_specialchars_decode($incomingfromhandler["headingstart"]);
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["liststart"]);
-
-  for ($demolp_count = 1; $demolp_count <= $incomingfromhandler["categorylist"]; $demolp_count++) {
-    $demolp_output .= wp_specialchars_decode($incomingfromhandler["itemstart"]);
-    $demolp_output .= $demolp_count;
-    $demolp_output .= " of ";
-    $demolp_output .= wp_specialchars($incomingfromhandler["categorylist"]);
-    $demolp_output .= wp_specialchars_decode($incomingfromhandler["itemend"]);
-  }
-
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["listend"]);
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["headingend"]);
-
-  return $demolp_output;
+  $pano_output = pano_script_output($incomingfrompost);
+  return $pano_output;
 }
 
 // Create the admin menu
@@ -68,6 +42,7 @@ require("functions/database.php");
 require("functions/functions.php");
 require("functions/processing.php");
 require("functions/install.php");
+require("functions/uninstall.php");
 require("functions/admin_page.php");
 
 // Include the objects
