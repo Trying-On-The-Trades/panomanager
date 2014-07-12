@@ -6,9 +6,19 @@ function get_pano_table_name(){
   return $wpdb->prefix . "pano";
 }
 
+function get_pano_text_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_text";
+}
+
 function get_mission_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_mission";
+}
+
+function get_mission_text_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_mission_text";
 }
 
 function get_quest_table_name(){
@@ -16,23 +26,41 @@ function get_quest_table_name(){
   return $wpdb->prefix . "pano_quest";
 }
 
+function get_quest_text_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_quest_text";
+}
+
 function get_user_progress_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "user_progress";
+  return $wpdb->prefix . "pano_user_progress";
 }
 
 function get_hotspot_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "hotspot";
+  return $wpdb->prefix . "pano_hotspot";
 }
 
 function get_type_table_name(){
   global $wpdb;
-  return $wpdb->prefix . "type";
+  return $wpdb->prefix . "pano_hotspot_type";
 }
 
 function build_pano_sql(){
     $table_name = get_pano_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(255) NOT NULL DEFAULT "",
+      `description` text NOT NULL,
+      PRIMARY KEY (`id`)
+    );';
+
+    return $sql;
+}
+
+function build_pano_text_sql(){
+    $table_name = get_pano_text_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -59,8 +87,39 @@ function build_quest_sql(){
     return $sql;
 }
 
+function build_quest_text_sql(){
+    $table_name = get_quest_text_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      `pano_id` bigint(20) NOT NULL,
+      `trigger_id` bigint(20) DEFAULT NULL,
+      `name` varchar(255) NOT NULL DEFAULT "",
+      `description` text,
+      PRIMARY KEY (`id`)
+    );';
+
+    return $sql;
+}
+
 function build_mission_sql(){
     $table_name = get_mission_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      `quest_id` bigint(20) NOT NULL,
+      `name` varchar(255) NOT NULL DEFAULT "",
+      `description` text,
+      `points` int(10) NOT NULL,
+      `mission_xml` text NOT NULL,
+      PRIMARY KEY (`id`)
+    );';
+
+    return $sql;
+}
+
+function build_mission_text_sql(){
+    $table_name = get_mission_text_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
