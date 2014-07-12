@@ -64,8 +64,8 @@ function build_pano_text_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `pano_id` int(11) NOT NULL,
-      `language_code` varchar(2) NOT NULL DEFAULT '',
-      `name` varchar(255) NOT NULL DEFAULT '',
+      `language_code` varchar(2) NOT NULL DEFAULT "",
+      `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       PRIMARY KEY (`id`)
     );';
@@ -92,8 +92,8 @@ function build_quest_text_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `quest_id` int(11) NOT NULL,
-      `language_code` varchar(2) NOT NULL DEFAULT '',
-      `name` varchar(255) NOT NULL DEFAULT '',
+      `language_code` varchar(2) NOT NULL DEFAULT "",
+      `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       PRIMARY KEY (`id`)
     );';
@@ -121,8 +121,8 @@ function build_mission_text_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `mission_id` int(11) NOT NULL,
-      `language_code` varchar(2) NOT NULL DEFAULT '',
-      `name` varchar(255) NOT NULL DEFAULT '',
+      `language_code` varchar(2) NOT NULL DEFAULT "",
+      `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       PRIMARY KEY (`id`)
     );';
@@ -152,7 +152,7 @@ function build_hotspot_sql(){
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `mission_id` int(11) DEFAULT NULL,
       `type_id` int(11) DEFAULT NULL,
-      `name` varchar(255) NOT NULL DEFAULT '',
+      `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `hotspot_xml` text,
       PRIMARY KEY (`id`)
@@ -166,7 +166,7 @@ function build_type_sql(){
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-      `name` varchar(255) NOT NULL DEFAULT '',
+      `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `type_xml` text NOT NULL,
       PRIMARY KEY (`id`)
