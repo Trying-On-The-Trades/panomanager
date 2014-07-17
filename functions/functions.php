@@ -4,10 +4,15 @@
 
 function get_panos(){
 	global $wpdb;
-	$table_name = get_pano_table_name();
+	$pano_table_name = get_pano_table_name();
+	$text_table_name = get_pano_text_table_name();
+	$language_code = get_user_language();
 
-	// DB query
-	$panos = $wpdb->get_results( "SELECT * FROM " . $table_name );
+	// DB query joining the pano table and the pano text table
+	$panos = $wpdb->get_results( "SELECT * FROM " . $pano_table_name . " wpp " .
+		                         "INNER JOIN " . $text_table_name . " wppt ON " .
+		                         "wppt.`pano_id` = wpp.`id` " .
+		                         "WHERE wppt.`language_code` = " $language_code);
 	return $panos;
 }
 
@@ -63,6 +68,12 @@ function get_hotspot_type($hotspot_id){
 function build_pano(){
   $script = "blank pano";
   return $script;
+}
+
+// Get the user's prefered language
+function get_user_language(){
+	// placeholder
+	return "EN";
 }
 
 // build the script to replace the short code
