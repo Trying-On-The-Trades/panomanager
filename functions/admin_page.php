@@ -25,7 +25,7 @@ function pano_settings_page() {
         <?php if ($pano): ?>
 
             <tr>
-                print_r($pano);
+                <?php print_r($pano); ?>
             </tr>
 
 

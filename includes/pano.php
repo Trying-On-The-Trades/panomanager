@@ -1,7 +1,8 @@
 <?php
 
 class pano{
-	protected $id, $name, $description, $quests, $missions;
+	protected $id, $name, $description, $quests, $missions
+			  $language_code;
 
 	function __construct($id){
 
@@ -37,5 +38,9 @@ class pano{
 
 	function get_missions(){
 		return $this->missions;
+	}
+
+	function get_pano_language(){
+		return $this->language_code;
 	}
 }
