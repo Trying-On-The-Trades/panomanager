@@ -38,6 +38,7 @@ function get_pano($id){
 
 function get_quest($pano_id){
 	global $wpdb;
+
 	$quest_table_name = get_quest_table_name();
 	$quest_text_table_name = get_quest_text_table_name();
 	$language_code = get_user_language();
@@ -70,37 +71,53 @@ function get_missions($quest_id){
 		"AND wpm.`quest_id` = %d", $quest_id)
 	);
 
-	// Returnß
+	// Return
 	return $quest;
 }
 
 function get_hotspots($mission_id){
 	global $wpdb;
-	$table_name = get_hotspot_table_name();
+	$hotspot_table_name = get_hotspot_table_name();
 
-	// DB query
-	// Return
+	// DB query joining the pano table and the pano text table
+	$hotspot = $wpdb->get_results( 
+		"SELECT * FROM " . $hotspot_table_name . " wph " .
+		"WHERE wph.`mission_id` = " $mission_id);
+
+	return $hotspots;
 }
 
 function get_types(){
 	global $wpdb;
-	$table_name = get_type_table_name();
+	$type_table_name = get_type_table_name();
 
-	// DB query
-	// Return
+	// get all the types
+	$hotspot = $wpdb->get_results( 
+		"SELECT * FROM " . $type_table_name . " wpht ");
+
+	return $hotspots;
 }	
 
-function get_hotspot_type($hotspot_id){
+function get_hotspot_type($hotspot_type_id){
 	global $wpdb;
-	$table_name = get_type_table_name();
+	$type_table_name = get_type_table_name();
 
-	// DB query
-	// Return
+	// Get a specific type from the db
+	$hotspot = $wpdb->get_results( 
+		"SELECT * FROM " . $type_table_name . " wpht " .
+		"WHERE wpht.`id` = " $hotspot_type_id);
+
+	return $hotspots;
 }
 
-function build_pano(){
-  $script = "blank pano";
-  return $script;
+function build_pano($pano_id = 1){
+
+	// Make a new pano object from the supplied id
+	$pano = new pano($pano_id);
+
+  	$script = "blank pano";
+
+  	return $script;
 }
 
 // Get the user's prefered language
