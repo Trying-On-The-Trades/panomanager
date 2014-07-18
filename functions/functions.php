@@ -36,6 +36,25 @@ function get_pano($id){
 	return $pano;
 }
 
+function get_quests(){
+	global $wpdb;
+
+	$quest_table_name = get_quest_table_name();
+	$quest_text_table_name = get_quest_text_table_name();
+	$language_code = get_user_language();
+
+	// DB query
+	$quests = $wpdb->get_row( $wpdb->prepare( 
+		"SELECT * FROM " . $quest_table_name . " wpq " .
+		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
+		"wpqt.quest_id = wpq.id " .
+		"WHERE wpqt.language_code = " . $language_code)
+	);
+
+	// Return
+	return $quests;
+}
+
 function get_quest($pano_id){
 	global $wpdb;
 

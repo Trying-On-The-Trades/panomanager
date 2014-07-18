@@ -33,8 +33,8 @@ function pano_handler($incomingfrompost) {
 
 // Create the admin menu
 function pano_create_menu() {
-  //create new top-level menu
-  add_menu_page('pano Settings', 'pano', 'administrator', __FILE__, 'pano_settings_page',plugins_url('/images/icon.png', __FILE__));
+  add_menu_page('pano-settings', 'Panos', 'administrator', __FILE__, 'pano_settings_page',plugins_url('/images/icon.png', __FILE__));
+  add_submenu_page("quest-settings", "Quests", "administrator", 0, "pano_quest_settings_page", "pano_quest_settings_page");
 }
 
 // Require the important files
