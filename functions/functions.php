@@ -1,6 +1,8 @@
 <?php
 
-// reusable functions for the pano manager
+// ***********************************************************
+//				      REUSABLE FUNCTIONS
+// ***********************************************************
 
 function get_panos(){
 	global $wpdb;
@@ -127,6 +129,23 @@ function get_hotspot_type($hotspot_type_id){
 		"WHERE wpht.id = " . $hotspot_type_id);
 
 	return $hotspots;
+}
+
+// ***********************************************************
+//				    FUNCTIONS TO BUILD OUTPUT
+// ***********************************************************
+
+// The function that actually handles replacing the short code
+function pano_handler($incomingfrompost) {
+
+  $script_text;
+
+  $incomingfrompost=shortcode_atts(array(
+    "headingstart" => $script_text
+  ), $incomingfrompost);
+
+  $pano_output = pano_script_output($incomingfrompost);
+  return $pano_output;
 }
 
 function build_pano($pano_id = 1){
