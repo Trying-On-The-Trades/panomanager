@@ -8,9 +8,9 @@ function pano_create_menu() {
 
 // function to create the top level menus
 function create_top_menu(){
-	add_menu_page('pano-settings', 
+	add_menu_page('Panos', 
 				  'Panos', 
-				  'administrator', 
+				  'pano-settings', 
 				  __FILE__, 
 				  'pano_settings_page',
 				  plugins_url('/images/icon.png', 
@@ -20,10 +20,10 @@ function create_top_menu(){
 
 // function to create the sub menus
 function create_sub_menus(){
-	add_submenu_page("quest-settings", 
+	add_submenu_page("pano-settings", 
 					 "Quests", 
-					 "administrator", 
+					 "Quests", 
 					 0, 
-					 "pano_quest_settings_page", 
+					 "pano_quest_settings", 
 					 "pano_quest_settings_page");
 }

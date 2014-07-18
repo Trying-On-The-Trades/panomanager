@@ -12,9 +12,16 @@ Author URI: http://www.tott.com
 // Originally developed by Dann Blair
 // boldinnovationgroup.net
 
+// Create a shortcode for the handler
 add_shortcode("pano", "pano_handler");
+
+// Create the admin menu from menu.php
 add_action('admin_menu', 'pano_create_menu');
+
+// Add the process pano hook
 add_action( 'admin_post_pano', 'process_pano' );
+
+// Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
 
 // Version of the DB used
