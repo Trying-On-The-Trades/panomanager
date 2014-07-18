@@ -1,7 +1,7 @@
 <?php
 
 class pano{
-	protected $id, $name, $description, $quests, $missions
+	protected $id, $name, $description, $quests, $missions,
 			  $language_code;
 
 	function __construct($id){

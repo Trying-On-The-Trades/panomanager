@@ -12,8 +12,8 @@ function get_panos(){
 	$panos = $wpdb->get_results( 
 		"SELECT * FROM " . $pano_table_name . " wpp " .
 		"INNER JOIN " . $text_table_name . " wppt ON " .
-		"wppt.`pano_id` = wpp.`id` " .
-		"WHERE wppt.`language_code` = " $language_code);
+		"wppt.pano_id = wpp.id " .
+		"WHERE wppt.language_code = " . $language_code);
 
 	return $panos;
 }
@@ -28,9 +28,9 @@ function get_pano($id){
 	$pano = $wpdb->get_row( $wpdb->prepare( 
 		"SELECT * FROM " . $pano_table_name . " wpp " .
 	    "INNER JOIN " . $text_table_name . " wppt ON " .
-        "wppt.`pano_id` = wpp.`id` " .
-        "WHERE wppt.`language_code` = " $language_code .
-        "AND wpp.`id` = %d", $id)
+        "wppt.pano_id = wpp.id " .
+        "WHERE wppt.language_code = " . $language_code .
+        "AND wpp.id = %d", $id)
 	);
 
 	return $pano;
@@ -47,9 +47,9 @@ function get_quest($pano_id){
 	$quest = $wpdb->get_row( $wpdb->prepare( 
 		"SELECT * FROM " . $quest_table_name . " wpq " .
 		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
-		"wpqt.`quest_id` = wpq.`id` " .
-		"WHERE wpqt.`language_code` = " $language_code .
-		"AND wpq.`pano_id` = %d", $pano_id)
+		"wpqt.quest_id = wpq.id " .
+		"WHERE wpqt.language_code = " . $language_code .
+		"AND wpq.pano_id = %d", $pano_id)
 	);
 
 	// Returnß
@@ -66,9 +66,9 @@ function get_missions($quest_id){
 	$quest = $wpdb->get_row( $wpdb->prepare( 
 		"SELECT * FROM " . $mission_table_name . " wpm " .
 		"INNER JOIN " . $mission_text_table_name . " wpmt ON " .
-		"wpmt.`mission_id` = wpm.`id` " .
-		"WHERE wpmt.`language_code` = " $language_code .
-		"AND wpm.`quest_id` = %d", $quest_id)
+		"wpmt.mission_id = wpm.id " .
+		"WHERE wpmt.language_code = " . $language_code .
+		"AND wpm.quest_id = %d", $quest_id)
 	);
 
 	// Return
@@ -82,7 +82,7 @@ function get_hotspots($mission_id){
 	// DB query joining the pano table and the pano text table
 	$hotspot = $wpdb->get_results( 
 		"SELECT * FROM " . $hotspot_table_name . " wph " .
-		"WHERE wph.`mission_id` = " $mission_id);
+		"WHERE wph.mission_id = " . $mission_id);
 
 	return $hotspots;
 }
@@ -105,7 +105,7 @@ function get_hotspot_type($hotspot_type_id){
 	// Get a specific type from the db
 	$hotspot = $wpdb->get_results( 
 		"SELECT * FROM " . $type_table_name . " wpht " .
-		"WHERE wpht.`id` = " $hotspot_type_id);
+		"WHERE wpht.id = " . $hotspot_type_id);
 
 	return $hotspots;
 }
