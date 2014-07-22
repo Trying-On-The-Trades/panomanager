@@ -21,6 +21,13 @@ function create_top_menu(){
 // function to create the sub menus
 function create_sub_menus(){
 	add_submenu_page("pano-settings", 
+					 "New Pano", 
+					 "administrator", 
+					 0, 
+					 "pano_quest_settings", 
+					 "new_pano_settings_page");
+	
+	add_submenu_page("pano-settings", 
 					 "Quests", 
 					 "administrator", 
 					 0, 

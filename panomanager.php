@@ -20,6 +20,7 @@ add_action('admin_menu', 'pano_create_menu');
 
 // Add the process pano hook
 add_action( 'admin_post_pano', 'process_pano' );
+add_action( 'create_new_pano', 'process_new_pano' );
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );

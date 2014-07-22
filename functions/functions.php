@@ -169,3 +169,38 @@ function pano_script_output($incomingfromhandler) {
   $pano_output = "";
   return $pano_output;
 }
+
+// ***********************************************************
+//				    Creating Panos
+// ***********************************************************
+
+function process_new_pano(){
+	
+}
+
+
+// ***********************************************************
+//				    Uploading Panos
+// ***********************************************************
+
+// Handle uploading panos
+function upload_panos(){
+	$upload_dir = wp_upload_dir();
+
+	// Make a pano file at the directory if it doesn't exist
+	$pano_directory = $upload_dir['baseurl'] . "/panos/";
+
+	// If the upload directory doesn't exist, make it
+	if (!check_file($pano_directory)){
+		mkdir($pano_directory, 0654, true);
+	}
+}
+
+// Function for checking if the directory exists
+function check_file($file){
+	if (file_exists($file)){
+		return true;
+	} else {
+		return false;
+	}
+}

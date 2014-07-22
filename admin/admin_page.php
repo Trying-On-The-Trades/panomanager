@@ -4,6 +4,9 @@
 function pano_settings_page() {
   $semantic = WP_PLUGIN_URL . '/mapply/css/semantic.css';
   $panos = get_panos();
+
+  // New pano url
+  $new_pano_url = WP_PLUGIN_URL . "/panomanager/admin/new_pano.php";
 ?>
 
 <!-- style sheet so our admin page looks nice -->
@@ -20,6 +23,9 @@ function pano_settings_page() {
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="admin_post_pano" />
     
+    <!-- Create new pano button -->
+    <a class="button" href="<?php echo $new_pano_url; ?>">New Pano</a>
+
     <table>
       <?php foreach ($panos as $pano): ?>
         <?php if ($pano): ?>
