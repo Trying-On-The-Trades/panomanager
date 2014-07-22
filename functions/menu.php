@@ -13,8 +13,7 @@ function create_top_menu(){
 				  'administrator',
 				  'pano_menu', 
 				  'pano_settings_page',
-				  plugins_url('/images/icon.png', 
-				  			  __FILE__)
+				  plugins_url('/images/icon.png', __FILE__)
 				  );
 }
 
