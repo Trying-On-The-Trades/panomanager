@@ -10,8 +10,8 @@ function pano_create_menu() {
 function create_top_menu(){
 	add_menu_page('pano-settings', 
 				  'Panos', 
-				  'administrator', 
-				  __FILE__, 
+				  'administrator',
+				  'pano_menu', 
 				  'pano_settings_page',
 				  plugins_url('/images/icon.png', 
 				  			  __FILE__)
@@ -20,17 +20,20 @@ function create_top_menu(){
 
 // function to create the sub menus
 function create_sub_menus(){
-	add_submenu_page("pano-settings", 
+
+	// Create the sub menu item for new panos
+	add_submenu_page("pano_menu",
 					 "New Pano", 
-					 "administrator", 
-					 0, 
-					 "pano_quest_settings", 
+					 "New Pano", 
+					 "administrator",
+					 "new_pano_settings", 
 					 "new_pano_settings_page");
-	
-	add_submenu_page("pano-settings", 
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu", 
 					 "Quests", 
-					 "administrator", 
-					 0, 
+					 "Quests", 
+					 "administrator",
 					 "pano_quest_settings", 
 					 "pano_quest_settings_page");
 }

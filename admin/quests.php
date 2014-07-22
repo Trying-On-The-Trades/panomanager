@@ -8,7 +8,7 @@ function pano_quest_settings_page() {
 
 <!-- style sheet so our admin page looks nice -->
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<p>Welcome to pano manager!</p>
+<p>Manage your quests!</p>
 <hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
