@@ -148,6 +148,20 @@ function pano_handler($incomingfrompost) {
   return $pano_output;
 }
 
+// function that can be called from a page template
+function load_pano($pano_id = 1){
+	build_pano($pano_id);
+
+	$javascript = build_pano_javascript();
+}
+
+// Build the javascript needed to load the pano into the div
+function build_pano_javascript(){
+	$script = "";
+
+	return $script;
+}
+
 function build_pano($pano_id = 1){
 
 	// Make a new pano object from the supplied id
@@ -175,7 +189,7 @@ function pano_script_output($incomingfromhandler) {
 // ***********************************************************
 
 function process_new_pano(){
-	
+
 }
 
 
