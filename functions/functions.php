@@ -32,7 +32,7 @@ function get_pano($id){
 	    "INNER JOIN " . $text_table_name . " wppt ON " .
         "wppt.pano_id = wpp.id " .
         "WHERE wppt.language_code = " . $language_code .
-        "AND wpp.id = %d", $id)
+        " AND wpp.id = %d", $id)
 	);
 
 	return $pano;
@@ -70,7 +70,7 @@ function get_quest($pano_id){
 		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
 		"wpqt.quest_id = wpq.id " .
 		"WHERE wpqt.language_code = " . $language_code .
-		"AND wpq.pano_id = %d", $pano_id)
+		" AND wpq.pano_id = %d", $pano_id)
 	);
 
 	// Returnß
@@ -89,7 +89,7 @@ function get_missions($quest_id){
 		"INNER JOIN " . $mission_text_table_name . " wpmt ON " .
 		"wpmt.mission_id = wpm.id " .
 		"WHERE wpmt.language_code = " . $language_code .
-		"AND wpm.quest_id = %d", $quest_id)
+		" AND wpm.quest_id = %d", $quest_id)
 	);
 
 	// Return
@@ -153,18 +153,25 @@ function load_pano($pano_id = 1){
 	build_pano($pano_id);
 
 	$javascript = build_pano_javascript();
+
+	return $javascript;
 }
 
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript(){
 	$pano_js_location = WP_PLUGIN_URL . "/panomanager/pano/pano.js";
+	$pano_swf_location = WP_PLUGIN_URL . "/panomanager/pano/pano.swf";
 
-	$script = '<script type="text/javascript" src="' . $pano_js_location . '" ></script>';
+	wp_register_script('pano_js', $pano_js_location, true);
+	wp_enqueue_script('pano_js');
 
-	$script .= '<script type="text/javascript">';
+	$script = '<script type="text/javascript">';
 	$script .= 'embedpano({';
 
 		// Script that loads the pano
+		$script .= 'swf:"' . $pano_swf_location . '"';
+		$script .= ',target:"panoDIV"';
+		$script .= ',passQueryParameters:true';
 
 	$script .= '});';
 	$script .= '</script>';
@@ -185,7 +192,7 @@ function build_pano($pano_id = 1){
 // Get the user's prefered language
 function get_user_language(){
 	// placeholder
-	return "EN";
+	return "'EN'";
 }
 
 // build the script to replace the short code
