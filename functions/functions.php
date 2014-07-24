@@ -157,7 +157,17 @@ function load_pano($pano_id = 1){
 
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript(){
-	$script = "";
+	$pano_js_location = WP_PLUGIN_URL . "/panomanager/pano/pano.js";
+
+	$script = '<script type="text/javascript" src="' . $pano_js_location . '" ></script>';
+
+	$script .= '<script type="text/javascript">';
+	$script .= 'embedpano({';
+
+		// Script that loads the pano
+
+	$script .= '});';
+	$script .= '</script>';
 
 	return $script;
 }

@@ -2,7 +2,7 @@
 
 // Build the settings page
 function new_pano_settings_page() {
-	$semantic = WP_PLUGIN_URL . '/mapply/css/semantic.css';
+	$semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <p>Create a new pano!</p>
