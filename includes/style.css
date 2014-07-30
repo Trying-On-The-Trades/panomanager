@@ -1,0 +1,11 @@
+/*
+Theme Name:     Trying on The Trades
+Description:    Child theme for the Ward theme 
+Author:         Daniel Blair
+Template:       ward
+Version:        0.1.0
+*/
+
+/* Modified and refactored by Daniel Blair */
+
+@import url("../ward/style.css");
