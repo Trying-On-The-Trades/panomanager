@@ -4,7 +4,7 @@
 Plugin Name: Pano Manager
 Plugin URI: http://dan-blair.ca
 Description: Manage your KR Panos
-Version: 0.1.1
+Version: 0.1.5
 Author: Trying On The Trades
 Author URI: http://www.tott.com
 */
@@ -12,60 +12,34 @@ Author URI: http://www.tott.com
 // Originally developed by Dann Blair
 // boldinnovationgroup.net
 
+// Create a shortcode for the handler
 add_shortcode("pano", "pano_handler");
+
+// Create the admin menu from menu.php
 add_action('admin_menu', 'pano_create_menu');
+
+// Add the process pano hook
 add_action( 'admin_post_pano', 'process_pano' );
+add_action( 'create_new_pano', 'process_new_pano' );
+
+// Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
-define( 'pano_DB_VERSION', '1.0' );
 
-// The function that actually handles replacing the short code
-function pano_handler($incomingfrompost) {
+// Version of the DB used
+define( 'PANO_DB_VERSION', '0.0.2' );
 
-  $script_text;
+// Require the important functions
+require_once("functions/database.php");
+require_once("functions/functions.php");
+require_once("functions/processing.php");
+require_once("functions/install.php");
+require_once("functions/uninstall.php");
+require_once("functions/menu.php");
 
-  $incomingfrompost=shortcode_atts(array(
-    "headingstart" => $script_text
-  ), $incomingfrompost);
+// Require the objects
+require_once("includes/pano.php");
+require_once("includes/quest.php");
 
-  $demolph_output = pano_script_output($incomingfrompost);
-  return $demolph_output;
-}
-
-function build_pano(){
-
-  $script = "blank pano";
-
-  return $script;
-}
-
-// build the script to replace the short code
-function pano_script_output($incomingfromhandler) {
-  $demolp_output = wp_specialchars_decode($incomingfromhandler["headingstart"]);
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["liststart"]);
-
-  for ($demolp_count = 1; $demolp_count <= $incomingfromhandler["categorylist"]; $demolp_count++) {
-    $demolp_output .= wp_specialchars_decode($incomingfromhandler["itemstart"]);
-    $demolp_output .= $demolp_count;
-    $demolp_output .= " of ";
-    $demolp_output .= wp_specialchars($incomingfromhandler["categorylist"]);
-    $demolp_output .= wp_specialchars_decode($incomingfromhandler["itemend"]);
-  }
-
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["listend"]);
-  $demolp_output .= wp_specialchars_decode($incomingfromhandler["headingend"]);
-
-  return $demolp_output;
-}
-
-// Create the admin menu
-function pano_create_menu() {
-  //create new top-level menu
-  add_menu_page('pano Settings', 'pano', 'administrator', __FILE__, 'pano_settings_page',plugins_url('/images/icon.png', __FILE__));
-}
-
-// Require the important files
-require("includes/database.php");
-require("includes/functions.php");
-require("includes/processing.php");
-require("includes/install.php");
-require("includes/admin_page.php");
+// Require the admin pages
+require_once("admin/admin_page.php");
+require_once("admin/quests.php");
