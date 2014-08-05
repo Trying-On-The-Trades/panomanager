@@ -159,8 +159,10 @@ function load_pano($pano_id = 1){
 
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id){
-	$pano_js_location = content_url(); . "/pano/" . $pano_id . "/pano.js";
-	$pano_swf_location = content_url(); . "/panp/" . $pano_id . "/pano.swf";
+	$pano_js_location = content_url() . "/panos/" . $pano_id . "/pano.js";
+	$pano_swf_location = content_url() . "/panos/" . $pano_id . "/pano.swf";
+
+	// printf(content_url());
 
 	wp_register_script('pano_js', $pano_js_location, true);
 	wp_enqueue_script('pano_js');
