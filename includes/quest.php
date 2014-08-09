@@ -11,7 +11,7 @@ class quest{
 	function __construct($id){
 
 		// Get the Quest (Skill) based on the id
-		if is_numeric($id){
+		if (is_numeric($id)){
 			$quest_row = get_quest($id);
 			$this->build($quest_row);
 		}
@@ -31,7 +31,7 @@ class quest{
 	}
 
 	function build_hotspots(){
-		
+
 	}
 
 	function get_name(){
