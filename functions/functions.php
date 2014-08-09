@@ -57,7 +57,27 @@ function get_quests(){
 	return $quests;
 }
 
-function get_quest($pano_id){
+function get_quest($quest_id){
+	global $wpdb;
+
+	$quest_table_name = get_quest_table_name();
+	$quest_text_table_name = get_quest_text_table_name();
+	$language_code = get_user_language();
+
+	// DB query
+	$quest = $wpdb->get_row( $wpdb->prepare( 
+		"SELECT * FROM " . $quest_table_name . " wpq " .
+		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
+		"wpqt.quest_id = wpq.id " .
+		"WHERE wpqt.language_code = " . $language_code .
+		" AND wpq.id = %d", $quest_id)
+	);
+
+	// Returnß
+	return $quest;
+}
+
+function get_quest_by_pano($pano_id){
 	global $wpdb;
 
 	$quest_table_name = get_quest_table_name();
@@ -150,7 +170,7 @@ function pano_handler($incomingfrompost) {
 
 // function that can be called from a page template
 function load_pano($pano_id = 1){
-	build_pano($pano_id);
+	$pano = build_pano($pano_id);
 
 	$javascript = build_pano_javascript($pano_id);
 
@@ -186,9 +206,7 @@ function build_pano($pano_id = 1){
 	// Make a new pano object from the supplied id
 	$pano = new pano($pano_id);
 
-  	$script = "blank pano";
-
-  	return $script;
+  	return $pano;
 }
 
 // Get the user's prefered language

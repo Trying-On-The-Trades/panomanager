@@ -2,7 +2,7 @@
 
 // Build the settings page
 function pano_quest_settings_page() {
-  $semantic = WP_PLUGIN_URL . '/mapply/css/semantic.css';
+  $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
   $quests = get_quests();
 ?>
 

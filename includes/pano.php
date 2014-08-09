@@ -1,8 +1,8 @@
 <?php
 
 class pano{
-	protected $id, $name, $description, $quests, $missions,
-			  $language_code;
+	protected $id, $name, $description, $quests = array(), 
+			  $missions, $language_code $exists = 0;
 
 	function __construct($id){
 
@@ -18,6 +18,7 @@ class pano{
 
 		// Load the data if the id exists
 		if ($pano_row->id > 0){
+			$this->exists      = 1
 			$this->id          = $pano_row->id; 
 			$this->name        = $pano_row->name;
 			$this->description = $pano_row->description;
@@ -34,10 +35,6 @@ class pano{
 
 	function get_quests(){
 		return $this->quests;
-	}
-
-	function get_missions(){
-		return $this->missions;
 	}
 
 	function get_pano_language(){
