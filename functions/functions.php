@@ -20,6 +20,22 @@ function get_panos(){
 	return $panos;
 }
 
+function get_pano_ids(){
+	global $wpdb;
+	$pano_table_name = get_pano_table_name();
+	$text_table_name = get_pano_text_table_name();
+	$language_code = get_user_language();
+
+	// DB query joining the pano table and the pano text table
+	$panos = $wpdb->get_results( 
+		"SELECT wpp.id FROM " . $pano_table_name . " wpp " .
+		"INNER JOIN " . $text_table_name . " wppt ON " .
+		"wppt.pano_id = wpp.id " .
+		"WHERE wppt.language_code = " . $language_code, ARRAY_A);
+
+	return $panos;
+}
+
 function get_pano($id){
 	global $wpdb;
 	$pano_table_name = get_pano_table_name();
@@ -170,9 +186,14 @@ function pano_handler($incomingfrompost) {
 
 // function that can be called from a page template
 function load_pano($pano_id = 1){
-	$pano = build_pano($pano_id);
 
-	$javascript = build_pano_javascript($pano_id);
+	// Make sure the pano exists before trying to load it
+	$id = check_pano_id($pano_id);
+
+	// Check if the user is aloud to see it
+
+	$pano = build_pano($id);
+	$javascript = build_pano_javascript($id);
 
 	return $javascript;
 }
@@ -195,6 +216,22 @@ function get_user_language(){
 function pano_script_output($incomingfromhandler) {
   $pano_output = "";
   return $pano_output;
+}
+
+function check_pano_id($pano_id){
+	$existing_panos = get_pano_ids();
+	$existing_ids = array();
+
+	// Get the ids from the array of arrays
+	foreach ($existing_panos as $ex) {
+		array_push($existing_ids, $ex['id']);
+	}
+
+	if (in_array($pano_id, array_values($existing_ids))){
+		return $pano_id;
+	} else {
+		return 1;
+	}
 }
 
 // ***********************************************************
