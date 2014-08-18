@@ -19,6 +19,7 @@ function build_pano_javascript($pano_id){
 		// Script that loads the pano
 		$script .= 'swf:"' . $pano_swf_location . '"';
 		$script .= ',target:"panoDIV"';
+		$script .= ',html5:"prefer"';
 		$script .= ',passQueryParameters:true';
 
 	$script .= '});';
