@@ -2,20 +2,59 @@
 
 if (isset($_GET['id'])){
 	$pano_id = $_GET['id'];
-	build_pano_xml($pano_id);
 
 	// Make the pano
-	$pano = build_pano($pano_id);
-}
-// 
+	// $pano = build_pano($pano_id);
 
-// chdir("../../../panos/3/");
+	build_pano_xml($pano_id);
+}
+
 
 function build_pano_xml($pano_id){
 
 	$pano_url = "http://tot.boldapps.net/wp-content/panos/" . $pano_id . "/";
 
-	$xml = '<krpano version="1.17.3" title="Virtual Tour" onstart="startup();">
+	// Get XML
+	$main_xml = xml_middle_man($pano_url);
+
+	// Create object
+	$pano_xml_obj = build_simple_xml_obj($main_xml, true);
+
+	// Fix reference links
+	$fixed_xml_object = fix_references($pano_xml_obj);
+
+	// turn object back into XML
+
+	// Output XML
+	spit_out_xml($main_xml);
+}
+
+function fix_references($xml_object){
+	return $xml_object;
+}
+
+function spit_out_xml($xml){
+	// We are returning xml
+	header('Content-Type: text/xml');
+
+	echo $xml;
+	die();
+}
+
+function build_simple_xml_obj($xml, $debugging = false){
+	$obj = simplexml_load_string($xml);
+
+	// Display the object when manipulating it
+	if ($debugging){
+		print_r($obj);
+		die();
+	}
+
+	return $obj;
+}
+
+function xml_middle_man($pano_url){
+	return '<krpano version="1.17.3" title="Virtual Tour" onstart="startup();">
 
 		<include url="' . $pano_url .  'skin/vtourskin.xml" />
 
@@ -165,13 +204,4 @@ function build_pano_xml($pano_id){
 
 
 	</krpano>';
-
-	spit_out_xml($xml);
-}
-
-function spit_out_xml($xml){
-	// We are returning xml
-	header('Content-Type: text/xml');
-
-	echo $xml;
 }

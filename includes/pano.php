@@ -2,7 +2,8 @@
 
 class pano{
 	protected $id, $name, $description, $quests = array(), 
-			  $missions, $language_code, $exists = 0;
+			  $missions, $language_code, $exists = 0,
+			  $xml;
 
 	function __construct($id){
 
@@ -19,6 +20,7 @@ class pano{
 		// Load the data if the id exists
 		if ($pano_row->id > 0){
 			$this->exists      = 1;
+			$this->xml         = $pano_row->pano_xml;
 			$this->id          = $pano_row->id; 
 			$this->name        = $pano_row->name;
 			$this->description = $pano_row->description;
@@ -39,5 +41,9 @@ class pano{
 
 	function get_pano_language(){
 		return $this->language_code;
+	}
+
+	function get_xml(){
+		return $this->xml;
 	}
 }
