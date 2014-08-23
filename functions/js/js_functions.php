@@ -7,7 +7,7 @@
 function build_pano_javascript($pano_id){
 	$pano_js_location = content_url() . "/panos/" . $pano_id . "/pano.js";
 	$pano_swf_location = content_url() . "/panos/" . $pano_id . "/pano.swf";
-	$pano_php_location = WP_PLUGIN_URL . "/panomanager/includes/pano_loader.php?id=" . $pano_id;
+	$pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
 
 	// printf(content_url());
 

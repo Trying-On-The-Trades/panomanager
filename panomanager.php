@@ -22,6 +22,10 @@ add_action('admin_menu', 'pano_create_menu');
 add_action( 'admin_post_pano', 'process_pano' );
 add_action( 'create_new_pano', 'process_new_pano' );
 
+// Handle the XML AJAX return
+add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
+add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
+
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
 
@@ -46,3 +50,16 @@ require_once("includes/pano_loader.php");
 // Require the admin pages
 require_once("admin/admin_page.php");
 require_once("admin/quests.php");
+
+if (isset($_GET['return_the_pano'])){
+	return_pano_xml($_GET['return_the_pano']);
+}
+
+// Handle ajaxing to the pano_loaded
+function return_pano_xml($id) {
+    global $wpdb; // this is how you get access to the database
+
+    build_pano_xml($id);
+
+    die(); // this is required to return a proper result
+}
