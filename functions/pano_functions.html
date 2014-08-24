@@ -79,7 +79,7 @@ function fix_references($pano_id, $xml_object){
 			// Make sure we are only editing the thumburl
 			if ($key === $scene_attribute){
 				$old_url = $value;
-				$node->attributes()->$key = $pano_url . $old_url;
+				$node->attributes()->$key = str_replace("%FIRSTXML%/", "", $pano_url . $old_url);
 			}
 		}
 
@@ -87,7 +87,7 @@ function fix_references($pano_id, $xml_object){
 		if ($node->preview != null){
 			foreach ($node->preview as $preview) {
 				$old_url = $preview->attributes()->url;
-				$preview->attributes()->url = $pano_url . $old_url;
+				$preview->attributes()->url = str_replace("%FIRSTXML%/", "", $pano_url . $old_url);
 			}
 		}
 		
@@ -169,4 +169,8 @@ function fix_node_url($node, $url){
 	$fixed_node = $node;
 
 	return $fixed_node;
+}
+
+function add_node(){
+	
 }

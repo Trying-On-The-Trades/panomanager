@@ -35,6 +35,7 @@ define( 'PANO_DB_VERSION', '0.0.2' );
 // Require the important functions
 require_once("functions/database.php");
 require_once("functions/functions.php");
+require_once("functions/pano_functions.php");
 require_once("functions/processing.php");
 require_once("functions/install.php");
 require_once("functions/uninstall.php");
@@ -45,7 +46,6 @@ require_once("functions/js/js_functions.php");
 // Require the objects
 require_once("includes/pano.php");
 require_once("includes/quest.php");
-require_once("includes/pano_loader.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");

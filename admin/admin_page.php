@@ -2,11 +2,13 @@
 
 // Build the settings page
 function pano_settings_page() {
-  $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
+  
   $panos = get_panos();
 
-  // New pano url
-  $new_pano_url = WP_PLUGIN_URL . "/panomanager/admin/new_pano.php";
+  // Create urls
+  $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
+  $new_pano_url = admin_url() . "admin.php?page=new_pano_settings";
+  $edit_pano_url = "";
 ?>
 
 <!-- style sheet so our admin page looks nice -->
@@ -23,22 +25,24 @@ function pano_settings_page() {
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="admin_post_pano" />
 
-    <table>
-      <th>
+    <h2>Panos</h2>
+    <table class="ui table segment">
+      <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Description</th>
-      </th>
+          <th>Edit</th>
+      </tr>
       <?php foreach ($panos as $pano): ?>
         
         <tr>
             <td><?php echo $pano->id ?></td>
-            <th><?php echo $pano->name ?></th>
-            <th><?php echo $pano->description ?></th>
+            <td><?php echo $pano->name ?></td>
+            <td><a class="ui blue icon button" href="" style="padding: 7px">Edit</a></td>
         </tr>
 
       <?php endforeach; ?>
     </table>
+    <a class="ui blue icon button" href="<?php echo $new_pano_url ?>" style="padding: 7px">New Pano</a>
 
 </form>
 </div>

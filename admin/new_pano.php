@@ -1,7 +1,16 @@
 <?php
 
+$pano_id = 0;
+
+if isset($_GET['edit_pano']){
+	if (is_numeric($_GET['edit_pano'])){
+		$pano_id = $_GET['edit_pano'];
+	}
+}
+
 // Build the settings page
 function new_pano_settings_page() {
+	
 	$semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>

@@ -27,6 +27,10 @@ class pano{
 		}
 	}
 
+	function get_id(){
+		return $this->id;
+	}
+
 	function get_name(){
 		return $this->name;
 	}
