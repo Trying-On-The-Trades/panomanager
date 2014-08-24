@@ -242,6 +242,33 @@ function process_new_pano(){
 
 }
 
+function process_new_quest(){
+
+}
+
+function process_new_mission(){
+	
+}
+
+function process_new_hotspot(){
+
+}
+
+// ***********************************************************
+//				    Updating Panos
+// ***********************************************************
+
+function update_pano(){
+
+}
+
+function update_quest(){
+
+}
+
+function update_hotspot(){
+
+}
 
 // ***********************************************************
 //				    Uploading Panos
