@@ -49,6 +49,7 @@ require_once("includes/quest.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");
+require_once("admin/new_pano.php");
 require_once("admin/quests.php");
 
 if (isset($_GET['return_the_pano'])){

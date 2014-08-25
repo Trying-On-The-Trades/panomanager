@@ -62,12 +62,11 @@ function get_quests(){
 	$language_code = get_user_language();
 
 	// DB query
-	$quests = $wpdb->get_row( $wpdb->prepare( 
+	$quests = $wpdb->get_results( 
 		"SELECT * FROM " . $quest_table_name . " wpq " .
 		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
 		"wpqt.quest_id = wpq.id " .
-		"WHERE wpqt.language_code = " . $language_code)
-	);
+		"WHERE wpqt.language_code = " . $language_code);
 
 	// Return
 	return $quests;
@@ -240,6 +239,18 @@ function check_pano_id($pano_id){
 
 function process_new_pano(){
 
+	// Create a new pano using the post data
+
+	// Get the id
+
+	// print_r($_POST);
+	// // print_r($_FILES);
+	// die();
+
+	// // Process the zip
+	// if($_FILES["zip_file"]["pano_zip"]) {
+	// 	upload_panos($_FILES["zip_file"]["pano_zip"]);
+	// }
 }
 
 function process_new_quest(){
@@ -247,7 +258,7 @@ function process_new_quest(){
 }
 
 function process_new_mission(){
-	
+
 }
 
 function process_new_hotspot(){
@@ -275,7 +286,7 @@ function update_hotspot(){
 // ***********************************************************
 
 // Handle uploading panos
-function upload_panos(){
+function upload_panos($file, $pano_id){
 	$upload_dir = wp_upload_dir();
 
 	// Make a pano file at the directory if it doesn't exist
@@ -285,6 +296,46 @@ function upload_panos(){
 	if (!check_file($pano_directory)){
 		mkdir($pano_directory, 0654, true);
 	}
+
+	// Process the upload data
+	$filename = $_FILES["zip_file"]["name"];
+	$source = $_FILES["zip_file"]["tmp_name"];
+	$type = $_FILES["zip_file"]["type"];
+	
+	$name = explode(".", $filename);
+
+	$accepted_types = array('application/zip', 
+		                    'application/x-zip-compressed', 
+		                    'multipart/x-zip', 
+		                    'application/x-compressed');
+
+	foreach($accepted_types as $mime_type) {
+		if($mime_type == $type) {
+			$okay = true;
+			break;
+		} 
+	}
+	
+	$continue = strtolower($name[1]) == 'zip' ? true : false;
+	if(!$continue) {
+		$message = "The file you are trying to upload is not a .zip file. Please try again.";
+	}
+
+	$target_path = "/home/var/yoursite/httpdocs/".$filename;  // change this to the correct site path
+	if(move_uploaded_file($source, $target_path)) {
+		$zip = new ZipArchive();
+		$x = $zip->open($target_path);
+		if ($x === true) {
+			$zip->extractTo("/home/var/yoursite/httpdocs/"); // change this to the correct site path
+			$zip->close();
+	
+			unlink($target_path);
+		}
+		$message = "Your .zip file was uploaded and unpacked.";
+	} else {	
+		$message = "There was a problem with the upload. Please try again.";
+	}
+	
 }
 
 // Function for checking if the directory exists

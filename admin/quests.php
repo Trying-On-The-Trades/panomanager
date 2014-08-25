@@ -22,16 +22,9 @@ function pano_quest_settings_page() {
     
     <table>
       <?php foreach ($quests as $quest): ?>
-        <?php if ($quest): ?>
-
-            <tr>
-                <?php print_r($quest); ?>
-            </tr>
-
-
-        <?php else : ?>
-            <tr><td>No quests yet!</td></tr>
-        <?php endif; ?>
+        <tr>
+            <?php print_r($quest); ?>
+        </tr>
       <?php endforeach; ?>
     </table>
 
