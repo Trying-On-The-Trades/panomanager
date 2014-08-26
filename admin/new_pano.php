@@ -25,7 +25,7 @@ $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
-<form method="post" action="admin-post.php">
+<form method="post" enctype="multipart/form-data" action="admin-post.php">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_pano" />  
     <div class="ui form segment new_pano_form">

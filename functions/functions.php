@@ -243,9 +243,9 @@ function process_new_pano(){
 
 	// Get the id
 
-	// print_r($_POST);
-	// // print_r($_FILES);
-	// die();
+	print_r($_POST);
+	print_r($_FILES);
+	die();
 
 	// // Process the zip
 	// if($_FILES["zip_file"]["pano_zip"]) {
