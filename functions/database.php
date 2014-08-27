@@ -90,7 +90,6 @@ function build_quest_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
       `panno_id` bigint(20) NOT NULL,
-      `trigger_id` bigint(20) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
 

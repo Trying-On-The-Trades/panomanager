@@ -167,6 +167,55 @@ function get_hotspot_type($hotspot_type_id){
 	return $hotspots;
 }
 
+function get_pano_prereq($pano_id){
+	global $wpdb;
+
+	$prereq_table_name = get_prereq_table_name();
+	$pano_table_name   = get_pano_table_name();
+
+	$prereq = $wpdb->get_results( 
+		"SELECT * FROM " . $prereq_table_name . " wppr " .
+		"INNER JOIN " . $pano_table_name . " wpp ON " .
+		"wpp.`id` = wppr.`pano_id` " .
+		"WHERE wppr.`pano_id` = " . $pano_id);
+
+	return $prereq;
+}
+
+// Return a user's points for completing missions for a specific pano
+function get_user_mission_points($mission_id, $user_id){
+	global $wpdb;
+
+	$progress_table = get_user_progress_table_name();
+	$mission_table  = get_mission_table_name();
+
+	$points = = $wpdb->get_results( 
+		"SELECT sum(wpm.`points`) FROM " . $progress_table . " wup " .
+		"INNER JOIN " . $mission_table . " wpm ON " .
+		"wup.`mission_id` = wpm.`id` " .
+		"WHERE wup.`user_id` = " . $user_id .
+		"AND wup.`mission_id` = " . $mission_id);
+
+	return $points;
+}
+
+// Return a user's points for completing skills for a specific pano
+function get_user_skill_points($skill_id, $user_id){
+	global $wpdb;
+
+	$progress_table = get_user_skill_progress_table_name();
+	$mission_table  = get_mission_table_name();
+
+	$points = = $wpdb->get_results( 
+		"SELECT sum(wpm.`points`) FROM " . $progress_table . " wup " .
+		"INNER JOIN " . $mission_table . " wpm ON " .
+		"wup.`skill_id` = wpm.`id` " .
+		"WHERE wup.`user_id` = " . $user_id .
+		"AND wup.`skill_id` = " . $skill_id);
+
+	return $points;
+}
+
 // ***********************************************************
 //				    Updating Panos
 // ***********************************************************

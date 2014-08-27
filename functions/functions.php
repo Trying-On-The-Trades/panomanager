@@ -38,6 +38,7 @@ function check_user_progress($pano_id){
 	$allowed = false;
 
 	// Check if the pano has a prereq
+	$prereq = "";
 
 	// if it does make sure the user has completed 
 	// enough skills and missions
