@@ -1,4 +1,5 @@
 <?php
+// Functions used to build the pano table name and sql
 
 // Get the table prefix and return the name
 function get_pano_table_name(){
@@ -36,6 +37,11 @@ function get_user_progress_table_name(){
   return $wpdb->prefix . "pano_user_progress";
 }
 
+function get_user_skill_progress_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_user_skill_progress";
+}
+
 function get_hotspot_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_hotspot";
@@ -44,6 +50,11 @@ function get_hotspot_table_name(){
 function get_type_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_hotspot_type";
+}
+
+function get_prereq_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_prereq";
 }
 
 function build_pano_sql(){
@@ -145,6 +156,21 @@ function build_user_progress_sql(){
     return $sql;
 }
 
+function build_user_skill_progress_table_sql(){
+    $table_name = get_user_skill_progress_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `user_id` bigint(20) NOT NULL,
+        `skill_id` int(11) NOT NULL,
+        `time_started` timestamp NULL DEFAULT NULL,
+        `time_completed` timestamp NULL DEFAULT NULL,
+        PRIMARY KEY (`id`)
+    );';
+
+    return $sql;  
+}
+
 function build_hotspot_sql(){
     $table_name = get_hotspot_table_name();
 
@@ -173,4 +199,16 @@ function build_type_sql(){
     );';
 
     return $sql;
+}
+
+function build_prereq_sql(){
+    $table_name = get_prereq_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `pano_id` int(11) DEFAULT NULL,
+      `prereq_id` int(11) DEFAULT NULL,
+      `prereq_pts` int(11) NOT NULL,
+      PRIMARY KEY (`id`)
+    );';
 }

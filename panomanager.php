@@ -30,10 +30,11 @@ add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 register_activation_hook( __FILE__, 'pano_install' );
 
 // Version of the DB used
-define( 'PANO_DB_VERSION', '0.0.2' );
+define( 'PANO_DB_VERSION', '0.1.1' );
 
 // Require the important functions
 require_once("functions/database.php");
+require_once("functions/db_functions.php");
 require_once("functions/functions.php");
 require_once("functions/pano_functions.php");
 require_once("functions/processing.php");
