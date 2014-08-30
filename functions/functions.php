@@ -1,7 +1,7 @@
 <?php
 
 // ***********************************************************
-//				    FUNCTIONS TO BUILD OUTPUT
+//		    FUNCTIONS TO BUILD OUTPUT
 // ***********************************************************
 
 // The function that actually handles replacing the short code
@@ -24,7 +24,7 @@ function load_pano($pano_id = 1){
 	$id = check_pano_id($pano_id);
 
 	// Check if the user is aloud to see it
-	$id = check_user_progress($id);
+//	$id = check_user_progress($id);
 
 	$pano = build_pano($id);
 	$javascript = build_pano_javascript($id);
@@ -36,12 +36,30 @@ function check_user_progress($pano_id){
 	// Check the user's progress before allowing 
 	// the user to see the pano
 	$allowed = false;
+        
+        $user_id = get_current_user_id();
 
 	// Check if the pano has a prereq
-	$prereq = "";
+	$prereq = get_pano_prereqs($pano_id);
 
 	// if it does make sure the user has completed 
 	// enough skills and missions
+        if ($prereq.length > 0){
+            
+            // Get the points by mission
+            $mission_points = get_user_mission_points($mission_id, $user_id);
+            
+            // Get the points by skill
+            $skill_points = get_user_skill_points($skill_id, $user_id);
+            
+            // Add up the points
+            $total_points = $mission_points + $skill_points;
+            
+            // check if they are enough for the prereq
+            if ($total_points >= $prereq->points){
+                $allowed = true;
+            }
+        }
 
 	// If they have, return the pano else return default id
 	if ($allowed){
@@ -49,6 +67,11 @@ function check_user_progress($pano_id){
 	} else {
 		return 1;
 	}
+}
+
+function get_pano_prereqs($pano_id){
+    $prereq = get_pano_prereq($pano_id);
+    return $prereq;
 }
 
 function build_pano($pano_id = 1){
@@ -120,7 +143,7 @@ function process_new_hotspot(){
 }
 
 // ***********************************************************
-//				    Uploading Panos
+//			   Uploading Panos
 // ***********************************************************
 
 // Handle uploading panos
