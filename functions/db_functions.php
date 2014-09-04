@@ -6,91 +6,107 @@
 // ***********************************************************
 
 function get_panos(){
-	global $wpdb;
-	$pano_table_name = get_pano_table_name();
-	$text_table_name = get_pano_text_table_name();
-	$language_code = get_user_language();
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code = get_user_language();
 
-	// DB query joining the pano table and the pano text table
-	$panos = $wpdb->get_results( 
-		"SELECT * FROM " . $pano_table_name . " wpp " .
-		"INNER JOIN " . $text_table_name . " wppt ON " .
-		"wppt.pano_id = wpp.id " .
-		"WHERE wppt.language_code = " . $language_code);
+    // DB query joining the pano table and the pano text table
+    $panos = $wpdb->get_results( 
+            "SELECT * FROM " . $pano_table_name . " wpp " .
+            "INNER JOIN " . $text_table_name . " wppt ON " .
+            "wppt.pano_id = wpp.id " .
+            "WHERE wppt.language_code = " . $language_code);
 
-	return $panos;
+    return $panos;
 }
 
 function get_pano_ids(){
-	global $wpdb;
-	$pano_table_name = get_pano_table_name();
-	$text_table_name = get_pano_text_table_name();
-	$language_code = get_user_language();
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code = get_user_language();
 
-	// DB query joining the pano table and the pano text table
-	$panos = $wpdb->get_results( 
-		"SELECT wpp.id FROM " . $pano_table_name . " wpp " .
-		"INNER JOIN " . $text_table_name . " wppt ON " .
-		"wppt.pano_id = wpp.id " .
-		"WHERE wppt.language_code = " . $language_code, ARRAY_A);
+    // DB query joining the pano table and the pano text table
+    $panos = $wpdb->get_results( 
+            "SELECT wpp.id FROM " . $pano_table_name . " wpp " .
+            "INNER JOIN " . $text_table_name . " wppt ON " .
+            "wppt.pano_id = wpp.id " .
+            "WHERE wppt.language_code = " . $language_code, ARRAY_A);
 
-	return $panos;
+    return $panos;
+}
+
+function get_pano_names($user_id){
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code = get_user_language();
+        
+}
+
+function get_allowed_pano_ids($user_id){
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code = get_user_language();
+    
 }
 
 function get_pano($id){
-	global $wpdb;
-	$pano_table_name = get_pano_table_name();
-	$text_table_name = get_pano_text_table_name();
-	$language_code = get_user_language();
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code = get_user_language();
 
-	// DB query
-	$pano = $wpdb->get_row( $wpdb->prepare( 
-		"SELECT * FROM " . $pano_table_name . " wpp " .
-	    "INNER JOIN " . $text_table_name . " wppt ON " .
-        "wppt.pano_id = wpp.id " .
-        "WHERE wppt.language_code = " . $language_code .
-        " AND wpp.id = %d", $id)
-	);
+    // DB query
+    $pano = $wpdb->get_row( $wpdb->prepare( 
+            "SELECT * FROM " . $pano_table_name . " wpp " .
+        "INNER JOIN " . $text_table_name . " wppt ON " .
+    "wppt.pano_id = wpp.id " .
+    "WHERE wppt.language_code = " . $language_code .
+    " AND wpp.id = %d", $id)
+    );
 
-	return $pano;
+    return $pano;
 }
 
 function get_quests(){
-	global $wpdb;
+    global $wpdb;
 
-	$quest_table_name = get_quest_table_name();
-	$quest_text_table_name = get_quest_text_table_name();
-	$language_code = get_user_language();
+    $quest_table_name = get_quest_table_name();
+    $quest_text_table_name = get_quest_text_table_name();
+    $language_code = get_user_language();
 
-	// DB query
-	$quests = $wpdb->get_results( 
-		"SELECT * FROM " . $quest_table_name . " wpq " .
-		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
-		"wpqt.quest_id = wpq.id " .
-		"WHERE wpqt.language_code = " . $language_code);
+    // DB query
+    $quests = $wpdb->get_results( 
+            "SELECT * FROM " . $quest_table_name . " wpq " .
+            "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
+            "wpqt.quest_id = wpq.id " .
+            "WHERE wpqt.language_code = " . $language_code);
 
-	// Return
-	return $quests;
+    // Return
+    return $quests;
 }
 
 function get_quest($quest_id){
-	global $wpdb;
+    global $wpdb;
 
-	$quest_table_name = get_quest_table_name();
-	$quest_text_table_name = get_quest_text_table_name();
-	$language_code = get_user_language();
+    $quest_table_name = get_quest_table_name();
+    $quest_text_table_name = get_quest_text_table_name();
+    $language_code = get_user_language();
 
-	// DB query
-	$quest = $wpdb->get_row( $wpdb->prepare( 
-		"SELECT * FROM " . $quest_table_name . " wpq " .
-		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
-		"wpqt.quest_id = wpq.id " .
-		"WHERE wpqt.language_code = " . $language_code .
-		" AND wpq.id = %d", $quest_id)
-	);
+    // DB query
+    $quest = $wpdb->get_row( $wpdb->prepare( 
+            "SELECT * FROM " . $quest_table_name . " wpq " .
+            "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
+            "wpqt.quest_id = wpq.id " .
+            "WHERE wpqt.language_code = " . $language_code .
+            " AND wpq.id = %d", $quest_id)
+    );
 
-	// Returnß
-	return $quest;
+    // Returnß
+    return $quest;
 }
 
 function get_quest_by_pano($pano_id){
