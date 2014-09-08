@@ -57,6 +57,26 @@ function get_prereq_table_name(){
   return $wpdb->prefix . "pano_prereq";
 }
 
+function get_activation_code_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_activation_codes";
+}
+
+function get_school_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_schools";
+}
+
+function get_trade_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_trades";
+}
+
+function get_tool_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_tools";
+}
+
 function build_pano_sql(){
     $table_name = get_pano_table_name();
 
@@ -210,4 +230,56 @@ function build_prereq_sql(){
       `prereq_pts` int(11) NOT NULL,
       PRIMARY KEY (`id`)
     );';
+    
+    return $sql;
+}
+
+function build_activation_code_sql(){
+    $table_name = get_activation_code_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `code` varchar(255) NOT NULL,
+        `user_id` int(11) DEFAULT NULL,
+        `activated` tinyint(2) NOT NULL DEFAULT "0",
+        PRIMARY KEY (`id`)
+    );';
+    
+    return $sql;
+}
+
+function build_school_sql(){
+    $table_name = get_school_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) NOT NULL DEFAULT "",
+        PRIMARY KEY (`id`)
+    );';
+    
+    return $sql;
+}
+
+function build_trades_sql(){
+    $table_name = get_trade_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) NOT NULL DEFAULT "",
+        PRIMARY KEY (`id`)
+    );';
+    
+    return $sql;
+}
+
+function build_tools_sql(){
+    $table_name = get_tool_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) NOT NULL DEFAULT "",
+        PRIMARY KEY (`id`)
+    );';
+    
+    return $sql;
 }

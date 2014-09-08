@@ -23,6 +23,10 @@ function pano_install () {
     $hotspot_sql        = build_hotspot_sql();
     $type_sql           = build_type_sql();
     $prereq_sql         = build_prereq_sql();
+    $activation_sql     = build_activation_code_sql();
+    $tool_sql           = build_tools_sql();
+    $school_sql         = build_school_sql();
+    $trade_sql          = build_trades_sql();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -38,6 +42,10 @@ function pano_install () {
     dbDelta( $hotspot_sql       );
     dbDelta( $type_sql          );
     dbDelta( $prereq_sql        );
+    dbDelta( $activation_sql    );
+    dbDelta( $tool_sql          );
+    dbDelta( $school_sql        );
+    dbDelta( $trade_sql         );
 
     update_option( "pano_db_version", PANO_DB_VERSION );
     // create_first_row();
