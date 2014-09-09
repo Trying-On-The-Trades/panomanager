@@ -12,6 +12,8 @@ function return_registration_script(){
     
     // Build the code that will change the school selector to the fields in the database
     $registration_script .= build_school_selector();
+    $registration_script .= build_tool_select();
+    $registration_script .= build_trade_select();
     
     // Check if the registration input exists
     $registration_script .= "if (user_name_field){\n";
@@ -19,6 +21,7 @@ function return_registration_script(){
     // Disable and make the username read only
     $registration_script .= "user_name_field.disabled = true;\n";
     $registration_script .= "user_name_field.readOnly = true;\n";
+    $registration_script .= "user_name_field.placeholder='Select a colour and a tool';\n";
     
     // Create variables for the drop downs
     $registration_script .= "var color_field = document.getElementById('field_12');\n";
@@ -72,7 +75,7 @@ function build_school_dropdown_list(){
     $script = "<option value=''>----</option>";
     
     foreach ($schools as $school) {
-        $script .= "<option value'" . $school->name . "'>" . $school->name . "</option>";
+        $script .= "<option value='" . $school->name . "'>" . $school->name . "</option>";
     }
    
 //    $script .= ";";
@@ -85,6 +88,33 @@ function build_school_check_function(){
 }
 
 ////// TOOL FUNCTIONS
+function build_tool_select(){
+    $script = "var tool_selector = document.getElementById('field_2');\n";
+    
+    $new_elements = build_tool_select_options();
+    
+    $script .= 'tool_selector.innerHTML = "' . $new_elements . '";';
+    
+    return $script;
+}
+
+// Set the inner html to the first select
+function build_tool_select_options(){
+    $tools = get_tools();
+    
+    $script = "<option value=''>----</option>";
+    
+    foreach ($tools as $tool) {
+        $script .= "<option value='" . $tool->name . "'>" . $tool->name . "</option>";
+    }
+    
+    return $script;
+}
+
+// There are multiple arrays
+function build_tool_arrays(){
+    
+}
 
 function build_tool_check_function(){
     $script = "function tool_check(){\n";
@@ -98,11 +128,25 @@ function build_tool_check_function(){
 ////// TRADE FUNCTIONS
 
 function build_trade_select(){
+    $script = "var trade_selector = document.getElementById('field_17');\n";
     
+    $new_elements = build_trade_select_options();
+    
+    $script .= 'trade_selector.innerHTML = "' . $new_elements . '";';
+    
+    return $script;
 }
 
 function build_trade_select_options(){
+    $trades = get_trades();
     
+    $script = "<option value=''>----</option>";
+    
+    foreach ($trades as $trade) {
+        $script .= "<option value='" . $trade->name . "'>" . $trade->name . "</option>";
+    }
+    
+    return $script;
 }
 
 function check_trade(){

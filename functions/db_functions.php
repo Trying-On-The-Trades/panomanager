@@ -23,7 +23,7 @@ function get_tools(){
     $trade_table_name = get_trade_table_name();
     
     $tools = $wpdb->get_results( 
-            "SELECT wpt.*, wptt.name FROM " . $tool_table_name . " wpt " .
+            "SELECT wpt.*, wptt.name trade_name FROM " . $tool_table_name . " wpt " .
             "INNER JOIN " . $trade_table_name . " wptt ON " .
             "wpt.`trade_id` = wptt.`id` ");
 
