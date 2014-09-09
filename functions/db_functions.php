@@ -2,6 +2,47 @@
 // Function that get and set data in the database
 
 // ***********************************************************
+//				      Registration FUNCTIONS
+// ***********************************************************
+
+function get_schools(){
+    global $wpdb;
+    $school_table_name = get_school_table_name();
+    
+    // Get the schools out of the database
+    $schools = $wpdb->get_results( 
+            "SELECT * FROM " . $school_table_name . " wps ");
+
+    return $schools;
+}
+
+function get_tools(){
+    global $wpdb;
+    
+    $tool_table_name = get_tool_table_name();
+    $trade_table_name = get_trade_table_name();
+    
+    $tools = $wpdb->get_results( 
+            "SELECT wpt.*, wptt.name FROM " . $tool_table_name . " wpt " .
+            "INNER JOIN " . $trade_table_name . " wptt ON " .
+            "wpt.`trade_id` = wptt.`id` ");
+
+    return $tools;
+}
+
+function get_trades(){
+    global $wpdb;
+    
+    $trade_table_name = get_trade_table_name();
+    
+     // Get the schools out of the database
+    $trades = $wpdb->get_results( 
+            "SELECT * FROM " . $trade_table_name . " wpt ");
+
+    return $trades;
+}
+
+// ***********************************************************
 //				      REUSABLE FUNCTIONS
 // ***********************************************************
 

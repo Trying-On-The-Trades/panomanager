@@ -277,6 +277,7 @@ function build_tools_sql(){
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `trade_id` int(11) NOT NULL,
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';

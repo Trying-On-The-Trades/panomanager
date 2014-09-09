@@ -14,7 +14,7 @@ Author URI: http://www.tott.com
 
 // Add jquery because we need that...
 $jquery_location = WP_PLUGIN_URL . "/panomanager/js/jquery.js";
-wp_register_script('jquery', $jquery_location , true);
+wp_register_script('jquery', $jquery_location, true);
 wp_enqueue_script('jquery');
 
 // Create a shortcode for the handler
