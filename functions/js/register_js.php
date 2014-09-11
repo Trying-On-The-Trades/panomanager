@@ -10,44 +10,31 @@ function return_registration_script(){
     
     $registration_script = "var user_name_field = document.getElementById('signup_username');\n";
     
+    // Check if the registration input exists
+    $registration_script .= "if (user_name_field){\n";
+    
     // Build the code that will change the school selector to the fields in the database
     $registration_script .= build_school_selector();
     $registration_script .= build_tool_select();
     $registration_script .= build_trade_select();
     
-    // Check if the registration input exists
-    $registration_script .= "if (user_name_field){\n";
-    
     // Disable and make the username read only
-    $registration_script .= "user_name_field.disabled = true;\n";
     $registration_script .= "user_name_field.readOnly = true;\n";
     $registration_script .= "user_name_field.placeholder='Select a colour and a tool';\n";
     
     // Create variables for the drop downs
     $registration_script .= "var color_field = document.getElementById('field_12');\n";
     $registration_script .= "var tool_field = document.getElementById('field_2');\n";
-    
-    // Add the on change listeners
-    $registration_script .= "if(window.addEventListener) {\n";
-    $registration_script .=     "color_field.addEventListener('change', color_check, false);\n";
-    $registration_script .= "} else if (window.attachEvent){\n";
-    $registration_script .=     "color_field.attachEvent(\"onchange\", color_check);\n";
-    $registration_script .= "}";
-    
-    $registration_script .= "if(window.addEventListener) {\n";
-    $registration_script .=     "tool_field.addEventListener('change', tool_check, false);\n";
-    $registration_script .= "} else if (window.attachEvent){\n";
-    $registration_script .=     "tool_field.attachEvent(\"onchange\", tool_check);\n";
-    $registration_script .= "}\n";
+    $registration_script .= "var trade_field = document.getElementById('field_17');\n";
     
     // Get the school check
     $registration_script .= build_school_check_function();
-    
-    // Get the tool check
     $registration_script .= build_tool_check_function();
-    
-    // Get the trade check
     $registration_script .= build_color_check_function();
+    
+    // Add the on change listeners
+    $registration_script .= buld_colour_listener();
+    $registration_script .= build_tool_listener();
     
     // END IF username field
     $registration_script .= "}";
@@ -105,15 +92,13 @@ function build_tool_select_options(){
     $script = "<option value=''>----</option>";
     
     foreach ($tools as $tool) {
-        $script .= "<option value='" . $tool->name . "'>" . $tool->name . "</option>";
+        $script .= "<option class='" . $tool->trade_name . 
+                   "' value='"       . $tool->name . 
+                   "'>"              . $tool->name . 
+                   "</option>";
     }
     
     return $script;
-}
-
-// There are multiple arrays
-function build_tool_arrays(){
-    
 }
 
 function build_tool_check_function(){
@@ -125,7 +110,25 @@ function build_tool_check_function(){
     return $script;
 }
 
+function build_tool_listener(){
+    $registration_script =  "if(window.addEventListener) {\n";
+    $registration_script .=     "tool_field.addEventListener('change', tool_check, false);\n";
+    $registration_script .= "} else if (window.attachEvent){\n";
+    $registration_script .=     "tool_field.attachEvent(\"onchange\", tool_check);\n";
+    $registration_script .= "}\n";
+    return $registration_script;
+}
+
 ////// TRADE FUNCTIONS
+
+function build_trade_listener(){
+    $registration_script =  "if(window.addEventListener) {\n";
+    $registration_script .=     "trade_field.addEventListener('change', trade_check, false);\n";
+    $registration_script .= "} else if (window.attachEvent){\n";
+    $registration_script .=     "trade_field.attachEvent(\"onchange\", trade_check);\n";
+    $registration_script .= "}\n";
+    return $registration_script;
+}
 
 function build_trade_select(){
     $script = "var trade_selector = document.getElementById('field_17');\n";
@@ -149,11 +152,28 @@ function build_trade_select_options(){
     return $script;
 }
 
+// Check the trades, handle displaying the correct tools
+
 function check_trade(){
+    $script = "function trade_check(){\n";
+        
     
+        $script .= "\n";
+    
+    $script .= "}\n";
+    return $script;
 }
 
 ///// COLOR FUNTIONS
+
+function buld_colour_listener(){
+    $registration_script =  "if(window.addEventListener) {\n";
+    $registration_script .=     "color_field.addEventListener('change', color_check, false);\n";
+    $registration_script .= "} else if (window.attachEvent){\n";
+    $registration_script .=     "color_field.attachEvent(\"onchange\", color_check);\n";
+    $registration_script .= "}";
+    return $registration_script;
+}
 
 function build_color_check_function(){
     $script = "function color_check(){\n";
