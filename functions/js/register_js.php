@@ -14,9 +14,10 @@ function return_registration_script(){
     $registration_script .= "if (user_name_field){\n";
     
         // Build the code that will change the school selector to the fields in the database
-        $registration_script .= build_school_selector();
-        $registration_script .= build_tool_select();
-        $registration_script .= build_trade_select();
+//        $registration_script .= build_school_selector();
+//        $registration_script .= build_tool_select();
+//        $registration_script .= build_trade_select();
+    // Removed for now because BuddyPress was unhappy
 
         // Disable and make the username read only
         $registration_script .= "user_name_field.readOnly = true;\n";
@@ -106,8 +107,9 @@ function build_tool_select_options(){
 
 function build_tool_check_function(){
     $script = "function tool_check(){\n";
-        
-        $script .= "user_name_field.value = color_field.value + tool_field.value\n";
+    
+        $script .= "var number = Math.floor((Math.random() * 1000) + 1);";
+        $script .= "user_name_field.value = color_field.value + tool_field.value + number\n";
     
     $script .= "}\n";
     return $script;
@@ -194,7 +196,8 @@ function buld_colour_listener(){
 function build_color_check_function(){
     $script = "function color_check(){\n";
         
-        $script .= "user_name_field.value = color_field.value + tool_field.value\n";
+        $script .= "var number = Math.floor((Math.random() * 1000) + 1);";
+        $script .= "user_name_field.value = color_field.value + tool_field.value + number\n";
     
     $script .= "}\n";
     return $script;
