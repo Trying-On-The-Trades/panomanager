@@ -54,7 +54,7 @@ function xml_middle_man($pano){
 function fix_references($pano_id, $xml_object){
 
     // Base url for all references
-    $pano_url = "http://tot.boldapps.net/wp-content/panos/" . $pano_id . "/";
+    $pano_url = get_site_url() . "/wp-content/panos/" . $pano_id . "/";
 
     // Start looping through the objects and fixing all reference urls
     $include_attribute = 'url';
@@ -67,6 +67,14 @@ function fix_references($pano_id, $xml_object){
                             $node->attributes()->$key = str_replace("%FIRSTXML%/", "", $pano_url . $old_url);
                     }
             }
+    }
+    
+    // Fix the layers
+    if ($xml_object->layer != null){
+        foreach ($xml_object->layer as $layer) {
+            $old_asset_url = $layer->attributes()->url;
+            $layer->attributes()->url = $pano_url . $old_asset_url;
+        }
     }
 
     // Fix the scenes
@@ -90,6 +98,20 @@ function fix_references($pano_id, $xml_object){
                 $preview->attributes()->url = str_replace("%FIRSTXML%/", "", $pano_url . $old_url);
             }
         }
+        
+        //////////////////// HOTSPOTS
+        
+        if ($node->hotspot != null){
+            foreach ($node->hotspot as $hotspot) {
+                $old_alt_url = $hotspot->attributes()->alturl;
+                $old_url     = $hotspot->attributes()->url;
+                
+                $hotspot->attributes()->alturl = $pano_url . $old_alt_url;
+                $hotspot->attributes()->url = $pano_url . $old_url;
+            }
+        }
+        
+        //////////////////// HOTSPOTS
 
         // Fix the images
         if ($node->image != null){
@@ -161,6 +183,11 @@ function fix_references($pano_id, $xml_object){
     // die();	
 
     return $xml_object;
+}
+
+// Return an array of XML objects to add the hot spot nodes from the database
+function get_pano_hotspots(){
+    
 }
 
 // Reusable code to make fixing nodes cleaner

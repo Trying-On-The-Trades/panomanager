@@ -5,8 +5,8 @@
 
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id){
-	$pano_js_location = content_url() . "/panos/" . $pano_id . "/pano.js";
-	$pano_swf_location = content_url() . "/panos/" . $pano_id . "/pano.swf";
+	$pano_js_location = content_url() . "/panos/" . $pano_id . "/tour.js";
+	$pano_swf_location = content_url() . "/panos/" . $pano_id . "/tour.swf";
 	$pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
 
 	// printf(content_url());
@@ -55,6 +55,16 @@ function add_nav_script(){
     
     $script .= build_launch_message();
     $script .= build_find_array();    
+    $script .= build_get_scene_name();
+    
+    $script .= "$(document).ready(function() {";
+    $script .= "$('#mission-menu').mmenu({";
+    $script .= "slidingSubmenus: false";
+    $script .= "});";
+    $script .= "});";
+    
+    $script .= build_menu_launch();
+    $script .= build_leader_launch();
     
     $script .= "</script>";
         
@@ -71,15 +81,46 @@ function build_ids_array(){
 
 function build_launch_message(){
     $script =	"function launchMsg(msg)";
-    $script .=	"{";
-        $script .=	"if(findArray(msg))";
-        $script .=	"{";
-            $script .=	"window.location = siteAdr + panoPointer[pointer];";
-        $script .=	"}";
-        $script .=	"else";
-        $script .=	"{";
-            $script .=	'window.location = siteAdr + 1;';
-        $script .=	"}";	
+    $script .= "if(findArray(msg))";
+    $script .= "{";
+    $script .= "if(msg == getSceneName())";
+    $script .= "{";
+    $script .= "$.magnificPopup.open({";
+    $script .= "items: {";
+    $script .= "src: '<div class=\"white-popup msg\">You are already on this level.</div>',";
+    $script .= "type: 'inline',";
+    $script .= "callbacks: {";
+    $script .= "close: function() {";
+    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');";
+    $script .= "magnificPopup.close(); ";
+    $script .= "}";	
+    $script .= "}";	
+    $script .= "}";
+    $script .= "});";
+    $script .= "magnificPopup = $.magnificPopup.instance; ";
+    $script .= "}";
+    $script .= "else";
+    $script .= "{";
+    $script .= "window.location = siteAdr + panoPointer[pointer];";
+    $script .= "}";
+
+    $script .= "}";
+    $script .= "else";
+    $script .= "{";
+    $script .= "console.log('False');";
+    $script .= "$.magnificPopup.open({";
+    $script .= "items: {";
+    $script .= "src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',";
+    $script .= "type: 'inline',";
+    $script .= "callbacks: {";
+    $script .= "close: function() {";
+    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');";
+    $script .= "magnificPopup.close();"; 
+    $script .= "}";
+    $script .= "}";
+    $script .= "}";
+    $script .= "});";
+    $script .= "magnificPopup = $.magnificPopup.instance;}";	
     $script .=	"}";
     
     return $script;
@@ -102,4 +143,44 @@ function build_find_array(){
     $script .= "}";
     
     return $script;
+}
+
+function build_get_scene_name(){
+    $script =  "function getSceneName()";
+    $script .= "{";
+    $script .= "return krpano.get('xml.scene');";
+    $script .= "}";
+    return $script;
+}
+
+function build_menu_launch(){
+    $script =  "function menuLaunch()";
+    $script .= "{";
+    $script .= "$('#mission-menu').trigger('open.mm');";
+    $script .= "}";
+    return $script;
+}
+
+function build_leader_launch(){
+    $script = "function leaderLaunch()";
+    $script .= "{";
+    $script .= "$.magnificPopup.open({";
+    $script .= "items: {";
+    $script .= "src: 'http://tott.e-apprentice.ca/spotHazzards/Hazzards_serverside.html'";
+    $script .= "},";
+    $script .= "type: 'iframe',";
+    $script .= "closeOnBgClick: true,";
+    $script .= "closeBtnInside: true,";
+    $script .= "callbacks: {";
+    $script .= "close: function() {";
+    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');";
+    $script .= "magnificPopup.close(); ";
+    $script .= "}";
+    $script .= "}";
+    $script .= "});";
+    $script .= "magnificPopup = $.magnificPopup.instance; ";
+    $script .= "console.log('test');";
+    $script .= "}";
+
+return $script;
 }
