@@ -72,8 +72,11 @@ function fix_references($pano_id, $xml_object){
     // Fix the layers
     if ($xml_object->layer != null){
         foreach ($xml_object->layer as $layer) {
-            $old_asset_url = $layer->attributes()->url;
-            $layer->attributes()->url = $pano_url . $old_asset_url;
+            
+            if ($layer->attributes()->name != "skin_logo"){
+                $old_asset_url = $layer->attributes()->url;
+                $layer->attributes()->url = $pano_url . $old_asset_url;
+            }
         }
     }
 
