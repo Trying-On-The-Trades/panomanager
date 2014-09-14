@@ -51,6 +51,8 @@ require_once("functions/js/js_functions.php");
 // Require the objects
 require_once("includes/pano.php");
 require_once("includes/quest.php");
+require_once("includes/mission.php");
+require_once("includes/hotspot.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");

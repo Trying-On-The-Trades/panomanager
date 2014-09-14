@@ -5,7 +5,6 @@ class quest{
 	protected $id, $pano_id, $description, 
 			  $name, $language_code,
 		      $missions = array(), 
-		      $hotspots = array(),
 		      $exists   = 0;
 	
 	function __construct($id){
@@ -27,12 +26,17 @@ class quest{
 	}
 
 	function build_missions(){
-
+            
+            // Get the missions
+            $quest_mission = get_pano_quest_missions($this->id);
+            
+            
+            
 	}
-
-	function build_hotspots(){
-
-	}
+        
+        function get_id(){
+            return $this->id();
+        }
 
 	function get_name(){
 		return $this->name;
@@ -44,10 +48,6 @@ class quest{
 
 	function get_missions(){
 		return $this->missions;
-	}
-
-	function get_hotspots(){
-		return $this->hotspots;
 	}
 
 	function get_language(){

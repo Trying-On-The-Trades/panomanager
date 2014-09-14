@@ -5,6 +5,7 @@ function build_pano_xml($pano_id){
 
         // Create the actual pano object from the database
         $pano = build_pano($pano_id);
+        $quest = build_quest($pano->get_id());
 
         // Get XML
         $main_xml = xml_middle_man($pano);
@@ -13,7 +14,7 @@ function build_pano_xml($pano_id){
         $pano_xml_obj = build_simple_xml_obj($main_xml);
 
         // Fix reference links
-        $fixed_xml_object = fix_references($pano_id, $pano_xml_obj);
+        $fixed_xml_object = fix_references($pano_id, $pano_xml_obj, $quest);
 
         // turn object back into XML
         $new_xml = $fixed_xml_object->asXML();
@@ -51,7 +52,7 @@ function xml_middle_man($pano){
 }
 
 // The Pano XML created by the software doen't have the proper ref links
-function fix_references($pano_id, $xml_object){
+function fix_references($pano_id, $xml_object, $quest){
 
     // Base url for all references
     $pano_url = get_site_url() . "/wp-content/panos/" . $pano_id . "/";
@@ -189,8 +190,13 @@ function fix_references($pano_id, $xml_object){
 }
 
 // Return an array of XML objects to add the hot spot nodes from the database
-function get_pano_hotspots(){
+function get_pano_hotspots($quest){
+    // Get the appropriate hotspots to add to the pano
+    $hotspots = array();
     
+//    $quest_mission = get_pano_quest_missions($quest->get_id());
+    
+    return $hotspots;
 }
 
 // Reusable code to make fixing nodes cleaner

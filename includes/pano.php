@@ -1,9 +1,12 @@
 <?php
 
 class pano{
-	protected $id, $name, $description, $quests = array(), 
-			  $missions, $language_code, $exists = 0,
-			  $xml;
+	protected $id, $name, $description, 
+                  $quests = array(), 
+                  $missions, $language_code,
+                  $prereqs = array(),
+                  $exists = 0,
+                  $xml;
 
 	function __construct($id){
 
@@ -26,6 +29,10 @@ class pano{
 			$this->description = $pano_row->description;
 		}
 	}
+        
+        function get_prereq(){
+            return $this->prereqs;
+        }
 
 	function get_id(){
 		return $this->id;

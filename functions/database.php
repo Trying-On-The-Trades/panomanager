@@ -200,6 +200,7 @@ function build_hotspot_sql(){
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `hotspot_xml` text,
+      `points` int(10) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 

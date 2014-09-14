@@ -82,6 +82,11 @@ function build_pano($pano_id = 1){
   	return $pano;
 }
 
+function build_quest($quest_id = 1){
+    $quest = new quest($quest_id);
+    return $quest;
+}
+
 // Get the user's prefered language
 function get_user_language(){
 	// placeholder
