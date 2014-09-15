@@ -27,14 +27,14 @@ class mission{
                 $this->xml         = $mission_row->mission_xml;
 
                 // Build the hotspots for this mission
-                build_hotspots();
+                $this->build_hotspots();
             }
 	} 
 
 	function build_hotspots(){
             
             // Get all the hotspots
-            $this->hotspots = get_hotspots($this->id);
+            $this->hotspots = get_hotspot_ids($this->id);
             
 	}
         

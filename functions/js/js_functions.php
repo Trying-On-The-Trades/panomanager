@@ -14,8 +14,8 @@ function build_pano_javascript($pano_id){
 	wp_enqueue_script('pano_js');
         
         // Add the popup css and js
-        $script =  "<link rel='stylesheet' href='" . $pano_directory . "magnific-popup/magnific-popup.css'>";
-	$script .= "<script src='" . $pano_directory . "magnific-popup/jquery.magnific-popup.js'></script> ";
+        $script =  "<link rel='stylesheet' href='" . $pano_directory . "/magnific-popup/magnific-popup.css'>";
+	$script .= "<script src='" . $pano_directory . "/magnific-popup/jquery.magnific-popup.js'></script> ";
         
         // Get the menu nav
         $script .= build_menu_nav();
@@ -24,19 +24,19 @@ function build_pano_javascript($pano_id){
         $script .= add_nav_script();
        
         // Get the embed script
-        $script .= build_embed_script($pano_swf_location, $pano_swf_location);
+        $script .= build_embed_script($pano_swf_location, $pano_php_location);
         
 	return $script;
 }
 
-function build_embed_script($pano_swf_location, $pano_swf_location){
+function build_embed_script($pano_swf_location, $pano_php_location){
     // Now add the embed pano to launch the pano
     $script = '<script type="text/javascript">';
     $script .= 'embedpano({';
 
             // Script that loads the pano
             $script .= 'swf:"' . $pano_swf_location . '"';
-            $script .= ',xml:"' . $pano_swf_location . '"';
+            $script .= ',xml:"' . $pano_php_location . '"';
             $script .= ',target:"panoDIV"';
             $script .= ',html5:"prefer"';
             $script .= ',passQueryParameters:true';

@@ -6,7 +6,7 @@ function build_pano_xml($pano_id){
         // Create the actual pano object from the database
         $pano = build_pano($pano_id);
         $quest = build_quest($pano->get_id());
-
+        
         // Get XML
         $main_xml = xml_middle_man($pano);
 
@@ -14,10 +14,13 @@ function build_pano_xml($pano_id){
         $pano_xml_obj = build_simple_xml_obj($main_xml);
 
         // Fix reference links
-        $fixed_xml_object = fix_references($pano_id, $pano_xml_obj, $quest);
+        $fixed_xml_object = fix_references($pano_id, $pano_xml_obj);
+        
+        // Add the nodes
+        $xmk_obj_with_nodes = add_pano_hotspots($fixed_xml_object, $quest, $pano_id);
 
         // turn object back into XML
-        $new_xml = $fixed_xml_object->asXML();
+        $new_xml = $xmk_obj_with_nodes->saveXML();
 
         // Output XML
         spit_out_xml($new_xml);
@@ -52,7 +55,7 @@ function xml_middle_man($pano){
 }
 
 // The Pano XML created by the software doen't have the proper ref links
-function fix_references($pano_id, $xml_object, $quest){
+function fix_references($pano_id, $xml_object){
 
     // Base url for all references
     $pano_url = get_site_url() . "/wp-content/panos/" . $pano_id . "/";
@@ -102,20 +105,6 @@ function fix_references($pano_id, $xml_object, $quest){
                 $preview->attributes()->url = str_replace("%FIRSTXML%/", "", $pano_url . $old_url);
             }
         }
-        
-        //////////////////// HOTSPOTS
-        
-        if ($node->hotspot != null){
-            foreach ($node->hotspot as $hotspot) {
-                $old_alt_url = $hotspot->attributes()->alturl;
-                $old_url     = $hotspot->attributes()->url;
-                
-                $hotspot->attributes()->alturl = $pano_url . $old_alt_url;
-                $hotspot->attributes()->url = $pano_url . $old_url;
-            }
-        }
-        
-        //////////////////// HOTSPOTS
 
         // Fix the images
         if ($node->image != null){
@@ -189,14 +178,91 @@ function fix_references($pano_id, $xml_object, $quest){
     return $xml_object;
 }
 
+function add_pano_hotspots($xml_object, $quest, $pano_id){
+    
+    // Base url for all references
+    $pano_url = get_site_url() . "/wp-content/panos/" . $pano_id . "/";
+    
+    // get all the hotspots
+    $hotspots = get_current_pano_hotspots($quest);
+
+    // Fix all the references
+    foreach ($hotspots as $hs){
+        if ($hs->attributes()->alturl != null){
+            $old_alt_url = $hs->attributes()->alturl;
+            $hs->attributes()->alturl = $pano_url . $old_alt_url;
+        }
+
+        if ($hs->attributes()->url != null){
+            $old_url     = $hs->attributes()->url;
+            $hs->attributes()->url = $pano_url . $old_url;
+        }
+    }
+
+    // Turn the simple xml objects into dom objects and add the nodes
+    $main_dom = dom_import_simplexml($xml_object);
+    
+    $dom = new DOMDocument('1.0');
+    $new = $dom->importNode($main_dom, true);
+    $dom_sxe = $dom->appendChild($new);
+    
+    // Get the child node of scene
+    $scene = $dom->getElementsByTagName('scene')->item(0);
+    
+    // Loop through and append the hotspots as dom objects
+    foreach ($hotspots as $hs) {
+        $new_dom = dom_import_simplexml($hs);
+        
+        $new = $dom->importNode($new_dom, true);
+        $scene->appendChild($new);
+    }
+    
+    // Give the dom back
+    return $dom;
+}
+
 // Return an array of XML objects to add the hot spot nodes from the database
-function get_pano_hotspots($quest){
+function get_current_pano_hotspots($quest){
     // Get the appropriate hotspots to add to the pano
-    $hotspots = array();
+    $hotspot_ids    = array();
+    $hotspots       = array();
+    $hotspot_xml_objects = array();
+    $missions_array = array();
     
-//    $quest_mission = get_pano_quest_missions($quest->get_id());
+    // Get the missions
+    if ($quest->exists){
+        
+        $missions = $quest->get_missions();
+
+        foreach ($missions as $mission) {
+            array_push($missions_array,$mission->id);
+        }
+
+        foreach ($missions_array as $mission_id) {
+            $current_mission = new mission($mission_id);
+
+            // Get the hotspot ids from the current mission, add them to the array
+            $current_hotspots = $current_mission->get_hotspots();
+
+            foreach ($current_hotspots as $ch) {
+                array_push($hotspot_ids,$ch->id);
+            }
+        }
+
+        foreach ($hotspot_ids as $hid) {
+            $new_hotspot = new hotspot($hid);
+            array_push($hotspots, $new_hotspot);
+        }
+
+        // Turn the xml from each of the hotspots into an xml object
+        foreach ($hotspots as $xml){
+            $new_xml_obj = simplexml_load_string($xml->get_xml());
+            array_push($hotspot_xml_objects, $new_xml_obj);
+        }
     
-    return $hotspots;
+    }
+    
+    return $hotspot_xml_objects;
 }
 
 // Reusable code to make fixing nodes cleaner

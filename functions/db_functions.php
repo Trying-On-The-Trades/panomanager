@@ -170,19 +170,19 @@ function get_quest_by_pano($pano_id){
 	return $quest;
 }
 
-function get_missions($quest_id){
+function get_mission_ids($quest_id){
 	global $wpdb;
 	$mission_table_name = get_mission_table_name();
 	$mission_text_table_name = get_mission_text_table_name();
 	$language_code = get_user_language();
 
 	// DB query
-	$quest = $wpdb->get_row( $wpdb->prepare( 
-		"SELECT * FROM " . $mission_table_name . " wpm " .
+	$quest = $wpdb->get_results( $wpdb->prepare( 
+		"SELECT wpm.id FROM " . $mission_table_name . " wpm " .
 		"INNER JOIN " . $mission_text_table_name . " wpmt ON " .
 		"wpmt.mission_id = wpm.id " .
 		"WHERE wpmt.language_code = " . $language_code .
-		" AND wpm.quest_id = %d", $quest_id)
+		" AND wpm.quest_id = %d", $quest_id, ARRAY_A)
 	);
 
 	// Return
@@ -207,14 +207,15 @@ function get_mission($mission_id){
     return $mission;
 }
 
-function get_hotspots($mission_id){
+function get_hotspot_ids($mission_id){
 	global $wpdb;
 	$hotspot_table_name = get_hotspot_table_name();
 
 	// DB query joining the pano table and the pano text table
-	$hotspots = $wpdb->get_results( 
+	$hotspots = $wpdb->get_results( $wpdb->prepare( 
 		"SELECT wph.id FROM " . $hotspot_table_name . " wph " .
-		"WHERE wph.mission_id = " . $mission_id);
+		"WHERE wph.mission_id = " . $mission_id, ARRAY_A)
+        );
 
 	return $hotspots;
 }
@@ -226,13 +227,12 @@ function get_hotspot($hotspot_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT wph.*, wpht.name type_name, wpht.description type_description  " . 
+            "SELECT wph.*, wpht.name type_name, wpht.description type_description FROM " . 
             $hotspot_table_name . " wph " .
             "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
-            " ON wph.`type_id` = wpht.`id` " .
-            " WHERE wph.id =  %d", $hotspot_id)
+            " wph.`type_id` = wpht.`id` " .
+            " WHERE wph.id = %d", $hotspot_id)
     );
-
     return $mission;
 }
 

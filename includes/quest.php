@@ -4,8 +4,8 @@ class quest{
 
 	protected $id, $pano_id, $description, 
 			  $name, $language_code,
-		      $missions = array(), 
-		      $exists   = 0;
+		      $missions = array(); 
+	public	      $exists   = 0;
 	
 	function __construct($id){
 
@@ -22,16 +22,13 @@ class quest{
 			$this->id          = $quest_row->id;
 			$this->name        = $quest_row->name;
 			$this->description = $quest_row->description;
+                        
+                        $this->build_missions();
 		}
 	}
 
 	function build_missions(){
-            
-            // Get the missions
-            $quest_mission = get_pano_quest_missions($this->id);
-            
-            
-            
+            $this->missions = get_mission_ids($this->id); 
 	}
         
         function get_id(){
