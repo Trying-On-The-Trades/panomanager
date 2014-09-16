@@ -54,7 +54,9 @@ function build_embed_script($pano_swf_location, $pano_php_location){
 }
 
 function add_nav_script(){
-    $script = "<script type='text/javascript'>";
+    $script = "\n<script type='text/javascript'>\n";
+    
+    $script .= "var krpano;\n";
     $script .=	"var siteAdr = 'http://tot.boldapps.net/test/?pano_id=';\n";
     
     // Build the array of names
@@ -64,7 +66,8 @@ function add_nav_script(){
     $script .=	"var panoPointer = Array('1','2', '3', '4');\n";
   
     // The default pointer
-    $script .=	"var pointer = 0;\n";	
+    $script .=	"var pointer = 0;\n";
+    $script .=  "var defaultVar = 1;\n";
     
     $script .= build_launch_message();
     $script .= build_find_array();    
@@ -74,6 +77,7 @@ function add_nav_script(){
     $script .= "$('#mission-menu').mmenu({\n";
     $script .= "slidingSubmenus: false\n";
     $script .= "});\n";
+    $script .= "krpano = document.getElementById('krpanoSWFObject');";
     $script .= "});\n";
     
     $script .= build_menu_launch();
@@ -170,10 +174,10 @@ function build_get_scene_name(){
 }
 
 function build_menu_launch(){
-    $script =  "function menuLaunch()";
-    $script .= "{";
-    $script .= "$('#mission-menu').trigger('open.mm');";
-    $script .= "}";
+    $script =  "function menuLaunch()\n";
+    $script .= "{\n";
+    $script .= "$('#mission-menu').trigger('open.mm');\n";
+    $script .= "}\n";
     return $script;
 }
 
@@ -190,11 +194,11 @@ function build_leader_launch(){
     $script .= "callbacks: {\n";
     $script .= "close: function() {\n";
     $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-    $script .= "magnificPopup.close(); \n";
+    $script .= "$.magnificPopup.close(); \n";
     $script .= "}\n";
     $script .= "}\n";
     $script .= "});\n";
-    $script .= "magnificPopup = $.magnificPopup.instance; \n";
+    $script .= "$.magnificPopup = $.magnificPopup.instance; \n";
     $script .= "console.log('test');\n";
     $script .= "}\n";
 
@@ -221,7 +225,7 @@ function build_menu_nav(){
 
 function get_mission_tasks(){
     
-    $missiong = '<li><a href="">Find the Clock</a></li>
+    $missions = '<li><a href="">Find the Clock</a></li>
       <li>
          <a href="">Locate all Braids</a>
          <ul>
