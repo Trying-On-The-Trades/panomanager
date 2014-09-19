@@ -9,13 +9,38 @@ function build_pano_javascript($pano_id){
 	$pano_js_location =  $pano_directory . "/tour.js";
 	$pano_swf_location = $pano_directory . "/tour.swf";
 	$pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
+        
+        $mmenu = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
+        $mmenu_css = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
+        
+        $magnific_js   = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
+        $magnific_css  = $pano_directory . "/magnific-popup/magnific-popup.css";
+       
+        //remove the existing jquery versions
+        wp_deregister_script('jquery');
+        wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
+        wp_enqueue_script('jquery');
 
-	wp_register_script('pano_js', $pano_js_location, true);
+	wp_register_script('pano_js', $pano_js_location);
 	wp_enqueue_script('pano_js');
         
+        wp_register_script('mmenu', $mmenu);
+        wp_enqueue_script('mmenu');
+        
+        wp_register_script('magnific_js', $magnific_js);
+        wp_enqueue_script('magnific_js');
+        
+        wp_register_style('magnific_css', $magnific_css);
+        wp_enqueue_style('magnific_css');
+        
+        wp_register_style('mmenu_css', $mmenu_css);
+        wp_enqueue_style('mmenu_css');
+        
+        
         // Add the popup css and js
-        $script =  "<link rel='stylesheet' href='" . $pano_directory . "/magnific-popup/magnific-popup.css'>";
-	$script .= "<script src='" . $pano_directory . "/magnific-popup/jquery.magnific-popup.js'></script> ";
+//        $script =  "<link rel='stylesheet' href='" . $pano_directory . "/magnific-popup/magnific-popup.css'>";
+//	$script .= "<script src='" . $pano_directory . "/magnific-popup/jquery.magnific-popup.js'></script> ";
+//        $script .= "<script src='" . $mmenu . "'></script> ";
         
         // Get the menu nav
         $script .= build_menu_nav();
@@ -44,7 +69,7 @@ function build_embed_script($pano_swf_location, $pano_php_location){
     $script .= '});';
 
     // Create the krpano object
-    $script .= 'var krpano = document.getElementById("krpanoSWFObject");';
+//    $script .= 'var krpano = document.getElementById("krpanoSWFObject");';
 
 
     // Close the script tag and send it to the page
@@ -68,16 +93,15 @@ function add_nav_script(){
     // The default pointer
     $script .=	"var pointer = 0;\n";
     $script .=  "var defaultVar = 1;\n";
+    $script .= "var magnificPopup;";
     
     $script .= build_launch_message();
     $script .= build_find_array();    
     $script .= build_get_scene_name();
     
     $script .= "$(document).ready(function() {\n";
-    $script .= "$('#mission-menu').mmenu({\n";
-    $script .= "slidingSubmenus: false\n";
-    $script .= "});\n";
-    $script .= "krpano = document.getElementById('krpanoSWFObject');";
+    $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
+    $script .= "krpano = document.getElementById('krpanoSWFObject');\n";
     $script .= "});\n";
     
     $script .= build_menu_launch();
@@ -208,6 +232,7 @@ return $script;
 
 ////// HIDDEN MENU NAV
 function build_menu_nav(){
+//    $script = '<div style="display:none" class="slider_menu">';
     $script = '<nav id="mission-menu">
                 <ul >
                     <li class="Label">Missions</li>
@@ -216,10 +241,9 @@ function build_menu_nav(){
     // Get the elements needed to build the menu
     $script .= get_mission_tasks();
     
-    
-   $script .= '</ul>
-                </nav>';
-   
+    $script .= '</ul>
+                 </nav>';
+//    $script .= '</div>';
     return $script;
 }
 

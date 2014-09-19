@@ -78,7 +78,44 @@ function get_pano_ids(){
     return $panos;
 }
 
-function get_pano_names($user_id){
+// Get the ids and names of the panos the user is aloud to see
+function list_allowed_panos($user_id){
+    global $wpdb;
+    
+    $pano_table_name     = get_pano_table_name();
+    $text_table_name     = get_pano_text_table_name();
+    $user_progress_table = get_user_progress_table_name();
+    $mission_table_name  = get_mission_table_name();
+    $prereq_table_name   = get_prereq_table_name();
+    
+    $language_code = get_user_language();
+    
+    $pano = $wpdb->get_row( $wpdb->prepare( 
+            "SELECT DISTINCT 
+                wp.id, 
+                wpt.name 
+            FROM " . $pano_table_name . " wp
+
+            INNER JOIN " . $text_table_name .  " wpt 
+            ON wp.`id` = wpt.`pano_id`
+
+            WHERE wp.id NOT IN (
+                    SELECT wpr.`pano_id` FROM " . $user_progress_table . " wpr
+                    )
+            OR wp.id IN (
+                    SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
+                    WHERE (SELECT sum(wpm.`points`) FROM " . $user_progress_table . " wpup
+                               INNER JOIN " . $mission_table_name .  " wpm ON wpup.`mission_id` = wpm.`id`
+                               WHERE wpup.`user_id` = %d) = wpr.`prereq_pts`
+                    )
+            AND wpt.`languae_code` = " . $language_code .
+            "ORDER BY wp.id", $user_id)
+    );
+
+    return $pano;
+}
+
+function get_allowed_pano_names($user_id){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
