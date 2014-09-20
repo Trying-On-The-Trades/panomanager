@@ -3,8 +3,8 @@
 class hotspot{
 
 	protected $id, $pano_id, $description, 
-                  $name, $language_code, 
-                  $xml, $points,
+                  $name, $menu_name, $language_code, 
+                  $xml, $points, $menu_item,
                   $type_id,
                   $type_name,
                   $type_description,
@@ -22,8 +22,10 @@ class hotspot{
 	function build($hotspot_row){
             if ($hotspot_row->id > 0){
                 $this->exists      = 1;
+                $this->menu_item   = $hotspot_row->menu_item;
                 $this->id          = $hotspot_row->id;
                 $this->name        = $hotspot_row->name;
+                $this->menu_name   = $hotspot_row->menu_name;
                 $this->description = $hotspot_row->description;
                 $this->points      = $hotspot_row->points;
                 $this->xml         = $hotspot_row->hotspot_xml;
@@ -40,6 +42,10 @@ class hotspot{
 	function get_name(){
 		return $this->name;
 	}
+        
+        function get_menu_name(){
+            return $this->menu_name;
+        }
 
 	function get_description(){
 		return $this->description;
@@ -67,5 +73,13 @@ class hotspot{
         
         function get_type_description(){
             return $this->type_description;
+        }
+        
+        function is_menu_item(){
+            if ($this->menu_item == 1){
+                return true;
+            } else {
+                return false;
+            }
         }
 }

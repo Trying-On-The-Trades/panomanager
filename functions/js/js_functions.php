@@ -4,7 +4,7 @@
 // They are here because it is confusing to build javascript with PHP
 
 // Build the javascript needed to load the pano into the div
-function build_pano_javascript($pano_id){
+function build_pano_javascript($pano_id, $pano, $quest){
         $pano_directory = content_url() . "/panos/" . $pano_id;
 	$pano_js_location =  $pano_directory . "/tour.js";
 	$pano_swf_location = $pano_directory . "/tour.swf";
@@ -43,7 +43,7 @@ function build_pano_javascript($pano_id){
 //        $script .= "<script src='" . $mmenu . "'></script> ";
         
         // Get the menu nav
-        $script .= build_menu_nav();
+        $script .= build_menu_nav($quest);
         
         // Get the scripts to build the navigation menu first
         $script .= add_nav_script();
@@ -85,10 +85,10 @@ function add_nav_script(){
     $script .=	"var siteAdr = 'http://tot.boldapps.net/test/?pano_id=';\n";
     
     // Build the array of names
-    $script .=  "var panoArray = Array(\"scene_hairstyling4\", \"scene_mainpeople_smaller\", \"scene_warroom_mood\", \"scene_kitchenpeople_optimized_0\");\n";
-    
+    $script .= build_names_array();
+            
     // Build the array of ids
-    $script .=	"var panoPointer = Array('1','2', '3', '4');\n";
+    $script .=	build_ids_array();
   
     // The default pointer
     $script .=	"var pointer = 0;\n";
@@ -113,11 +113,53 @@ function add_nav_script(){
 }
 
 function build_names_array(){
+    $allowed_panos = list_allowed_panos(get_current_user_id());
     
+    $script .=  "var panoArray = Array(";
+    
+//    print_r($allowed_panos);
+//    print_r(count($allowed_panos));
+//    die();
+    
+    for ($i = 0; $i < count($allowed_panos); $i++) {
+        
+        $script .= "'" . $allowed_panos[$i]->name . "'";
+        
+        if ($i == count($allowed_panos) - 1) {
+            
+            $script .= '';
+        } else {
+            $script .= ', ';
+        }
+    }
+    
+    $script .= ");\n";
+    return $script;
 }
 
 function build_ids_array(){
+    $allowed_panos = list_allowed_panos(get_current_user_id());
     
+    $script .=  "var panoPointer = Array(";
+    
+//    print_r($allowed_panos);
+//    print_r(count($allowed_panos));
+//    die();
+    
+    for ($i = 0; $i < count($allowed_panos); $i++) {
+        
+        $script .= "'" . $allowed_panos[$i]->id . "'";
+        
+        if ($i == count($allowed_panos) - 1) {
+            
+            $script .= '';
+        } else {
+            $script .= ', ';
+        }
+    }
+    
+    $script .= ");\n";
+    return $script;
 }
 
 function build_launch_message(){
@@ -231,15 +273,14 @@ return $script;
 
 
 ////// HIDDEN MENU NAV
-function build_menu_nav(){
+function build_menu_nav($quest){
 //    $script = '<div style="display:none" class="slider_menu">';
     $script = '<nav id="mission-menu">
                 <ul >
-                    <li class="Label">Missions</li>
-                    <a href="#my-page">Close the menu</a>';
+                    <li class="Label">Missions</li>';
       
     // Get the elements needed to build the menu
-    $script .= get_mission_tasks();
+    $script .= get_mission_tasks($quest);
     
     $script .= '</ul>
                  </nav>';
@@ -247,18 +288,35 @@ function build_menu_nav(){
     return $script;
 }
 
-function get_mission_tasks(){
+function get_mission_tasks($quest){
     
-    $missions = '<li><a href="">Find the Clock</a></li>
-      <li>
-         <a href="">Locate all Braids</a>
-         <ul>
-            <li><a href="">Braid 1</a></li>
-            <li><a href="">Braid 2</a></li>
-            <li><a href="">Braid 3</a></li>
-         </ul>
-      </li>
-      <li class="Spacer"><a href="">Where is Guy</a></li>';
+    // Get the missions and the hotspot information for the menu
+    $menu_missions = get_hotspot_menu_objects($quest);
+    
+    // Make sure there is atleast some text
+    $missions = "";
+    
+    // Build the menu
+    foreach ($menu_missions as $item){
+        if ($item->is_menu_item()){
+            $missions .= "<li id='" . 
+                     $item->get_name() . "_menu_item'>" . 
+                     "<a href='#'>" .
+                     $item->get_menu_name() . 
+                     "</a></li>";
+        }
+    }
+    
+//    $missions = '<li><a href="">Find the Clock</a></li>
+//      <li>
+//         <a href="">Locate all Braids</a>
+//         <ul>
+//            <li><a href="">Braid 1</a></li>
+//            <li><a href="">Braid 2</a></li>
+//            <li><a href="">Braid 3</a></li>
+//         </ul>
+//      </li>
+//      <li class="Spacer"><a href="">Where is Guy</a></li>';
     
     
     return $missions;

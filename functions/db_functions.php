@@ -90,7 +90,7 @@ function list_allowed_panos($user_id){
     
     $language_code = get_user_language();
     
-    $pano = $wpdb->get_row( $wpdb->prepare( 
+    $pano = $wpdb->get_results( 
             "SELECT DISTINCT 
                 wp.id, 
                 wpt.name 
@@ -100,16 +100,16 @@ function list_allowed_panos($user_id){
             ON wp.`id` = wpt.`pano_id`
 
             WHERE wp.id NOT IN (
-                    SELECT wpr.`pano_id` FROM " . $user_progress_table . " wpr
+                    SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
                     )
             OR wp.id IN (
                     SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
                     WHERE (SELECT sum(wpm.`points`) FROM " . $user_progress_table . " wpup
                                INNER JOIN " . $mission_table_name .  " wpm ON wpup.`mission_id` = wpm.`id`
-                               WHERE wpup.`user_id` = %d) = wpr.`prereq_pts`
+                               WHERE wpup.`user_id` = " . $user_id . ") = wpr.`prereq_pts`
                     )
-            AND wpt.`languae_code` = " . $language_code .
-            "ORDER BY wp.id", $user_id)
+            AND wpt.`language_code` = " . $language_code .
+            " ORDER BY wp.id"
     );
 
     return $pano;

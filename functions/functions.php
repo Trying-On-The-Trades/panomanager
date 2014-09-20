@@ -27,7 +27,9 @@ function load_pano($pano_id = 1){
 //	$id = check_user_progress($id);
 
 	$pano = build_pano($id);
-	$javascript = build_pano_javascript($id);
+        $quest = build_quest($id);
+        
+	$javascript = build_pano_javascript($id, $pano, $quest);
 
 	return $javascript;
 }
@@ -100,6 +102,7 @@ function pano_script_output($incomingfromhandler) {
 }
 
 function check_pano_id($pano_id){
+        // Get the allowed pano ids
 	$existing_panos = get_pano_ids();
 	$existing_ids = array();
 
@@ -113,6 +116,81 @@ function check_pano_id($pano_id){
 	} else {
 		return 1;
 	}
+}
+
+function get_hotspot_menu_objects($quest){
+    $hotspot_ids    = array();
+    $hotspots       = array();
+    $missions_array = array();
+    
+    // Get the missions
+    if ($quest->exists){
+        
+        $missions = $quest->get_missions();
+
+        foreach ($missions as $mission) {
+            array_push($missions_array,$mission->id);
+        }
+
+        foreach ($missions_array as $mission_id) {
+            $current_mission = new mission($mission_id);
+
+            // Get the hotspot ids from the current mission, add them to the array
+            $current_hotspots = $current_mission->get_hotspots();
+
+            foreach ($current_hotspots as $ch) {
+                array_push($hotspot_ids, $ch->id);
+            }
+        }
+
+        foreach ($hotspot_ids as $hid) {
+            $new_hotspot = new hotspot($hid);
+            array_push($hotspots, $new_hotspot);
+        }
+    
+    }
+    return $hotspots;
+}
+
+function get_hotspot_objects($quest){
+    $hotspot_ids    = array();
+    $hotspots       = array();
+    $hotspot_xml_objects = array();
+    $missions_array = array();
+    
+    // Get the missions
+    if ($quest->exists){
+        
+        $missions = $quest->get_missions();
+
+        foreach ($missions as $mission) {
+            array_push($missions_array,$mission->id);
+        }
+
+        foreach ($missions_array as $mission_id) {
+            $current_mission = new mission($mission_id);
+
+            // Get the hotspot ids from the current mission, add them to the array
+            $current_hotspots = $current_mission->get_hotspots();
+
+            foreach ($current_hotspots as $ch) {
+                array_push($hotspot_ids,$ch->id);
+            }
+        }
+
+        foreach ($hotspot_ids as $hid) {
+            $new_hotspot = new hotspot($hid);
+            array_push($hotspots, $new_hotspot);
+        }
+
+        // Turn the xml from each of the hotspots into an xml object
+        foreach ($hotspots as $xml){
+            $new_xml_obj = simplexml_load_string($xml->get_xml());
+            array_push($hotspot_xml_objects, $new_xml_obj);
+        }
+    
+    }
+    return $hotspot_xml_objects;
 }
 
 // ***********************************************************

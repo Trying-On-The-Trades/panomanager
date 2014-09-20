@@ -198,6 +198,7 @@ function build_hotspot_sql(){
       `mission_id` int(11) DEFAULT NULL,
       `type_id` int(11) DEFAULT NULL,
       `name` varchar(255) NOT NULL DEFAULT "",
+      `menu_name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `hotspot_xml` text,
       `points` int(10) NOT NULL,
