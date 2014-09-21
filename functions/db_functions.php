@@ -84,8 +84,8 @@ function list_allowed_panos($user_id){
     
     $pano_table_name     = get_pano_table_name();
     $text_table_name     = get_pano_text_table_name();
-    $user_progress_table = get_user_progress_table_name();
-    $mission_table_name  = get_mission_table_name();
+    $user_progress_table = get_user_skill_progress_table_name();
+    $hotspot_table_name  = get_hotspot_table_name();
     $prereq_table_name   = get_prereq_table_name();
     
     $language_code = get_user_language();
@@ -104,8 +104,8 @@ function list_allowed_panos($user_id){
                     )
             OR wp.id IN (
                     SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
-                    WHERE (SELECT sum(wpm.`points`) FROM " . $user_progress_table . " wpup
-                               INNER JOIN " . $mission_table_name .  " wpm ON wpup.`mission_id` = wpm.`id`
+                    WHERE (SELECT sum(wph.`points`) FROM " . $user_progress_table . " wpup
+                               INNER JOIN " . $hotspot_table_name .  " wph ON wpup.`skill_id` = wph.`id`
                                WHERE wpup.`user_id` = " . $user_id . ") = wpr.`prereq_pts`
                     )
             AND wpt.`language_code` = " . $language_code .
@@ -113,22 +113,6 @@ function list_allowed_panos($user_id){
     );
 
     return $pano;
-}
-
-function get_allowed_pano_names($user_id){
-    global $wpdb;
-    $pano_table_name = get_pano_table_name();
-    $text_table_name = get_pano_text_table_name();
-    $language_code = get_user_language();
-        
-}
-
-function get_allowed_pano_ids($user_id){
-    global $wpdb;
-    $pano_table_name = get_pano_table_name();
-    $text_table_name = get_pano_text_table_name();
-    $language_code = get_user_language();
-    
 }
 
 function get_pano($id){
@@ -350,8 +334,16 @@ function get_user_skill_points($skill_id, $user_id){
 function add_user_progress($user_id, $hotspot_id){
     global $wpdb;
     
-    $progress_table = get_user_progress_table_name();
-    $mission_table  = get_mission_table_name();
+    // Assign variables for the query
+    $uid = $user_id;
+    $sid = $hotspot_id;
+    
+    // Insert the data
+    $progress_table = get_user_skill_progress_table_name();
+    $wpdb->insert( $progress_table, array( 'user_id' => $uid, 
+                                           'skill_id' => $sid ), 
+                                    array( '%s', '%d' ) );
+
 }
 
 // ***********************************************************
