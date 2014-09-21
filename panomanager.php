@@ -31,6 +31,9 @@ add_action( 'create_new_pano', 'process_new_pano' );
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
+// callback functions
+add_action( 'wp_ajax_update_progress', 'update_pano_user_progress' );
+
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
 
@@ -80,4 +83,28 @@ if (isset($_GET['return_the_pano'])){
 function return_pano_xml($id) {
     build_pano_xml($id);
     die(); // this is required to return a proper result
+}
+
+function update_pano_user_progress() {
+	global $wpdb; // this is how you get access to the database
+
+        // Get the user id and hotspot id
+        $user_id = get_current_user_id();
+	$hotspot_id = $_POST['hotspot'];
+        
+        // Make sure a numeric id is supplied
+        if (!is_numeric($hotspot_id)){
+            $hotspot_id = 0;
+        }
+        
+        // Update the user progress
+        if ($user_id == 0){
+            // maybe do session stuff?
+        } else {
+            add_user_progress($user_id, $hotspot_id);
+        }
+        
+	// Return the points associated to flash on the screen
+
+	die(); // this is required to terminate immediately and return a proper response
 }

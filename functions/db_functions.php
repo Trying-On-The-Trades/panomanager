@@ -345,6 +345,15 @@ function get_user_skill_points($skill_id, $user_id){
 	return $points;
 }
 
+//
+
+function add_user_progress($user_id, $hotspot_id){
+    global $wpdb;
+    
+    $progress_table = get_user_progress_table_name();
+    $mission_table  = get_mission_table_name();
+}
+
 // ***********************************************************
 //				    Updating Panos
 // ***********************************************************
