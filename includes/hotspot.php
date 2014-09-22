@@ -4,7 +4,7 @@ class hotspot{
 
 	protected $id, $pano_id, $description, 
                   $name, $menu_name, $language_code, 
-                  $xml, $points, $menu_item,
+                  $xml, $action_xml, $points, $menu_item,
                   $type_id,
                   $type_name,
                   $type_description,
@@ -29,6 +29,7 @@ class hotspot{
                 $this->description = $hotspot_row->description;
                 $this->points      = $hotspot_row->points;
                 $this->xml         = $hotspot_row->hotspot_xml;
+                $this->action_xml  = $hotspot_row->action_xml;
                 $this->type_id     = $hotspot_row->type_id;
                 $this->type_name   = $hotspot_row->type_name;
                 $this->type_description = $hotspot_row->type_description;
@@ -53,6 +54,10 @@ class hotspot{
         
         function get_xml(){
             return $this->xml;
+        }
+        
+        function get_action_xml(){
+            return $this->action_xml;
         }
         
         function get_points(){

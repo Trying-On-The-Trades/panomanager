@@ -6,41 +6,12 @@
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id, $pano, $quest){
         $pano_directory = content_url() . "/panos/" . $pano_id;
-	$pano_js_location =  $pano_directory . "/tour.js";
 	$pano_swf_location = $pano_directory . "/tour.swf";
 	$pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
-        
-        $mmenu = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
-        $mmenu_css = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
-        
-        $magnific_js   = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
-        $magnific_css  = $pano_directory . "/magnific-popup/magnific-popup.css";
        
-        //remove the existing jquery versions
-        wp_deregister_script('jquery');
-        wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
-        wp_enqueue_script('jquery');
-
-	wp_register_script('pano_js', $pano_js_location);
-	wp_enqueue_script('pano_js');
-        
-        wp_register_script('mmenu', $mmenu);
-        wp_enqueue_script('mmenu');
-        
-        wp_register_script('magnific_js', $magnific_js);
-        wp_enqueue_script('magnific_js');
-        
-        wp_register_style('magnific_css', $magnific_css);
-        wp_enqueue_style('magnific_css');
-        
-        wp_register_style('mmenu_css', $mmenu_css);
-        wp_enqueue_style('mmenu_css');
-        
-        
-        // Add the popup css and js
-//        $script =  "<link rel='stylesheet' href='" . $pano_directory . "/magnific-popup/magnific-popup.css'>";
-//	$script .= "<script src='" . $pano_directory . "/magnific-popup/jquery.magnific-popup.js'></script> ";
-//        $script .= "<script src='" . $mmenu . "'></script> ";
+        //Add the styles and javascript
+        register_scripts($pano_directory);
+        $script = "<style>" . build_popup_styles() . "</style>";
         
         // Get the menu nav
         $script .= build_menu_nav($quest);
@@ -52,6 +23,33 @@ function build_pano_javascript($pano_id, $pano, $quest){
         $script .= build_embed_script($pano_swf_location, $pano_php_location);
         
 	return $script;
+}
+
+function register_scripts($pano_directory){
+    $mmenu = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
+    $mmenu_css = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
+    $magnific_js   = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
+    $magnific_css  = $pano_directory . "/magnific-popup/magnific-popup.css";
+    $pano_js_location =  $pano_directory . "/tour.js";
+        
+    wp_deregister_script('jquery');
+    wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
+    wp_enqueue_script('jquery');
+
+    wp_register_script('pano_js', $pano_js_location);
+    wp_enqueue_script('pano_js');
+
+    wp_register_script('mmenu', $mmenu);
+    wp_enqueue_script('mmenu');
+
+    wp_register_script('magnific_js', $magnific_js);
+    wp_enqueue_script('magnific_js');
+
+    wp_register_style('magnific_css', $magnific_css);
+    wp_enqueue_style('magnific_css');
+
+    wp_register_style('mmenu_css', $mmenu_css);
+    wp_enqueue_style('mmenu_css');
 }
 
 function build_embed_script($pano_swf_location, $pano_php_location){
@@ -67,10 +65,6 @@ function build_embed_script($pano_swf_location, $pano_php_location){
             $script .= ',passQueryParameters:true';
 
     $script .= '});';
-
-    // Create the krpano object
-//    $script .= 'var krpano = document.getElementById("krpanoSWFObject");';
-
 
     // Close the script tag and send it to the page
     $script .= '</script>';
@@ -106,6 +100,7 @@ function add_nav_script(){
     
     $script .= build_menu_launch();
     $script .= build_leader_launch();
+    $script .= build_callback_function();
     
     $script .= "</script>";
         
@@ -116,10 +111,6 @@ function build_names_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
     
     $script .=  "var panoArray = Array(";
-    
-//    print_r($allowed_panos);
-//    print_r(count($allowed_panos));
-//    die();
     
     for ($i = 0; $i < count($allowed_panos); $i++) {
         
@@ -139,12 +130,7 @@ function build_names_array(){
 
 function build_ids_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
-    
     $script .=  "var panoPointer = Array(";
-    
-//    print_r($allowed_panos);
-//    print_r(count($allowed_panos));
-//    die();
     
     for ($i = 0; $i < count($allowed_panos); $i++) {
         
@@ -192,7 +178,7 @@ function build_launch_message(){
         $script .= "else\n";
         $script .= "{\n";
         
-        $script .= "console.log('False');\n";
+//        $script .= "console.log('False');\n";
         $script .= "$.magnificPopup.open({\n";
             $script .= "items: {\n";
                 $script .= "src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',\n";
@@ -252,20 +238,20 @@ function build_leader_launch(){
     $script .= "{\n";
     $script .= "$.magnificPopup.open({\n";
     $script .= "items: {\n";
-    $script .= "src: 'http://tott.e-apprentice.ca/spotHazzards/Hazzards_serverside.html'\n";
+    $script .= "src: '" . build_leaderboard_div() .  "'\n";
     $script .= "},\n";
-    $script .= "type: 'iframe',\n";
+    $script .= "type: 'inline',\n";
     $script .= "closeOnBgClick: true,\n";
     $script .= "closeBtnInside: true,\n";
     $script .= "callbacks: {\n";
     $script .= "close: function() {\n";
-    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+//    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
     $script .= "$.magnificPopup.close(); \n";
     $script .= "}\n";
     $script .= "}\n";
     $script .= "});\n";
     $script .= "$.magnificPopup = $.magnificPopup.instance; \n";
-    $script .= "console.log('test');\n";
+//    $script .= "console.log('test');\n";
     $script .= "}\n";
 
 return $script;
@@ -307,17 +293,34 @@ function get_mission_tasks($quest){
         }
     }
     
-//    $missions = '<li><a href="">Find the Clock</a></li>
-//      <li>
-//         <a href="">Locate all Braids</a>
-//         <ul>
-//            <li><a href="">Braid 1</a></li>
-//            <li><a href="">Braid 2</a></li>
-//            <li><a href="">Braid 3</a></li>
-//         </ul>
-//      </li>
-//      <li class="Spacer"><a href="">Where is Guy</a></li>';
-    
-    
     return $missions;
+}
+
+/////////// LEADERBOARD FUNCTIONS
+function build_leaderboard_div(){
+    $board = '<div class="white-popup">';
+    $board .= '<h2>Leaderboard</h2>';
+                // Fill with content
+
+    $board .= '</div>';
+    return $board;
+}
+
+function build_popup_styles(){
+    return '.white-popup {
+            position: relative;
+            background: #FFF;
+            padding: 20px;
+            width:auto;
+            max-width: 500px;
+            margin: 20px auto;
+          }';
+}
+
+///////////  Points Callback Functions
+function build_callback_function(){
+    $script  = "function addPts(id){";
+    $script .= "console.log(id)"; 
+    $script .= "}";
+    return $script;
 }
