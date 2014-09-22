@@ -26,30 +26,40 @@ function build_pano_javascript($pano_id, $pano, $quest){
 }
 
 function register_scripts($pano_directory){
-    $mmenu = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
-    $mmenu_css = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
-    $magnific_js   = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
-    $magnific_css  = $pano_directory . "/magnific-popup/magnific-popup.css";
-    $pano_js_location =  $pano_directory . "/tour.js";
+    $mmenu            = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
+    $mmenu_css        = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
+    $magnific_js      = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
+    $magnific_css     = $pano_directory . "/magnific-popup/magnific-popup.css";
+    $pano_js_location = $pano_directory . "/tour.js";
+    $toast_js         = WP_PLUGIN_URL . "/panomanager/js/toast/javascript/jquery.toastmessage.js";
+    $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
         
+    //// JQUERY
     wp_deregister_script('jquery');
     wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
     wp_enqueue_script('jquery');
 
+    //// KRPANO
     wp_register_script('pano_js', $pano_js_location);
     wp_enqueue_script('pano_js');
 
+    //// MMENU APP SLIDER
     wp_register_script('mmenu', $mmenu);
     wp_enqueue_script('mmenu');
+    wp_register_style('mmenu_css', $mmenu_css);
+    wp_enqueue_style('mmenu_css');
 
+    //// MAGNIFIC LIGHTVIEW
     wp_register_script('magnific_js', $magnific_js);
     wp_enqueue_script('magnific_js');
-
     wp_register_style('magnific_css', $magnific_css);
     wp_enqueue_style('magnific_css');
 
-    wp_register_style('mmenu_css', $mmenu_css);
-    wp_enqueue_style('mmenu_css');
+    //// JQUERY TOAST
+    wp_register_script('toast_js', $toast_js);
+    wp_enqueue_script('toast_js');
+    wp_register_style('toast_css', $toast_css);
+    wp_enqueue_style('toast_css');
 }
 
 function build_embed_script($pano_swf_location, $pano_php_location){
@@ -76,7 +86,7 @@ function add_nav_script(){
     $script = "\n<script type='text/javascript'>\n";
     
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = 'http://tot.boldapps.net/test/?pano_id=';\n";
+    $script .=	"var siteAdr = 'http://tot.boldapps.nets/?pano_id=';\n";
     
     // Build the array of names
     $script .= build_names_array();
@@ -286,7 +296,7 @@ function get_mission_tasks($quest){
     foreach ($menu_missions as $item){
         if ($item->is_menu_item()){
             $missions .= "<li id='" . 
-                     $item->get_name() . "_menu_item'>" . 
+                     $item->get_id() . "_menu_item'>" . 
                      "<a href='#'>" .
                      $item->get_menu_name() . 
                      "</a></li>";
@@ -319,8 +329,21 @@ function build_popup_styles(){
 
 ///////////  Points Callback Functions
 function build_callback_function(){
-    $script  = "function addPts(id){";
-    $script .= "console.log(id)"; 
-    $script .= "}";
+    $script  = "function addPts(id){\n";
+    $script .= "$('#' + id + '_menu_item').remove();\n";
+    
+    $script .= "$.ajax({\n";
+    $script .= "type: 'POST',\n";
+    $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "data: {action: 'update_progress',\n";
+    $script .= "hotspot: id},\n";
+    $script .= "success: function(d){\n";
+    $script .= "console.log(d);\n"; 
+    $script .= "$().toastmessage('showWarningToast', 'You earned ' + d + ' points!');\n";
+    $script .= "}\n";
+    $script .= "});\n";
+    
+    $script .= "console.log(id);\n"; 
+    $script .= "}\n";
     return $script;
 }

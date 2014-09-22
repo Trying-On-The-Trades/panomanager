@@ -32,7 +32,7 @@ add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
 // callback functions
-add_action( 'wp_ajax_update_progress', 'update_pano_user_progress' );
+add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
@@ -91,6 +91,7 @@ function update_pano_user_progress() {
         // Get the user id and hotspot id
         $user_id = get_current_user_id();
 	$hotspot_id = $_POST['hotspot'];
+        $points = 0;
         
         // Make sure a numeric id is supplied
         if (!is_numeric($hotspot_id)){
@@ -101,10 +102,11 @@ function update_pano_user_progress() {
         if ($user_id == 0){
             // maybe do session stuff?
         } else {
-            add_user_progress($user_id, $hotspot_id);
+            $points = add_user_progress($user_id, $hotspot_id);
         }
         
 	// Return the points associated to flash on the screen
-
+        echo $points;
+        
 	die(); // this is required to terminate immediately and return a proper response
 }

@@ -37,7 +37,7 @@ class hotspot{
 	}
         
         function get_id(){
-            return $this->id();
+            return $this->id;
         }
 
 	function get_name(){

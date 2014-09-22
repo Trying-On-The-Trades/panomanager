@@ -338,12 +338,29 @@ function add_user_progress($user_id, $hotspot_id){
     $uid = $user_id;
     $sid = $hotspot_id;
     
-    // Insert the data
+    // Get the table names for the query
     $progress_table = get_user_skill_progress_table_name();
+    $hotspot_table  = get_hotspot_table_name();
+    
+    // Insert the progress
     $wpdb->insert( $progress_table, array( 'user_id' => $uid, 
                                            'skill_id' => $sid ), 
                                     array( '%s', '%d' ) );
 
+    // Get the id of the last row
+    $lastid = $wpdb->insert_id;
+    
+    // Get the points that were just added
+    $pano = $wpdb->get_row( $wpdb->prepare( 
+            "SELECT wph.`points` 
+            FROM " . $progress_table . " wpup
+            INNER JOIN " . $hotspot_table . " wph
+            ON wpup.`skill_id` = wph.`id`
+            WHERE wpup.`id` =", $lastid)
+    );
+
+    // Return those points
+    return $pano;
 }
 
 // ***********************************************************
