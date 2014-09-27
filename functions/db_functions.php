@@ -106,7 +106,7 @@ function list_allowed_panos($user_id){
                     SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
                     WHERE (SELECT sum(wph.`points`) FROM " . $user_progress_table . " wpup
                                INNER JOIN " . $hotspot_table_name .  " wph ON wpup.`skill_id` = wph.`id`
-                               WHERE wpup.`user_id` = " . $user_id . ") = wpr.`prereq_pts`
+                               WHERE wpup.`user_id` = " . $user_id . ") >= wpr.`prereq_pts`
                     )
             AND wpt.`language_code` = " . $language_code .
             " ORDER BY wp.id"
