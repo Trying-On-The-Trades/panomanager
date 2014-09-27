@@ -86,7 +86,7 @@ function add_nav_script(){
     $script = "\n<script type='text/javascript'>\n";
     
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = 'http://tot.boldapps.nets/?pano_id=';\n";
+    $script .=	"var siteAdr = 'http://tot.boldapps.net/?pano_id=';\n";
     
     // Build the array of names
     $script .= build_names_array();

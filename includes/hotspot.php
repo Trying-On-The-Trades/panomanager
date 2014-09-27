@@ -5,10 +5,10 @@ class hotspot{
 	protected $id, $pano_id, $description, 
                   $name, $menu_name, $language_code, 
                   $xml, $action_xml, $points, $menu_item,
-                  $type_id,
+                  $type_id, $attempts,
                   $type_name,
-                  $type_description,
-		  $exists   = 0;
+                  $type_description;
+        public    $exists   = 0;
 	
 	function __construct($id = 1){
 
@@ -24,6 +24,7 @@ class hotspot{
                 $this->exists      = 1;
                 $this->menu_item   = $hotspot_row->menu_item;
                 $this->id          = $hotspot_row->id;
+                $this->attempts    = $hotspot_row->attempts;
                 $this->name        = $hotspot_row->name;
                 $this->menu_name   = $hotspot_row->menu_name;
                 $this->description = $hotspot_row->description;
@@ -78,6 +79,10 @@ class hotspot{
         
         function get_type_description(){
             return $this->type_description;
+        }
+        
+        function get_attempts(){
+            return $this->attempts;
         }
         
         function is_menu_item(){

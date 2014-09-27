@@ -194,6 +194,65 @@ function get_hotspot_objects($quest){
 }
 
 // ***********************************************************
+//				    Processing User Progress
+// ***********************************************************
+
+function update_pano_user_progress() {
+	global $wpdb; // this is how you get access to the database
+
+        // Get the user id and hotspot id
+        $user_id = get_current_user_id();
+	$hotspot_id = $_POST['hotspot'];
+        $points = 0;
+        $points_allowed = false;
+        
+        // Make sure a numeric id is supplied
+        if (!is_numeric($hotspot_id)){
+            $hotspot_id = 0;
+        }
+        
+        // Update the user progress
+        if ($user_id == 0){
+            // maybe do session stuff?
+        } else {
+            
+            // Check if the user is aloud to get points
+            $points_allowed = check_points($user_id, $hotspot_id);
+            
+            // If yes, give them points
+            if ($points_allowed){
+                $points = add_user_progress($user_id, $hotspot_id);
+            }
+        }
+        
+	// Return the points associated to flash on the screen
+        echo $points;
+        
+	die(); // this is required to terminate immediately and return a proper response
+}
+
+// check to make sure the user is aloud to get the points
+function check_points($user_id, $hotspot_id){
+    
+    // Check if there is a limit on the attempts on a pano
+    $hotspot = new hotspot($hotspot_id);
+    
+    // Make sure the hotspot exists
+    if ($hotspot->exists){
+        
+        // Check if there are multiple attempts
+        if ($hotspot->get_attempts() == 0){
+            return true;
+        } else {
+            
+            
+            
+        }
+        
+    }
+}
+
+// ***********************************************************
 //				    Processing New Panos
 // ***********************************************************
 

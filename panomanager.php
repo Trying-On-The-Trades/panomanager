@@ -84,29 +84,3 @@ function return_pano_xml($id) {
     build_pano_xml($id);
     die(); // this is required to return a proper result
 }
-
-function update_pano_user_progress() {
-	global $wpdb; // this is how you get access to the database
-
-        // Get the user id and hotspot id
-        $user_id = get_current_user_id();
-	$hotspot_id = $_POST['hotspot'];
-        $points = 0;
-        
-        // Make sure a numeric id is supplied
-        if (!is_numeric($hotspot_id)){
-            $hotspot_id = 0;
-        }
-        
-        // Update the user progress
-        if ($user_id == 0){
-            // maybe do session stuff?
-        } else {
-            $points = add_user_progress($user_id, $hotspot_id);
-        }
-        
-	// Return the points associated to flash on the screen
-        echo $points;
-        
-	die(); // this is required to terminate immediately and return a proper response
-}
