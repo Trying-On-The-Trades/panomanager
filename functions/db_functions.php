@@ -329,6 +329,18 @@ function get_user_skill_points($skill_id, $user_id){
 	return $points;
 }
 
+function check_hotspot_prgress($hotspot_id, $user_id){
+    global $wpdb;
+    
+    $progress_table = get_user_skill_progress_table_name();
+    
+    $hs = $wpdb->get_results("SELECT * FROM " . $progress_table . " wpusp" .
+                             " WHERE wpusp.`skill_id` = " . $hotspot_id .
+                             " AND wpusp.`user_id` = " . $user_id);
+    
+    return $hs;
+}
+
 //
 
 function add_user_progress($user_id, $hotspot_id){

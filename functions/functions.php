@@ -245,8 +245,18 @@ function check_points($user_id, $hotspot_id){
             return true;
         } else {
             
+            // Get user progress on the hotspot
+            $progress = check_hotspot_prgress($hotspot, $user_id);
             
+            // check the number of attempts
+            $attempts = count($progress);
             
+            // return if they are aloud
+            if ($attempts >= $hotspot->get_attempts()){
+                return false;
+            } else {
+                return true;
+            }
         }
         
     }
