@@ -324,7 +324,7 @@ function build_leaderboard_div(){
 }
 
 function build_school_table(){
-    $leaderboard_enteries = get_leaderboard();
+    $leaderboard_enteries = get_school_leaderboard();
     $count = 0;
    
     $board = '<h3>School Leaderboard</h3>';
