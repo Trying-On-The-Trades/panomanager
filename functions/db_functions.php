@@ -372,7 +372,72 @@ function add_user_progress($user_id, $hotspot_id){
     );
 
     // Return those points
-    return $pano;
+    return $pano->points;
+}
+
+function get_leaderboard(){
+    global $wpdb;
+    
+    // Table names
+    $hotspot_table = get_hotspot_table_name();
+    $progress_table = get_user_skill_progress_table_name();
+    
+    // Buddypress table names
+    $profile_data_table = "wp_bp_xprofile_data";
+    $profile_field_table = "wp_bp_xprofile_fields";
+    
+    // WordPress tables names
+    $user_table = "wp_users";
+    
+    $leaderboard = $wpdb->get_results(
+            "SELECT wu.`display_name` `name`, " .
+            "sum(wph.`points`) score, " .
+            "wbxf.`name` school " .
+            "FROM " . $user_table . " wu " .
+            "INNER JOIN " . $profile_data_table . " wbxd ".
+            "ON wbxd.`user_id` = wu.`ID` " .
+            "INNER JOIN " . $profile_field_table . " wbxf " .
+            "ON wbxf.`id` = wbxd.`value` " .
+            "INNER JOIN " . $progress_table . " wpusp " .
+            "ON wpusp.`user_id` = wu.`ID` " .
+            "INNER JOIN " . $hotspot_table . " wph " .
+            "ON wph.`id` = wpusp.`skill_id` ".
+            "GROUP BY wu.ID " .
+            "ORDER BY score DESC");
+    
+    return $leaderboard;
+}
+
+function get_school_leaderboard(){
+    global $wpdb;
+    
+    // Table names
+    $hotspot_table = get_hotspot_table_name();
+    $progress_table = get_user_skill_progress_table_name();
+    
+    // Buddypress table names
+    $profile_data_table = "wp_bp_xprofile_data";
+    $profile_field_table = "wp_bp_xprofile_fields";
+    
+    // WordPress tables names
+    $user_table = "wp_users";
+    
+    $leaderboard = $wpdb->get_results(
+            "SELECT wbxf.`name` `name`, " .
+            "sum(wph.`points`) score " .
+            "FROM " . $user_table . " wu " .
+            "INNER JOIN " . $profile_data_table . " wbxd ".
+            "ON wbxd.`user_id` = wu.`ID` " .
+            "INNER JOIN " . $profile_field_table . " wbxf " .
+            "ON wbxf.`id` = wbxd.`value` " .
+            "INNER JOIN " . $progress_table . " wpusp " .
+            "ON wpusp.`user_id` = wu.`ID` " .
+            "INNER JOIN " . $hotspot_table . " wph " .
+            "ON wph.`id` = wpusp.`skill_id` ".
+            "GROUP BY wbxf.`name` " .
+            "ORDER BY score DESC");
+    
+    return $leaderboard;
 }
 
 // ***********************************************************

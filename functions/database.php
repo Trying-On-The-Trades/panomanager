@@ -203,6 +203,7 @@ function build_hotspot_sql(){
       `hotspot_xml` text,
       `action_xml` text,
       `points` int(10) NOT NULL,
+      `attempts` int(10) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 

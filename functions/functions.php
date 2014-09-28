@@ -246,7 +246,7 @@ function check_points($user_id, $hotspot_id){
         } else {
             
             // Get user progress on the hotspot
-            $progress = check_hotspot_prgress($hotspot, $user_id);
+            $progress = check_hotspot_prgress($hotspot_id, $user_id);
             
             // check the number of attempts
             $attempts = count($progress);
@@ -339,7 +339,7 @@ function upload_panos($file, $pano_id){
 		$zip = new ZipArchive();
 		$x = $zip->open($target_path);
 		if ($x === true) {
-			$zip->extractTo("/home/var/yoursite/httpdocs/"); // change this to the correct site path
+			$zip->extractTo("/var/ww/tott/"); // change this to the correct site path
 			$zip->close();
 	
 			unlink($target_path);

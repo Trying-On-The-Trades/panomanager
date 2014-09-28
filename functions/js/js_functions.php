@@ -308,14 +308,72 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
+
     $board = '<div class="white-popup">';
     $board .= '<h2>Leaderboard</h2>';
-                // Fill with content
+    
+    // Create the table for schools
+    $board .= build_school_table();
+    
+    // Create the table for individuals
+    $board .= build_individual_table();
 
+    // Close the modal
     $board .= '</div>';
     return $board;
 }
 
+function build_school_table(){
+    $leaderboard_enteries = get_leaderboard();
+    $count = 0;
+   
+    $board = '<h3>School Leaderboard</h3>';
+    $board .= '<table>';
+    $board .= '<tr><th>Place</th><th>School</th><th>Score</th>';
+    
+    // Fill with content
+    foreach ($leaderboard_enteries as $entry) {
+        $count += 1;
+        
+        $board .= '<tr class"entry">';
+            $board .= '<td>' . $count . '</td>';
+            $board .= '<td class"school">' . $entry->name . '</td>';
+            $board .= '<td class"point">' . $entry->score . '</td>';
+        $board .= '</tr>';
+    }
+    
+    $board .= '</table>';
+    
+    return $board;
+}
+
+function build_individual_table(){
+    $leaderboard_enteries = get_leaderboard();
+    $count = 0;
+    
+    // Create the table for individuals
+    $board = '<h3>User Leaderboard</h3>';
+    $board .= '<table>';
+    $board .= '<tr><th>Place</th><th>Name</th><th>School</th><th>Score</th>';
+    
+    // Fill with content
+    foreach ($leaderboard_enteries as $entry) {
+        $count += 1;
+        
+        $board .= '<tr class"entry">';
+            $board .= '<td>' . $count . '</td>';
+            $board .= '<td class"nam">' . $entry->name . '</td>';
+            $board .= '<td class"school">' . $entry->school . '</td>';
+            $board .= '<td class"point">' . $entry->score . '</td>';
+        $board .= '</tr>';
+    }
+    
+    $board .= '</table>';
+    
+    return $board;
+}
+
+// Just the css for the popup menu
 function build_popup_styles(){
     return '.white-popup {
             position: relative;
