@@ -111,6 +111,7 @@ function add_nav_script(){
     $script .= build_menu_launch();
     $script .= build_leader_launch();
     $script .= build_callback_function();
+    $script .= build_login_button();
     
     $script .= "</script>";
         
@@ -267,6 +268,13 @@ function build_leader_launch(){
 return $script;
 }
 
+function build_login_button(){
+    $script  = "function launchLogin(){";
+    $script .= "window.location.replace('http://tot.boldapps.net/login');";
+    $script .= "}";
+    return $script;
+}
+
 
 ////// HIDDEN MENU NAV
 function build_menu_nav($quest){
@@ -387,7 +395,7 @@ function build_popup_styles(){
 
 ///////////  Points Callback Functions
 function build_callback_function(){
-    $script  = "function addPts(id){\n";
+    $script  = "function addPts(id, pts){\n";
     $script .= "$('#' + id + '_menu_item').remove();\n";
     
     $script .= "$.ajax({\n";
@@ -397,7 +405,7 @@ function build_callback_function(){
     $script .= "hotspot: id},\n";
     $script .= "success: function(d){\n";
     $script .= "console.log(d);\n"; 
-    $script .= "$().toastmessage('showWarningToast', 'You earned ' + d + ' points!');\n";
+    $script .= "$().toastmessage('showWarningToast', 'You earned ' + pts + ' points!');\n";
     $script .= "}\n";
     $script .= "});\n";
     
