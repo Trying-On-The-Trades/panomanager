@@ -103,6 +103,13 @@ function add_nav_script(){
     $script .= build_find_array();    
     $script .= build_get_scene_name();
     
+    //MY SCRIPTS ////////////////////////
+	$script .= build_launch_hairstyling();
+	$script .= build_launch_image();
+	$script .= build_launch_game();
+	$script .= build_manage_lightbox();
+	$script .= build_launch_quizlet();
+    
     $script .= "$(document).ready(function() {\n";
     $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
     $script .= "krpano = document.getElementById('krpanoSWFObject');\n";
@@ -116,6 +123,7 @@ function add_nav_script(){
     $script .= "</script>";
         
     return $script;
+
 }
 
 function build_names_array(){
@@ -261,7 +269,7 @@ function build_leader_launch(){
     $script .= "}\n";
     $script .= "}\n";
     $script .= "});\n";
-    $script .= "$.magnificPopup = $.magnificPopup.instance; \n";
+    $script .= "magnificPopup = $.magnificPopup.instance; \n";
 //    $script .= "console.log('test');\n";
     $script .= "}\n";
 
@@ -273,6 +281,189 @@ function build_login_button(){
     $script .= "window.location.replace('http://tot.boldapps.net/login');";
     $script .= "}";
     return $script;
+}
+
+function build_manage_lightbox(){
+	$script  = "function launchLogin(){\n";
+	$script .= "window.location.replace('http://tot.boldapps.net/login');\n";
+	$script .= "}\n";
+	
+	$script  = "function manageLightbox(srcName)\n";
+	$script  .= "{\n";
+	$script  .=		"switch(srcName)\n";
+	$script  .=		"{\n";
+	$script  .=			"case 'cabinet':\n";
+	$script  .=				"launchImage('http://tot.boldapps.net/wp-content/panos/1/TVCAB-5.jpg', 'Cabinet', 1);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'hairblower':\n";
+	$script  .=				"launchGame('http://tot.boldapps.net/games/stylehat.1.3.html', 'hairblower', 2);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'speaker':\n";
+	$script  .=				"launchHairstyling('https://quizlet.com/55083174/spacerace/embedv2', 'speaker', 3);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'clock':\n";
+	$script  .=				"//launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'clock', 4);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'braid':\n";
+	$script  .=				"//launchHairstyling('http://109.73.239.136/~eapprent/tott/wp-content/uploads/stjames/blogger-image-569397039.jpg', 'braid');\n";
+	$script  .=				"launchImage('http://tot.boldapps.net/wp-content/panos/1/blogger-image-569397039.jpg', 'Braid', 5);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'fe_1':\n";
+	$script  .=				"launchHairstyling('https://quizlet.com/55212412/learn/embedv2', 'fe_1', 6);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'guy':\n";
+	$script  .=				"launchHairstyling('http://www.youtube.com/watch?v=p0XRT4j93gg', 'guy', 7);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'solution':\n";
+	$script  .=				"launchHairstyling('https://quizlet.com/52769033/scatter/embedv2', 'solution', 8);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'cody':\n";
+	$script  .=				"launchHairstyling('https://www.youtube.com/watch?v=Hb3HzJLFoww', 'cody', 9);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'brooke':\n";
+	$script  .=				"launchHairstyling('https://www.youtube.com/watch?v=ZFlJiB76UeE', 'brooke', 10);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'gohome':\n";
+	$script  .=				"window.location = 'http://tot.boldapps.net/';\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'whiteboard':\n";
+	$script  .=				"launchHairstyling('https://quizlet.com/54911489/speller/embedv2', 'whiteboard', 12);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'projector':\n";
+	$script  .=				"launchHairstyling('http://ca.ixl.com/math/grade-7/percents-of-numbers-and-money-amounts', 'projector', 13);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'firealarm':\n";
+	$script  .=				"launchHairstyling('http://tot.boldapps.net/games/spotHazzards/Hazzards_serverside.html', 'firealarm', 14);\n";
+	$script  .=				"break;\n";
+	$script  .=			"case 'khan':\n";
+	$script  .=				"launchHairstyling('http://tot.boldapps.net/khan/', 'khan', 15);\n";
+	$script  .=				"break;\n";
+	$script  .=			"default:\n";
+	$script  .=				"launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'speaker');\n";
+	$script  .=		"}\n";
+	$script  .=	"}\n";
+	
+	return $script;
+}
+
+
+function build_launch_image()
+{
+	$script  = "function launchImage(msgUrl, cnslCode, mnuId)\n";
+	$script  .=	"{\n";
+	$script  .=		"$.magnificPopup.open({\n";
+	$script  .=			"items: {\n";
+	$script  .=				"src: msgUrl\n";
+	$script  .=				"},\n";
+	$script  .=			      "type: 'image',\n";
+	$script  .=			      "titleSrc: cnslCode,\n";
+	$script  .=			      "closeOnBgClick: true,\n";
+	$script  .=			      "closeBtnInside: true,\n";
+	$script  .=			      "callbacks: {\n";
+	$script  .=					"close: function() {\n";
+	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+	$script  .=						"magnificPopup.close(); \n";
+	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=					"}\n";
+	$script  .=			     " }\n";
+	$script  .=		"});\n";
+	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
+	$script  .=		"console.log(cnslCode);\n";
+	$script  .=	"}\n";
+	
+	return $script;
+}
+
+function build_launch_hairstyling()
+{
+	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId)\n";
+	$script  .=	"{\n";
+	$script  .=		"$.magnificPopup.open({\n";
+	$script  .=			"items: {\n";
+	$script  .=				"src: msgUrl\n";
+	$script  .=				"},\n";
+	$script  .=			      "type: 'iframe',\n";
+	$script  .=				"retina: { \n";
+	$script  .=				"ratio: 3 // can also be function that should retun this number \n";
+	$script  .=				"} ,\n";
+	$script  .=			      "titleSrc: cnslCode,\n";
+	$script  .=			      "closeOnBgClick: true,\n";
+	$script  .=			      "closeBtnInside: true,\n";
+	$script  .=			      "callbacks: {\n";
+	$script  .=					"close: function() {\n";
+	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=						"magnificPopup.close(); \n";
+	$script  .=					"}\n";
+	$script  .=			     " }\n";
+	$script  .=		"});\n";
+	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
+	$script  .=		"console.log(cnslCode);\n";
+	$script  .=	"}\n";
+	
+	return $script;
+}
+
+function build_launch_game()
+{
+	$script  = "function launchGame(msgUrl, cnslCode, mnuId)\n";
+	$script  .=	"{\n";
+	$script  .=		"$.magnificPopup.open({\n";
+	$script  .=			"items: {\n";
+	$script  .=				"src: msgUrl\n";
+	$script  .=				"},\n";
+	$script  .=			      "type: 'iframe',\n";
+	$script  .=			      "titleSrc: cnslCode,\n";
+	$script  .=			      "closeOnBgClick: true,\n";
+	$script  .=			      "closeBtnInside: true,\n";
+	$script  .=			      "callbacks: {\n";
+	$script  .=					"close: function() {\n";
+	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+	$script  .=						"var iframe = $('.mfp-iframe');";
+	$script  .=						"var contents = iframe.contents();";
+	$script  .=						"var points = $(contents).find('#points').html();";
+	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"magnificPopup.close(); \n";
+	$script  .=						"addPts(mnuId,points); \n";
+	$script  .=					"}\n";
+	$script  .=			     " }\n";
+	$script  .=		"});\n";
+	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
+	$script  .=		"console.log(cnslCode);\n";
+	$script  .=	"}\n";
+	
+	return $script;
+}
+
+function build_launch_quizlet()
+{
+	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId)\n";
+	$script  .=	"{\n";
+	$script  .=		"$.magnificPopup.open({\n";
+	$script  .=			"items: {\n";
+	$script  .=				"src: msgUrl\n";
+	$script  .=				"},\n";
+	$script  .=			      "type: 'iframe',\n";
+	$script  .=			      "titleSrc: cnslCode,\n";
+	$script  .=			      "closeOnBgClick: true,\n";
+	$script  .=			      "closeBtnInside: true,\n";
+	$script  .=			      "callbacks: {\n";
+	$script  .=					"close: function() {\n";
+	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+	$script  .=						"var iframe = $('.mfp-iframe');";
+	$script  .=						"var contents = iframe.contents();";
+	$script  .=						"var points = $(contents).find('#scorevalue').html();";
+	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"magnificPopup.close(); \n";
+	$script  .=						"addPts(mnuId,points); \n";
+	$script  .=					"}\n";
+	$script  .=			     " }\n";
+	$script  .=		"});\n";
+	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
+	$script  .=		"console.log(cnslCode);\n";
+	$script  .=	"}\n";
+	
+	return $script;
 }
 
 
