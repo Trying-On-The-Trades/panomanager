@@ -1,5 +1,4 @@
 <?php
-
 /*
 Plugin Name: Pano Manager
 Plugin URI: http://dan-blair.ca
