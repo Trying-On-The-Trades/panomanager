@@ -7,7 +7,7 @@
 function build_pano_javascript($pano_id, $pano, $quest){
         $pano_directory = content_url() . "/panos/" . $pano_id;
     $pano_swf_location = $pano_directory . "/tour.swf";
-    $pano_php_location = plugins_url() . "/panomanager/panomanager.php?return_the_pano=" . $pano_id;
+    $pano_php_location = get_site_url() . "?return_the_pano=" . $pano_id;
        
         //Add the styles and javascript
         register_scripts($pano_directory);
