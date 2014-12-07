@@ -197,6 +197,7 @@ function build_hotspot_sql(){
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `mission_id` int(11) DEFAULT NULL,
       `type_id` int(11) DEFAULT NULL,
+      `menu_item` tinyint(1) DEFAULT "1",
       `name` varchar(255) NOT NULL DEFAULT "",
       `menu_name` varchar(255) NOT NULL DEFAULT "",
       `description` text,

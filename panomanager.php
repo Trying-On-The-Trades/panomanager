@@ -75,7 +75,9 @@ wp_enqueue_script('pano_register_js');
 // Used to return the XML to build the pano on the page
 if (isset($_GET['return_the_pano'])){
     return_pano_xml($_GET['return_the_pano']);
-} else if (isset($_GET['registration_js'])){
+} 
+
+if (isset($_GET['registration_js'])){
     return_registration_script();
 }
 
