@@ -8,14 +8,17 @@ this is the main plugin for Trying on The Trades. This plugin is for managing an
 
 ### How do I get set up? ###
 
-* Install App
-* Add pannos
-* profit
+* Pull this repo into your sites / plugin/ directoy.
+* Install the custom theme
+* Download panos 1 - 4
+* Add pano files in corrosponding /wp-content/panos/id directories
 
 ### Contribution guidelines ###
 
 * Getting involced
+* Don't break the plugin
 
 ### Who do I talk to? ###
 
 * Guy Dugas
+* Dan Blair (@CMDannCA) http://dan-blair.ca

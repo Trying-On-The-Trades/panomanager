@@ -13,32 +13,29 @@ function return_registration_script(){
     // Check if the registration input exists
     $registration_script .= "if (user_name_field){\n";
     
-        // Build the code that will change the school selector to the fields in the database
-//        $registration_script .= build_school_selector();
-//        $registration_script .= build_tool_select();
-//        $registration_script .= build_trade_select();
-    // Removed for now because BuddyPress was unhappy
-
-        // Disable and make the username read only
-        $registration_script .= "user_name_field.readOnly = true;\n";
-        $registration_script .= "user_name_field.placeholder='Select a colour and a tool';\n";
-
-        // Create variables for the drop downs
-        $registration_script .= "var color_field = document.getElementById('field_12');\n";
-        $registration_script .= "var tool_field = document.getElementById('field_2');\n";
-        $registration_script .= "var trade_field = document.getElementById('field_17');\n";
-
-        // Get the school check
-        $registration_script .= build_school_check_function();
-        $registration_script .= build_tool_check_function();
-        $registration_script .= build_color_check_function();
-        $registration_script .= check_trade();
-
-        // Add the on change listeners
-        $registration_script .= buld_colour_listener();
-        $registration_script .= build_tool_listener();
-        $registration_script .= build_trade_listener();
-
+    // Build the code that will change the school selector to the fields in the database
+    $registration_script .= build_school_selector();
+    $registration_script .= build_tool_select();
+    $registration_script .= build_trade_select();
+    
+    // Disable and make the username read only
+    $registration_script .= "user_name_field.readOnly = true;\n";
+    $registration_script .= "user_name_field.placeholder='Select a colour and a tool';\n";
+    
+    // Create variables for the drop downs
+    $registration_script .= "var color_field = document.getElementById('field_12');\n";
+    $registration_script .= "var tool_field = document.getElementById('field_2');\n";
+    $registration_script .= "var trade_field = document.getElementById('field_17');\n";
+    
+    // Get the school check
+    $registration_script .= build_school_check_function();
+    $registration_script .= build_tool_check_function();
+    $registration_script .= build_color_check_function();
+    
+    // Add the on change listeners
+    $registration_script .= buld_colour_listener();
+    $registration_script .= build_tool_listener();
+    
     // END IF username field
     $registration_script .= "}";
     
@@ -96,7 +93,6 @@ function build_tool_select_options(){
     
     foreach ($tools as $tool) {
         $script .= "<option class='" . $tool->trade_name . 
-                   " tool" . // generic class for all tool dropdowns
                    "' value='"       . $tool->name . 
                    "'>"              . $tool->name . 
                    "</option>";
@@ -107,9 +103,8 @@ function build_tool_select_options(){
 
 function build_tool_check_function(){
     $script = "function tool_check(){\n";
-    
-        $script .= "var number = Math.floor((Math.random() * 1000) + 1);";
-        $script .= "user_name_field.value = color_field.value + tool_field.value + number\n";
+        
+        $script .= "user_name_field.value = color_field.value + tool_field.value\n";
     
     $script .= "}\n";
     return $script;
@@ -161,22 +156,9 @@ function build_trade_select_options(){
 
 function check_trade(){
     $script = "function trade_check(){\n";
+        
     
-        $script .= "var trade_selector = document.getElementById('field_17');\n";
-        $script .= "var tool_options = document.getElementsByClassName('tool');\n";
-        
-        $script .= "for (var i = tool_options.length - 1; i >= 0; i--) {\n";
-        
-            $script .= "var class_name = tool_options[i].className;\n";
-
-            $script .= "if (class_name.indexOf(trade_selector.value) > -1){";
-            $script .=    "tool_options[i].style.display='block';";
-            $script .= "} else {";
-            $script .=    "tool_options[i].style.display='none';";
-            $script .= "}";
-        
-//	$script .= "console.log(class_name);";
-        $script .= "};\n";
+        $script .= "\n";
     
     $script .= "}\n";
     return $script;
@@ -196,8 +178,7 @@ function buld_colour_listener(){
 function build_color_check_function(){
     $script = "function color_check(){\n";
         
-        $script .= "var number = Math.floor((Math.random() * 1000) + 1);";
-        $script .= "user_name_field.value = color_field.value + tool_field.value + number\n";
+        $script .= "user_name_field.value = color_field.value + tool_field.value\n";
     
     $script .= "}\n";
     return $script;
