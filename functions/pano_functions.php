@@ -3,6 +3,7 @@
 // Build up the actual XML to pass to the KRPANO viewer
 function build_pano_xml($pano_id){
 
+        
         // Create the actual pano object from the database
         $pano = build_pano($pano_id);
         $quest = build_quest($pano->get_id());
@@ -29,7 +30,7 @@ function build_pano_xml($pano_id){
 // Return the pano to the viewer
 function spit_out_xml($xml){
         // We are returning xml
-//        header('Content-Type: text/xml');
+       //header('Content-Type: text/xml');
 
         echo $xml;
         die();
@@ -121,7 +122,7 @@ function fix_references($pano_id, $xml_object){
                             }
                         }
                     }
-
+                    error_reporting(E_ALL ^ E_WARNING);
                     // Fix all image references
                     if ($image->level != null){
                         foreach ($image->level as $level) {

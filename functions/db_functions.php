@@ -329,6 +329,22 @@ function get_user_skill_points($skill_id, $user_id){
 	return $points;
 }
 
+// Return a user's accumulated points
+function get_user_accumulated_points($user_id){
+	global $wpdb;
+
+	$progress_table = get_user_skill_progress_table_name();
+	$hotspot_table  = get_hotspot_table_name();
+
+	$points = $wpdb->get_results( 
+		"SELECT sum(wph.`points`) as point FROM " . $progress_table . " wpusp " .
+		"INNER JOIN " . $hotspot_table . " wph ON " .
+		"wpusp.`skill_id` = wph.`id` " .
+		"WHERE wpusp.`user_id` = " . $user_id);
+
+	return $points;
+}
+
 function check_hotspot_prgress($hotspot_id, $user_id){
     global $wpdb;
     
@@ -438,6 +454,29 @@ function get_school_leaderboard(){
             "ORDER BY score DESC");
     
     return $leaderboard;
+}
+
+// ***********************************************************
+//				    Trade Ads
+// ***********************************************************
+
+function get_pano_ads($quest_id){
+    global $wpdb;
+    
+    // Table names 
+    $quest_table    = get_quest_table_name(); 
+    $ads_table      = get_ads_table_name(); 
+    $ads_text_table = get_ads_text_table_name();
+    $language_code  = get_user_language();
+    
+    $ad_messages = $wpdb->get_results("SELECT wpat.`message` FROM " . $ads_text_table . " wpat " . 
+                                      "INNER JOIN " . $ads_table . " wpa ON wpa.`id` = wpat.`ads_id`" .
+                                      "INNER JOIN " . $quest_table . " wpq ON wpq.`trade_id` = wpa.`trade_id`" . 
+                                      "WHERE wpat.`language_code` = " . $language_code .
+                                      "AND wpq.id = " . $quest_id);
+    
+    return $ad_messages;
+    
 }
 
 // ***********************************************************

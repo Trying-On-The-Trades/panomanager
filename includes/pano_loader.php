@@ -54,7 +54,7 @@ function xml_middle_man($pano){
 function fix_references($pano_id, $xml_object){
 
 	// Base url for all references
-	$pano_url = "http://tot.boldapps.net/wp-content/panos/" . $pano_id . "/";
+	$pano_url = "http://tott.e-apprentice.ca/wp-content/panos/" . $pano_id . "/";
 
 	// Start looping through the objects and fixing all reference urls
 	$include_attribute = 'url';
@@ -157,7 +157,7 @@ function fix_references($pano_id, $xml_object){
 		}
 	}
 
-	// print_r($xml_object);
+	//print_r($xml_object);
 	// die();	
 
 	return $xml_object;

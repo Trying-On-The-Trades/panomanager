@@ -67,6 +67,16 @@ function get_school_table_name(){
     return $wpdb->prefix . "pano_schools";
 }
 
+function get_ads_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_ads";
+}
+
+function get_ads_text_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_ads_text";
+}
+
 function get_trade_table_name(){
     global $wpdb;
     return $wpdb->prefix . "pano_trades";
@@ -110,6 +120,7 @@ function build_quest_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
       `panno_id` bigint(20) NOT NULL,
+      `trade_id` int(11) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 
@@ -197,7 +208,6 @@ function build_hotspot_sql(){
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `mission_id` int(11) DEFAULT NULL,
       `type_id` int(11) DEFAULT NULL,
-      `menu_item` tinyint(1) DEFAULT "1",
       `name` varchar(255) NOT NULL DEFAULT "",
       `menu_name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
@@ -205,6 +215,7 @@ function build_hotspot_sql(){
       `action_xml` text,
       `points` int(10) NOT NULL,
       `attempts` int(10) NOT NULL,
+      `trade_id` int(11) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
 
@@ -274,6 +285,32 @@ function build_trades_sql(){
         PRIMARY KEY (`id`)
     );';
     
+    return $sql;
+}
+
+function build_ads_sql(){
+    $table_name = get_ads_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `trade_id` int(11) DEFAULT NULL,
+        PRIMARY KEY (`id`)
+    );';
+    
+    return $sql;
+}
+
+function build_ads_text_sql(){
+    $table_name = get_ads_text_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `ads_id` int(11) NOT NULL,
+      `language_code` varchar(2) NOT NULL DEFAULT "",
+      `message` text,
+      PRIMARY KEY (`id`)
+    );';
+
     return $sql;
 }
 

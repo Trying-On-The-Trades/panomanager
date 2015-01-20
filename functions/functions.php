@@ -53,7 +53,6 @@ function check_user_progress($pano_id){
             
             // Get the points by skill
             $skill_points = get_user_skill_points($skill_id, $user_id);
-            
             // Add up the points
             $total_points = $mission_points + $skill_points;
             
@@ -119,6 +118,8 @@ function check_pano_id($pano_id){
 }
 
 function get_hotspot_menu_objects($quest){
+    
+    $user_id = get_current_user_id();
     $hotspot_ids    = array();
     $hotspots       = array();
     $missions_array = array();
@@ -145,6 +146,13 @@ function get_hotspot_menu_objects($quest){
 
         foreach ($hotspot_ids as $hid) {
             $new_hotspot = new hotspot($hid);
+            
+            $progress = check_hotspot_prgress($hid, $user_id);
+            
+            if(count($progress) > 0){
+                $new_hotspot->set_completed_state(true);
+            }
+            
             array_push($hotspots, $new_hotspot);
         }
     
@@ -262,6 +270,26 @@ function check_points($user_id, $hotspot_id){
     }
 }
 
+// Calculates the accumulated number of points
+function calculate_total_user_points(){
+    global $wpdb; // this is how you get access to the database
+    //
+    // Get the user id
+    $user_id = get_current_user_id();
+    
+    if ($user_id == 0){
+        return 0;
+    } else {
+        $points = get_user_accumulated_points($user_id);
+        
+        if($points[0]->point || $points[0]->point > 0){
+            return $points[0]->point;
+        } else {
+            return 0;
+        }
+    }
+}
+
 // ***********************************************************
 //				    Processing New Panos
 // ***********************************************************
@@ -292,6 +320,28 @@ function process_new_mission(){
 
 function process_new_hotspot(){
 
+}
+// ***********************************************************
+//			   Pano Ad Messages
+// ***********************************************************
+
+function get_pano_ad_message($quest){
+
+    $ad_messages = array();
+    
+    // Get the quest id
+    if ($quest->exists){
+        
+        $messages = get_pano_ads($quest->get_id());
+        
+        foreach ($messages as $message) {
+            array_push($ad_messages, $message->message);
+        }
+        
+        return $ad_messages;
+    }
+    
+    return false;
 }
 
 // ***********************************************************

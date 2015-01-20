@@ -8,6 +8,7 @@ class hotspot{
                   $type_id, $attempts,
                   $type_name,
                   $type_description;
+        protected $completed_state = false;
         public    $exists   = 0;
 	
 	function __construct($id = 1){
@@ -83,6 +84,14 @@ class hotspot{
         
         function get_attempts(){
             return $this->attempts;
+        }
+        
+        function get_completed_state(){
+            return $this->completed_state;
+        }
+        
+        function set_completed_state($completed_state){
+            $this->completed_state = $completed_state;
         }
         
         function is_menu_item(){
