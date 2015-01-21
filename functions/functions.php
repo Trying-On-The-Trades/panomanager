@@ -206,16 +206,15 @@ function get_hotspot_objects($quest){
 // ***********************************************************
 
 function update_pano_user_progress() {
-	global $wpdb; // this is how you get access to the database
-
         // Get the user id and hotspot id
-        $user_id = get_current_user_id();
-	$hotspot_id = $_POST['hotspot'];
+        $user_id    = get_current_user_id();
         $points = 0;
         $points_allowed = false;
         
         // Make sure a numeric id is supplied
-        if (!is_numeric($hotspot_id)){
+        if (is_numeric($_POST['hotspot'])){
+            $hotspot_id = $_POST['hotspot'];
+        } else {
             $hotspot_id = 0;
         }
         
@@ -223,16 +222,15 @@ function update_pano_user_progress() {
         if ($user_id == 0){
             // maybe do session stuff?
         } else {
-            
-            // Check if the user is aloud to get points
+            // Check if the user is allowed to get points
             $points_allowed = check_points($user_id, $hotspot_id);
-            
+
             // If yes, give them points
             if ($points_allowed){
                 $points = add_user_progress($user_id, $hotspot_id);
             }
         }
-        
+
 	// Return the points associated to flash on the screen
         echo $points;
         
@@ -252,7 +250,7 @@ function check_points($user_id, $hotspot_id){
         if ($hotspot->get_attempts() == 0){
             return true;
         } else {
-            
+
             // Get user progress on the hotspot
             $progress = check_hotspot_prgress($hotspot_id, $user_id);
             
@@ -297,21 +295,27 @@ function calculate_total_user_points(){
 function process_new_pano(){
 
 	// Create a new pano using the post data
+    $pano_xml         = $_POST['pano_xml'];
+    $pano_name        = $_POST['pano_name'];
+    $pano_description = $_POST['pano_description'];
 
 	// Get the id
+    create_pano($pano_xml, $pano_name, $pano_description);
 
-	print_r($_POST);
-	print_r($_FILES);
-	die();
-
-	// // Process the zip
-	// if($_FILES["zip_file"]["pano_zip"]) {
-	// 	upload_panos($_FILES["zip_file"]["pano_zip"]);
-	// }
+    wp_redirect( admin_url( 'admin.php?page=pano_menu' ) );
 }
 
 function process_new_quest(){
 
+    // Create a new pano using the post data
+    $quest_name        = $_POST['quest_name'];
+    $quest_description = $_POST['quest_description'];
+    $pano_id           = $_POST['pano_id'];
+
+    // Get the id
+    create_quest($quest_name, $quest_description, $pano_id);
+
+    wp_redirect( admin_url( 'admin.php?page=pano_quest_settings' ) );
 }
 
 function process_new_mission(){
@@ -321,6 +325,28 @@ function process_new_mission(){
 function process_new_hotspot(){
 
 }
+
+// ***********************************************************
+//				    Editing Existing Panos
+// ***********************************************************
+function process_edit_pano(){
+
+    // Create a new pano using the post data
+    $pano_id          = $_POST['pano_id'];
+    $pano_xml         = $_POST['pano_xml'];
+    $pano_name        = $_POST['pano_name'];
+    $pano_description = $_POST['pano_description'];
+
+    // Get the id
+    $return = update_pano($pano_id, $pano_xml, $pano_name, $pano_description);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&error') );
+    }
+}
+
 // ***********************************************************
 //			   Pano Ad Messages
 // ***********************************************************
@@ -328,19 +354,19 @@ function process_new_hotspot(){
 function get_pano_ad_message($quest){
 
     $ad_messages = array();
-    
+
     // Get the quest id
     if ($quest->exists){
-        
+
         $messages = get_pano_ads($quest->get_id());
-        
+
         foreach ($messages as $message) {
             array_push($ad_messages, $message->message);
         }
-        
+
         return $ad_messages;
     }
-    
+
     return false;
 }
 

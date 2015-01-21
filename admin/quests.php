@@ -2,8 +2,11 @@
 
 // Build the settings page
 function pano_quest_settings_page() {
-  $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-  $quests = get_quests();
+    $quests = get_quests();
+
+    $semantic       = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
+    $new_quest_url  = admin_url() . "admin.php?page=new_quest_settings";
+    $edit_quest_url = admin_url() . "admin.php?page=edit_quest_settings";
 ?>
 
 <!-- style sheet so our admin page looks nice -->
@@ -19,17 +22,29 @@ function pano_quest_settings_page() {
 
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="admin_post_pano" />
-    
-    <table>
+
+    <h2>Quests</h2>
+    <table class="ui table segment">
+      <tr>
+        <th>Quest</th>
+        <th>Description</th>
+        <th>Language Code</th>
+        <th>Pano</th>
+        <th>Edit</th>
+      </tr>
       <?php foreach ($quests as $quest): ?>
+
         <tr>
-            <?php print_r($quest); ?>
+            <td><?php echo $quest->name ?></td>
+            <td><?php echo $quest->description ?></td>
+            <td><?php echo $quest->language_code ?></td>
+            <td><?php echo $quest->pano_name ?></td>
+            <td><a class="ui blue icon button" href="<?php echo $edit_quest_url ?>&id=<?php echo $quest->id ?>" style="padding: 7px">Edit</a></td>
         </tr>
+
       <?php endforeach; ?>
     </table>
-
-    <?php submit_button(); ?>
-
+    <a class="ui blue icon button" href="<?php echo $new_quest_url ?>" style="padding: 7px">New Quest</a>
 </form>
 </div>
 

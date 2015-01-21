@@ -17,6 +17,17 @@ Author URI: http://www.tott.com
 wp_register_script('jquery', $jquery_location, true);
 wp_enqueue_script('jquery');
 
+// Require the important functions
+require_once("functions/database.php");
+require_once("functions/db_functions.php");
+require_once("functions/functions.php");
+require_once("functions/pano_functions.php");
+require_once("functions/processing.php");
+require_once("functions/install.php");
+require_once("functions/uninstall.php");
+require_once("functions/menu.php");
+require_once("functions/js/js_functions.php");
+
 // Create a shortcode for the handler
 add_shortcode("pano", "pano_handler");
 
@@ -25,7 +36,11 @@ add_action('admin_menu', 'pano_create_menu');
 
 // Add the process pano hook
 add_action( 'admin_post_pano', 'process_pano' );
-add_action( 'create_new_pano', 'process_new_pano' );
+add_action( 'admin_post_create_new_pano', 'process_new_pano' );
+add_action( 'admin_post_edit_new_pano', 'process_edit_pano' );
+
+// Add the process quest hook
+add_action( 'admin_post_create_new_quest', 'process_new_quest' );
 
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
@@ -40,17 +55,6 @@ register_activation_hook( __FILE__, 'pano_install' );
 // Version of the DB used
 define( 'PANO_DB_VERSION', '1.1.3' );
 
-// Require the important functions
-require_once("functions/database.php");
-require_once("functions/db_functions.php");
-require_once("functions/functions.php");
-require_once("functions/pano_functions.php");
-require_once("functions/processing.php");
-require_once("functions/install.php");
-require_once("functions/uninstall.php");
-require_once("functions/menu.php");
-require_once("functions/js/js_functions.php");
-
 // Require the objects
 require_once("includes/pano.php");
 require_once("includes/quest.php");
@@ -60,7 +64,9 @@ require_once("includes/hotspot.php");
 // Require the admin pages
 require_once("admin/admin_page.php");
 require_once("admin/new_pano.php");
+require_once("admin/edit_pano.php");
 require_once("admin/quests.php");
+require_once("admin/new_quest.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");
@@ -70,7 +76,7 @@ require_once("functions/js/register_js.php");
 $register_location = WP_PLUGIN_URL . "/panomanager.php?registration_js=1";
 wp_register_script('pano_register_js', $register_location, false, false, true);
 wp_enqueue_script('pano_register_js');
-    
+
 
 // Used to return the XML to build the pano on the page
 if (isset($_GET['return_the_pano'])){
@@ -81,7 +87,7 @@ if (isset($_GET['return_the_pano'])){
 
 // Handle ajaxing to the pano_loaded
 function return_pano_xml($id) {
-    
+
     build_pano_xml($id);
     die(); // this is required to return a proper result
 }

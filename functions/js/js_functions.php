@@ -604,7 +604,7 @@ function build_menu_nav($quest){
                 <ul >
                     <li class="Label">
                         <span class="mission_title">Mission</span>
-                        <span class="user_points">Total Mission Points ' . $points . '</span></li>';
+                        <span class="user_points">Total Mission Points <span id="displayed_points" data-points="' . $points . '">' . $points . '</span></span></li>';
       
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
@@ -724,6 +724,7 @@ function build_popup_styles(){
 function build_callback_function(){
     $script  = "function addPts(id, pts){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
+    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
     
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
@@ -731,8 +732,13 @@ function build_callback_function(){
     $script .= "data: {action: 'update_progress',\n";
     $script .= "hotspot: id},\n";
     $script .= "success: function(d){\n";
-    $script .= "console.log(d);\n";
-    $script .= "$().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');\n";
+    $script .= "var earned_points = parseInt(d);\n";
+    $script .= "var total_points = points + earned_points;\n";
+    $script .= "$('#displayed_points').attr('data-points', total_points);\n";
+    $script .= "$('#displayed_points').html(total_points);\n";
+    $script .= "if(earned_points > 0){\n";
+    $script .= "$().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
+    $script .= "}\n";
     $script .= "}\n";
     $script .= "});\n";
     

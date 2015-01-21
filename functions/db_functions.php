@@ -138,13 +138,14 @@ function get_quests(){
 
     $quest_table_name = get_quest_table_name();
     $quest_text_table_name = get_quest_text_table_name();
+    $pano_text_table_name = get_pano_text_table_name();
     $language_code = get_user_language();
 
     // DB query
     $quests = $wpdb->get_results( 
-            "SELECT * FROM " . $quest_table_name . " wpq " .
-            "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
-            "wpqt.quest_id = wpq.id " .
+            "SELECT wpq.*, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
+            "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpq.id " .
+            "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.pano_id = wpq.panno_id " .
             "WHERE wpqt.language_code = " . $language_code);
 
     // Return
@@ -381,11 +382,10 @@ function add_user_progress($user_id, $hotspot_id){
     // Get the points that were just added
     $pano = $wpdb->get_row( $wpdb->prepare( 
             "SELECT wph.`points` 
-            FROM " . $progress_table . " wpup
-            INNER JOIN " . $hotspot_table . " wph
-            ON wpup.`skill_id` = wph.`id`
-            WHERE wpup.`id` =", $lastid)
-    );
+             FROM " . $progress_table . " wpup
+             INNER JOIN " . $hotspot_table . " wph
+             ON wpup.`skill_id` = wph.`id`
+             WHERE wpup.`id` =" . $lastid));
 
     // Return those points
     return $pano->points;
@@ -483,8 +483,30 @@ function get_pano_ads($quest_id){
 //				    Updating Panos
 // ***********************************************************
 
-function update_pano(){
+function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code   = get_user_language();
+    $language_code   = str_replace("'","",$language_code);
 
+    if(isset($pano_id) && is_numeric($pano_id)){
+        $wpdb->update( $pano_table_name,
+            array('pano_xml' => $pano_xml),
+            array('id'       => $pano_id));
+
+        $wpdb->update( $text_table_name,
+            array(
+                'language_code' => $language_code,
+                'name' => $pano_name,
+                'description' => $pano_description
+            ),
+            array('pano_id' => $pano_id));
+
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function update_quest(){
@@ -499,14 +521,49 @@ function update_hotspot(){
 //				    Creating New Panos
 // ***********************************************************
 
-function create_pano(){
+function create_pano($pano_xml, $pano_name, $pano_description){
+    global $wpdb;
+    $pano_table_name = get_pano_table_name();
+    $text_table_name = get_pano_text_table_name();
+    $language_code   = get_user_language();
+    $language_code   = str_replace("'","",$language_code);
 
+    // Insert the pano
+    $wpdb->insert( $pano_table_name, array( 'pano_xml'  => $pano_xml));
+
+    // Get the id of the last row
+    $lastid = $wpdb->insert_id;
+
+    // Insert the pano_text
+    $wpdb->insert( $text_table_name, array( 'pano_id'       => $lastid,
+                                            'language_code' => $language_code,
+                                            'name'          => $pano_name,
+                                            'description'   => $pano_description));
+
+    return $wpdb->insert_id;
 }
 
-function create_quest(){
+function create_quest($quest_name, $quest_description, $pano_id){
+    global $wpdb;
+    $quest_table_name = get_quest_table_name();
+    $quest_text_table_name = get_quest_text_table_name();
+    $language_code   = get_user_language();
+    $language_code   = str_replace("'","",$language_code);
 
+    // Insert the pano
+    $wpdb->insert( $quest_table_name, array( 'panno_id'  => $pano_id));
+
+    // Get the id of the last row
+    $lastid = $wpdb->insert_id;
+
+    // Insert the pano_text
+    $wpdb->insert( $quest_text_table_name, array( 'quest_id'      => $lastid,
+                                                  'language_code' => $language_code,
+                                                  'name'          => $quest_name,
+                                                  'description'   => $quest_description));
+
+    return $wpdb->insert_id;
 }
 
 function create_hotspot(){
-
 }

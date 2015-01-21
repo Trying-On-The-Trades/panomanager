@@ -29,7 +29,7 @@ function create_sub_menus(){
 					 "new_pano_settings_page");
 
 	// Create the sub menu item for new panos
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
 					 "Edit Pano",
 					 "Edit Pano",
 					 "administrator",
@@ -37,10 +37,18 @@ function create_sub_menus(){
 					 "edit_pano_settings_page");
 
 	// Create the sub menu item for quests
-	add_submenu_page("pano_menu", 
-					 "Quests", 
-					 "Quests", 
+	add_submenu_page("pano_menu",
+					 "Quests",
+					 "Quests",
 					 "administrator",
-					 "pano_quest_settings", 
+					 "pano_quest_settings",
 					 "pano_quest_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu",
+					 "New Quest",
+					 "New Quest",
+					 "administrator",
+					 "new_quest_settings",
+					 "new_quest_settings_page");
 }

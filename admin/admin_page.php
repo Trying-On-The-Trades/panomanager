@@ -37,7 +37,7 @@ function pano_settings_page() {
         <tr>
             <td><?php echo $pano->id ?></td>
             <td><?php echo $pano->name ?></td>
-            <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>" style="padding: 7px">Edit</a></td>
+            <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->id ?>" style="padding: 7px">Edit</a></td>
         </tr>
 
       <?php endforeach; ?>

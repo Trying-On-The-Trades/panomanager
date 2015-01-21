@@ -25,7 +25,7 @@ $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
-<form method="post" enctype="multipart/form-data" action="admin-post.php">
+<form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_pano" />  
     <div class="ui form segment new_pano_form">
@@ -49,12 +49,12 @@ $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 	        <textarea name="pano_xml" required ></textarea>
 	      </div>
 	    </div>
-	    <div class="ui form">
+	    <!-- <div class="ui form">
 	      <div class="field">
 	        <label for="zip_file">Choose a zip file to upload: </label>
-	    	<input id="file_input" type="file" name="pano_zip" required />
+	    	<input id="file_input" type="file" name="pano_zip" />
 	      </div>
-	    </div>
+	    </div> -->
 	    <?php submit_button(); ?>
 	</div>
 </form>
