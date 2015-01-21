@@ -28,6 +28,14 @@ function create_sub_menus(){
 					 "new_pano_settings", 
 					 "new_pano_settings_page");
 
+	// Create the sub menu item for new panos
+	add_submenu_page("pano_menu",
+					 "Edit Pano",
+					 "Edit Pano",
+					 "administrator",
+					 "edit_pano_settings",
+					 "edit_pano_settings_page");
+
 	// Create the sub menu item for quests
 	add_submenu_page("pano_menu", 
 					 "Quests", 

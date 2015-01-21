@@ -3,12 +3,12 @@
 // Build the settings page
 function pano_settings_page() {
   
-  $panos = get_panos();
+    $panos = get_panos();
 
-  // Create urls
-  $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-  $new_pano_url = admin_url() . "admin.php?page=new_pano_settings";
-  $edit_pano_url = "";
+    // Create urls
+    $semantic      = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
+    $new_pano_url  = admin_url() . "admin.php?page=new_pano_settings";
+    $edit_pano_url = admin_url() . "admin.php?page=edit_pano_settings";
 ?>
 
 <!-- style sheet so our admin page looks nice -->
@@ -37,7 +37,7 @@ function pano_settings_page() {
         <tr>
             <td><?php echo $pano->id ?></td>
             <td><?php echo $pano->name ?></td>
-            <td><a class="ui blue icon button" href="" style="padding: 7px">Edit</a></td>
+            <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>" style="padding: 7px">Edit</a></td>
         </tr>
 
       <?php endforeach; ?>

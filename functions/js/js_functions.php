@@ -558,6 +558,14 @@ function build_launch_Khan($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+	$script  .=						"var iframe = $('.mfp-iframe');";
+	$script  .=						"var contents = iframe.contents();";
+	$script  .=						"var khanFrame = $(contents).find('.mfp-iframe').contents();";
+	$script  .=						"var points = $(khanFrame).find('#points').html();";
+	//$script  .=						"var points = $(contents).find('#points').html();";
+	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"magnificPopup.close(); \n";
+	$script  .=						"addPts(mnuId,points); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=						"addPts(mnuId,10); \n";
 	$script  .=					"}\n";
@@ -577,7 +585,8 @@ function build_ad_message($quest){
         
     $script  .= "var ad_messages = [";
         foreach($messages as $message){
-            $script .= "'" . $message.  "',";
+            $script .= "\" . $message .  \",";
+	     //$script .= "'" . $message.  "',";
         }
     $script  .= "];\n";
 
