@@ -6,8 +6,8 @@
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id, $pano, $quest){
         $pano_directory = content_url() . "/panos/" . $pano_id;
-	$pano_swf_location = $pano_directory . "/tour.swf";
-	$pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
+        $pano_swf_location = $pano_directory . "/tour.swf";
+        $pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
        
         //Add the styles and javascript
         register_scripts($pano_directory);
@@ -371,7 +371,7 @@ function build_manage_lightbox($quest){
 
 function build_launch_image($quest)
 {
-        $messages = get_pano_ad_message($quest);
+    $messages = get_pano_ad_message($quest);
     
 	$script  = "function launchImage(msgUrl, cnslCode, mnuId)\n";
 	$script  .=	"{\n";

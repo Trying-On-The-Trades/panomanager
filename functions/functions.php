@@ -26,8 +26,8 @@ function load_pano($pano_id = 1){
 	// Check if the user is aloud to see it
 //	$id = check_user_progress($id);
 
-	$pano = build_pano($id);
-        $quest = build_quest($id);
+	$pano  = build_pano($id);
+    $quest = build_quest($id);
         
 	$javascript = build_pano_javascript($id, $pano, $quest);
 

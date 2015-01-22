@@ -21,7 +21,7 @@ function create_top_menu(){
 function create_sub_menus(){
 
 	// Create the sub menu item for new panos
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
 					 "New Pano", 
 					 "New Pano", 
 					 "administrator",
@@ -45,7 +45,7 @@ function create_sub_menus(){
 					 "pano_quest_settings_page");
 
 	// Create the sub menu item for quests
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
 					 "New Quest",
 					 "New Quest",
 					 "administrator",
@@ -69,7 +69,7 @@ function create_sub_menus(){
 					 "pano_mission_settings_page");
 
 	// Create the sub menu item for quests
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
 					 "New Mission",
 					 "New Mission",
 					 "administrator",
@@ -94,7 +94,7 @@ function create_sub_menus(){
 
 
 	// Create the sub menu item for quests
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
 					 "New Hotspot",
 					 "New Hotspot",
 					 "administrator",

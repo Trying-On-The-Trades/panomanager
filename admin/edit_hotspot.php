@@ -5,6 +5,7 @@ function edit_hotspot_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
     $missions = get_missions();
+	$types	  = get_types();
     $hotspot  = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -40,7 +41,6 @@ function edit_hotspot_settings_page() {
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="edit_hotspot" />
     <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
-    <input type="hidden" name="type_id" value="1" />
     <div class="ui form segment new_pano_form">
 	    <div class="ui form">
 	      <div class="field">
@@ -50,6 +50,16 @@ function edit_hotspot_settings_page() {
                      <option value="<?php echo $mission->mission_id ?>" <?php echo ($mission->mission_id === $hotspot->get_mission_id()) ? "selected" : "" ?>><?php echo $mission->name ?></option>
                  <?php endforeach; ?>
             </select>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="type_id">Select a Type</label>
+	        <select name="type_id">
+                 <?php foreach($types as $type): ?>
+					<option value="<?php echo $type->id ?>" <?php echo ($type->id === $hotspot->get_type_id()) ? "selected" : "" ?>><?php echo $type->name ?></option>
+				 <?php endforeach; ?>
+			</select>
 	      </div>
 	    </div>
 	    <div class="ui form">

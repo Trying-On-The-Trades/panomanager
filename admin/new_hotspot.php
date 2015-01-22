@@ -4,6 +4,7 @@
 function new_hotspot_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $missions = get_missions();
+	$types	  = get_types();
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new hotspot!</h2>
@@ -26,7 +27,6 @@ function new_hotspot_settings_page() {
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_hotspot" />
-    <input type="hidden" name="type_id" value="1" />
     <div class="ui form segment new_pano_form">
 	    <div class="ui form">
 	      <div class="field">
@@ -36,6 +36,16 @@ function new_hotspot_settings_page() {
                     <option value="<?php echo $mission->mission_id ?>"><?php echo $mission->name ?></option>
                  <?php endforeach; ?>
             </select>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="type_id">Select a Type</label>
+	        <select name="type_id">
+                 <?php foreach($types as $type): ?>
+					<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+				 <?php endforeach; ?>
+			</select>
 	      </div>
 	    </div>
 	    <div class="ui form">
