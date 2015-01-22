@@ -37,10 +37,19 @@ add_action('admin_menu', 'pano_create_menu');
 // Add the process pano hook
 add_action( 'admin_post_pano', 'process_pano' );
 add_action( 'admin_post_create_new_pano', 'process_new_pano' );
-add_action( 'admin_post_edit_new_pano', 'process_edit_pano' );
+add_action( 'admin_post_edit_pano', 'process_edit_pano' );
 
 // Add the process quest hook
 add_action( 'admin_post_create_new_quest', 'process_new_quest' );
+add_action( 'admin_post_edit_quest', 'process_edit_quest' );
+
+// Add the process mission hook
+add_action( 'admin_post_create_new_mission', 'process_new_mission' );
+add_action( 'admin_post_edit_mission', 'process_edit_mission' );
+
+// Add the process hotspot hook
+add_action( 'admin_post_create_new_hotspot', 'process_new_hotspot' );
+add_action( 'admin_post_edit_hotspot', 'process_edit_hotspot' );
 
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
@@ -67,6 +76,13 @@ require_once("admin/new_pano.php");
 require_once("admin/edit_pano.php");
 require_once("admin/quests.php");
 require_once("admin/new_quest.php");
+require_once("admin/edit_quest.php");
+require_once("admin/missions.php");
+require_once("admin/new_mission.php");
+require_once("admin/edit_mission.php");
+require_once("admin/hotspots.php");
+require_once("admin/new_hotspot.php");
+require_once("admin/edit_hotspot.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

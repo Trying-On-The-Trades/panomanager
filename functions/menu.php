@@ -28,7 +28,7 @@ function create_sub_menus(){
 					 "new_pano_settings", 
 					 "new_pano_settings_page");
 
-	// Create the sub menu item for new panos
+	// Create the sub menu item for editing panos
 	add_submenu_page(null,
 					 "Edit Pano",
 					 "Edit Pano",
@@ -51,4 +51,63 @@ function create_sub_menus(){
 					 "administrator",
 					 "new_quest_settings",
 					 "new_quest_settings_page");
+
+	// Create the sub menu item for editng quests
+	add_submenu_page(null,
+					 "Edit Quest",
+					 "Edit Quest",
+					 "administrator",
+					 "edit_quest_settings",
+					 "edit_quest_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu",
+					 "Missions",
+					 "Missions",
+					 "administrator",
+					 "pano_mission_settings",
+					 "pano_mission_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu",
+					 "New Mission",
+					 "New Mission",
+					 "administrator",
+					 "new_mission_settings",
+					 "new_mission_settings_page");
+
+	// Create the sub menu item for editng quests
+	add_submenu_page(null,
+					"Edit Mission",
+					"Edit Mission",
+					"administrator",
+					"edit_mission_settings",
+					"edit_mission_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu",
+					 "Hotspots",
+					 "Hotspots",
+					 "administrator",
+					 "pano_hotspot_settings",
+					 "pano_hotspot_settings_page");
+
+
+	// Create the sub menu item for quests
+	add_submenu_page("pano_menu",
+					 "New Hotspot",
+					 "New Hotspot",
+					 "administrator",
+					 "new_hotspot_settings",
+					 "new_hotspot_settings_page");
+
+
+	// Create the sub menu item for editng quests
+	add_submenu_page(null,
+					"Edit Hotspot",
+					"Edit Hotspot",
+					"administrator",
+					"edit_hotspot_settings",
+					"edit_hotspot_settings_page");
+
 }

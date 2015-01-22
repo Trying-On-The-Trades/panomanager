@@ -143,7 +143,7 @@ function get_quests(){
 
     // DB query
     $quests = $wpdb->get_results( 
-            "SELECT wpq.*, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
+            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.trade_id, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpq.id " .
             "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.pano_id = wpq.panno_id " .
             "WHERE wpqt.language_code = " . $language_code);
@@ -161,11 +161,11 @@ function get_quest($quest_id){
 
     // DB query
     $quest = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT * FROM " . $quest_table_name . " wpq " .
+            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.trade_id, wpqt.* FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
             "wpqt.quest_id = wpq.id " .
             "WHERE wpqt.language_code = " . $language_code .
-            " AND wpq.id = %d", $quest_id)
+            " AND wpq.id = %d ", $quest_id)
     );
 
     // Returnß
@@ -190,6 +190,40 @@ function get_quest_by_pano($pano_id){
 
 	// Returnß
 	return $quest;
+}
+
+function get_missions(){
+    global $wpdb;
+
+    $quest_text_table_name = get_quest_text_table_name();
+    $mission_table_name = get_mission_table_name();
+    $mission_text_table_name = get_mission_text_table_name();
+    $language_code = get_user_language();
+
+    // DB query
+    $missions = $wpdb->get_results(
+        "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.*, wpqt.name as quest_name FROM " . $mission_table_name . " wpm " .
+        "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wpm.id " .
+        "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpm.quest_id " .
+        "WHERE wpmt.language_code = " . $language_code);
+
+    // Return
+    return $missions;
+}
+
+function get_hotspots(){
+    global $wpdb;
+
+    $mission_text_table_name = get_mission_text_table_name();
+    $hotspot_table_name      = get_hotspot_table_name();
+
+    // DB query
+    $hotspots = $wpdb->get_results(
+                "SELECT wph.*, wpmt.name as mission_name FROM " . $hotspot_table_name . " wph " .
+                "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id ");
+
+    // Return
+    return $hotspots;
 }
 
 function get_mission_ids($quest_id){
@@ -219,11 +253,11 @@ function get_mission($mission_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT * FROM " . $mission_table_name . " wpm " .
+            "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
             "INNER JOIN " . $mission_text_table_name . " wpmt ON " .
             " wpm.`id` = wpmt.`mission_id` " .
             " WHERE wpmt.language_code = " . $language_code .
-            " AND wpm.id = %d", $mission_id)
+            " AND wpm.id = %d",  $mission_id)
     );
 
     return $mission;
@@ -253,7 +287,7 @@ function get_hotspot($hotspot_id){
             $hotspot_table_name . " wph " .
             "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
             " wph.`type_id` = wpht.`id` " .
-            " WHERE wph.id = %d", $hotspot_id)
+            " WHERE wph.id = %d",  $hotspot_id)
     );
     return $mission;
 }
@@ -266,7 +300,7 @@ function get_types(){
 	$hotspot = $wpdb->get_results( 
 		"SELECT * FROM " . $type_table_name . " wpht ");
 
-	return $hotspots;
+	return $hotspot;
 }	
 
 function get_hotspot_type($hotspot_type_id){
@@ -278,7 +312,7 @@ function get_hotspot_type($hotspot_type_id){
 		"SELECT * FROM " . $type_table_name . " wpht " .
 		"WHERE wpht.id = " . $hotspot_type_id);
 
-	return $hotspots;
+	return $hotspot;
 }
 
 function get_pano_prereq($pano_id){
@@ -498,8 +532,8 @@ function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
         $wpdb->update( $text_table_name,
             array(
                 'language_code' => $language_code,
-                'name' => $pano_name,
-                'description' => $pano_description
+                'name'          => $pano_name,
+                'description'   => $pano_description
             ),
             array('pano_id' => $pano_id));
 
@@ -509,11 +543,87 @@ function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
     }
 }
 
-function update_quest(){
+function update_quest($quest_id, $quest_name, $quest_description, $pano_id){
+    global $wpdb;
+    $quest_table_name = get_quest_table_name();
+    $text_table_name  = get_quest_text_table_name();
+    $language_code    = get_user_language();
+    $language_code    = str_replace("'","",$language_code);
+
+    if(isset($quest_id) && is_numeric($quest_id)){
+        $wpdb->update( $quest_table_name,
+            array('panno_id' => $pano_id),
+            array('id'       => $quest_id));
+
+        $wpdb->update( $text_table_name,
+            array(
+                'language_code' => $language_code,
+                'name'          => $quest_name,
+                'description'   => $quest_description
+            ),
+            array('quest_id' => $quest_id));
+
+        return true;
+    } else {
+        return false;
+    }
 
 }
 
-function update_hotspot(){
+function update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id){
+    global $wpdb;
+    $mission_table_name = get_mission_table_name();
+    $text_table_name    = get_mission_text_table_name();
+    $language_code      = get_user_language();
+    $language_code      = str_replace("'","",$language_code);
+
+    if(isset($mission_id) && is_numeric($mission_id)){
+        $wpdb->update( $mission_table_name,
+                array(
+                    'quest_id'    => $quest_id,
+                    'points'      => $mission_points,
+                    'mission_xml' => $mission_xml),
+                array('id'        => $mission_id));
+
+        $wpdb->update( $text_table_name,
+            array(
+                'language_code' => $language_code,
+                'name'          => $mission_name,
+                'description'   => $mission_description
+            ),
+            array('mission_id' => $mission_id));
+
+        return true;
+    } else {
+        return false;
+    }
+
+
+}
+
+function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts){
+    global $wpdb;
+    $hotspot_table_name = get_hotspot_table_name();
+
+    if(isset($hotspot_id) && is_numeric($hotspot_id)){
+        $wpdb->update( $hotspot_table_name,
+                array(
+                    'mission_id'  => $mission_id,
+                    'type_id'     => $type_id,
+                    'name'        => $hotspot_name,
+                    'menu_name'   => $hotspot_menu_name,
+                    'description' => $hotspot_description,
+                    'hotspot_xml' => $hotspot_xml,
+                    'action_xml'  => $hotspot_action_xml,
+                    'points'      => $hotspot_points,
+                    'attempts'    => $hotspot_attempts),
+                array('id'        => $hotspot_id));
+
+        return true;
+    } else {
+        return false;
+    }
+
 
 }
 
@@ -561,9 +671,46 @@ function create_quest($quest_name, $quest_description, $pano_id){
                                                   'language_code' => $language_code,
                                                   'name'          => $quest_name,
                                                   'description'   => $quest_description));
-
     return $wpdb->insert_id;
 }
 
-function create_hotspot(){
+function create_mission($mission_name, $mission_description, $mission_xml, $quest_id, $mission_points){
+    global $wpdb;
+    $mission_table_name      = get_mission_table_name();
+    $mission_text_table_name = get_mission_text_table_name();
+    $language_code           = get_user_language();
+    $language_code           = str_replace("'","",$language_code);
+
+    // Insert the pano
+    $wpdb->insert( $mission_table_name, array( 'quest_id'    => $quest_id,
+                                               'points'      => $mission_points,
+                                               'mission_xml' => $mission_xml));
+
+    // Get the id of the last row
+    $lastid = $wpdb->insert_id;
+
+    // Insert the pano_text
+    $wpdb->insert( $mission_text_table_name, array( 'mission_id'    => $lastid,
+                                                    'language_code' => $language_code,
+                                                    'name'          => $mission_name,
+                                                    'description'   => $mission_description));
+    return $wpdb->insert_id;
+}
+
+function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts){
+    global $wpdb;
+    $hotspot_table_name = get_hotspot_table_name();
+
+    // Insert the pano
+    $wpdb->insert( $hotspot_table_name, array( 'mission_id'  => $mission_id,
+                                               'type_id'     => $type_id,
+                                               'name'        => $hotspot_name,
+                                               'menu_name'   => $hotspot_menu_name,
+                                               'description' => $hotspot_description,
+                                               'hotspot_xml' => $hotspot_xml,
+                                               'action_xml'  => $hotspot_action_xml,
+                                               'points'      => $hotspot_points,
+                                               'attempts'    => $hotspot_attempts));
+
+    return $wpdb->insert_id;
 }

@@ -17,7 +17,7 @@ class pano{
 		}
 	}
 
-	// Load up the pano into the opbject
+	// Load up the pano into the object
 	function build($pano_row){
 
 		// Load the data if the id exists
@@ -30,9 +30,9 @@ class pano{
 		}
 	}
         
-        function get_prereq(){
-            return $this->prereqs;
-        }
+	function get_prereq(){
+		return $this->prereqs;
+	}
 
 	function get_id(){
 		return $this->id;

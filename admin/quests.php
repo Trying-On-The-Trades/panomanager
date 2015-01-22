@@ -39,7 +39,7 @@ function pano_quest_settings_page() {
             <td><?php echo $quest->description ?></td>
             <td><?php echo $quest->language_code ?></td>
             <td><?php echo $quest->pano_name ?></td>
-            <td><a class="ui blue icon button" href="<?php echo $edit_quest_url ?>&id=<?php echo $quest->id ?>" style="padding: 7px">Edit</a></td>
+            <td><a class="ui blue icon button" href="<?php echo $edit_quest_url ?>&id=<?php echo $quest->quest_id ?>" style="padding: 7px">Edit</a></td>
         </tr>
 
       <?php endforeach; ?>

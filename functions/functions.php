@@ -84,8 +84,21 @@ function build_pano($pano_id = 1){
 }
 
 function build_quest($quest_id = 1){
+
     $quest = new quest($quest_id);
     return $quest;
+}
+
+function build_mission($mission_id = 1){
+
+    $mission = new mission($mission_id);
+    return $mission;
+}
+
+function build_hotspot($hotspot_id = 1){
+
+    $hotspot = new hotspot($hotspot_id);
+    return $hotspot;
 }
 
 // Get the user's prefered language
@@ -295,7 +308,7 @@ function calculate_total_user_points(){
 function process_new_pano(){
 
 	// Create a new pano using the post data
-    $pano_xml         = $_POST['pano_xml'];
+    $pano_xml         = stripslashes($_POST['pano_xml']);
     $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
 
@@ -307,7 +320,7 @@ function process_new_pano(){
 
 function process_new_quest(){
 
-    // Create a new pano using the post data
+    // Create a new quest using the post data
     $quest_name        = $_POST['quest_name'];
     $quest_description = $_POST['quest_description'];
     $pano_id           = $_POST['pano_id'];
@@ -320,10 +333,36 @@ function process_new_quest(){
 
 function process_new_mission(){
 
+    // Create a new mission using the post data
+    $mission_name        = $_POST['mission_name'];
+    $mission_description = $_POST['mission_description'];
+    $mission_xml         = stripslashes($_POST['mission_xml']);
+    $quest_id            = $_POST['quest_id'];
+    $mission_points      = $_POST['mission_points'];
+
+    // Get the id
+    create_mission($mission_name, $mission_description, $mission_xml, $quest_id, $mission_points);
+
+    wp_redirect( admin_url( 'admin.php?page=pano_mission_settings' ) );
 }
 
 function process_new_hotspot(){
 
+    // Create a new hotspot using the post data
+    $mission_id          = $_POST['mission_id'];
+    $type_id             = $_POST['type_id'];
+    $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_menu_name   = $_POST['hotspot_menu_name'];
+    $hotspot_description = $_POST['hotspot_description'];
+    $hotspot_xml         = stripslashes($_POST['hotspot_xml']);
+    $hotspot_action_xml  = stripslashes($_POST['hotspot_action_xml']);
+    $hotspot_points      = $_POST['hotspot_points'];
+    $hotspot_attempts    = $_POST['hotspot_attempts'];
+
+    // Get the id
+    create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts);
+
+    wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
 
 // ***********************************************************
@@ -333,7 +372,7 @@ function process_edit_pano(){
 
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
-    $pano_xml         = $_POST['pano_xml'];
+    $pano_xml         = stripslashes($_POST['pano_xml']);
     $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
 
@@ -344,6 +383,68 @@ function process_edit_pano(){
         wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&settings-saved') );
     } else {
         wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&error') );
+    }
+}
+
+function process_edit_quest(){
+
+    // Create a new quest using the post data
+    $quest_id          = $_POST['quest_id'];
+    $quest_name        = $_POST['quest_name'];
+    $quest_description = $_POST['quest_description'];
+    $pano_id           = $_POST['pano_id'];
+
+    // Get the id
+    $return = update_quest($quest_id, $quest_name, $quest_description, $pano_id);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=edit_quest_settings&id=' . $quest_id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_quest_settings&id=' . $quest_id . '&error') );
+    }
+}
+
+function process_edit_mission(){
+
+    // Create a new mission using the post data
+    $mission_id          = $_POST['mission_id'];
+    $mission_name        = $_POST['mission_name'];
+    $mission_description = $_POST['mission_description'];
+    $mission_xml         = stripslashes($_POST['mission_xml']);
+    $mission_points      = $_POST['mission_points'];
+    $quest_id            = $_POST['quest_id'];
+
+    // Get the id
+    $return = update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=edit_mission_settings&id=' . $mission_id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_mission_settings&id=' . $mission_id . '&error') );
+    }
+}
+
+function process_edit_hotspot(){
+
+    // Create a new hotspot using the post data
+    $mission_id          = $_POST['mission_id'];
+    $type_id             = $_POST['type_id'];
+    $hotspot_id          = $_POST['hotspot_id'];
+    $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_menu_name   = $_POST['hotspot_menu_name'];
+    $hotspot_description = $_POST['hotspot_description'];
+    $hotspot_xml         = stripslashes($_POST['hotspot_xml']);
+    $hotspot_action_xml  = stripslashes($_POST['hotspot_action_xml']);
+    $hotspot_points      = $_POST['hotspot_points'];
+    $hotspot_attempts    = $_POST['hotspot_attempts'];
+
+    // Get the id
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&error') );
     }
 }
 

@@ -15133,3 +15133,7 @@ ol.ui.horizontal.list li:before,
 .ui.statistic > .description {
   opacity: 0.8;
 }
+
+div#wpfooter {
+  position: inherit!important;
+}

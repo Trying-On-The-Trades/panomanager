@@ -2,7 +2,7 @@
 
 class hotspot{
 
-	protected $id, $pano_id, $description, 
+	protected $id, $pano_id, $mission_id, $description,
                   $name, $menu_name, $language_code, 
                   $xml, $action_xml, $points, $menu_item,
                   $type_id, $attempts,
@@ -25,6 +25,7 @@ class hotspot{
                 $this->exists      = 1;
                 $this->menu_item   = $hotspot_row->menu_item;
                 $this->id          = $hotspot_row->id;
+                $this->mission_id  = $hotspot_row->mission_id;
                 $this->attempts    = $hotspot_row->attempts;
                 $this->name        = $hotspot_row->name;
                 $this->menu_name   = $hotspot_row->menu_name;
@@ -37,68 +38,73 @@ class hotspot{
                 $this->type_description = $hotspot_row->type_description;
             }
 	}
-        
-        function get_id(){
-            return $this->id;
-        }
 
-	function get_name(){
-		return $this->name;
-	}
-        
-        function get_menu_name(){
-            return $this->menu_name;
-        }
+    function get_id(){
+        return $this->id;
+    }
 
-	function get_description(){
-		return $this->description;
-	}
-        
-        function get_xml(){
-            return $this->xml;
-        }
-        
-        function get_action_xml(){
-            return $this->action_xml;
-        }
-        
-        function get_points(){
-            return $this->points;
-        }
 
-	function get_language(){
-		return $this->language_code;
-	}
-        
-        function get_type_id(){
-            return $this->type_id;
+    function get_mission_id(){
+        return $this->mission_id;
+    }
+
+    function get_name(){
+        return $this->name;
+    }
+
+    function get_menu_name(){
+        return $this->menu_name;
+    }
+
+    function get_description(){
+        return $this->description;
+    }
+
+    function get_xml(){
+        return $this->xml;
+    }
+
+    function get_action_xml(){
+        return $this->action_xml;
+    }
+
+    function get_points(){
+        return $this->points;
+    }
+
+    function get_language(){
+        return $this->language_code;
+    }
+
+    function get_type_id(){
+        return $this->type_id;
+    }
+
+    function get_type_name(){
+        return $this->type_name;
+    }
+
+    function get_type_description(){
+        return $this->type_description;
+    }
+
+    function get_attempts(){
+        return $this->attempts;
+    }
+
+    function get_completed_state(){
+        return $this->completed_state;
+    }
+
+    function set_completed_state($completed_state){
+        $this->completed_state = $completed_state;
+    }
+
+    function is_menu_item(){
+        if ($this->menu_item == 1){
+            return true;
+        } else {
+            return false;
         }
-        
-        function get_type_name(){
-            return $this->type_name;
-        }
-        
-        function get_type_description(){
-            return $this->type_description;
-        }
-        
-        function get_attempts(){
-            return $this->attempts;
-        }
-        
-        function get_completed_state(){
-            return $this->completed_state;
-        }
-        
-        function set_completed_state($completed_state){
-            $this->completed_state = $completed_state;
-        }
-        
-        function is_menu_item(){
-            if ($this->menu_item == 1){
-                return true;
-            } else {
-                return false;
-            }
-        }
+    }
 }
