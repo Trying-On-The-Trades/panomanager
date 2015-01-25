@@ -57,7 +57,7 @@ function get_panos(){
             "SELECT * FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " .
             "wppt.pano_id = wpp.id " .
-            "WHERE wppt.language_code = " . $language_code);
+            "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
 
     return $panos;
 }
@@ -146,7 +146,7 @@ function get_quests(){
             "SELECT wpq.id as quest_id, wpq.panno_id, wpq.trade_id, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpq.id " .
             "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.pano_id = wpq.panno_id " .
-            "WHERE wpqt.language_code = " . $language_code);
+            "WHERE wpqt.language_code = " . $language_code . " ORDER BY id ASC");
 
     // Return
     return $quests;
@@ -205,7 +205,7 @@ function get_missions(){
         "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.*, wpqt.name as quest_name FROM " . $mission_table_name . " wpm " .
         "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wpm.id " .
         "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpm.quest_id " .
-        "WHERE wpmt.language_code = " . $language_code);
+        "WHERE wpmt.language_code = " . $language_code . " ORDER BY id ASC");
 
     // Return
     return $missions;
@@ -219,8 +219,8 @@ function get_hotspots(){
 
     // DB query
     $hotspots = $wpdb->get_results(
-                "SELECT wph.*, wpmt.name as mission_name FROM " . $hotspot_table_name . " wph " .
-                "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id ");
+        "SELECT wph.*, wpmt.name as mission_name FROM " . $hotspot_table_name . " wph " .
+        "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id ORDER BY id ASC");
 
     // Return
     return $hotspots;
@@ -270,7 +270,7 @@ function get_hotspot_ids($mission_id){
 	// DB query joining the pano table and the pano text table
 	$hotspots = $wpdb->get_results( $wpdb->prepare( 
 		"SELECT wph.id FROM " . $hotspot_table_name . " wph " .
-		"WHERE wph.mission_id = " . $mission_id, ARRAY_A)
+		"WHERE wph.mission_id = " . $mission_id . " ORDER BY id ASC", ARRAY_A)
         );
 
 	return $hotspots;
@@ -283,7 +283,7 @@ function get_hotspot($hotspot_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT wph.*, wpht.name type_name, wpht.description type_description FROM " . 
+            "SELECT wph.*, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
             $hotspot_table_name . " wph " .
             "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
             " wph.`type_id` = wpht.`id` " .
@@ -308,11 +308,13 @@ function get_hotspot_type($hotspot_type_id){
 	$type_table_name = get_type_table_name();
 
 	// Get a specific type from the db
-	$hotspot = $wpdb->get_results( 
-		"SELECT * FROM " . $type_table_name . " wpht " .
-		"WHERE wpht.id = " . $hotspot_type_id);
 
-	return $hotspot;
+    $hotspot_type = $wpdb->get_row( $wpdb->prepare(
+        "SELECT * FROM " . $type_table_name . " wpht " .
+        "WHERE wpht.id = %d", $hotspot_type_id)
+    );
+
+	return $hotspot_type;
 }
 
 function get_pano_prereq($pano_id){
@@ -601,30 +603,49 @@ function update_mission($mission_id, $mission_name, $mission_description, $missi
 
 }
 
-function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts){
+function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url){
     global $wpdb;
     $hotspot_table_name = get_hotspot_table_name();
 
     if(isset($hotspot_id) && is_numeric($hotspot_id)){
         $wpdb->update( $hotspot_table_name,
-                array(
-                    'mission_id'  => $mission_id,
-                    'type_id'     => $type_id,
-                    'name'        => $hotspot_name,
-                    'menu_name'   => $hotspot_menu_name,
-                    'description' => $hotspot_description,
-                    'hotspot_xml' => $hotspot_xml,
-                    'action_xml'  => $hotspot_action_xml,
-                    'points'      => $hotspot_points,
-                    'attempts'    => $hotspot_attempts),
-                array('id'        => $hotspot_id));
+            array(
+                'mission_id'  => $mission_id,
+                'type_id'     => $type_id,
+                'name'        => $hotspot_name,
+                'menu_name'   => $hotspot_menu_name,
+                'description' => $hotspot_description,
+                'hotspot_xml' => $hotspot_xml,
+                'action_xml'  => $hotspot_action_xml,
+                'points'      => $hotspot_points,
+                'attempts'    => $hotspot_attempts,
+                'trade_id'    => $hotspot_trade_id,
+                'modal_url'   => $hotspot_modal_url),
+            array('id'        => $hotspot_id));
 
         return true;
     } else {
         return false;
     }
+}
 
+function update_hotspot_type($hotspot_type_id, $hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_js_function){
+    global $wpdb;
+    $hotspot_type_table = get_type_table_name();
 
+    if(isset($hotspot_type_id) && is_numeric($hotspot_type_id)){
+        $wpdb->update( $hotspot_type_table,
+            array(
+                'name'        => $hotspot_type_name,
+                'description' => $hotspot_type_description,
+                'type_xml'    => $hotspot_type_xml,
+                'js_function' => $hotspot_type_js_function),
+            array('id'        => $hotspot_type_id));
+
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // ***********************************************************
@@ -711,6 +732,19 @@ function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name
                                                'action_xml'  => $hotspot_action_xml,
                                                'points'      => $hotspot_points,
                                                'attempts'    => $hotspot_attempts));
+
+    return $wpdb->insert_id;
+}
+
+function create_hotspot_type($hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_action_xml){
+    global $wpdb;
+    $hotspot_type_table_name = get_type_table_name();
+
+    // Insert the pano
+    $wpdb->insert( $hotspot_type_table_name, array( 'name'        => $hotspot_type_name,
+                                                    'description' => $hotspot_type_description,
+                                                    'type_xml'    => $hotspot_type_xml,
+                                                    'js_function' => $hotspot_type_action_xml));
 
     return $wpdb->insert_id;
 }

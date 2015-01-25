@@ -216,6 +216,7 @@ function build_hotspot_sql(){
       `points` int(10) NOT NULL,
       `attempts` int(10) NOT NULL,
       `trade_id` int(11) DEFAULT NULL,
+      `modal_url` text,
       PRIMARY KEY (`id`)
     );';
 
@@ -230,6 +231,7 @@ function build_type_sql(){
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `type_xml` text NOT NULL,
+      `js_function` varchar(255),
       PRIMARY KEY (`id`)
     );';
 

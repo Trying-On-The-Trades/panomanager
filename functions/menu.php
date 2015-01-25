@@ -110,4 +110,30 @@ function create_sub_menus(){
 					"edit_hotspot_settings",
 					"edit_hotspot_settings_page");
 
+	// Create the sub menu item for quests
+	add_submenu_page(null,
+					"Hotspots Type",
+					"Hotspots Type",
+					"administrator",
+					"pano_hotspot_type_settings",
+					"pano_hotspot_type_settings_page");
+
+
+	// Create the sub menu item for quests
+	add_submenu_page(null,
+					"New Hotspot Type",
+					"New Hotspot Type",
+					"administrator",
+					"new_hotspot_type_settings",
+					"new_hotspot_type_settings_page");
+
+
+	// Create the sub menu item for editng quests
+	add_submenu_page(null,
+					"Edit Hotspot Type",
+					"Edit Hotspot Type",
+					"administrator",
+					"edit_hotspot_type_settings",
+					"edit_hotspot_type_settings_page");
+
 }

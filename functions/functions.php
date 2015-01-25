@@ -39,7 +39,7 @@ function check_user_progress($pano_id){
 	// the user to see the pano
 	$allowed = false;
         
-        $user_id = get_current_user_id();
+    $user_id = get_current_user_id();
 
 	// Check if the pano has a prereq
 	$prereq = get_pano_prereqs($pano_id);
@@ -53,6 +53,7 @@ function check_user_progress($pano_id){
             
             // Get the points by skill
             $skill_points = get_user_skill_points($skill_id, $user_id);
+
             // Add up the points
             $total_points = $mission_points + $skill_points;
             
@@ -99,6 +100,12 @@ function build_hotspot($hotspot_id = 1){
 
     $hotspot = new hotspot($hotspot_id);
     return $hotspot;
+}
+
+function build_hotspot_type($hotspot_type_id = 1){
+
+    $hotspot_type = new hotspotType($hotspot_type_id);
+    return $hotspot_type;
 }
 
 // Get the user's prefered language
@@ -312,8 +319,17 @@ function process_new_pano(){
     $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
 
+    print_r($_POST);
+    print_r($_FILES);
+    die();
+
 	// Get the id
-    create_pano($pano_xml, $pano_name, $pano_description);
+    $pano_id = create_pano($pano_xml, $pano_name, $pano_description);
+
+    // // Process the zip
+    if(isset($_FILES['pano_zip'])) {
+        upload_panos($_FILES['pano_zip'], $pano_id);
+    }
 
     wp_redirect( admin_url( 'admin.php?page=pano_menu' ) );
 }
@@ -322,7 +338,7 @@ function process_new_quest(){
 
     // Create a new quest using the post data
     $quest_name        = $_POST['quest_name'];
-    $quest_description = $_POST['quest_description'];
+    $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
 
     // Get the id
@@ -335,8 +351,8 @@ function process_new_mission(){
 
     // Create a new mission using the post data
     $mission_name        = $_POST['mission_name'];
-    $mission_description = $_POST['mission_description'];
-    $mission_xml         = stripslashes($_POST['mission_xml']);
+    $mission_description = trim($_POST['mission_description']);
+    $mission_xml         = trim(stripslashes($_POST['mission_xml']));
     $quest_id            = $_POST['quest_id'];
     $mission_points      = $_POST['mission_points'];
 
@@ -353,9 +369,9 @@ function process_new_hotspot(){
     $type_id             = $_POST['type_id'];
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
-    $hotspot_description = $_POST['hotspot_description'];
-    $hotspot_xml         = stripslashes($_POST['hotspot_xml']);
-    $hotspot_action_xml  = stripslashes($_POST['hotspot_action_xml']);
+    $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
+    $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
 
@@ -365,6 +381,20 @@ function process_new_hotspot(){
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
 
+function process_new_hotspot_type(){
+
+    // Create a new hotspot using the post data
+    $hotspot_type_name        = $_POST['hotspot_type_name'];
+    $hotspot_type_description = trim($_POST['hotspot_type_description']);
+    $hotspot_type_xml         = trim(stripslashes($_POST['hotspot_type_xml']));
+    $hotspot_type_action_xml  = $_POST['hotspot_type_js_function'];
+
+    // Get the id
+    create_hotspot_type($hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_action_xml);
+
+    wp_redirect( admin_url( 'admin.php?page=pano_hotspot_type_settings' ) );
+}
+
 // ***********************************************************
 //				    Editing Existing Panos
 // ***********************************************************
@@ -372,9 +402,9 @@ function process_edit_pano(){
 
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
-    $pano_xml         = stripslashes($_POST['pano_xml']);
+    $pano_xml         = trim(stripslashes($_POST['pano_xml']));
     $pano_name        = $_POST['pano_name'];
-    $pano_description = $_POST['pano_description'];
+    $pano_description = trim($_POST['pano_description']);
 
     // Get the id
     $return = update_pano($pano_id, $pano_xml, $pano_name, $pano_description);
@@ -391,7 +421,7 @@ function process_edit_quest(){
     // Create a new quest using the post data
     $quest_id          = $_POST['quest_id'];
     $quest_name        = $_POST['quest_name'];
-    $quest_description = $_POST['quest_description'];
+    $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
 
     // Get the id
@@ -409,8 +439,8 @@ function process_edit_mission(){
     // Create a new mission using the post data
     $mission_id          = $_POST['mission_id'];
     $mission_name        = $_POST['mission_name'];
-    $mission_description = $_POST['mission_description'];
-    $mission_xml         = stripslashes($_POST['mission_xml']);
+    $mission_description = trim($_POST['mission_description']);
+    $mission_xml         = trim(stripslashes($_POST['mission_xml']));
     $mission_points      = $_POST['mission_points'];
     $quest_id            = $_POST['quest_id'];
 
@@ -432,19 +462,40 @@ function process_edit_hotspot(){
     $hotspot_id          = $_POST['hotspot_id'];
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
-    $hotspot_description = $_POST['hotspot_description'];
-    $hotspot_xml         = stripslashes($_POST['hotspot_xml']);
-    $hotspot_action_xml  = stripslashes($_POST['hotspot_action_xml']);
+    $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
+    $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
+    $hotspot_trade_id    = $_POST['hotspot_trade_id'];
+    $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
-    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts);
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&settings-saved') );
     } else {
         wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&error') );
+    }
+}
+
+function process_edit_hotspot_type(){
+
+    // Create a new hotspot using the post data
+    $hotspot_type_id          = $_POST['hotspot_type_id'];
+    $hotspot_type_name        = $_POST['hotspot_type_name'];
+    $hotspot_type_description = trim($_POST['hotspot_type_description']);
+    $hotspot_type_xml         = trim(stripslashes($_POST['hotspot_type_xml']));
+    $hotspot_type_js_function = $_POST['hotspot_type_js_function'];
+
+    // Get the id
+    $return = update_hotspot_type($hotspot_type_id, $hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_js_function);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_type_settings&id=' . $hotspot_type_id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_type_settings&id=' . $hotspot_type_id . '&error') );
     }
 }
 
@@ -476,23 +527,19 @@ function get_pano_ad_message($quest){
 // ***********************************************************
 
 // Handle uploading panos
-function upload_panos($file, $pano_id){
-	$upload_dir = wp_upload_dir();
-
-	// Make a pano file at the directory if it doesn't exist
-	$pano_directory = $upload_dir['baseurl'] . "/panos/";
-
+function upload_panos($file, $pano_id)
+{
+    // Make a pano file at the directory if it doesn't exist
+    $pano_directory = ABSPATH . "wp-content/panos/";
 	// If the upload directory doesn't exist, make it
 	if (!check_file($pano_directory)){
-		mkdir($pano_directory, 0654, true);
+
+        mkdir($pano_directory, 0755, true);
 	}
 
 	// Process the upload data
-	$filename = $_FILES["zip_file"]["name"];
-	$source = $_FILES["zip_file"]["tmp_name"];
-	$type = $_FILES["zip_file"]["type"];
-	
-	$name = explode(".", $filename);
+    $source   = $file["tmp_name"];
+	$type     = $file["type"];
 
 	$accepted_types = array('application/zip', 
 		                    'application/x-zip-compressed', 
@@ -505,34 +552,33 @@ function upload_panos($file, $pano_id){
 			break;
 		} 
 	}
-	
-	$continue = strtolower($name[1]) == 'zip' ? true : false;
-	if(!$continue) {
-		$message = "The file you are trying to upload is not a .zip file. Please try again.";
+
+	$zip_target_path = $pano_directory. "pano" . $pano_id. ".zip";  // change this to the correct site path
+    $target_path = $pano_directory . $pano_id;
+
+    if (!check_file($target_path)){
+        mkdir($target_path, 0755, true);
+    }
+
+	if(move_uploaded_file($source, $zip_target_path)) {
+
+		$zip = new ZipArchive();
+		$x = $zip->open($zip_target_path, ZIPARCHIVE::CREATE | ZIPARCHIVE::CREATE);
+		if ($x === true) {
+			$zip->extractTo($target_path); // change this to the correct site path
+			$zip->close();
+
+            unlink($zip_target_path);
+		}
 	}
 
-	$target_path = "/home/var/yoursite/httpdocs/".$filename;  // change this to the correct site path
-	if(move_uploaded_file($source, $target_path)) {
-		$zip = new ZipArchive();
-		$x = $zip->open($target_path);
-		if ($x === true) {
-			$zip->extractTo("/var/ww/tott/"); // change this to the correct site path
-			$zip->close();
-	
-			unlink($target_path);
-		}
-		$message = "Your .zip file was uploaded and unpacked.";
-	} else {	
-		$message = "There was a problem with the upload. Please try again.";
-	}
 	
 }
 
 // Function for checking if the directory exists
 function check_file($file){
-	if (file_exists($file)){
+	if (file_exists($file))
 		return true;
-	} else {
-		return false;
-	}
+
+    return false;
 }

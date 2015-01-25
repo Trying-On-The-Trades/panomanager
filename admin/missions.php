@@ -23,7 +23,7 @@ function pano_mission_settings_page() {
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="admin_post_pano" />
 
-    <h2>Quests</h2>
+    <h2>Missions</h2>
     <table class="ui table segment">
       <tr>
         <th>Mission</th>

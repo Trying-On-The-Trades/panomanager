@@ -6,7 +6,7 @@ function new_hotspot_settings_page() {
     $missions = get_missions();
 	$types	  = get_types();
     ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
+<!--<link rel="stylesheet" type="text/css" href="--><?php //echo $semantic ?><!--"/>-->
 <h2>Create a new hotspot!</h2>
 <hr>
 <style type="text/css">
@@ -36,16 +36,6 @@ function new_hotspot_settings_page() {
                     <option value="<?php echo $mission->mission_id ?>"><?php echo $mission->name ?></option>
                  <?php endforeach; ?>
             </select>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="type_id">Select a Type</label>
-	        <select name="type_id">
-                 <?php foreach($types as $type): ?>
-					<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
-				 <?php endforeach; ?>
-			</select>
 	      </div>
 	    </div>
 	    <div class="ui form">
@@ -82,6 +72,16 @@ function new_hotspot_settings_page() {
 	      <div class="field">
             <label for="hotspot_points">Points</label>
             <input type="number" name="hotspot_points" id="hotspot_points" placeholder="10" required />
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="type_id">Select a Type</label>
+	        <select name="type_id">
+                 <?php foreach($types as $type): ?>
+					 <option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+				 <?php endforeach; ?>
+			</select>
 	      </div>
 	    </div>
 	    <div class="ui form">

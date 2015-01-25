@@ -51,6 +51,10 @@ add_action( 'admin_post_edit_mission', 'process_edit_mission' );
 add_action( 'admin_post_create_new_hotspot', 'process_new_hotspot' );
 add_action( 'admin_post_edit_hotspot', 'process_edit_hotspot' );
 
+// Add the process hotspot type hook
+add_action( 'admin_post_create_new_hotspot_type', 'process_new_hotspot_type' );
+add_action( 'admin_post_edit_hotspot_type', 'process_edit_hotspot_type' );
+
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
@@ -69,6 +73,7 @@ require_once("includes/pano.php");
 require_once("includes/quest.php");
 require_once("includes/mission.php");
 require_once("includes/hotspot.php");
+require_once("includes/hotspotType.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");
@@ -83,6 +88,9 @@ require_once("admin/edit_mission.php");
 require_once("admin/hotspots.php");
 require_once("admin/new_hotspot.php");
 require_once("admin/edit_hotspot.php");
+require_once("admin/hotspot_type.php");
+require_once("admin/new_hotspot_type.php");
+require_once("admin/edit_hotspot_type.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

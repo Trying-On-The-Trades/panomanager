@@ -14,7 +14,7 @@ function edit_hotspot_settings_page() {
 
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Edit a quest!</h2>
+<h2>Edit a Hotspot!</h2>
 <hr>
 <style type="text/css">
 	#wpfooter{
@@ -50,16 +50,6 @@ function edit_hotspot_settings_page() {
                      <option value="<?php echo $mission->mission_id ?>" <?php echo ($mission->mission_id === $hotspot->get_mission_id()) ? "selected" : "" ?>><?php echo $mission->name ?></option>
                  <?php endforeach; ?>
             </select>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="type_id">Select a Type</label>
-	        <select name="type_id">
-                 <?php foreach($types as $type): ?>
-					<option value="<?php echo $type->id ?>" <?php echo ($type->id === $hotspot->get_type_id()) ? "selected" : "" ?>><?php echo $type->name ?></option>
-				 <?php endforeach; ?>
-			</select>
 	      </div>
 	    </div>
 	    <div class="ui form">
@@ -104,7 +94,23 @@ function edit_hotspot_settings_page() {
             <input type="number" name="hotspot_attempts" id="hotspot_attempts" placeholder="1" value="<?php echo $hotspot->get_attempts() ?>" required />
 	      </div>
 	    </div>
-	    <?php submit_button(); ?>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="type_id">Select a Type</label>
+	        <select name="type_id">
+                 <?php foreach($types as $type): ?>
+					 <option value="<?php echo $type->id ?>" <?php echo ($type->id === $hotspot->get_type_id()) ? "selected" : "" ?>><?php echo $type->name ?></option>
+				 <?php endforeach; ?>
+			</select>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="hotspot_xml">Hotspot Modal Url</label>
+	        <input type="text" name="hotspot_modal_url" id="hotspot_modal_url" placeholder="" value="<?php echo $hotspot->get_modal_url(); ?>" required />
+	      </div>
+	    </div>
+		<?php submit_button(); ?>
 	</div>
 </form>
 </div>

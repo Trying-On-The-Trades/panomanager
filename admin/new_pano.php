@@ -49,12 +49,14 @@ $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 	        <textarea name="pano_xml" required ></textarea>
 	      </div>
 	    </div>
-	    <!-- <div class="ui form">
+	    <div class="ui form">
 	      <div class="field">
 	        <label for="zip_file">Choose a zip file to upload: </label>
-	    	<input id="file_input" type="file" name="pano_zip" />
+
+	         <?php wp_editor( "", "pano_zip", array( 'drag_drop_upload' => true ) ); ?>
+	    	 <!-- <input id="file_input" type="file" name="pano_zip" /> -->
 	      </div>
-	    </div> -->
+	    </div>
 	    <?php submit_button(); ?>
 	</div>
 </form>

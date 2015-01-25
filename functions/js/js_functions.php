@@ -17,8 +17,8 @@ function build_pano_javascript($pano_id, $pano, $quest){
         $script .= build_menu_nav($quest);
         
         // Get the scripts to build the navigation menu first
-        $script .= add_nav_script($quest);
-       
+        $script .= add_nav_script($quest, $pano_id);
+
         // Get the embed script
         $script .= build_embed_script($pano_swf_location, $pano_php_location);
         
@@ -99,11 +99,13 @@ function build_embed_script($pano_swf_location, $pano_php_location){
     return $script;
 }
 
-function add_nav_script($quest){
+function add_nav_script($quest, $pano_id){
+    $current_pano_url = get_site_url() . "?pano=" . $pano_id;
+
     $script = "\n<script type='text/javascript'>\n";
     
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = 'http://tott.e-apprentice.ca/?pano_id=';\n";
+    $script .=	"var siteAdr = '" . get_site_url() . "?pano_id=';\n";
     
     // Build the array of names
     $script .= build_names_array();
@@ -124,7 +126,7 @@ function add_nav_script($quest){
 	$script .= build_launch_hairstyling($quest);
 	$script .= build_launch_image($quest);
 	$script .= build_launch_game($quest);
-	$script .= build_manage_lightbox($quest);
+	$script .= build_manage_lightbox($quest, $current_pano_url);
 	$script .= build_launch_quizlet($quest);
 	$script .= build_launch_khan($quest);
 	$script .= build_launch_hazard($quest);
@@ -290,7 +292,6 @@ function build_leader_launch(){
     $script .= "}\n";
     $script .= "});\n";
     $script .= "magnificPopup = $.magnificPopup.instance; \n";
-//    $script .= "console.log('test');\n";
     $script .= "}\n";
 
 return $script;
@@ -298,68 +299,40 @@ return $script;
 
 function build_login_button(){
     $script  = "function launchLogin(){";
-    $script .= "window.location.replace('http://tott.e-apprentice.ca/login');";
+    $script .= "window.location.replace('" . get_site_url() . "/login');";
     $script .= "}";
     return $script;
 }
 
-function build_manage_lightbox($quest){
+function build_manage_lightbox($quest, $current_pano_url){
+
+    $menu_missions = get_hotspot_menu_objects($quest);    // Build the menu
+
 	$script  = "function launchLogin(){\n";
-	$script .= "window.location.replace('tott.e-apprentice.ca/login');\n";
+	$script .= "window.location.replace('" . get_site_url() . "/login');\n";
 	$script .= "}\n";
 	
 	$script  = "function manageLightbox(srcName)\n";
 	$script  .= "{\n";
 	$script  .=		"switch(srcName)\n";
 	$script  .=		"{\n";
-	$script  .=			"case 'cabinet':\n";
-	$script  .=				"launchImage('http://tott.e-apprentice.ca/wp-content/panos/1/TVCAB-5.jpg', 'Cabinet', 1);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'hairblower':\n";
-	$script  .=				"launchGame('http://tott.e-apprentice.ca/games/stylehat.1.3.html', 'hairblower', 2);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'speaker':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:khan_00', 'khan', 3);\n";
-	//http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises//khan-exercises/indirect/?ity_ef_site=raw&amp;ity_ef_slug=static%3Akhan_02&amp;ity_ef_origin=http%3A%2F%2Ftott.e-apprentice.ca%2Fwp-content%2Fplugins%2Fkhan-exercises%2Fkhan-exercises%2Findirect%2F%3Fity_ef_format%3Diframe%26ity_ef_slug%3Dstatic%3Akhan_02
-	$script  .=				"break;\n";
-	$script  .=			"case 'clock':\n";
-	$script  .=				"//launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'clock', 4);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'braid':\n";
-	$script  .=				"//launchHairstyling('http://109.73.239.136/~eapprent/tott/wp-content/uploads/stjames/blogger-image-569397039.jpg', 'braid');\n";
-	$script  .=				"launchImage('http://tott.e-apprentice.ca/wp-content/panos/1/blogger-image-569397039.jpg', 'Braid', 5);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'fe_1':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:khan_01', 'khan', 6);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'guy':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:khan_02', 'khan', 7);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'solution':\n";
-	$script  .=				"launchHairstyling('https://quizlet.com/52769033/scatter/embedv2', 'solution', 8);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'cody':\n";
-	$script  .=				"launchHairstyling('https://www.youtube.com/watch?v=BErPdC0UIK4', 'cody', 9);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'brooke':\n";
-	$script  .=				"launchHairstyling('https://www.youtube.com/watch?v=4ITKlmMrs8s', 'brooke', 10);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'gohome':\n";
-	$script  .=				"addPts(0,10);\n";
-	$script  .= 				"setInterval(function(){ window.location = 'http://tott.e-apprentice.ca/?pano_id=16'; }, 2000);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'whiteboard':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:khan_03', 'khan', 12);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'projector':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:khan_04', 'khan', 13);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'firealarm':\n";
-	$script  .=				"launchHazard('http://tott.e-apprentice.ca/games/spotHazzards/Hazzards_serverside.html', 'firealarm', 14);\n";
-	$script  .=				"break;\n";
-	$script  .=			"case 'khan':\n";
-	$script  .=				"launchKhan('http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:guy_decimals_on_the_number_line_1', 'khan', 15);\n";
-	$script  .=				"break;\n";
+
+    // Builds the switch jscase
+    foreach ($menu_missions as $item){
+
+        $script  .= "   case '" . $item->get_name() . "':\n";
+
+        if ($item->is_default()) {
+            // some action
+        } elseif($item->is_home()){
+            $script  .=	"   addPts(0,10);\n";
+            $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
+        } else {
+            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ");\n";
+            $script  .=	"break;\n";
+        }
+    }
+
 	$script  .=			"default:\n";
 	$script  .=				"launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'speaker');\n";
 	$script  .=		"}\n";
@@ -539,7 +512,8 @@ function build_launch_quizlet($quest)
 }
 
 function build_launch_Khan($quest)
-{       
+{
+
 	$script  = "function launchKhan(msgUrl, cnslCode, mnuId)\n";
 	$script  .=	"{\n";
         $script  .=             build_ad_message($quest);
@@ -558,12 +532,12 @@ function build_launch_Khan($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');";
-	$script  .=						"var contents = iframe.contents();";
-	$script  .=						"var khanFrame = $(contents).find('.mfp-iframe').contents();";
-	$script  .=						"var points = $(khanFrame).find('#points').html();";
+	$script  .=						"var iframe = $('.mfp-iframe');\n";
+	$script  .=						"var contents = iframe.contents();\n";
+	$script  .=						"var khanFrame = $(contents).find('.mfp-iframe').contents();\n";
+	$script  .=						"var points = $(khanFrame).find('#points').html();\n";
 	//$script  .=						"var points = $(contents).find('#points').html();";
-	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"points = points.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=						"addPts(mnuId,points); \n";
 	$script  .=						"magnificPopup.close(); \n";
@@ -585,8 +559,7 @@ function build_ad_message($quest){
         
     $script  .= "var ad_messages = [";
         foreach($messages as $message){
-            $script .= "\" . $message .  \",";
-	     //$script .= "'" . $message.  "',";
+            $script .= "\" $message \",";
         }
     $script  .= "];\n";
 

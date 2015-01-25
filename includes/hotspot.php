@@ -5,9 +5,10 @@ class hotspot{
 	protected $id, $pano_id, $mission_id, $description,
                   $name, $menu_name, $language_code, 
                   $xml, $action_xml, $points, $menu_item,
-                  $type_id, $attempts,
+                  $type_id, $attempts, $trade_id, $modal_url,
                   $type_name,
-                  $type_description;
+                  $type_description,
+                  $type_js_function;
         protected $completed_state = false;
         public    $exists   = 0;
 	
@@ -33,9 +34,12 @@ class hotspot{
                 $this->points      = $hotspot_row->points;
                 $this->xml         = $hotspot_row->hotspot_xml;
                 $this->action_xml  = $hotspot_row->action_xml;
+                $this->trade_id    = $hotspot_row->trade_id;
+                $this->modal_url   = $hotspot_row->modal_url;
                 $this->type_id     = $hotspot_row->type_id;
                 $this->type_name   = $hotspot_row->type_name;
                 $this->type_description = $hotspot_row->type_description;
+                $this->type_js_function = $hotspot_row->type_js_function;
             }
 	}
 
@@ -68,6 +72,14 @@ class hotspot{
         return $this->action_xml;
     }
 
+    function get_trade_id(){
+        return $this->trade_id;
+    }
+
+    function get_modal_url(){
+        return $this->modal_url;
+    }
+
     function get_points(){
         return $this->points;
     }
@@ -88,6 +100,10 @@ class hotspot{
         return $this->type_description;
     }
 
+    function get_type_js_function(){
+        return $this->type_js_function;
+    }
+
     function get_attempts(){
         return $this->attempts;
     }
@@ -102,6 +118,22 @@ class hotspot{
 
     function is_menu_item(){
         if ($this->menu_item == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function is_home(){
+        if ($this->type_js_function == "goHome"){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function is_default(){
+        if (is_null($this->type_js_function)){
             return true;
         } else {
             return false;

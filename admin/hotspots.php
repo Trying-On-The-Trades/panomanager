@@ -5,6 +5,7 @@ function pano_hotspot_settings_page() {
     $hotspots = get_hotspots();
 
     $semantic         = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
+    $hotspot_types    = admin_url() . "admin.php?page=pano_hotspot_type_settings";
     $new_hotspot_url  = admin_url() . "admin.php?page=new_hotspot_settings";
     $edit_hotspot_url = admin_url() . "admin.php?page=edit_hotspot_settings";
     ?>
@@ -23,7 +24,10 @@ function pano_hotspot_settings_page() {
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="admin_post_pano" />
 
-    <h2>Quests</h2>
+    <div>
+        <h2>Hotspots</h2>
+        <a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
+    </div>
     <table class="ui table segment">
       <tr>
         <th>Hotspot</th>
@@ -48,7 +52,7 @@ function pano_hotspot_settings_page() {
 
     <?php endforeach; ?>
     </table>
-    <a class="ui blue icon button" href="<?php echo $new_hotspot_url ?>" style="padding: 7px">New Mission</a>
+    <a class="ui blue icon button" href="<?php echo $new_hotspot_url ?>" style="padding: 7px">New Hotspot</a>
 </form>
 </div>
 
