@@ -106,7 +106,7 @@ function edit_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_xml">Hotspot Modal Url</label>
+	        <label for="hotspot_modal_url">Hotspot Modal Url</label>
 	        <input type="text" name="hotspot_modal_url" id="hotspot_modal_url" placeholder="" value="<?php echo $hotspot->get_modal_url(); ?>" required />
 	      </div>
 	    </div>

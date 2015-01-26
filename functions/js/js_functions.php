@@ -139,7 +139,8 @@ function add_nav_script($quest, $pano_id){
     
     $script .= build_menu_launch();
     $script .= build_leader_launch();
-    $script .= build_callback_function();
+    $script .= build_points_callback_function();
+    $script .= build_bonus_points_callback_function();
     $script .= build_login_button();
     
     $script .= "</script>";
@@ -328,7 +329,7 @@ function build_manage_lightbox($quest, $current_pano_url){
             $script  .=	"   addPts(0,10);\n";
             $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
         } else {
-            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ");\n";
+            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_trade_id() . ");\n";
             $script  .=	"break;\n";
         }
     }
@@ -346,7 +347,7 @@ function build_launch_image($quest)
 {
     $messages = get_pano_ad_message($quest);
     
-	$script  = "function launchImage(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
         
         $script  .=             "var ad_messages = [";
@@ -368,7 +369,7 @@ function build_launch_image($quest)
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=						"addPts(mnuId, points, tradeId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -381,7 +382,7 @@ function build_launch_image($quest)
 
 function build_launch_hairstyling($quest)
 {
-	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
         $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -400,7 +401,7 @@ function build_launch_hairstyling($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=						"addPts(mnuId, points, tradeId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -414,7 +415,7 @@ function build_launch_hairstyling($quest)
 
 function build_launch_hazard($quest)
 {
-	$script  = "function launchHazard(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
         //$script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -434,7 +435,7 @@ function build_launch_hazard($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=						"addPts(mnuId, points, tradeId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -448,7 +449,7 @@ function build_launch_hazard($quest)
 
 function build_launch_game($quest)
 {
-	$script  = "function launchGame(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
         $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -464,12 +465,12 @@ function build_launch_game($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');";
-	$script  .=						"var contents = iframe.contents();";
-	$script  .=						"var points = $(contents).find('#points').html();";
-	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"var iframe = $('.mfp-iframe');\n";
+	$script  .=						"var contents = iframe.contents();\n";
+	$script  .=						"var bonusPts = $(contents).find('#points').html();\n";
+	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -482,7 +483,7 @@ function build_launch_game($quest)
 
 function build_launch_quizlet($quest)
 {       
-	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
@@ -495,12 +496,12 @@ function build_launch_quizlet($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');";
-	$script  .=						"var contents = iframe.contents();";
-	$script  .=						"var points = $(contents).find('#scorevalue').html();";
-	$script  .=						"points = points.replace ( /[^\d.]/g, '' );";
+	$script  .=						"var iframe = $('.mfp-iframe');\n";
+	$script  .=						"var contents = iframe.contents();\n";
+	$script  .=						"var bonusPts = $(contents).find('#scorevalue').html();\n";
+	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -514,9 +515,9 @@ function build_launch_quizlet($quest)
 function build_launch_Khan($quest)
 {
 
-	$script  = "function launchKhan(msgUrl, cnslCode, mnuId)\n";
+	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
-        $script  .=             build_ad_message($quest);
+    $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
 	//$script  .=				"src: 'http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:absolute_value_equations' \n";
@@ -535,13 +536,12 @@ function build_launch_Khan($quest)
 	$script  .=						"var iframe = $('.mfp-iframe');\n";
 	$script  .=						"var contents = iframe.contents();\n";
 	$script  .=						"var khanFrame = $(contents).find('.mfp-iframe').contents();\n";
-	$script  .=						"var points = $(khanFrame).find('#points').html();\n";
-	//$script  .=						"var points = $(contents).find('#points').html();";
-	$script  .=						"points = points.replace ( /[^\d.]/g, '' );\n";
+	$script  .=						"var bonusPts = $(khanFrame).find('#points').html();\n";
+	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,10); \n";
+	$script  .=						"addPts(mnuId,points, tradeId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -694,28 +694,56 @@ function build_popup_styles(){
 }
 
 ///////////  Points Callback Functions
-function build_callback_function(){
-    $script  = "function addPts(id, pts){\n";
+function build_points_callback_function(){
+    $script  = "function addPts(id, pts, trade_id){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
-    
+
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
     $script .= "data: {action: 'update_progress',\n";
-    $script .= "hotspot: id},\n";
+    $script .= "       hotspot: id,\n";
+    $script .= "       trade_id: trade_id},\n";
     $script .= "success: function(d){\n";
-    $script .= "var earned_points = parseInt(d);\n";
-    $script .= "var total_points = points + earned_points;\n";
-    $script .= "$('#displayed_points').attr('data-points', total_points);\n";
-    $script .= "$('#displayed_points').html(total_points);\n";
-    $script .= "if(earned_points > 0){\n";
-    $script .= "$().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
-    $script .= "}\n";
+    $script .= "    var earned_points = parseInt(d);\n";
+    $script .= "    var total_points = points + earned_points;\n";
+    $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
+    $script .= "    $('#displayed_points').html(total_points);\n";
+    $script .= "    if(earned_points > 0){\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
+    $script .= "    }\n";
     $script .= "}\n";
     $script .= "});\n";
-    
-    $script .= "console.log(id);\n"; 
+
+    $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function build_bonus_points_callback_function(){
+    $script  = "function addBonusPts(id, pts, trade_id){\n";
+    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+
+    $script .= "$.ajax({\n";
+    $script .= "type: 'POST',\n";
+    $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "data: {action: 'update_progress_with_bonus',\n";
+    $script .= "       hotspot: id,\n";
+    $script .= "       trade_id: trade_id,\n";
+    $script .= "       bonus_points: pts},\n";
+    $script .= "success: function(d){\n";
+    $script .= "    var earned_points = parseInt(d);\n";
+    $script .= "    var total_points = points + earned_points;\n";
+    $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
+    $script .= "    $('#displayed_points').html(total_points);\n";
+    $script .= "    if(earned_points > 0){\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
+    $script .= "    }\n";
+    $script .= "}\n";
+    $script .= "});\n";
+
+    $script .= "console.log(id);\n";
     $script .= "}\n";
     return $script;
 }

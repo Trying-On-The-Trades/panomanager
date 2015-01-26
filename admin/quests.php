@@ -18,34 +18,39 @@ function pano_quest_settings_page() {
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
 
-<form method="post" action="admin-post.php">
+<h2>Quests</h2>
+<table class="ui table segment">
+  <tr>
+    <th>Quest</th>
+    <th>Description</th>
+    <th>Language Code</th>
+    <th>Pano</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <?php foreach ($quests as $quest): ?>
 
-    <!-- pano processing hook -->
-    <input type="hidden" name="action" value="admin_post_pano" />
+    <tr>
+        <td><?php echo $quest->name ?></td>
+        <td><?php echo $quest->description ?></td>
+        <td><?php echo $quest->language_code ?></td>
+        <td><?php echo $quest->pano_name ?></td>
+        <td><a class="ui blue icon button" href="<?php echo $edit_quest_url ?>&id=<?php echo $quest->quest_id ?>" style="padding: 7px">Edit</a></td>
+        <td>
+            <form method="post" action="admin-post.php" id="delete_quest_form<?php echo $quest->quest_id ?>">
+                <!-- pano processing hook -->
+                <input type="hidden" name="action" value="delete_quest" />
+                <input type="hidden" name="quest_id" value="<?php echo $quest->quest_id ?>" />
 
-    <h2>Quests</h2>
-    <table class="ui table segment">
-      <tr>
-        <th>Quest</th>
-        <th>Description</th>
-        <th>Language Code</th>
-        <th>Pano</th>
-        <th>Edit</th>
-      </tr>
-      <?php foreach ($quests as $quest): ?>
+                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+            </form>
+        </td>
+    </tr>
 
-        <tr>
-            <td><?php echo $quest->name ?></td>
-            <td><?php echo $quest->description ?></td>
-            <td><?php echo $quest->language_code ?></td>
-            <td><?php echo $quest->pano_name ?></td>
-            <td><a class="ui blue icon button" href="<?php echo $edit_quest_url ?>&id=<?php echo $quest->quest_id ?>" style="padding: 7px">Edit</a></td>
-        </tr>
+  <?php endforeach; ?>
+</table>
+<a class="ui blue icon button" href="<?php echo $new_quest_url ?>" style="padding: 7px">New Quest</a>
 
-      <?php endforeach; ?>
-    </table>
-    <a class="ui blue icon button" href="<?php echo $new_quest_url ?>" style="padding: 7px">New Quest</a>
-</form>
 </div>
 
 <?php }

@@ -42,6 +42,11 @@ function get_user_skill_progress_table_name(){
   return $wpdb->prefix . "pano_user_skill_progress";
 }
 
+function get_user_skill_bonus_pts_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_user_skill_bonus_pts";
+}
+
 function get_hotspot_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_hotspot";
@@ -195,10 +200,27 @@ function build_user_skill_progress_table_sql(){
         `skill_id` int(11) NOT NULL,
         `time_started` timestamp NULL DEFAULT NULL,
         `time_completed` timestamp NULL DEFAULT NULL,
+        `trade_id` int(11) DEFAULT NULL,
+        `points` int(10) DEFAULT NULL,
         PRIMARY KEY (`id`)
     );';
 
-    return $sql;  
+    return $sql;
+}
+
+function build_user_skill_bonus_pts_table_sql(){
+    $table_name = get_user_skill_bonus_pts_table_name();
+
+    $sql = 'CREATE TABLE ' .$table_name. ' (
+       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+       `user_id` bigint(20) NOT NULL,
+       `skill_id` int(11) NOT NULL,
+       `trade_id` int(11) DEFAULT NULL,
+       `bonus_points` int(10) DEFAULT NULL,
+       PRIMARY KEY (`id`)
+    );';
+
+    return $sql;
 }
 
 function build_hotspot_sql(){
@@ -231,7 +253,7 @@ function build_type_sql(){
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       `type_xml` text NOT NULL,
-      `js_function` varchar(255),
+      `js_function` varchar(255) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
 
@@ -246,6 +268,7 @@ function build_prereq_sql(){
       `pano_id` int(11) DEFAULT NULL,
       `prereq_id` int(11) DEFAULT NULL,
       `prereq_pts` int(11) NOT NULL,
+      `prereq_trade_id` int(11) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
     

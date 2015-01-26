@@ -6,7 +6,7 @@ function new_hotspot_settings_page() {
     $missions = get_missions();
 	$types	  = get_types();
     ?>
-<!--<link rel="stylesheet" type="text/css" href="--><?php //echo $semantic ?><!--"/>-->
+<link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new hotspot!</h2>
 <hr>
 <style type="text/css">
@@ -76,6 +76,12 @@ function new_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
+            <label for="hotspot_attempts">Attempts</label>
+            <input type="number" name="hotspot_attempts" id="hotspot_attempts" placeholder="1" required />
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
 	        <label for="type_id">Select a Type</label>
 	        <select name="type_id">
                  <?php foreach($types as $type): ?>
@@ -86,8 +92,8 @@ function new_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-            <label for="hotspot_attempts">Attempts</label>
-            <input type="number" name="hotspot_attempts" id="hotspot_attempts" placeholder="1" required />
+	        <label for="hotspot_modal_url">Hotspot Modal Url</label>
+	        <input type="text" name="hotspot_modal_url" id="hotspot_modal_url" placeholder="" value="" required />
 	      </div>
 	    </div>
 	    <?php submit_button(); ?>

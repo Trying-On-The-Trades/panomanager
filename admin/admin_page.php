@@ -20,31 +20,34 @@ function pano_settings_page() {
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
 
-<form method="post" action="admin-post.php">
+<h2>Panos</h2>
+<table class="ui table segment">
+  <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Edit</th>
+      <th>Delete</th>
+  </tr>
+  <?php foreach ($panos as $pano): ?>
 
-    <!-- pano processing hook -->
-    <input type="hidden" name="action" value="admin_post_pano" />
+    <tr>
+        <td><?php echo $pano->name ?></td>
+        <td><?php echo $pano->description ?></td>
+        <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->pano_id ?>" style="padding: 7px">Edit</a></td>
+        <td>
+            <form method="post" action="admin-post.php" id="delete_pano_form<?php echo $pano->pano_id ?>">
+                <!-- pano processing hook -->
+                <input type="hidden" name="action" value="delete_pano" />
+                <input type="hidden" name="pano_id" value="<?php echo $pano->pano_id ?>" />
 
-    <h2>Panos</h2>
-    <table class="ui table segment">
-      <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Edit</th>
-      </tr>
-      <?php foreach ($panos as $pano): ?>
-        
-        <tr>
-            <td><?php echo $pano->name ?></td>
-            <td><?php echo $pano->description ?></td>
-            <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->id ?>" style="padding: 7px">Edit</a></td>
-        </tr>
+                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+            </form>
+        </td>
+    </tr>
 
-      <?php endforeach; ?>
-    </table>
-    <a class="ui blue icon button" href="<?php echo $new_pano_url ?>" style="padding: 7px">New Pano</a>
-
-</form>
+  <?php endforeach; ?>
+</table>
+<a class="ui blue icon button" href="<?php echo $new_pano_url ?>" style="padding: 7px">New Pano</a>
 </div>
 
 <?php }

@@ -15,6 +15,7 @@ function panno_uninstall() {
   $hotspot_table_name         = get_hotspot_table_name();
   $progress_table_name        = get_user_progress_table_name();
   $skill_progress_table_name  = get_user_skill_progress_table_name();
+  $skill_bonus_pts_table_name = get_user_skill_bonus_pts_table_name();
   $type_table_name            = get_type_table_name();
   $prereq_table_name          = get_prereq_table_name();
   $activation_code_table_name = get_activation_code_table_name();
@@ -33,6 +34,7 @@ function panno_uninstall() {
   $wpdb->query( "DROP TABLE IF EXISTS $hotspot_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $progress_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $skill_progress_table_name" );
+  $wpdb->query( "DROP TABLE IF EXISTS $skill_bonus_pts_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $type_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $prereq_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $activation_code_table_name" );

@@ -60,7 +60,7 @@ function create_sub_menus(){
 					 "edit_quest_settings",
 					 "edit_quest_settings_page");
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for missions
 	add_submenu_page("pano_menu",
 					 "Missions",
 					 "Missions",
@@ -68,7 +68,7 @@ function create_sub_menus(){
 					 "pano_mission_settings",
 					 "pano_mission_settings_page");
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for missions
 	add_submenu_page(null,
 					 "New Mission",
 					 "New Mission",
@@ -76,7 +76,7 @@ function create_sub_menus(){
 					 "new_mission_settings",
 					 "new_mission_settings_page");
 
-	// Create the sub menu item for editng quests
+	// Create the sub menu item for editng missions
 	add_submenu_page(null,
 					"Edit Mission",
 					"Edit Mission",
@@ -84,7 +84,7 @@ function create_sub_menus(){
 					"edit_mission_settings",
 					"edit_mission_settings_page");
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for hotspots
 	add_submenu_page("pano_menu",
 					 "Hotspots",
 					 "Hotspots",
@@ -93,7 +93,7 @@ function create_sub_menus(){
 					 "pano_hotspot_settings_page");
 
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for hotspots
 	add_submenu_page(null,
 					 "New Hotspot",
 					 "New Hotspot",
@@ -102,7 +102,7 @@ function create_sub_menus(){
 					 "new_hotspot_settings_page");
 
 
-	// Create the sub menu item for editng quests
+	// Create the sub menu item for editng hotspots
 	add_submenu_page(null,
 					"Edit Hotspot",
 					"Edit Hotspot",
@@ -110,7 +110,7 @@ function create_sub_menus(){
 					"edit_hotspot_settings",
 					"edit_hotspot_settings_page");
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for hotspot types
 	add_submenu_page(null,
 					"Hotspots Type",
 					"Hotspots Type",
@@ -119,7 +119,7 @@ function create_sub_menus(){
 					"pano_hotspot_type_settings_page");
 
 
-	// Create the sub menu item for quests
+	// Create the sub menu item for hotspot types
 	add_submenu_page(null,
 					"New Hotspot Type",
 					"New Hotspot Type",
@@ -128,12 +128,38 @@ function create_sub_menus(){
 					"new_hotspot_type_settings_page");
 
 
-	// Create the sub menu item for editng quests
+	// Create the sub menu item for editng hotspot types
 	add_submenu_page(null,
 					"Edit Hotspot Type",
 					"Edit Hotspot Type",
 					"administrator",
 					"edit_hotspot_type_settings",
 					"edit_hotspot_type_settings_page");
+
+	// Create the sub menu item for trades
+	add_submenu_page("pano_menu",
+					"Trades",
+					"Trades",
+					"administrator",
+					"pano_trade_settings",
+					"pano_trade_settings_page");
+
+
+	// Create the sub menu item for trades
+	add_submenu_page(null,
+					"New Trade",
+					"New Trade",
+					"administrator",
+					"new_trade_settings",
+					"new_trade_settings_page");
+
+
+	// Create the sub menu item for editng trades
+	add_submenu_page(null,
+					"Edit Trade",
+					"Edit Trade",
+					"administrator",
+					"edit_trade_settings",
+					"edit_trade_settings_page");
 
 }
