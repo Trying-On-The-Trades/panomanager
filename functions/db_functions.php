@@ -95,20 +95,9 @@ function list_allowed_panos($user_id){
                 wp.id, 
                 wpt.name 
             FROM " . $pano_table_name . " wp
-
             INNER JOIN " . $text_table_name .  " wpt 
             ON wp.`id` = wpt.`pano_id`
-
-            WHERE wp.id NOT IN (
-                    SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
-                    )
-            OR wp.id IN (
-                    SELECT wpr.`pano_id` FROM " . $prereq_table_name . " wpr
-                    WHERE (SELECT sum(wph.`points`) FROM " . $user_progress_table . " wpup
-                               INNER JOIN " . $hotspot_table_name .  " wph ON wpup.`skill_id` = wph.`id`
-                               WHERE wpup.`user_id` = " . $user_id . ") >= wpr.`prereq_pts`
-                    )
-            AND wpt.`language_code` = " . $language_code .
+            WHERE wpt.`language_code` = " . $language_code .
             " ORDER BY wp.id"
     );
 
@@ -123,11 +112,11 @@ function get_pano($id){
 
     // DB query
     $pano = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT * FROM " . $pano_table_name . " wpp " .
-        "INNER JOIN " . $text_table_name . " wppt ON " .
-    "wppt.pano_id = wpp.id " .
-    "WHERE wppt.language_code = " . $language_code .
-    " AND wpp.id = %d", $id)
+            "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
+            "INNER JOIN " . $text_table_name . " wppt ON " .
+            "wppt.pano_id = wpp.id " .
+            "WHERE wppt.language_code = " . $language_code .
+            " AND wpp.id = %d", $id)
     );
 
     return $pano;
@@ -393,7 +382,23 @@ function get_user_accumulated_points($user_id){
         "SELECT sum(wph.`points`) as points FROM " . $progress_table . " wpusp " .
         "INNER JOIN " . $hotspot_table . " wph ON " .
         "wpusp.`skill_id` = wph.`id` " .
-        "WHERE wpusp.`user_id` = " . $user_id));
+        "WHERE wpusp.`user_id` = %d",  $user_id));
+
+    return $points;
+}
+
+function get_user_accumulated_points_for_prereq($user_id, $trade_id){
+    global $wpdb;
+
+    $progress_table = get_user_skill_progress_table_name();
+    $hotspot_table  = get_hotspot_table_name();
+
+    $points = $wpdb->get_row( $wpdb->prepare(
+        "SELECT sum(wph.`points`) as points FROM " . $progress_table . " wpusp " .
+        "INNER JOIN " . $hotspot_table . " wph ON " .
+        "wpusp.`skill_id` = wph.`id` " .
+        "WHERE wpusp.`user_id` = " . $user_id . " " .
+        "AND wpusp.`trade_id` = %d",  $trade_id));
 
     return $points;
 }
@@ -406,7 +411,21 @@ function get_user_accumulated_bonus_pts($user_id){
 
     $bonus_points =  $wpdb->get_row( $wpdb->prepare(
         "SELECT sum(wpusbp.`bonus_points`) as bonus_points FROM " . $bonus_pts_table . " wpusbp " .
-        "WHERE wpusbp.`user_id` = " . $user_id));
+        "WHERE wpusbp.`user_id` = %d",  $user_id));
+
+    return $bonus_points;
+}
+
+// Return a user's accumulated points
+function get_user_accumulated_bonus_pts_for_prereq($user_id, $trade_id){
+    global $wpdb;
+
+    $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+
+    $bonus_points =  $wpdb->get_row( $wpdb->prepare(
+        "SELECT sum(wpusbp.`bonus_points`) as bonus_points FROM " . $bonus_pts_table . " wpusbp " .
+        "WHERE wpusbp.`user_id` = " . $user_id . " " .
+        "AND wpusbp.`trade_id` = %d",  $trade_id));
 
     return $bonus_points;
 }
@@ -738,15 +757,15 @@ function create_pano($pano_xml, $pano_name, $pano_description){
     $wpdb->insert( $pano_table_name, array( 'pano_xml'  => $pano_xml));
 
     // Get the id of the last row
-    $lastid = $wpdb->insert_id;
+    $pano_id = $wpdb->insert_id;
 
     // Insert the pano_text
-    $wpdb->insert( $text_table_name, array( 'pano_id'       => $lastid,
+    $wpdb->insert( $text_table_name, array( 'pano_id'       => $pano_id,
                                             'language_code' => $language_code,
                                             'name'          => $pano_name,
                                             'description'   => $pano_description));
 
-    return $wpdb->insert_id;
+    return $pano_id;
 }
 
 function create_quest($quest_name, $quest_description, $pano_id){
@@ -819,9 +838,9 @@ function create_hotspot_type($hotspot_type_name, $hotspot_type_description, $hot
 
     // Insert the pano
     $wpdb->insert( $hotspot_type_table_name, array( 'name'        => $hotspot_type_name,
-        'description' => $hotspot_type_description,
-        'type_xml'    => $hotspot_type_xml,
-        'js_function' => $hotspot_type_action_xml));
+                                                    'description' => $hotspot_type_description,
+                                                    'type_xml'    => $hotspot_type_xml,
+                                                    'js_function' => $hotspot_type_action_xml));
 
     return $wpdb->insert_id;
 }

@@ -33,9 +33,11 @@ add_shortcode("pano", "pano_handler");
 
 // Create the admin menu from menu.php
 add_action( 'admin_menu', 'pano_create_menu');
+add_action( 'admin_enqueue_scripts', 'plu_admin_enqueue');
 
 // Add the process pano hook
 add_action( 'admin_post_create_new_pano', 'process_new_pano' );
+add_action( 'admin_post_upload_zip', 'process_upload_zip' );
 add_action( 'admin_post_edit_pano', 'process_edit_pano' );
 add_action( 'admin_post_delete_pano', 'process_delete_pano' );
 
@@ -69,6 +71,7 @@ add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
 // callback functions
+add_action( 'admin_post_check_user_progress', 'check_user_progress_ajax' );
 add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_with_bonus' );
 
@@ -90,6 +93,7 @@ require_once("includes/trade.php");
 require_once("admin/admin_page.php");
 require_once("admin/new_pano.php");
 require_once("admin/edit_pano.php");
+require_once("admin/upload_zip.php");
 require_once("admin/quests.php");
 require_once("admin/new_quest.php");
 require_once("admin/edit_quest.php");

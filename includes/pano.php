@@ -24,7 +24,7 @@ class pano{
 		if ($pano_row->id > 0){
 			$this->exists      = 1;
 			$this->xml         = $pano_row->pano_xml;
-			$this->id          = $pano_row->id; 
+			$this->id          = $pano_row->pano_id;
 			$this->name        = $pano_row->name;
 			$this->description = $pano_row->description;
 		}

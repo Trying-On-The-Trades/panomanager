@@ -3,12 +3,12 @@
 // Build the settings page
 function edit_pano_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-	$upload_zip_url  = admin_url() . "admin.php?page=upload_zip_setting";
-	$pano = null;
+    $upload_zip_url  = admin_url() . "admin.php?page=upload_zip_setting";
+    $pano = null;
 
-	if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
-		$pano = build_pano($_GET['id']);
-	}
+    if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
+        $pano = build_pano($_GET['id']);
+    }
 
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
@@ -31,9 +31,9 @@ function edit_pano_settings_page() {
 </style>
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
         <div class="updated"><p>Pano updated successfully.</p></div>
-<?php elseif ( isset( $_GET[ 'error' ] ) ): ?>
-		<div class="error"><p>Error updating pano.</p></div>
-<?php endif; ?>
+    <?php elseif ( isset( $_GET[ 'error' ] ) ): ?>
+        <div class="error"><p>Error updating pano.</p></div>
+    <?php endif; ?>
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="edit_pano" />

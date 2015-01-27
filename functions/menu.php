@@ -25,7 +25,7 @@ function create_sub_menus(){
 					 "New Pano", 
 					 "New Pano", 
 					 "administrator",
-					 "new_pano_settings", 
+					 "new_pano_settings",
 					 "new_pano_settings_page");
 
 	// Create the sub menu item for editing panos
@@ -35,6 +35,14 @@ function create_sub_menus(){
 					 "administrator",
 					 "edit_pano_settings",
 					 "edit_pano_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page(null,
+					 "Upload Zip",
+					 "Upload Zip",
+					 "administrator",
+					 "upload_zip_setting",
+					 "upload_zip_settings_page");
 
 	// Create the sub menu item for quests
 	add_submenu_page("pano_menu",

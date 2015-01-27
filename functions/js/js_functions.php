@@ -5,6 +5,7 @@
 
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id, $pano, $quest){
+
         $pano_directory = content_url() . "/panos/" . $pano_id;
         $pano_swf_location = $pano_directory . "/tour.swf";
         $pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
@@ -152,7 +153,7 @@ function add_nav_script($quest, $pano_id){
 function build_names_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
     
-    $script .=  "var panoArray = Array(";
+    $script =  "var panoArray = Array(";
     
     for ($i = 0; $i < count($allowed_panos); $i++) {
         
@@ -172,70 +173,81 @@ function build_names_array(){
 
 function build_ids_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
-    $script .=  "var panoPointer = Array(";
+    $script =  "var panoPointer = Array(";
     
     for ($i = 0; $i < count($allowed_panos); $i++) {
-        
-        $script .= "'" . $allowed_panos[$i]->id . "'";
+
+        $script .= "{id:" . $allowed_panos[$i]->id . ",";
+        $script .= "name:'" . $allowed_panos[$i]->name . "'";
         
         if ($i == count($allowed_panos) - 1) {
             
-            $script .= '';
+            $script .= '}';
         } else {
-            $script .= ', ';
+            $script .= '}, ';
         }
     }
-    
+
     $script .= ");\n";
     return $script;
 }
 
 function build_launch_message(){
-    $script =	"function launchMsg(msg){\n";
-        $script .= "if(findArray(msg))\n";
-        $script .= "{\n";
-            $script .= "if(msg == getSceneName())\n";
-        $script .= "{\n";     
-        $script .= "$.magnificPopup.open({\n";
-            $script .= "items: {\n";
-            $script .= "src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
-            $script .= "type: 'inline',\n";
-                $script .= "callbacks: {\n";
-                    $script .= "close: function() {\n";
-                        $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-                        $script .= "magnificPopup.close(); \n";
-                    $script .= "}\n";	
-                $script .= "}\n";	
-            $script .= "}\n";
-        $script .= "});\n";
+        $script =  "function launchMsg(msg){\n";
+        $script .= "    if(msg == getSceneName()){\n";
+        $script .= "        $.magnificPopup.open({\n";
+        $script .= "            items: {\n";
+        $script .= "            src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
+        $script .= "            type: 'inline',\n";
+        $script .= "            callbacks: {\n";
+        $script .= "                close: function() {\n";
+        $script .= "                    console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+        $script .= "                    magnificPopup.close(); \n";
+        $script .= "                }\n";
+        $script .= "            }\n";
+        $script .= "        }\n";
+        $script .= "        });\n";
         
-        $script .= "magnificPopup = $.magnificPopup.instance; \n";
-        $script .= "}\n";
-        $script .= "else\n";
-        $script .= "{\n";
-        $script .= "window.location = siteAdr + panoPointer[pointer];\n";
-        $script .= "}\n";
+        $script .= "        magnificPopup = $.magnificPopup.instance; \n";
+        $script .= "    } else {\n";
+        $script .= "        var pano_id = 1;\n";
+        $script .= "        $.each(panoPointer, function(key, value){\n";
+        $script .= "            if(msg == panoPointer[key].name){\n";
+        $script .= "                pano_id = panoPointer[key].id;\n";
+        $script .= "                return false;\n";
+        $script .= "            }\n";
+        $script .= "        });\n";
 
+        $script .= "        $.ajax({\n";
+        $script .= "            type: 'GET',\n";
+        $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
+        $script .= "            data: { action:  'check_user_progress',\n";
+        $script .= "                    pano_id: pano_id },\n";
+        $script .= "            success: function(d){\n";
+
+        $script .= "                    if(d == 'restricted'){\n";
+
+        $script .= "                        $.magnificPopup.open({\n";
+        $script .= "                            items: {\n";
+        $script .= "                                src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',\n";
+        $script .= "                                type: 'inline',\n";
+        $script .= "                                callbacks: {\n";
+        $script .= "                                    close: function() {\n";
+        $script .= "                                        console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+        $script .= "                                        magnificPopup.close();\n";
+        $script .= "                                    }\n";
+        $script .= "                                }\n";
+        $script .= "                            }\n";
+        $script .= "                        });\n";
+        $script .= "                        magnificPopup = $.magnificPopup.instance;\n";
+
+        $script .= "                    } else {\n";
+        $script .= "                        window.location = siteAdr + pano_id;\n";
+        $script .= "                    }\n";
+        $script .= "            }\n";
+        $script .= "        });\n";
+        $script .= "  }\n";
         $script .= "}\n";
-        $script .= "else\n";
-        $script .= "{\n";
-        
-//        $script .= "console.log('False');\n";
-        $script .= "$.magnificPopup.open({\n";
-            $script .= "items: {\n";
-                $script .= "src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',\n";
-                $script .= "type: 'inline',\n";
-                $script .= "callbacks: {\n";
-                    $script .= "close: function() {\n";
-                        $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-                        $script .= "magnificPopup.close();\n"; 
-                    $script .= "}\n";
-                $script .= "}\n";
-            $script .= "}\n";
-        $script .= "});\n";
-        
-        $script .= "magnificPopup = $.magnificPopup.instance;}\n";	
-    $script .=	"}\n";
     
     return $script;
 }
@@ -706,7 +718,7 @@ function build_points_callback_function(){
     $script .= "       hotspot: id,\n";
     $script .= "       trade_id: trade_id},\n";
     $script .= "success: function(d){\n";
-    $script .= "    var earned_points = parseInt(d);\n";
+    $script .= "    var earned_points = (d && d != '') ? parseInt(d) : 0;\n";
     $script .= "    var total_points = points + earned_points;\n";
     $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
     $script .= "    $('#displayed_points').html(total_points);\n";
@@ -733,7 +745,7 @@ function build_bonus_points_callback_function(){
     $script .= "       trade_id: trade_id,\n";
     $script .= "       bonus_points: pts},\n";
     $script .= "success: function(d){\n";
-    $script .= "    var earned_points = parseInt(d);\n";
+    $script .= "    var earned_points = (d && d != '') ? parseInt(d) : 0;\n";
     $script .= "    var total_points = points + earned_points;\n";
     $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
     $script .= "    $('#displayed_points').html(total_points);\n";

@@ -49,5 +49,4 @@ function pano_settings_page() {
 </table>
 <a class="ui blue icon button" href="<?php echo $new_pano_url ?>" style="padding: 7px">New Pano</a>
 </div>
-
 <?php }

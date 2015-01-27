@@ -20,11 +20,13 @@ function pano_handler($incomingfrompost) {
 // function that can be called from a page template
 function load_pano($pano_id = 1){
 
-	// Make sure the pano exists before trying to load it
-	$id = check_pano_id($pano_id);
+    $id = 1;
 
-	// Check if the user is aloud to see it
-//	$id = check_user_progress($id);
+    // Check if the user is aloud to see it
+    if(check_user_progress($pano_id)){
+        // Make sure the pano exists before trying to load it
+	    $id = check_pano_id($pano_id);
+    }
 
 	$pano  = build_pano($id);
     $quest = build_quest($id);
@@ -37,38 +39,70 @@ function load_pano($pano_id = 1){
 function check_user_progress($pano_id){
 	// Check the user's progress before allowing 
 	// the user to see the pano
-	$allowed = false;
-        
+	$allowed      = true;
+    $flag_not_set = true;
+
+    $accumulated_points = 0;
+    $bonus_points       = 0;
+    $total_points       = 0;
+
     $user_id = get_current_user_id();
 
 	// Check if the pano has a prereq
-	$prereq = get_pano_prereqs($pano_id);
+	$prereqs = get_pano_prereqs($pano_id);
 
-	// if it does make sure the user has completed 
+	// if it does make sure the user has completed
 	// enough skills and missions
-    if ($prereq.length > 0){
+    if(count($prereqs) > 0){
+        foreach($prereqs as $prereq){
+            if (is_null($prereq->prereq_trade_id)){
+                // Get the accumulated points
+                $accumulated_points = get_user_accumulated_points($user_id);
 
-        // Get the points by mission
-        $mission_points = get_user_mission_points($mission_id, $user_id);
+                // Get the bonus points
+                $bonus_points = get_user_accumulated_bonus_pts($user_id);
+            } else {
+                // Get the accumulated points based on the prereq trade
+                $accumulated_points = get_user_accumulated_points_for_prereq($user_id, $prereq->prereq_trade_id);
 
-        // Get the points by skill
-        $skill_points = get_user_skill_points($skill_id, $user_id);
+                // Get the bonus points
+                $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereq->prereq_trade_id);
+            }
 
-        // Add up the points
-        $total_points = $mission_points + $skill_points;
+            // Ensures the values are not null
+            $accumulated_points = $accumulated_points ? $accumulated_points : 0;
+            $bonus_points       = $bonus_points ? $bonus_points : 0;
 
-        // check if they are enough for the prereq
-        if ($total_points >= $prereq->points){
-            $allowed = true;
+            // Add up the points
+            $total_points = $accumulated_points->points + $bonus_points->bonus_points;
+
+            // check if they are enough for the prereq
+            if ($total_points < $prereq->prereq_pts){
+                if($flag_not_set){
+                    $allowed      = false;
+                    $flag_not_set = false;
+                }
+            }
         }
     }
 
 	// If they have, return the pano else return default id
 	if ($allowed){
-		return $pano_id;
+		return true;
 	} else {
-		return 1;
+		return false;
 	}
+}
+
+function check_user_progress_ajax(){
+
+    $pano_id = $_GET['pano_id'];
+
+    if(check_user_progress($pano_id)){
+        echo "allowed";
+    } else {
+        echo "restricted";
+    }
 }
 
 function get_pano_prereqs($pano_id){
@@ -129,7 +163,7 @@ function pano_script_output($incomingfromhandler) {
 function check_pano_id($pano_id){
         // Get the allowed pano ids
 	$existing_panos = get_pano_ids();
-	$existing_ids = array();
+	$existing_ids   = array();
 
 	// Get the ids from the array of arrays
 	foreach ($existing_panos as $ex) {
@@ -141,6 +175,13 @@ function check_pano_id($pano_id){
 	} else {
 		return 1;
 	}
+}
+
+function get_current_pano_id(){
+
+    global $pano_id;
+
+    return check_pano_id($pano_id);
 }
 
 function get_hotspot_menu_objects($quest){
@@ -233,7 +274,7 @@ function get_hotspot_objects($quest){
 
 function update_pano_user_progress() {
         // Get the user id and hotspot id
-        $user_id    = get_current_user_id();
+        $user_id  = get_current_user_id();
         $points = 0;
         $points_allowed = false;
         
@@ -270,6 +311,7 @@ function update_pano_user_progress() {
 }
 
 function update_pano_user_progress_with_bonus() {
+
     // Get the user id and hotspot id
     $user_id      = get_current_user_id();
     $hotspot_id   = 0;
@@ -368,19 +410,10 @@ function process_new_pano(){
     $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
 
-    print_r($_POST);
-    print_r($_FILES);
-    die();
-
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_name, $pano_description);
 
-    // // Process the zip
-    if(isset($_FILES['pano_zip'])) {
-        upload_panos($_FILES['pano_zip'], $pano_id);
-    }
-
-    wp_redirect( admin_url( 'admin.php?page=pano_menu' ) );
+    wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
 }
 
 function process_new_quest(){
@@ -667,53 +700,79 @@ function get_pano_ad_message($quest){
 //			   Uploading Panos
 // ***********************************************************
 
-// Handle uploading panos
-function upload_panos($file, $pano_id)
-{
+function plu_admin_enqueue(){
+    wp_enqueue_script('plupload-all');
+}
+
+function process_upload_zip(){
+
+    $pano_id = $_GET['id'];
+
     // Make a pano file at the directory if it doesn't exist
     $pano_directory = ABSPATH . "wp-content/panos/";
-	// If the upload directory doesn't exist, make it
-	if (!check_file($pano_directory)){
+
+    // If the upload directory doesn't exist, make it
+    if (!check_file($pano_directory)){
 
         mkdir($pano_directory, 0755, true);
-	}
+    }
 
-	// Process the upload data
-    $source   = $file["tmp_name"];
-	$type     = $file["type"];
-
-	$accepted_types = array('application/zip', 
-		                    'application/x-zip-compressed', 
-		                    'multipart/x-zip', 
-		                    'application/x-compressed');
-
-	foreach($accepted_types as $mime_type) {
-		if($mime_type == $type) {
-			$okay = true;
-			break;
-		} 
-	}
-
-	$zip_target_path = $pano_directory. "pano" . $pano_id. ".zip";  // change this to the correct site path
+    // Setting up the file path and target path
+    $fileName    = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
+    $filePath    = $pano_directory. "pano" . $pano_id. ".zip";;
     $target_path = $pano_directory . $pano_id;
 
+    // Creates the target path if it doesnt exist
     if (!check_file($target_path)){
         mkdir($target_path, 0755, true);
     }
 
-	if(move_uploaded_file($source, $zip_target_path)) {
+    // Displays an error if the file was not uploaded
+    if (empty($_FILES) || $_FILES['file']['error']) {
+        die('{"OK": 0, "info": "Failed to move uploaded file."}');
+    }
 
-		$zip = new ZipArchive();
-		$x = $zip->open($zip_target_path, ZIPARCHIVE::CREATE | ZIPARCHIVE::CREATE);
-		if ($x === true) {
-			$zip->extractTo($target_path); // change this to the correct site path
-			$zip->close();
+    // Using Plupload Chunks
+    $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+    $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 
-            unlink($zip_target_path);
-		}
-	}
+    // Open temp file
+    $out = @fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
+    if ($out) {
+        // Read binary input stream and append it to temp file
+        $in = @fopen($_FILES['file']['tmp_name'], "rb");
 
-	
+        if ($in) {
+            while ($buff = fread($in, 4096))
+                fwrite($out, $buff);
+        } else
+            die('{"OK": 0, "info": "Failed to open input stream."}');
+
+        @fclose($in);
+        @fclose($out);
+
+        @unlink($_FILES['file']['tmp_name']);
+    } else
+        die('{"OK": 0, "info": "Failed to open output stream."}');
+
+
+    // Check if file has been uploaded
+    if (!$chunks || $chunk == $chunks - 1) {
+        // Strip the temp .part suffix off
+        rename("{$filePath}.part", $filePath);
+
+        // Unzips the file and moves it to the target path
+        $zip = new ZipArchive();
+        $x = $zip->open($filePath, ZIPARCHIVE::CREATE | ZIPARCHIVE::CREATE);
+        if ($x === true) {
+            $zip->extractTo($target_path); // change this to the correct site path
+            $zip->close();
+
+            unlink($filePath);
+        }
+    }
+
+    die('{"OK": 1, "info": "Upload successful."}');
 }
 
 // Function for checking if the directory exists
