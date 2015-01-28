@@ -45,7 +45,31 @@ function create_sub_menus(){
 					 "upload_zip_settings_page");
 
 	// Create the sub menu item for quests
-	add_submenu_page("pano_menu",
+	add_submenu_page(null,
+					 "Prereqs",
+					 "Prereqs",
+					 "administrator",
+					 "prereq_setting",
+					 "prereq_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page(null,
+					 "New Prereqs",
+					 "New Prereqs",
+					 "administrator",
+					 "prereq_new_setting",
+					 "prereq_new_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page(null,
+					 "Edit Prereqs",
+					 "Edit Prereqs",
+					 "administrator",
+					 "prereq_edit_setting",
+					 "prereq_edit_settings_page");
+
+	// Create the sub menu item for quests
+	add_submenu_page(null,
 					 "Quests",
 					 "Quests",
 					 "administrator",

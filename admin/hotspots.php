@@ -22,42 +22,57 @@ function pano_hotspot_settings_page() {
 <div>
     <h2>Hotspots</h2>
 </div>
-<table class="ui table segment">
-  <tr>
-    <th>Hotspot</th>
-    <th>Menu Name</th>
-    <th>Description</th>
-    <th>Points</th>
-    <th>Attempts</th>
-    <th>Mission</th>
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
-  <?php foreach ($hotspots as $hotspot): ?>
+<table id="hostpotTable" class="ui table segment tablesorter">
+    <thead>
+      <tr>
+        <th>Hotspot</th>
+        <th>Menu Name</th>
+        <th>Description</th>
+        <th>Points</th>
+        <th>Attempts</th>
+        <th>Type</th>
+        <th>Mission</th>
+        <th>Trade</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
 
-    <tr>
-        <td><?php echo $hotspot->name ?></td>
-        <td><?php echo $hotspot->menu_name ?></td>
-        <td><?php echo $hotspot->description ?></td>
-        <td><?php echo $hotspot->points ?></td>
-        <td><?php echo $hotspot->attempts ?></td>
-        <td><?php echo $hotspot->mission_name ?></td>
-        <td><a class="ui blue icon button" href="<?php echo $edit_hotspot_url ?>&id=<?php echo $hotspot->id ?>" style="padding: 7px">Edit</a></td>
-        <td>
-            <form method="post" action="admin-post.php" id="delete_hotspot_form<?php echo $hotspot->id ?>">
-                <!-- pano processing hook -->
-                <input type="hidden" name="action" value="delete_hotspot" />
-                <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->id ?>" />
+    <tbody>
+        <?php foreach ($hotspots as $hotspot): ?>
+            <?php $current_hotspot = build_hotspot($hotspot->id); ?>
+            <tr>
+                <td><?php echo $current_hotspot->get_name(); ?></td>
+                <td><?php echo $current_hotspot->get_menu_name(); ?></td>
+                <td><?php echo $current_hotspot->get_description(); ?></td>
+                <td><?php echo $current_hotspot->get_points(); ?></td>
+                <td><?php echo $current_hotspot->get_attempts(); ?></td>
+                <td><?php echo $current_hotspot->get_type_name(); ?></td>
+                <td><?php echo $current_hotspot->get_mission_name(); ?></td>
+                <td><?php echo $current_hotspot->get_trade_name(); ?></td>
+                <td><a class="ui blue icon button" href="<?php echo $edit_hotspot_url ?>&id=<?php echo $current_hotspot->get_id(); ?>" style="padding: 7px">Edit</a></td>
+                <td>
+                    <form method="post" action="admin-post.php" id="delete_hotspot_form<?php echo $current_hotspot->get_id(); ?>">
+                        <!-- pano processing hook -->
+                        <input type="hidden" name="action" value="delete_hotspot" />
+                        <input type="hidden" name="hotspot_id" value="<?php echo $current_hotspot->get_id(); ?>" />
 
-                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
-            </form>
-        </td>
-    </tr>
-
-<?php endforeach; ?>
+                        <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 <a class="ui blue icon button" href="<?php echo $new_hotspot_url ?>" style="padding: 7px">New Hotspot</a>
 <a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
 </div>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery("#hostpotTable").tablesorter();
+    })
+</script>
+
 
 <?php }

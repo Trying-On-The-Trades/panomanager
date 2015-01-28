@@ -4,6 +4,7 @@ class pano{
 	protected $id, $name, $description, 
                   $quests = array(), 
                   $missions, $language_code,
+				  $quest_id,
                   $prereqs = array(),
                   $exists = 0,
                   $xml;
@@ -27,7 +28,18 @@ class pano{
 			$this->id          = $pano_row->pano_id;
 			$this->name        = $pano_row->name;
 			$this->description = $pano_row->description;
+
+			$this->build_quest_id();
+			$this->build_prereqs();
 		}
+	}
+
+	function build_quest_id(){
+		return $this->quest_id = get_quest_by_pano($this->id);
+	}
+
+	function build_prereqs(){
+		return $this->prereqs = get_pano_prereqs($this->id);
 	}
         
 	function get_prereq(){
@@ -46,15 +58,15 @@ class pano{
 		return $this->description;
 	}
 
-	function get_quests(){
-		return $this->quests;
-	}
-
 	function get_pano_language(){
 		return $this->language_code;
 	}
 
 	function get_xml(){
 		return $this->xml;
+	}
+
+	function get_quest_id(){
+		return $this->id;
 	}
 }

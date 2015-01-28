@@ -4,8 +4,9 @@
 function edit_quest_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
-    $panos = get_panos();
-    $quest = null;
+    $panos  = get_panos();
+	$trades = get_trades();
+    $quest  = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
         $quest = build_quest($_GET['id']);
@@ -64,12 +65,16 @@ function edit_quest_settings_page() {
             </select>
 	      </div>
 	    </div>
-	    <!-- <div class="ui form">
+	    <div class="ui form">
 	      <div class="field">
-	        <label for="zip_file">Choose a zip file to upload: </label>
-	    	<input id="file_input" type="file" name="pano_zip" />
+	        <label for="prereq_trade_id">Select a Trade</label>
+	        <select name="prereq_trade_id">
+                 <?php foreach($trades as $trade): ?>
+					 <option value="<?php echo $trade->id ?>" <?php echo ($trade->id === $quest->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
+				 <?php endforeach; ?>
+			</select>
 	      </div>
-	    </div> -->
+	    </div>
 	    <?php submit_button(); ?>
 	</div>
 </form>

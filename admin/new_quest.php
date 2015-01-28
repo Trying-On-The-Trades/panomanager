@@ -3,7 +3,8 @@
 // Build the settings page
 function new_quest_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-    $panos = get_panos();
+    $panos    = get_panos();
+	$trades   = get_trades();
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new pano!</h2>
@@ -51,12 +52,16 @@ function new_quest_settings_page() {
             </select>
 	      </div>
 	    </div>
-	    <!-- <div class="ui form">
+	    <div class="ui form">
 	      <div class="field">
-	        <label for="zip_file">Choose a zip file to upload: </label>
-	    	<input id="file_input" type="file" name="pano_zip" />
+	        <label for="trade_id">Select a Trade</label>
+	        <select name="trade_id">
+                 <?php foreach($trades as $trade): ?>
+					<option value="<?php echo $trade->id ?>"><?php echo $trade->name ?></option>
+				 <?php endforeach; ?>
+			</select>
 	      </div>
-	    </div> -->
+	    </div>
 	    <?php submit_button(); ?>
 	</div>
 </form>

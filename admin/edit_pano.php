@@ -4,6 +4,7 @@
 function edit_pano_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 	$upload_zip_url  = admin_url() . "admin.php?page=upload_zip_setting";
+	$prereqs_url     = admin_url() . "admin.php?page=prereq_setting";
 	$pano = null;
 
 	if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -60,6 +61,7 @@ function edit_pano_settings_page() {
 	      </div>
 	    </div>
 	    <a class="ui blue icon button" href="<?php echo $upload_zip_url ?>&id=<?php echo $pano->get_id() ?>" style="padding: 7px">Upload Zip File</a>
+	    <a class="ui blue icon button" href="<?php echo $prereqs_url ?>&pano_id=<?php echo $pano->get_id() ?>" style="padding: 7px">Manage Prereqs</a>
 	    <?php submit_button(); ?>
 	</div>
 </form>

@@ -7731,8 +7731,7 @@ img.ui.image {
   right: auto;
   left: 0.5em;
 }
-.ui.left.icon.input > input {
-  padding-left: 3em !important;
+.ui.left.icon.input > input {;
   padding-right: 1.2em !important;
 }
 /* Focus */

@@ -16,7 +16,7 @@ function build_pano_javascript($pano_id, $pano, $quest){
         
         // Get the menu nav
         $script .= build_menu_nav($quest);
-        
+
         // Get the scripts to build the navigation menu first
         $script .= add_nav_script($quest, $pano_id);
 
@@ -107,7 +107,7 @@ function add_nav_script($quest, $pano_id){
     
     $script .= "var krpano;\n";
     $script .=	"var siteAdr = '" . get_site_url() . "?pano_id=';\n";
-    
+
     // Build the array of names
     $script .= build_names_array();
             
@@ -287,24 +287,38 @@ function build_menu_launch(){
     return $script;
 }
 
+function get_leaderboard_div(){
+    echo build_leaderboard_div();
+}
+
 function build_leader_launch(){
     $script = "function leaderLaunch()\n";
     $script .= "{\n";
-    $script .= "$.magnificPopup.open({\n";
-    $script .= "items: {\n";
-    $script .= "src: '" . build_leaderboard_div() .  "'\n";
-    $script .= "},\n";
-    $script .= "type: 'inline',\n";
-    $script .= "closeOnBgClick: true,\n";
-    $script .= "closeBtnInside: true,\n";
-    $script .= "callbacks: {\n";
-    $script .= "close: function() {\n";
-//    $script .= "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-    $script .= "$.magnificPopup.close(); \n";
-    $script .= "}\n";
-    $script .= "}\n";
+
+    $script .= "$.ajax({\n";
+    $script .= "    type: 'POST',\n";
+    $script .= "    url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "    data: {action: 'get_leaderboard_div'},\n";
+    $script .= "    success: function(d){\n";
+
+    $script .= "        $.magnificPopup.open({\n";
+    $script .= "            items: {\n";
+    $script .= "                src: d\n";
+    $script .= "            },\n";
+    $script .= "            type: 'inline',\n";
+    $script .= "            closeOnBgClick: true,\n";
+    $script .= "            closeBtnInside: true,\n";
+    $script .= "            callbacks: {\n";
+    $script .= "                close: function() {\n";
+    $script .= "                    $.magnificPopup.close(); \n";
+    $script .= "                }\n";
+    $script .= "            }\n";
+    $script .= "        });\n";
+    $script .= "        magnificPopup = $.magnificPopup.instance; \n";
+
+    $script .= "    }\n";
     $script .= "});\n";
-    $script .= "magnificPopup = $.magnificPopup.instance; \n";
+
     $script .= "}\n";
 
 return $script;
@@ -357,18 +371,10 @@ function build_manage_lightbox($quest, $current_pano_url){
 
 function build_launch_image($quest)
 {
-    $messages = get_pano_ad_message($quest);
     
 	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
-        
-        $script  .=             "var ad_messages = [";
-            foreach($messages as $message){
-                $script .= "'" . $message.  "',";
-            }
-        $script  .=             "];\n";
-        
-	$script  .=		"var message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
+    $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
 	$script  .=				"src: '<div class=\"hotspot_img_popup\"><div class=\"ad_message\">' + message + '</div><img src=\"' + msgUrl + '\"></div>'\n";
@@ -396,7 +402,7 @@ function build_launch_hairstyling($quest)
 {
 	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
-        $script  .=             build_ad_message($quest);
+    $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
 	$script  .=				"src: msgUrl\n";
@@ -463,7 +469,7 @@ function build_launch_game($quest)
 {
 	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
-        $script  .=             build_ad_message($quest);
+    $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
 	$script  .=				"src: msgUrl\n";
@@ -566,16 +572,18 @@ function build_launch_Khan($quest)
 
 function build_ad_message($quest){
     
-    $script = "";
+    $script = "var message = '';\n";
     $messages = get_pano_ad_message($quest);
-        
-    $script  .= "var ad_messages = [";
+
+    if(count($messages) > 0){
+        $script  .= "var ad_messages = [";
         foreach($messages as $message){
             $script .= "\" $message \",";
         }
-    $script  .= "];\n";
+        $script  .= "];\n";
 
-    $script  .=	"var message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
+        $script  .=	"message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
+    }
     
     return $script;
 }
@@ -644,7 +652,8 @@ function build_leaderboard_div(){
 }
 
 function build_school_table(){
-    $leaderboard_enteries = get_school_leaderboard();
+    $leaderboard_enteries          = get_school_leaderboard();
+    $leaderboard_entries_bonus_pts = get_school_leaderboard_bonus_pts();
     $count = 0;
    
     $board = '<h3>School Leaderboard</h3>';
@@ -653,13 +662,21 @@ function build_school_table(){
     
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
-        $count += 1;
-        
-        $board .= '<tr class"entry">';
+        foreach($leaderboard_entries_bonus_pts as $bonus_entry){
+            if($entry->name == $bonus_entry->name) {
+                $total_score = $entry->score + $bonus_entry->score;
+            } else {
+                $total_score = $entry->score;
+            }
+
+            $count += 1;
+
+            $board .= '<tr class"entry">';
             $board .= '<td>' . $count . '</td>';
             $board .= '<td class"school">' . $entry->name . '</td>';
-            $board .= '<td class"point">' . $entry->score . '</td>';
-        $board .= '</tr>';
+            $board .= '<td id="school'. $entry->id .'_score" class"point" data-school-score="' . $total_score . '">' . $total_score . '</td>';
+            $board .= '</tr>';
+        }
     }
     
     $board .= '</table>';
@@ -668,7 +685,8 @@ function build_school_table(){
 }
 
 function build_individual_table(){
-    $leaderboard_enteries = get_leaderboard();
+    $leaderboard_enteries           = get_leaderboard();
+    $leaderboard_enteries_bonus_pts = get_leaderboard_bonus_pts();
     $count = 0;
     
     // Create the table for individuals
@@ -678,14 +696,24 @@ function build_individual_table(){
     
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
-        $count += 1;
-        
-        $board .= '<tr class"entry">';
+        foreach($leaderboard_enteries_bonus_pts as $bonus_entry){
+            $count += 1;
+
+            if($entry->name == $bonus_entry->name && $entry->school && $bonus_entry->school){
+                $total_score = $entry->score + $bonus_entry->score;
+            } else {
+                $total_score = $entry->score;
+            }
+
+            $board .= '<tr class"entry">';
             $board .= '<td>' . $count . '</td>';
             $board .= '<td class"nam">' . $entry->name . '</td>';
             $board .= '<td class"school">' . $entry->school . '</td>';
-            $board .= '<td class"point">' . $entry->score . '</td>';
-        $board .= '</tr>';
+            $board .= '<td class"point" id="user'. $entry->id .'_score" data-user-score="' . $total_score . '">' . $total_score . '</td>';
+
+            $board .= '</tr>';
+
+        }
     }
     
     $board .= '</table>';

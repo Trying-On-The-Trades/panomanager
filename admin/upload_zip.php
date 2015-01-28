@@ -61,7 +61,7 @@ function upload_zip_settings_page() {
         var uploader = new plupload.Uploader({
             browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
             url: '<?php echo get_admin_url(); ?>admin-post.php?action=upload_zip&id=<?php echo $id ?>',
-            chunk_size: '200kb',
+            chunk_size: '2000kb',
             max_retries: 3
         });
 

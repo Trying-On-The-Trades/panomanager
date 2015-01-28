@@ -48,15 +48,16 @@ function get_trades(){
 
 function get_panos(){
     global $wpdb;
-    $pano_table_name = get_pano_table_name();
+    $pano_table_name  = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
-    $language_code = get_user_language();
+    $quest_table_name  = get_quest_table_name();
+    $language_code    = get_user_language();
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results( 
-            "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
-            "INNER JOIN " . $text_table_name . " wppt ON " .
-            "wppt.pano_id = wpp.id " .
+            "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.*, wpq.id as quest_id FROM " . $pano_table_name . " wpp " .
+            "INNER JOIN " . $text_table_name . " wppt ON " . "wppt.pano_id = wpp.id " .
+            "INNER JOIN " . $quest_table_name . " wpq ON " . "wpq.panno_id = wpp.id " .
             "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
 
     return $panos;
@@ -165,35 +166,30 @@ function get_quest_by_pano($pano_id){
 	global $wpdb;
 
 	$quest_table_name = get_quest_table_name();
-	$quest_text_table_name = get_quest_text_table_name();
-	$language_code = get_user_language();
 
 	// DB query
 	$quest = $wpdb->get_row( $wpdb->prepare( 
-		"SELECT * FROM " . $quest_table_name . " wpq " .
-		"INNER JOIN " . $quest_text_table_name . " wpqt ON " .
-		"wpqt.quest_id = wpq.id " .
-		"WHERE wpqt.language_code = " . $language_code .
-		" AND wpq.pano_id = %d", $pano_id)
+		"SELECT wpq.id FROM " . $quest_table_name . " wpq " .
+		" WHERE wpq.panno_id = %d", $pano_id)
 	);
 
 	// Returnß
-	return $quest;
+	return $quest->id;
 }
 
 function get_missions(){
     global $wpdb;
 
-    $quest_text_table_name = get_quest_text_table_name();
-    $mission_table_name = get_mission_table_name();
+    $pano_text_table_name    = get_pano_text_table_name();
+    $mission_table_name      = get_mission_table_name();
     $mission_text_table_name = get_mission_text_table_name();
-    $language_code = get_user_language();
+    $language_code           = get_user_language();
 
     // DB query
     $missions = $wpdb->get_results(
-        "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.*, wpqt.name as quest_name FROM " . $mission_table_name . " wpm " .
+        "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.*, wpt.name as pano_name FROM " . $mission_table_name . " wpm " .
         "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wpm.id " .
-        "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpm.quest_id " .
+        "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.id = wpm.pano_id " .
         "WHERE wpmt.language_code = " . $language_code . " ORDER BY id ASC");
 
     // Return
@@ -203,13 +199,16 @@ function get_missions(){
 function get_hotspots(){
     global $wpdb;
 
-    $mission_text_table_name = get_mission_text_table_name();
     $hotspot_table_name      = get_hotspot_table_name();
+    $hotspot_type_table_name = get_type_table_name();
+    $mission_text_table_name = get_mission_text_table_name();
 
     // DB query
     $hotspots = $wpdb->get_results(
-        "SELECT wph.*, wpmt.name as mission_name FROM " . $hotspot_table_name . " wph " .
-        "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id ORDER BY id ASC");
+        "SELECT wph.*, wpmt.name as mission_name, wpht.name as type_name FROM " . $hotspot_table_name . " wph " .
+        "INNER JOIN " . $hotspot_type_table_name . " wpht ON wpht.id = wph.type_id " .
+        "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id " .
+        " ORDER BY id ASC");
 
     // Return
     return $hotspots;
@@ -242,7 +241,7 @@ function get_mission($mission_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare( 
-            "SELECT wpm.id as mission_id, wpm.quest_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
+            "SELECT wpm.id as mission_id, wpm.quest_id, wpm.pano_id, wpm.trade_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
             "INNER JOIN " . $mission_text_table_name . " wpmt ON " .
             " wpm.`id` = wpmt.`mission_id` " .
             " WHERE wpmt.language_code = " . $language_code .
@@ -326,15 +325,28 @@ function get_pano_prereq($pano_id){
 	global $wpdb;
 
 	$prereq_table_name = get_prereq_table_name();
-	$pano_table_name   = get_pano_table_name();
+	$trade_table_name  = get_trade_table_name();
 
 	$prereq = $wpdb->get_results( 
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
-		"INNER JOIN " . $pano_table_name . " wpp ON " .
-		"wpp.`id` = wppr.`pano_id` " .
 		"WHERE wppr.`pano_id` = " . $pano_id);
 
 	return $prereq;
+}
+
+function get_db_prereq($prereq_id){
+    global $wpdb;
+
+    $prereq_table_name = get_prereq_table_name();
+    $pano_text_table_name = get_pano_text_table_name();
+    $pano_trade_table_name = get_trade_table_name();
+
+    $prereq = $wpdb->get_row( $wpdb->prepare(
+        "SELECT wppr.*, wppt.name as pano_name FROM " . $prereq_table_name ." wppr " .
+        "INNER JOIN " . $pano_text_table_name . " wppt ON wppt.`pano_id` = wppr.`pano_id` " .
+        "WHERE wppr.id = %d",  $prereq_id));
+
+    return $prereq;
 }
 
 // Return a user's points for completing missions for a specific pano
@@ -521,7 +533,7 @@ function get_leaderboard(){
     $user_table = "wp_users";
     
     $leaderboard = $wpdb->get_results(
-            "SELECT wu.`display_name` `name`, " .
+            "SELECT wu.id, wu.`display_name` `name`, " .
             "sum(wph.`points`) score, " .
             "wbxf.`name` school " .
             "FROM " . $user_table . " wu " .
@@ -539,12 +551,42 @@ function get_leaderboard(){
     return $leaderboard;
 }
 
+function get_leaderboard_bonus_pts(){
+    global $wpdb;
+
+    // Table names
+    $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+
+    // Buddypress table names
+    $profile_data_table = "wp_bp_xprofile_data";
+    $profile_field_table = "wp_bp_xprofile_fields";
+
+    // WordPress tables names
+    $user_table = "wp_users";
+
+    $leaderboard = $wpdb->get_results(
+        "SELECT wu.id, wu.`display_name` `name`, " .
+        "sum(wpusp.`bonus_points`) score, " .
+        "wbxf.`name` school " .
+        "FROM " . $user_table . " wu " .
+        "INNER JOIN " . $profile_data_table . " wbxd " .
+        "ON wbxd.`user_id` = wu.`ID` " .
+        "INNER JOIN " . $profile_field_table . " wbxf " .
+        "ON wbxf.`id` = wbxd.`value` " .
+        "INNER JOIN " . $bonus_pts_table . " wpusp " .
+        "ON wpusp.`user_id` = wu.`ID` " .
+        "GROUP BY wu.ID " .
+        "ORDER BY score DESC");
+
+    return $leaderboard;
+}
+
 function get_school_leaderboard(){
     global $wpdb;
     
     // Table names
-    $hotspot_table = get_hotspot_table_name();
-    $progress_table = get_user_skill_progress_table_name();
+    $hotspot_table   = get_hotspot_table_name();
+    $progress_table  = get_user_skill_progress_table_name();
     
     // Buddypress table names
     $profile_data_table = "wp_bp_xprofile_data";
@@ -552,9 +594,9 @@ function get_school_leaderboard(){
     
     // WordPress tables names
     $user_table = "wp_users";
-    
+
     $leaderboard = $wpdb->get_results(
-            "SELECT wbxf.`name` `name`, " .
+            "SELECT wbxf.id, wbxf.`name` `name`, " .
             "sum(wph.`points`) score " .
             "FROM " . $user_table . " wu " .
             "INNER JOIN " . $profile_data_table . " wbxd ".
@@ -568,6 +610,35 @@ function get_school_leaderboard(){
             "GROUP BY wbxf.`name` " .
             "ORDER BY score DESC");
     
+    return $leaderboard;
+}
+
+function get_school_leaderboard_bonus_pts(){
+    global $wpdb;
+
+    // Table names
+    $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+
+    // Buddypress table names
+    $profile_data_table = "wp_bp_xprofile_data";
+    $profile_field_table = "wp_bp_xprofile_fields";
+
+    // WordPress tables names
+    $user_table = "wp_users";
+
+    $leaderboard = $wpdb->get_results(
+        "SELECT wbxf.id, wbxf.`name` `name`, " .
+        "sum(wpusbp.`bonus_points`) score " .
+        "FROM " . $user_table . " wu " .
+        "INNER JOIN " . $profile_data_table . " wbxd " .
+        "ON wbxd.`user_id` = wu.`ID`" .
+        "INNER JOIN " . $profile_field_table . " wbxf " .
+        "ON wbxf.`id` = wbxd.`value` " .
+        "INNER JOIN " . $bonus_pts_table . " wpusbp " .
+        "ON wpusbp.`user_id` = wu.`ID` " .
+        "GROUP BY wbxf.`name` " .
+        "ORDER BY score DESC");
+
     return $leaderboard;
 }
 
@@ -624,7 +695,23 @@ function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
     }
 }
 
-function update_quest($quest_id, $quest_name, $quest_description, $pano_id){
+function update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id){
+    global $wpdb;
+    $prereq_table_name = get_prereq_table_name();
+
+    if(isset($id) && is_numeric($id)){
+        $wpdb->update( $prereq_table_name,
+            array('prereq_pts'      => $prereq_pts,
+                  'prereq_trade_id' => $prereq_trade_id),
+            array('id'      => $id,
+                  'pano_id' => $pano_id));
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function update_quest($quest_id, $quest_name, $quest_description, $pano_id, $trade_id){
     global $wpdb;
     $quest_table_name = get_quest_table_name();
     $text_table_name  = get_quest_text_table_name();
@@ -633,7 +720,8 @@ function update_quest($quest_id, $quest_name, $quest_description, $pano_id){
 
     if(isset($quest_id) && is_numeric($quest_id)){
         $wpdb->update( $quest_table_name,
-            array('panno_id' => $pano_id),
+            array('panno_id' => $pano_id,
+                  'trade_id' => $trade_id),
             array('id'       => $quest_id));
 
         $wpdb->update( $text_table_name,
@@ -651,7 +739,7 @@ function update_quest($quest_id, $quest_name, $quest_description, $pano_id){
 
 }
 
-function update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id){
+function update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $trade_id){
     global $wpdb;
     $mission_table_name = get_mission_table_name();
     $text_table_name    = get_mission_text_table_name();
@@ -662,6 +750,8 @@ function update_mission($mission_id, $mission_name, $mission_description, $missi
         $wpdb->update( $mission_table_name,
                 array(
                     'quest_id'    => $quest_id,
+                    'pano_id'     => $pano_id,
+                    'trade_id'    => $trade_id,
                     'points'      => $mission_points,
                     'mission_xml' => $mission_xml),
                 array('id'        => $mission_id));
@@ -768,12 +858,24 @@ function create_pano($pano_xml, $pano_name, $pano_description){
     return $pano_id;
 }
 
-function create_quest($quest_name, $quest_description, $pano_id){
+function create_prereq($pano_id, $prereq_pts, $prereq_trade_id){
     global $wpdb;
-    $quest_table_name = get_quest_table_name();
-    $quest_text_table_name = get_quest_text_table_name();
-    $language_code   = get_user_language();
-    $language_code   = str_replace("'","",$language_code);
+    $prereq_table_name = get_prereq_table_name();
+
+    // Insert the pano
+    $wpdb->insert( $prereq_table_name, array( 'pano_id'         => $pano_id,
+                                              'prereq_pts'      => $prereq_pts,
+                                              'prereq_trade_id' => $prereq_trade_id));
+
+    // Get the id of the last row
+    $prereq_id = $wpdb->insert_id;
+
+    return $prereq_id;
+}
+
+function create_quest($pano_id){
+    global $wpdb;
+    $quest_table_name      = get_quest_table_name();
 
     // Insert the pano
     $wpdb->insert( $quest_table_name, array( 'panno_id'  => $pano_id));
@@ -781,15 +883,10 @@ function create_quest($quest_name, $quest_description, $pano_id){
     // Get the id of the last row
     $lastid = $wpdb->insert_id;
 
-    // Insert the pano_text
-    $wpdb->insert( $quest_text_table_name, array( 'quest_id'      => $lastid,
-                                                  'language_code' => $language_code,
-                                                  'name'          => $quest_name,
-                                                  'description'   => $quest_description));
-    return $wpdb->insert_id;
+    return $lastid;
 }
 
-function create_mission($mission_name, $mission_description, $mission_xml, $quest_id, $mission_points){
+function create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $trade_id, $quest_id, $mission_points){
     global $wpdb;
     $mission_table_name      = get_mission_table_name();
     $mission_text_table_name = get_mission_text_table_name();
@@ -799,7 +896,9 @@ function create_mission($mission_name, $mission_description, $mission_xml, $ques
     // Insert the pano
     $wpdb->insert( $mission_table_name, array( 'quest_id'    => $quest_id,
                                                'points'      => $mission_points,
-                                               'mission_xml' => $mission_xml));
+                                               'mission_xml' => $mission_xml,
+                                               'pano_id'     => $pano_id,
+                                               'trade_id'    => $trade_id));
 
     // Get the id of the last row
     $lastid = $wpdb->insert_id;
@@ -868,13 +967,18 @@ function delete_pano($pano_id){
     $wpdb->delete( $text_table_name, array( 'pano_id' => $pano_id ) );
 }
 
-function delete_quest($quest_id){
+function delete_prereq($prereq_id){
+    global $wpdb;
+    $prereq_table_name = get_prereq_table_name();
+
+    $wpdb->delete( $prereq_table_name, array( 'id' => $prereq_id ) );
+}
+
+function delete_quest($pano_id){
     global $wpdb;
     $quest_table_name = get_quest_table_name();
-    $quest_text_table_name = get_quest_text_table_name();
 
-    $wpdb->delete( $quest_table_name, array( 'id' => $quest_id ) );
-    $wpdb->delete( $quest_text_table_name, array( 'quest_id' => $quest_id ) );
+    $wpdb->delete( $quest_table_name, array( 'panno_id' => $pano_id ) );
 }
 
 function delete_mission($mission_id){

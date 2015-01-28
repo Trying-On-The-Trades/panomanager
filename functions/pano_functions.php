@@ -16,7 +16,7 @@ function build_pano_xml($pano_id){
 
         // Fix reference links
         $fixed_xml_object = fix_references($pano_id, $pano_xml_obj);
-        
+
         // Add the nodes
         $xmk_obj_with_nodes = add_pano_hotspots($fixed_xml_object, $quest, $pano_id);
 

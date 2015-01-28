@@ -55,7 +55,7 @@ function check_user_progress($pano_id){
 	// enough skills and missions
     if(count($prereqs) > 0){
         foreach($prereqs as $prereq){
-            if (is_null($prereq->prereq_trade_id)){
+            if (is_null($prereq->prereq_trade_id) || $prereq->prereq_trade_id == 0){
                 // Get the accumulated points
                 $accumulated_points = get_user_accumulated_points($user_id);
 
@@ -107,6 +107,12 @@ function check_user_progress_ajax(){
 
 function get_pano_prereqs($pano_id){
     $prereq = get_pano_prereq($pano_id);
+    return $prereq;
+}
+
+function get_prereq($prereq_id = 1){
+    $prereq = get_db_prereq($prereq_id);
+
     return $prereq;
 }
 
@@ -213,7 +219,7 @@ function get_hotspot_menu_objects($quest){
 
         foreach ($hotspot_ids as $hid) {
             $new_hotspot = new hotspot($hid);
-            
+
             $progress = check_hotspot_prgress($hid, $user_id);
             
             if(count($progress) > 0){
@@ -413,7 +419,22 @@ function process_new_pano(){
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_name, $pano_description);
 
+    create_quest($pano_id);
+
     wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
+}
+
+function process_new_prereq(){
+
+    // Create a new pano using the post data
+    $pano_id         = $_POST['pano_id'];
+    $prereq_pts      = $_POST['prereq_pts'];
+    $prereq_trade_id = ($_POST['prereq_trade_id'] == "NA") ? null : $_POST['prereq_trade_id'];
+
+    // Get the id
+    $id = create_prereq($pano_id, $prereq_pts, $prereq_trade_id);
+
+    wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
 
 function process_new_quest(){
@@ -422,9 +443,10 @@ function process_new_quest(){
     $quest_name        = $_POST['quest_name'];
     $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
+    $trade_id          = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
 
     // Get the id
-    create_quest($quest_name, $quest_description, $pano_id);
+    create_quest($quest_name, $quest_description, $pano_id, $trade_id);
 
     wp_redirect( admin_url( 'admin.php?page=pano_quest_settings' ) );
 }
@@ -435,11 +457,13 @@ function process_new_mission(){
     $mission_name        = $_POST['mission_name'];
     $mission_description = trim($_POST['mission_description']);
     $mission_xml         = trim(stripslashes($_POST['mission_xml']));
-    $quest_id            = $_POST['quest_id'];
     $mission_points      = $_POST['mission_points'];
+    $quest_id            = $_POST['quest_id'];
+    $pano_id             = $_POST['pano_id'];
+    $trade_id            = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
 
     // Get the id
-    create_mission($mission_name, $mission_description, $mission_xml, $quest_id, $mission_points);
+    create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $trade_id, $quest_id, $mission_points);
 
     wp_redirect( admin_url( 'admin.php?page=pano_mission_settings' ) );
 }
@@ -456,7 +480,7 @@ function process_new_hotspot(){
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_trade_id    = $_POST['hotspot_trade_id'];
+    $hotspot_trade_id    = ($_POST['hotspot_trade_id'] == "NA") ? null : $_POST['hotspot_trade_id'];
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
@@ -505,9 +529,27 @@ function process_edit_pano(){
     $return = update_pano($pano_id, $pano_xml, $pano_name, $pano_description);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_menu&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_menu&error') );
+    }
+}
+
+function process_edit_prereq(){
+
+    // Create a new pano using the post data
+    $id              = $_POST['id'];
+    $pano_id         = $_POST['pano_id'];
+    $prereq_pts      = $_POST['prereq_pts'];
+    $prereq_trade_id = ($_POST['prereq_trade_id'] == "NA") ? null : $_POST['prereq_trade_id'];
+
+    // Get the id
+    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=prereq_edit_setting&id=' . $id . '&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=prereq_edit_setting&id=' . $id . '&error') );
     }
 }
 
@@ -518,16 +560,18 @@ function process_edit_quest(){
     $quest_name        = $_POST['quest_name'];
     $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
+    $trade_id          = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
 
     // Get the id
-    $return = update_quest($quest_id, $quest_name, $quest_description, $pano_id);
+    $return = update_quest($quest_id, $quest_name, $quest_description, $pano_id, $trade_id);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_quest_settings&id=' . $quest_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_quest_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_quest_settings&id=' . $quest_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_quest_settings&error') );
     }
 }
+
 
 function process_edit_mission(){
 
@@ -538,14 +582,16 @@ function process_edit_mission(){
     $mission_xml         = trim(stripslashes($_POST['mission_xml']));
     $mission_points      = $_POST['mission_points'];
     $quest_id            = $_POST['quest_id'];
+    $pano_id             = $_POST['pano_id'];
+    $trade_id            = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
 
     // Get the id
-    $return = update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id);
+    $return = update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $trade_id);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_mission_settings&id=' . $mission_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_mission_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_mission_settings&id=' . $mission_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_mission_settings&error') );
     }
 }
 
@@ -562,16 +608,16 @@ function process_edit_hotspot(){
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_trade_id    = $_POST['hotspot_trade_id'];
+    $hotspot_trade_id    = ($_POST['hotspot_trade_id'] == "NA") ? null : $_POST['hotspot_trade_id'];
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
     $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_settings&id=' . $hotspot_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&error') );
     }
 }
 
@@ -588,9 +634,9 @@ function process_edit_hotspot_type(){
     $return = update_hotspot_type($hotspot_type_id, $hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_js_function);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_type_settings&id=' . $hotspot_type_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_hotspot_type_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_hotspot_type_settings&id=' . $hotspot_type_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_hotspot_type_settings&error') );
     }
 }
 
@@ -604,9 +650,9 @@ function process_edit_trade(){
     $return = update_trade($trade_id, $trade_name);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=edit_trade_settings&id=' . $trade_id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_trade_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=edit_trade_settings&id=' . $trade_id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_trade_settings&error') );
     }
 }
 
@@ -619,6 +665,7 @@ function process_delete_pano(){
     $pano_id = $_POST['pano_id'];
 
     delete_pano($pano_id);
+    delete_quest($pano_id);
 
     wp_redirect( admin_url( 'admin.php?page=pano_menu') );
 }

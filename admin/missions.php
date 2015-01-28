@@ -19,37 +19,49 @@ function pano_mission_settings_page() {
 <?php endif ?>
 
 <h2>Missions</h2>
-<table class="ui table segment">
-  <tr>
-    <th>Mission</th>
-    <th>Description</th>
-    <th>Language Code</th>
-    <th>Quest</th>
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
-  <?php foreach ($missions as $mission): ?>
+<table id="missionTable" class="ui table segment tablesorter">
+    <thead>
+      <tr>
+        <th>Mission</th>
+        <th>Description</th>
+        <th>Language Code</th>
+        <th>Pano</th>
+        <th>Trade</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
 
-    <tr>
-        <td><?php echo $mission->name ?></td>
-        <td><?php echo $mission->description ?></td>
-        <td><?php echo $mission->language_code ?></td>
-        <td><?php echo $mission->quest_name ?></td>
-        <td><a class="ui blue icon button" href="<?php echo $edit_missoin_url ?>&id=<?php echo $mission->mission_id ?>" style="padding: 7px">Edit</a></td>
-        <td>
-            <form method="post" action="admin-post.php" id="delete_mission_form<?php echo $mission->id ?>">
-                <!-- pano processing hook -->
-                <input type="hidden" name="action" value="delete_mission" />
-                <input type="hidden" name="mission_id" value="<?php echo $mission->id ?>" />
+    <tbody>
+        <?php foreach ($missions as $mission): ?>
+            <?php $current_mission = build_mission($mission->mission_id); ?>
+            <tr>
+                <td><?php echo $current_mission->get_name() ?></td>
+                <td><?php echo $current_mission->get_description() ?></td>
+                <td><?php echo $current_mission->get_language() ?></td>
+                <td><?php echo $mission->pano_name ?></td>
+                <td><?php echo $current_mission->get_trade_name() ?></td>
+                <td><a class="ui blue icon button" href="<?php echo $edit_missoin_url ?>&id=<?php echo $current_mission->get_id() ?>" style="padding: 7px">Edit</a></td>
+                <td>
+                    <form method="post" action="admin-post.php" id="delete_mission_form<?php echo $current_mission->get_id() ?>">
+                        <!-- pano processing hook -->
+                        <input type="hidden" name="action" value="delete_mission" />
+                        <input type="hidden" name="mission_id" value="<?php echo $current_mission->get_id() ?>" />
 
-                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
-            </form>
-        </td>
-    </tr>
-
-<?php endforeach; ?>
+                        <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 <a class="ui blue icon button" href="<?php echo $new_mission_url ?>" style="padding: 7px">New Mission</a>
 </div>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery("#missionTable").tablesorter();
+    })
+</script>
 
 <?php }

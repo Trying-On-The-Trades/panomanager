@@ -38,6 +38,8 @@ add_action( 'admin_enqueue_scripts', 'plu_admin_enqueue');
 // Add the process pano hook
 add_action( 'admin_post_create_new_pano', 'process_new_pano' );
 add_action( 'admin_post_upload_zip', 'process_upload_zip' );
+add_action( 'admin_post_create_new_prereq', 'process_new_prereq' );
+add_action( 'admin_post_edit_prereq', 'process_edit_prereq' );
 add_action( 'admin_post_edit_pano', 'process_edit_pano' );
 add_action( 'admin_post_delete_pano', 'process_delete_pano' );
 
@@ -71,6 +73,7 @@ add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
 // callback functions
+add_action( 'admin_post_get_leaderboard_div', 'get_leaderboard_div' );
 add_action( 'admin_post_check_user_progress', 'check_user_progress_ajax' );
 add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_with_bonus' );
@@ -79,7 +82,7 @@ add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_
 register_activation_hook( __FILE__, 'pano_install' );
 
 // Version of the DB used
-define( 'PANO_DB_VERSION', '1.1.5' );
+define( 'PANO_DB_VERSION', '1.1.6' );
 
 // Require the objects
 require_once("includes/pano.php");
@@ -94,6 +97,9 @@ require_once("admin/admin_page.php");
 require_once("admin/new_pano.php");
 require_once("admin/edit_pano.php");
 require_once("admin/upload_zip.php");
+require_once("admin/prereqs.php");
+require_once("admin/new_prereq.php");
+require_once("admin/edit_prereq.php");
 require_once("admin/quests.php");
 require_once("admin/new_quest.php");
 require_once("admin/edit_quest.php");
@@ -118,6 +124,11 @@ require_once("functions/js/register_js.php");
 $register_location = WP_PLUGIN_URL . "/panomanager.php?registration_js=1";
 wp_register_script('pano_register_js', $register_location, false, false, true);
 wp_enqueue_script('pano_register_js');
+
+// Register the table sorter query
+$jquery_sortable = WP_PLUGIN_URL . "/panomanager/js/sortable/jquery.tablesorter.js";
+wp_register_script('jquery_sortable', $jquery_sortable);
+wp_enqueue_script('jquery_sortable');
 
 
 // Used to return the XML to build the pano on the page

@@ -21,32 +21,43 @@ function pano_settings_page() {
 <?php endif ?>
 
 <h2>Panos</h2>
-<table class="ui table segment">
-  <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Edit</th>
-      <th>Delete</th>
-  </tr>
-  <?php foreach ($panos as $pano): ?>
+<table id="panoTable" class="ui table segment tablesorter">
+    <thead>
+      <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Edit</th>
+          <th>Delete</th>
+      </tr>
+    </thead>
 
-    <tr>
-        <td><?php echo $pano->name ?></td>
-        <td><?php echo $pano->description ?></td>
-        <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->pano_id ?>" style="padding: 7px">Edit</a></td>
-        <td>
-            <form method="post" action="admin-post.php" id="delete_pano_form<?php echo $pano->pano_id ?>">
-                <!-- pano processing hook -->
-                <input type="hidden" name="action" value="delete_pano" />
-                <input type="hidden" name="pano_id" value="<?php echo $pano->pano_id ?>" />
+    <tbody>
+        <?php foreach ($panos as $pano): ?>
 
-                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
-            </form>
-        </td>
-    </tr>
+            <tr>
+                <td><?php echo $pano->name ?></td>
+                <td><?php echo $pano->description ?></td>
+                <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->pano_id ?>" style="padding: 7px">Edit</a></td>
+                <td>
+                    <form method="post" action="admin-post.php" id="delete_pano_form<?php echo $pano->pano_id ?>">
+                        <!-- pano processing hook -->
+                        <input type="hidden" name="action" value="delete_pano" />
+                        <input type="hidden" name="pano_id" value="<?php echo $pano->pano_id ?>" />
 
-  <?php endforeach; ?>
+                        <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+                    </form>
+                </td>
+            </tr>
+
+        <?php endforeach; ?>
+    </tbody>
 </table>
 <a class="ui blue icon button" href="<?php echo $new_pano_url ?>" style="padding: 7px">New Pano</a>
 </div>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery("#panoTable").tablesorter();
+    })
+</script>
 <?php }

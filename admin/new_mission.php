@@ -3,7 +3,8 @@
 // Build the settings page
 function new_mission_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-    $quests = get_quests();
+	$panos    = get_panos();
+	$trades   = get_trades();
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new pano!</h2>
@@ -26,7 +27,29 @@ function new_mission_settings_page() {
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_mission" />
-    <div class="ui form segment new_pano_form">
+    <input type="hidden" name="quest_id" id="quest_id" value="<?php echo $panos[0]->quest_id ?>" />
+    <div class="ui form segment new_mission_form">
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="pano_id">Select a Pano</label>
+	        <select id="pano_id" name="pano_id">
+                 <?php foreach($panos as $pano): ?>
+					<option value="<?php echo $pano->id ?>" data-quest-id="<?php echo $pano->quest_id ?>"><?php echo $pano->name ?></option>
+				 <?php endforeach; ?>
+            </select>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="trade_id">Select a Trade</label>
+	        <select name="trade_id">
+				 <option value="NA">...</option>
+                 <?php foreach($trades as $trade): ?>
+					<option value="<?php echo $trade->id ?>"><?php echo $trade->name ?></option>
+				 <?php endforeach; ?>
+			</select>
+	      </div>
+	    </div>
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
@@ -49,30 +72,23 @@ function new_mission_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="quest_id">Select a Quest</label>
-	        <select name="quest_id">
-                 <?php foreach($quests as $quest): ?>
-                    <option value="<?php echo $quest->quest_id ?>"><?php echo $quest->name ?></option>
-                <?php endforeach; ?>
-            </select>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
 	      	<div class="ui left labeled icon input">
 	        	<label for="mission_points">Assign Points</label>
 	    		<input type="number" name="mission_points" id="mission_points" placeholder="100" required />
      	 	</div>
 	      </div>
 	    </div>
-	    <!-- <div class="ui form">
-	      <div class="field">
-	        <label for="zip_file">Choose a zip file to upload: </label>
-	    	<input id="file_input" type="file" name="pano_zip" />
-	      </div>
-	    </div> -->
 	    <?php submit_button(); ?>
 	</div>
 </form>
 </div>
+
+<script>
+	jQuery(document).ready(function(){
+		jQuery("#pano_id").change(function(){
+			var quest_id = jQuery("option:selected", this).attr("data-quest-id");
+			jQuery("#quest_id").val(quest_id);
+		});
+	});
+</script>
 <?php }

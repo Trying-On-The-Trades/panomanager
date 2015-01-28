@@ -155,6 +155,8 @@ function build_mission_sql(){
       `quest_id` bigint(20) NOT NULL,
       `points` int(10) NOT NULL,
       `mission_xml` text NOT NULL,
+      `pano_id` bigint(20) NOT NULL,
+      `trade_id` int(11) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 

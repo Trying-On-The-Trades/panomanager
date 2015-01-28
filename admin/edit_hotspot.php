@@ -6,6 +6,7 @@ function edit_hotspot_settings_page() {
 
     $missions = get_missions();
 	$types	  = get_types();
+	$trades	  = get_trades();
     $hotspot  = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -100,6 +101,17 @@ function edit_hotspot_settings_page() {
 	        <select name="type_id">
                  <?php foreach($types as $type): ?>
 					 <option value="<?php echo $type->id ?>" <?php echo ($type->id === $hotspot->get_type_id()) ? "selected" : "" ?>><?php echo $type->name ?></option>
+				 <?php endforeach; ?>
+			</select>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label for="hotspot_trade_id">Select a Trade</label>
+	        <select name="hotspot_trade_id">
+				 <option value="NA">...</option>
+                 <?php foreach($trades as $trade): ?>
+					<option value="<?php echo $trade->id ?>"  <?php echo ($trade->id === $hotspot->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
 				 <?php endforeach; ?>
 			</select>
 	      </div>
