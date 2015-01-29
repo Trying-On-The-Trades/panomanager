@@ -50,9 +50,10 @@ function prereq_settings_page() {
                 <td><?php echo $trade->name ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_prereq_url ?>&id=<?php echo $prereq->id ?>" style="padding: 7px">Edit</a></td>
                 <td>
-                    <form method="post" action="admin-post.php" id="delete_hotspot_form<?php echo $prereq->id ?>">
+                    <form method="post" action="admin-post.php" id="delete_prereq_form<?php echo $prereq->id ?>">
                         <!-- pano processing hook -->
-                        <input type="hidden" name="action" value="delete_hotspot" />
+                        <input type="hidden" name="action" value="delete_prereq" />
+                        <input type="hidden" name="pano_id" value="<?php echo $pano_id ?>" />
                         <input type="hidden" name="prereq_id" value="<?php echo $prereq->id ?>" />
 
                         <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >

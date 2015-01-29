@@ -40,6 +40,7 @@ add_action( 'admin_post_create_new_pano', 'process_new_pano' );
 add_action( 'admin_post_upload_zip', 'process_upload_zip' );
 add_action( 'admin_post_create_new_prereq', 'process_new_prereq' );
 add_action( 'admin_post_edit_prereq', 'process_edit_prereq' );
+add_action( 'admin_post_delete_prereq', 'process_delete_prereq' );
 add_action( 'admin_post_edit_pano', 'process_edit_pano' );
 add_action( 'admin_post_delete_pano', 'process_delete_pano' );
 

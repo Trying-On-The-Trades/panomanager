@@ -547,9 +547,9 @@ function process_edit_prereq(){
     $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=prereq_edit_setting&id=' . $id . '&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=prereq_edit_setting&id=' . $id . '&error') );
+        wp_redirect( admin_url( 'admin.php?page=prereq_setting&error') );
     }
 }
 
@@ -678,6 +678,17 @@ function process_delete_quest(){
     delete_quest($quest_id);
 
     wp_redirect( admin_url( 'admin.php?page=pano_quest_settings') );
+}
+
+function process_delete_prereq(){
+
+    // Delete a quest using the post data
+    $prereq_id = $_POST['prereq_id'];
+    $pano_id   = $_POST['pano_id'];
+
+    delete_prereq($prereq_id);
+
+    wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id) );
 }
 
 function process_delete_mission(){

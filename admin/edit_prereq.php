@@ -10,8 +10,6 @@ function prereq_edit_settings_page() {
         $prereq = get_prereq($_GET['id']);
     }
 
-
-
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new Prereq!</h2>
