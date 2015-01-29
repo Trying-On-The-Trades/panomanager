@@ -55,9 +55,8 @@ function get_panos(){
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results( 
-            "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.*, wpq.id as quest_id FROM " . $pano_table_name . " wpp " .
+            "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " . "wppt.pano_id = wpp.id " .
-            "INNER JOIN " . $quest_table_name . " wpq ON " . "wpq.panno_id = wpp.id " .
             "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
 
     return $panos;
@@ -482,7 +481,7 @@ function add_user_progress($user_id, $hotspot_id, $trade_id){
                                             FROM " . $progress_table . " wpup
                                             INNER JOIN " . $hotspot_table . " wph
                                             ON wpup.`skill_id` = wph.`id`
-                                            WHERE wpup.`id` =" . $lastid));
+                                            WHERE wpup.`id` = %d", $lastid));
 
     // Return those points
     return $pano->points;
@@ -512,7 +511,7 @@ function add_user_progress_with_bonus($user_id, $hotspot_id,  $trade_id, $bonus_
     // Get the points that were just added
     $pano = $wpdb->get_row( $wpdb->prepare("SELECT wpup.`bonus_points`
                                             FROM " . $progress_table . " wpup
-                                            WHERE wpup.`id` =" . $lastid));
+                                            WHERE wpup.`id` = %d", $lastid));
 
     // Return those points
     return $pano->bonus_points;
@@ -650,16 +649,16 @@ function get_pano_ads($quest_id){
     global $wpdb;
     
     // Table names 
-    $quest_table    = get_quest_table_name(); 
+    $mission_table  = get_mission_table_name();
     $ads_table      = get_ads_table_name(); 
     $ads_text_table = get_ads_text_table_name();
     $language_code  = get_user_language();
     
     $ad_messages = $wpdb->get_results("SELECT wpat.`message` FROM " . $ads_text_table . " wpat " . 
                                       "INNER JOIN " . $ads_table . " wpa ON wpa.`id` = wpat.`ads_id`" .
-                                      "INNER JOIN " . $quest_table . " wpq ON wpq.`trade_id` = wpa.`trade_id`" . 
+                                      "INNER JOIN " . $mission_table . " wpm ON wpm.`trade_id` = wpa.`trade_id`" .
                                       "WHERE wpat.`language_code` = " . $language_code .
-                                      "AND wpq.id = " . $quest_id);
+                                      "AND wpm.quest_id = " . $quest_id);
     
     return $ad_messages;
     

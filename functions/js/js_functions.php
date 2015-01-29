@@ -356,8 +356,9 @@ function build_manage_lightbox($quest, $current_pano_url){
             $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
         } else {
             $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_trade_id() . ");\n";
-            $script  .=	"break;\n";
         }
+
+        $script  .=	"break;\n";
     }
 
 	$script  .=			"default:\n";
@@ -575,7 +576,7 @@ function build_ad_message($quest){
     $script = "var message = '';\n";
     $messages = get_pano_ad_message($quest);
 
-    if(count($messages) > 0){
+    if($messages[0] && $messages[0] != ""){
         $script  .= "var ad_messages = [";
         foreach($messages as $message){
             $script .= "\" $message \",";
@@ -662,21 +663,21 @@ function build_school_table(){
     
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
+        $total_score = $entry->score;
+
         foreach($leaderboard_entries_bonus_pts as $bonus_entry){
             if($entry->name == $bonus_entry->name) {
-                $total_score = $entry->score + $bonus_entry->score;
-            } else {
-                $total_score = $entry->score;
+                $total_score += $bonus_entry->score;
             }
-
-            $count += 1;
-
-            $board .= '<tr class"entry">';
-            $board .= '<td>' . $count . '</td>';
-            $board .= '<td class"school">' . $entry->name . '</td>';
-            $board .= '<td id="school'. $entry->id .'_score" class"point" data-school-score="' . $total_score . '">' . $total_score . '</td>';
-            $board .= '</tr>';
         }
+
+        $count += 1;
+
+        $board .= '<tr class"entry">';
+        $board .= '<td>' . $count . '</td>';
+        $board .= '<td class"school">' . $entry->name . '</td>';
+        $board .= '<td id="school'. $entry->id .'_score" class"point" data-school-score="' . $total_score . '">' . $total_score . '</td>';
+        $board .= '</tr>';
     }
     
     $board .= '</table>';
@@ -696,24 +697,23 @@ function build_individual_table(){
     
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
+        $total_score = $entry->score;
+
         foreach($leaderboard_enteries_bonus_pts as $bonus_entry){
-            $count += 1;
-
             if($entry->name == $bonus_entry->name && $entry->school && $bonus_entry->school){
-                $total_score = $entry->score + $bonus_entry->score;
-            } else {
-                $total_score = $entry->score;
+                $total_score += $bonus_entry->score;
             }
-
-            $board .= '<tr class"entry">';
-            $board .= '<td>' . $count . '</td>';
-            $board .= '<td class"nam">' . $entry->name . '</td>';
-            $board .= '<td class"school">' . $entry->school . '</td>';
-            $board .= '<td class"point" id="user'. $entry->id .'_score" data-user-score="' . $total_score . '">' . $total_score . '</td>';
-
-            $board .= '</tr>';
-
         }
+
+        $count += 1;
+
+        $board .= '<tr class"entry">';
+        $board .= '<td>' . $count . '</td>';
+        $board .= '<td class"nam">' . $entry->name . '</td>';
+        $board .= '<td class"school">' . $entry->school . '</td>';
+        $board .= '<td class"point" id="user'. $entry->id .'_score" data-user-score="' . $total_score . '">' . $total_score . '</td>';
+
+        $board .= '</tr>';
     }
     
     $board .= '</table>';
