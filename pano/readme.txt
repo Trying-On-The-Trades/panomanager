@@ -1,1 +1,0 @@
-This is the folder that contains the reusable panno files so that they don't need to be reuploaded to the website every time.

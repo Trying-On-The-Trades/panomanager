@@ -41,9 +41,9 @@ function register_scripts($pano_directory){
     $jquery_bold      = WP_PLUGIN_URL . "/panomanager/js/jquery-bold-1.11.2.js";
         
     //// JQUERY
-    wp_deregister_script('jquery');
-    wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
-    wp_enqueue_script('jquery');
+//    wp_deregister_script('jquery');
+//    wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
+//    wp_enqueue_script('jquery');
     
     //wp_register_script('jquery_bold', $jquery_bold);
     //wp_enqueue_script('jquery_bold');

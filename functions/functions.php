@@ -18,7 +18,7 @@ function pano_handler($incomingfrompost) {
 }
 
 // function that can be called from a page template
-function load_pano($pano_id = 1){
+function load_pano($pano_id){
 
     $id = 1;
 
@@ -26,6 +26,8 @@ function load_pano($pano_id = 1){
     if(check_user_progress($pano_id)){
         // Make sure the pano exists before trying to load it
 	    $id = check_pano_id($pano_id);
+    } else {
+        //TODO I'd suggest to break the code here, return a error page with redirection.
     }
 
 	$pano  = build_pano($id);
