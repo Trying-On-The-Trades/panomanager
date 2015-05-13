@@ -38,15 +38,12 @@ function register_scripts($pano_directory){
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
     
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
-    $jquery_bold      = WP_PLUGIN_URL . "/panomanager/js/jquery-bold-1.11.2.js";
         
-    //// JQUERY
-//    wp_deregister_script('jquery');
-//    wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", false, null);
-//    wp_enqueue_script('jquery');
-    
-    //wp_register_script('jquery_bold', $jquery_bold);
-    //wp_enqueue_script('jquery_bold');
+    //// JQUERY CDN
+    wp_deregister_script('jquery');
+    wp_register_script('jquery', "https://code.jquery.com/jquery-2.1.4.js", false, '2.1.4',true);
+    wp_enqueue_script('jquery');
+
     
     wp_register_script('jquery_migrate', $jquery_migrate);
     wp_enqueue_script('jquery_migrate');
@@ -56,25 +53,25 @@ function register_scripts($pano_directory){
     wp_enqueue_script('pano_js');
 
     //// MMENU APP SLIDER
-    wp_register_script('mmenu', $mmenu);
+    wp_register_script('mmenu', $mmenu, array('jquery'));
     wp_enqueue_script('mmenu');
     wp_register_style('mmenu_css', $mmenu_css);
     wp_enqueue_style('mmenu_css');
 
     //// MAGNIFIC LIGHTVIEW
-    wp_register_script('magnific_js', $magnific_js);
+    wp_register_script('magnific_js', $magnific_js, array('jquery'));
     wp_enqueue_script('magnific_js');
     wp_register_style('magnific_css', $magnific_css);
     wp_enqueue_style('magnific_css');
 
     //// JQUERY TOAST
-    wp_register_script('toast_js', $toast_js);
+    wp_register_script('toast_js', $toast_js, array('jquery'));
     wp_enqueue_script('toast_js');
     wp_register_style('toast_css', $toast_css);
     wp_enqueue_style('toast_css');
     
     //// JQUERYUI 
-    wp_register_script('jqueryui_js', $jqueryui_js);
+    wp_register_script('jqueryui_js', $jqueryui_js, array('jquery'));
     wp_enqueue_script('jqueryui_js');
     wp_register_style('jqueryui_css', $jqueryui_css);
     wp_enqueue_style('jqueryui_css');

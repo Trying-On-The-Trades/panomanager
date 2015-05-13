@@ -128,7 +128,7 @@ wp_enqueue_script('pano_register_js');
 
 // Register the table sorter query
 $jquery_sortable = WP_PLUGIN_URL . "/panomanager/js/sortable/jquery.tablesorter.js";
-wp_register_script('jquery_sortable', $jquery_sortable);
+wp_register_script('jquery_sortable', $jquery_sortable, array('jquery'));
 wp_enqueue_script('jquery_sortable');
 
 
