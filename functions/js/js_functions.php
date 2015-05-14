@@ -744,7 +744,8 @@ function build_popup_styles(){
 function build_points_callback_function(){
     $script  = "function addPts(id, pts, trade_id){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
-    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+    $script .= "var points = parseInt($('#' + id + '_menu_item a span:nth-child(2)').text());\n";
+    $script .= "console.log('Points:' + points);\n";
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
@@ -752,17 +753,20 @@ function build_points_callback_function(){
     $script .= "       hotspot: id,\n";
     $script .= "       trade_id: trade_id},\n";
     $script .= "success: function(d){\n";
-    $script .= "    var earned_points = (d && d != '') ? parseInt(d) : 0;\n";
-    $script .= "    var total_points = points + earned_points;\n";
+    $script .= "console.log('d:' + d);\n";
+    $script .= "    var accumulated_points = (d && d != '') ? parseInt(d) : 0;\n";
+    $script .= "    var total_points = points + accumulated_points;\n";
+    $script .= "console.log('Accumulated:' + accumulated_points);\n";
+    $script .= "console.log('Total:' + total_points);\n";
     $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
     $script .= "    $('#displayed_points').html(total_points);\n";
-    $script .= "    if(earned_points > 0){\n";
-    $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
+    $script .= "    if(points > 0){\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + points + ' points!');\n";
     $script .= "    }\n";
     $script .= "}\n";
     $script .= "});\n";
 
-    $script .= "console.log(id);\n";
+    $script .= "console.log('Id:' + id);\n";
     $script .= "}\n";
     return $script;
 }
