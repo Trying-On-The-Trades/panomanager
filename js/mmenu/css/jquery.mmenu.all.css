@@ -521,9 +521,10 @@ html.mm-opened.mm-dragging #mm-blocker {
   overflow: hidden;
   padding: 20px;
   text-align: center;
-  color: #147BB5;
+  color: #FFF;
   border-bottom: 1px solid #ccc;
-  line-height: 25px; }
+  line-height: 25px;
+  background: #147BB5;}
 .mm-list > li.mm-label.mm-opened a.mm-subopen:after {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
