@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 
 *.iml
@@ -49,3 +50,6 @@ cs-build.properties
 
 #mac files
 *.DS_Store
+=======
+.DS_Store
+>>>>>>> d8fad15455c3297b06fe547ce4774a910fbaa7f9

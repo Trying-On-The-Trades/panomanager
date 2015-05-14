@@ -1,3 +1,7 @@
 .hotspot_done{
   text-decoration: line-through;
 }
+
+.hotspot_points{
+    float: right;
+}
