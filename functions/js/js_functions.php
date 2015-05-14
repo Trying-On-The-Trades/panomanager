@@ -68,9 +68,9 @@ function register_scripts($pano_directory){
     wp_enqueue_style('magnific_css');
 
     //// FEATHERLIGHT
-    wp_register_script('featherlight_js', $featherlight_js);
+    wp_register_script('featherlight_js', $featherlight_js, array('jquery'));
     wp_enqueue_script('featherlight_js');
-    wp_register_script('featherlight_fnc', $featherlight_fnc);
+    wp_register_script('featherlight_fnc', $featherlight_fnc, array('jquery'));
     wp_enqueue_script('featherlight_fnc');
     wp_register_style('featherlight_css', $featherlight_css);
     wp_enqueue_style('featherlight_css');
