@@ -635,6 +635,7 @@ function get_mission_tasks($quest){
                      $item->get_id() . "_menu_item' class='" . $completed_state . "'>" .
                      "<a href='#' class='hotspot_tooltip' title='" . $item->get_description() . "'>" .
                      "<span class='hotspot_name'>" . $item->get_menu_name() . "</span>" .
+                     "<span class='hotspot_points'>" . $item->get_points() . "</span>" .
                      "</a></li>";
         }
     }
