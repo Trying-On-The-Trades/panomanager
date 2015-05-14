@@ -132,7 +132,6 @@ function add_nav_script($quest, $pano_id){
     $script .= "$(document).ready(function() {\n";
     $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
     $script .= "krpano = document.getElementById('krpanoSWFObject');\n";
-    $script .= "pojQuery('.hotspot_tooltip').tooltip();\n";
     $script .= "});\n"; 
     
     $script .= build_menu_launch();
@@ -594,8 +593,8 @@ function build_menu_nav($quest){
     $script = '<nav id="mission-menu">
                 <ul >
                     <li class="Label">
-                        <span class="mission_title">Mission</span>
-                        <span class="user_points">Total Mission Points <span id="displayed_points" data-points="' . $points . '">' . $points . '</span></span></li>';
+                        <span class="mission_title">MISSIONS</span>
+                    </li>';
       
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
@@ -624,7 +623,6 @@ function get_mission_tasks($quest){
                      $item->get_id() . "_menu_item' class='" . $completed_state . "'>" . 
                      "<a href='#' class='hotspot_tooltip' title='" . $item->get_description() . "'>" .
                      "<span class='hotspot_name'>" . $item->get_menu_name() . "</span>" .
-                     "<span class='hotspot_points'>" . $item->get_points() . "</span>" .
                      "</a></li>";
         }
     }
