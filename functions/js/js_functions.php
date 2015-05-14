@@ -747,7 +747,9 @@ function build_popup_styles(){
 function build_points_callback_function(){
     $script  = "function addPts(id, pts, trade_id){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
-    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+    $script .= "var points = parseInt($('#' + id + '_menu_item a span:nth-child(2)').text());\n";
+    // $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+    $script .= "console.log(points);\n";
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
