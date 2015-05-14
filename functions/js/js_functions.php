@@ -9,11 +9,11 @@ function build_pano_javascript($pano_id, $pano, $quest){
         $pano_directory = content_url() . "/panos/" . $pano_id;
         $pano_swf_location = $pano_directory . "/tour.swf";
         $pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
-       
+
         //Add the styles and javascript
         register_scripts($pano_directory);
         $script = "<style>" . build_popup_styles() . "</style>";
-        
+
         // Get the menu nav
         $script .= build_menu_nav($quest);
 
@@ -22,29 +22,34 @@ function build_pano_javascript($pano_id, $pano, $quest){
 
         // Get the embed script
         $script .= build_embed_script($pano_swf_location, $pano_php_location);
-        
+
 	return $script;
 }
 
 function register_scripts($pano_directory){
+    $app_css          = WP_PLUGIN_URL . "/panomanager/css/app.css";
     $mmenu            = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
     $mmenu_css        = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
     $magnific_js      = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
     $magnific_css     = $pano_directory . "/magnific-popup/magnific-popup.css";
     $pano_js_location = $pano_directory . "/tour.js";
+    $featherlight_js  = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.js";
+    $featherlight_fnc = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight-functions.js";
+    $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.css";
     $toast_js         = WP_PLUGIN_URL . "/panomanager/js/toast/javascript/jquery.toastmessage.js";
     $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
     $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.min.js";
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
-    
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
-        
+
+    //// APP CUSTOMIZED CSS
+    wp_register_style('app_css', $app_css);
+    wp_enqueue_style('app_css');
+
     //// JQUERY CDN
     wp_deregister_script('jquery');
     wp_register_script('jquery', "https://code.jquery.com/jquery-2.1.4.js", false, '2.1.4',true);
     wp_enqueue_script('jquery');
-
-    
     wp_register_script('jquery_migrate', $jquery_migrate);
     wp_enqueue_script('jquery_migrate');
 
@@ -64,13 +69,21 @@ function register_scripts($pano_directory){
     wp_register_style('magnific_css', $magnific_css);
     wp_enqueue_style('magnific_css');
 
+    //// FEATHERLIGHT
+    wp_register_script('featherlight_js', $featherlight_js, array('jquery'));
+    wp_enqueue_script('featherlight_js');
+    wp_register_script('featherlight_fnc', $featherlight_fnc, array('jquery'));
+    wp_enqueue_script('featherlight_fnc');
+    wp_register_style('featherlight_css', $featherlight_css);
+    wp_enqueue_style('featherlight_css');
+
     //// JQUERY TOAST
     wp_register_script('toast_js', $toast_js, array('jquery'));
     wp_enqueue_script('toast_js');
     wp_register_style('toast_css', $toast_css);
     wp_enqueue_style('toast_css');
-    
-    //// JQUERYUI 
+
+    //// JQUERYUI
     wp_register_script('jqueryui_js', $jqueryui_js, array('jquery'));
     wp_enqueue_script('jqueryui_js');
     wp_register_style('jqueryui_css', $jqueryui_css);
@@ -101,25 +114,25 @@ function add_nav_script($quest, $pano_id){
     $current_pano_url = get_site_url() . "?pano=" . $pano_id;
 
     $script = "\n<script type='text/javascript'>\n";
-    
+
     $script .= "var krpano;\n";
     $script .=	"var siteAdr = '" . get_site_url() . "?pano_id=';\n";
 
     // Build the array of names
     $script .= build_names_array();
-            
+
     // Build the array of ids
     $script .=	build_ids_array();
-  
+
     // The default pointer
     $script .=	"var pointer = 0;\n";
     $script .=  "var defaultVar = 1;\n";
     $script .= "var magnificPopup;";
-    
+
     $script .= build_launch_message();
-    $script .= build_find_array();    
+    $script .= build_find_array();
     $script .= build_get_scene_name();
-    
+
     //MY SCRIPTS ////////////////////////
 	$script .= build_launch_hairstyling($quest);
 	$script .= build_launch_image($quest);
@@ -128,7 +141,7 @@ function add_nav_script($quest, $pano_id){
 	$script .= build_launch_quizlet($quest);
 	$script .= build_launch_khan($quest);
 	$script .= build_launch_hazard($quest);
-    
+
     $script .= "$(document).ready(function() {\n";
     $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
     $script .= "krpano = document.getElementById('krpanoSWFObject');\n";
@@ -139,30 +152,30 @@ function add_nav_script($quest, $pano_id){
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
     $script .= build_login_button();
-    
+
     $script .= "</script>";
-        
+
     return $script;
 
 }
 
 function build_names_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
-    
+
     $script =  "var panoArray = Array(";
-    
+
     for ($i = 0; $i < count($allowed_panos); $i++) {
-        
+
         $script .= "'" . $allowed_panos[$i]->name . "'";
-        
+
         if ($i == count($allowed_panos) - 1) {
-            
+
             $script .= '';
         } else {
             $script .= ', ';
         }
     }
-    
+
     $script .= ");\n";
     return $script;
 }
@@ -170,14 +183,14 @@ function build_names_array(){
 function build_ids_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
     $script =  "var panoPointer = Array(";
-    
+
     for ($i = 0; $i < count($allowed_panos); $i++) {
 
         $script .= "{id:" . $allowed_panos[$i]->id . ",";
         $script .= "name:'" . $allowed_panos[$i]->name . "'";
-        
+
         if ($i == count($allowed_panos) - 1) {
-            
+
             $script .= '}';
         } else {
             $script .= '}, ';
@@ -203,7 +216,7 @@ function build_launch_message(){
         $script .= "            }\n";
         $script .= "        }\n";
         $script .= "        });\n";
-        
+
         $script .= "        magnificPopup = $.magnificPopup.instance; \n";
         $script .= "    } else {\n";
         $script .= "        var pano_id = 1;\n";
@@ -244,7 +257,7 @@ function build_launch_message(){
         $script .= "        });\n";
         $script .= "  }\n";
         $script .= "}\n";
-    
+
     return $script;
 }
 
@@ -252,7 +265,7 @@ function build_launch_message(){
 function build_find_array(){
     $script =	"function findArray(input)";
     $script .=	"{\n";
-        $script .=	"var checker = false;\n";			
+        $script .=	"var checker = false;\n";
         $script .=	"for(var i = 0; i < panoArray.length; i++)";
         $script .=	"{\n";
         $script .=	"if(input == panoArray[i])";
@@ -263,7 +276,7 @@ function build_find_array(){
         $script .=	"}\n";
         $script .=	"return checker;\n";
     $script .= "}\n";
-    
+
     return $script;
 }
 
@@ -334,7 +347,7 @@ function build_manage_lightbox($quest, $current_pano_url){
 	$script  = "function launchLogin(){\n";
 	$script .= "window.location.replace('" . get_site_url() . "/login');\n";
 	$script .= "}\n";
-	
+
 	$script  = "function manageLightbox(srcName)\n";
 	$script  .= "{\n";
 	$script  .=		"switch(srcName)\n";
@@ -361,14 +374,14 @@ function build_manage_lightbox($quest, $current_pano_url){
 	$script  .=				"launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'speaker');\n";
 	$script  .=		"}\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
 
 function build_launch_image($quest)
 {
-    
+
 	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
@@ -391,7 +404,7 @@ function build_launch_image($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
@@ -424,7 +437,7 @@ function build_launch_hairstyling($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
@@ -458,7 +471,7 @@ function build_launch_hazard($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
@@ -492,12 +505,12 @@ function build_launch_game($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
 function build_launch_quizlet($quest)
-{       
+{
 	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, tradeId)\n";
 	$script  .=	"{\n";
 	$script  .=		"$.magnificPopup.open({\n";
@@ -523,7 +536,7 @@ function build_launch_quizlet($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
@@ -563,12 +576,12 @@ function build_launch_Khan($quest)
 	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
 	$script  .=		"console.log(cnslCode);\n";
 	$script  .=	"}\n";
-	
+
 	return $script;
 }
 
 function build_ad_message($quest){
-    
+
     $script = "var message = '';\n";
     $messages = get_pano_ad_message($quest);
 
@@ -581,7 +594,7 @@ function build_ad_message($quest){
 
         $script  .=	"message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
     }
-    
+
     return $script;
 }
 
@@ -589,16 +602,15 @@ function build_ad_message($quest){
 function build_menu_nav($quest){
 //    $script = '<div style="display:none" class="slider_menu">';
     $points = calculate_total_user_points();
-    
+
     $script = '<nav id="mission-menu">
                 <ul >
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
                     </li>';
-      
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
-    
+
     $script .= '</ul>
                  </nav>';
 //    $script .= '</div>';
@@ -606,27 +618,27 @@ function build_menu_nav($quest){
 }
 
 function get_mission_tasks($quest){
-    
+
     // Get the missions and the hotspot information for the menu
     $menu_missions = get_hotspot_menu_objects($quest);
-    
+
     // Make sure there is atleast some text
     $missions = "";
-    
+
     // Build the menu
     foreach ($menu_missions as $item){
         if ($item->is_menu_item()){
-            
+
             $completed_state = ($item->get_completed_state()) ? "hotspot_done" : "";
-            
-            $missions .= "<li id='" . 
-                     $item->get_id() . "_menu_item' class='" . $completed_state . "'>" . 
+
+            $missions .= "<li id='" .
+                     $item->get_id() . "_menu_item' class='" . $completed_state . "'>" .
                      "<a href='#' class='hotspot_tooltip' title='" . $item->get_description() . "'>" .
                      "<span class='hotspot_name'>" . $item->get_menu_name() . "</span>" .
                      "</a></li>";
         }
     }
-    
+
     return $missions;
 }
 
@@ -635,10 +647,10 @@ function build_leaderboard_div(){
 
     $board = '<div class="white-popup">';
     $board .= '<h2>Leaderboard</h2>';
-    
+
     // Create the table for schools
     $board .= build_school_table();
-    
+
     // Create the table for individuals
     $board .= build_individual_table();
 
@@ -651,11 +663,11 @@ function build_school_table(){
     $leaderboard_enteries          = get_school_leaderboard();
     $leaderboard_entries_bonus_pts = get_school_leaderboard_bonus_pts();
     $count = 0;
-   
+
     $board = '<h3>School Leaderboard</h3>';
     $board .= '<table>';
     $board .= '<tr><th>Place</th><th>School</th><th>Score</th>';
-    
+
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
         $total_score = $entry->score;
@@ -674,9 +686,9 @@ function build_school_table(){
         $board .= '<td id="school'. $entry->id .'_score" class"point" data-school-score="' . $total_score . '">' . $total_score . '</td>';
         $board .= '</tr>';
     }
-    
+
     $board .= '</table>';
-    
+
     return $board;
 }
 
@@ -684,12 +696,12 @@ function build_individual_table(){
     $leaderboard_enteries           = get_leaderboard();
     $leaderboard_enteries_bonus_pts = get_leaderboard_bonus_pts();
     $count = 0;
-    
+
     // Create the table for individuals
     $board = '<h3>User Leaderboard</h3>';
     $board .= '<table>';
     $board .= '<tr><th>Place</th><th>Name</th><th>School</th><th>Score</th>';
-    
+
     // Fill with content
     foreach ($leaderboard_enteries as $entry) {
         $total_score = $entry->score;
@@ -710,9 +722,9 @@ function build_individual_table(){
 
         $board .= '</tr>';
     }
-    
+
     $board .= '</table>';
-    
+
     return $board;
 }
 
@@ -733,7 +745,6 @@ function build_points_callback_function(){
     $script  = "function addPts(id, pts, trade_id){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
-
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
