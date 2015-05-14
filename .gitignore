@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 
 *.iml
@@ -44,4 +45,11 @@ atlassian-ide-plugin.xml
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
-crashlytics-build.properties
+crashlyti
+cs-build.properties
+
+#mac files
+*.DS_Store
+=======
+.DS_Store
+>>>>>>> d8fad15455c3297b06fe547ce4774a910fbaa7f9
