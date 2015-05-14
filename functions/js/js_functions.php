@@ -27,6 +27,7 @@ function build_pano_javascript($pano_id, $pano, $quest){
 }
 
 function register_scripts($pano_directory){
+    $app_css          = WP_PLUGIN_URL . "/panomanager/css/app.css";
     $mmenu            = WP_PLUGIN_URL . "/panomanager/js/mmenu/js/jquery.mmenu.min.all.js";
     $mmenu_css        = WP_PLUGIN_URL . "/panomanager/js/mmenu/css/jquery.mmenu.all.css";
     $magnific_js      = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
@@ -39,15 +40,16 @@ function register_scripts($pano_directory){
     $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
     $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.min.js";
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
-
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
+
+    //// APP CUSTOMIZED CSS
+    wp_register_style('app_css', $app_css);
+    wp_enqueue_style('app_css');
 
     //// JQUERY CDN
     wp_deregister_script('jquery');
     wp_register_script('jquery', "https://code.jquery.com/jquery-2.1.4.js", false, '2.1.4',true);
     wp_enqueue_script('jquery');
-
-
     wp_register_script('jquery_migrate', $jquery_migrate);
     wp_enqueue_script('jquery_migrate');
 
@@ -746,7 +748,6 @@ function build_points_callback_function(){
     $script  = "function addPts(id, pts, trade_id){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
-
     $script .= "$.ajax({\n";
     $script .= "type: 'POST',\n";
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
