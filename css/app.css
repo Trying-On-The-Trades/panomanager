@@ -1,5 +1,10 @@
 .hotspot_done{
   text-decoration: line-through;
+  color: #147BB5 !important;
+}
+
+.hotspot_done > a span{
+    color: #147BB5;
 }
 
 .hotspot_points{
