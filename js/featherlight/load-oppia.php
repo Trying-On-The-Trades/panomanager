@@ -12,8 +12,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="feather-test.css" />
-    <script src="../oppia-player.min.js"></script>
+    <script src="oppia-player.min.js"></script>
     <title>Oppia test</title>
   </head>
   <body>
