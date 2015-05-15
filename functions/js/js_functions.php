@@ -145,8 +145,8 @@ function add_nav_script($quest, $pano_id){
     $script .= "$(document).ready(function() {\n";
     $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
     $script .= "krpano = document.getElementById('krpanoSWFObject');\n";
-    $script .= "});\n"; 
-    
+    $script .= "});\n";
+
     $script .= build_menu_launch();
     $script .= build_leader_launch();
     $script .= build_points_callback_function();
@@ -744,6 +744,7 @@ function build_popup_styles(){
 ///////////  Points Callback Functions
 function build_points_callback_function(){
     $script  = "function addPts(id, pts, trade_id){\n";
+    // $script .= "if(!$('#' + id + '_menu_item').className.match(/(?:^|\s)hotspost_done(?!\S)/)){\n";
     $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
     $script .= "var points = parseInt($('#' + id + '_menu_item a span:nth-child(2)').text());\n";
     $script .= "console.log('Points:' + points);\n";
@@ -768,6 +769,7 @@ function build_points_callback_function(){
     $script .= "});\n";
 
     $script .= "console.log('Id:' + id);\n";
+    // $script .= "}\n";
     $script .= "}\n";
     return $script;
 }
