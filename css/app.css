@@ -4,7 +4,7 @@
 }
 
 .hotspot_done > a span{
-    color: #147BB5;
+	color: #147BB5 !important;
 }
 
 .hotspot_points{
