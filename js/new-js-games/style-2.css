@@ -1,7 +1,7 @@
 /* Variabes */
 /* Mixin's */
 body {
-  background: #c1d72e;
+  background: #147BB5;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   color: #fff;
   height: 100%;
@@ -15,11 +15,6 @@ body {
     content: "";
     display: table;
     clear: both; }
-
-canvas {
-  color: #fff;
-  border: #fff dashed 2px;
-  padding: 15px; }
 
 h1, h2, h3 {
   font-family: 'Roboto', sans-serif;
@@ -36,9 +31,29 @@ h2 {
 p {
   font-size: 1.6em; }
 
+#inf {
+  position: relative;
+  right: 115px;
+}
+
+.content {
+  height: 378px;
+}
+
+.container {
+  position: relative;
+  right: 110px;
+}
+
+#smileImage {
+  position: relative;
+  left: 250px;
+  top: -200px;
+}
+
 #alphabet {
   margin: 15px auto;
-  padding: 0;
+  padding: 15px;
   max-width: 900px; }
   #alphabet:after {
     content: "";
@@ -47,13 +62,13 @@ p {
 
 #alphabet li {
   float: left;
-  margin: 0 10px 10px 0;
+  margin: 0 10px 10px 4px;
   list-style: none;
-  width: 35px;
+  width: 53px;
   height: 30px;
   padding-top: 10px;
   background: #fff;
-  color: #c1d72e;
+  color: #147BB5;
   cursor: pointer;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -61,7 +76,7 @@ p {
   -khtml-border-radius: 5px;
   border: solid 1px #fff; }
   #alphabet li:hover {
-    background: #c1d72e;
+    background: #ddd;
     border: solid 1px #fff;
     color: #fff; }
 
