@@ -55,6 +55,7 @@ function load()
 	showLives = document.getElementById("mylives");
 	lives = 7;
 	counter = 0;
+    comments();
 	document.getElementById("hint").style.display = "inline-block";
 	var myButtons = document.getElementById('buttons');
   var letters = document.createElement('ul');
@@ -101,8 +102,10 @@ function check(list)
     } 
     else 
     {
-      comments();
-      animate(true);
+      var winner = comments();
+      if(!winner){
+        animate(true);
+      }
     }
   }
 }
@@ -148,14 +151,17 @@ function comments() {
       smileImage.innerHTML = "";
       showLives.innerHTML = "Game Over!";
       smileImage.appendChild(gameOver);
-      lock();
+      lock(false);
+      return(false);
+
     }
     for (var i = 0; i < guesses.length; i++) {
       if (counter === guesses.length) {
         smileImage.innerHTML = "";
         showLives.innerHTML = "Winner!!!!";
         smileImage.appendChild(winner);
-        lock();
+        lock(true);
+        return(true);
       }
     }
   }
@@ -182,18 +188,21 @@ function result()
   wordHolder.appendChild(correct);
 }
 
-function lock()
+function lock(winner)
 {
 	var list_letters = document.getElementById("alphabet").childNodes;
 
 	for(var i = 0; i < list_letters.length; i++)
 	{
 		list_letters[i].setAttribute("class", "active");
+        list_letters[i].onclick = null;
 	}
 
 	document.getElementById("hint").style.display = "none";
-
-	show_answer();
+    
+    if(!winner){
+	   show_answer();
+    }
 }
 
 function show_answer()
