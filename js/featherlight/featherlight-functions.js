@@ -34,22 +34,38 @@ function loadImage(img){
  Returns: void
 */
 function loadFrame(frm, width, height, oppia){
+  // Standard width
   if(width == null){
     width = 560;
   }
-
+  // Standard height
   if(height == null){
     height = 315;
   }
-
+  // Loading non-oppia iframe
   if(oppia == null){
-    oppia = '';
-  }else{
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height});
+  }
+  // Loading oppia iframe
+  if(oppia != null){
     var aux = '?oppia=' + oppia;
     oppia = aux;
-  }
+    var points = 0;
 
-  $.featherlight({iframe: frm + oppia, iframeWidth: width, iframeHeight: height});
+    function getPts(){
+      var iframe = document.getElementsByTagName('iframe')[1];
+      var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+      window.points = innerDoc.getElementById('points').getAttribute('value');
+      console.log(window.points);
+    }
+
+    showPts = function(){
+      if(window.points > 0){
+        addPts(4, points);
+      }
+    }
+    $.featherlight({iframe: frm + oppia, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
+  }  
 }
 
 /*
