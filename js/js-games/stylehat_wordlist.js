@@ -1,0 +1,1 @@
+var words = ["blowdryer","comb","flatiron","duckbill","butterfly","crocodile","clippers","scissors","applicator","mirror","towel","cape","shears","razor","hairdryer"];

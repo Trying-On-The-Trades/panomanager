@@ -607,7 +607,6 @@ function build_menu_nav($quest){
                 <ul >
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
-                        <span class="user_points">Total Mission Points <span id="displayed_points" data-points="' . $points . '">' . $points . '</span></span></li>
                     </li>';
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
