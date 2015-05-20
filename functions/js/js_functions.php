@@ -743,35 +743,22 @@ function build_popup_styles(){
 
 ///////////  Points Callback Functions
 function build_points_callback_function(){
-    $script  = "function addPts(id, pts, trade_id){\n";
-    // $script .= "if(!$('#' + id + '_menu_item').className.match(/(?:^|\s)hotspost_done(?!\S)/)){\n";
-    $script .= "$('#' + id + '_menu_item').addClass('hotspot_done');\n";
-    $script .= "var points = parseInt($('#' + id + '_menu_item a span:nth-child(2)').text());\n";
-    $script .= "console.log('Points:' + points);\n";
-    $script .= "$.ajax({\n";
-    $script .= "type: 'POST',\n";
-    $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
-    $script .= "data: {action: 'update_progress',\n";
-    $script .= "       hotspot: id,\n";
-    $script .= "       trade_id: trade_id},\n";
-    $script .= "success: function(d){\n";
-    $script .= "console.log('d:' + d);\n";
-    $script .= "    var accumulated_points = (d && d != '') ? parseInt(d) : 0;\n";
-    $script .= "    var total_points = points + accumulated_points;\n";
-    $script .= "console.log('Accumulated:' + accumulated_points);\n";
-    $script .= "console.log('Total:' + total_points);\n";
-    $script .= "    $('#displayed_points').attr('data-points', total_points);\n";
-    $script .= "    $('#displayed_points').html(total_points);\n";
-    $script .= "    if(points > 0){\n";
-    $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + points + ' points!');\n";
-    $script .= "    }\n";
-    $script .= "}\n";
-    $script .= "});\n";
-
-    $script .= "console.log('Id:' + id);\n";
-    // $script .= "}\n";
-    $script .= "}\n";
-    return $script;
+  $script =  "function addPts(pts){\n";
+  $script .= "  // Only go through function if pts > 0\n";
+  $script .= "  if(pts > 0){\n";
+  $script .= "    // 1. Update total user points from page\n";
+  $script .= "\n";
+  $script .= "    // 2. Get total user points from page\n";
+  $script .= "    var totalPoints = $('#displayed_points').text();\n";
+  $script .= "    // 3. Update database with points\n";
+  $script .= "\n";
+  $script .= "    // 4. Update page with points\n";
+  $script .= "    totalPoints = totalPoints + pts;\n";
+  $script .= "    // 5. Toast\n";
+  $script .= "    $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');\n";
+  $script .= "  }\n";
+  $script .= "}\n";
+  return $script;
 }
 
 function build_bonus_points_callback_function(){
