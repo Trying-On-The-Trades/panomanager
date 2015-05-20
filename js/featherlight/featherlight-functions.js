@@ -89,15 +89,15 @@ function loadImage(img){
   If you want to save your activity points, set the pts parameter to true.
   Parameters:
   - frm (Frame address)
-  - id (Oppia unique identifier)
+  - oppia_id (Oppia unique identifier)
   - width (Pop-up width)
   - height (Pop-up height)
   - pts (Save points) [Default value: false]
 */
-function loadOppia(frm, id, width, height, pts){
+function loadOppia(frm, oppia_id, width, height, pts){
   // Saving oppia id
-  aux = '?oppia=' + id;
-  id = aux;
+  aux = '?oppia=' + oppia_id;
+  oppia_id = aux;
 
   // Standard pts: false
   if(pts == null){
@@ -106,7 +106,7 @@ function loadOppia(frm, id, width, height, pts){
 
   // Loading frame without pts
   if(!pts){
-    $.featherlight({iframe: frm + id, iframeWidth: width, iframeHeight: height});
+    $.featherlight({iframe: frm + oppia_id, iframeWidth: width, iframeHeight: height});
   }
 
   // Loading frame with pts
@@ -127,6 +127,6 @@ function loadOppia(frm, id, width, height, pts){
       }
     }
 
-    $.featherlight({iframe: frm + id, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
+    $.featherlight({iframe: frm + oppia_id, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
   }
 }
