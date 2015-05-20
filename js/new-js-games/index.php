@@ -6,7 +6,7 @@
     define('DB_NAME','wordpress');
     // $log;
     $word;
-    $description;
+    $hint;
     $word_id;
     if(isset($_GET['word']))
     {
@@ -16,7 +16,7 @@
             $log = $word_id;
             $row = database_call($word_id);
             $word = $row->word;
-            $description = $row->description;
+            $hint = $row->hint;
         }
     }
 
@@ -37,7 +37,7 @@
         <meta charset="UTF-8">
         <script type="text/javascript">
             var word = "<?= $word ?>";
-            var hint = "<?= $description ?>";
+            var hint = "<?= $hint ?>";
         </script>
         <script src="hatpla.js"></script>
         <link rel="stylesheet" href="style-2.css">
