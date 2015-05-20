@@ -7,8 +7,12 @@ body {
   height: 100%;
   text-align: center;
   font-size: 18px;
+<<<<<<< HEAD
   margin-top: 35px;
 }
+=======
+  margin-top: 35px; }
+>>>>>>> 80dbcd32d867c839e0bb55410026935a3362415e
 
 .wrappper {
   width: 100%;
