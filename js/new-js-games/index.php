@@ -23,7 +23,7 @@
     function database_call($id)
     {
         $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $query = "SELECT word, description FROM wp_pano_dictionary WHERE id = {$id}";
+        $query = "SELECT word, hint FROM wp_pano_terms WHERE id = {$id}";
         $result = $db->query($query);
         $row = $result->fetch_object(); 
         return $row;
