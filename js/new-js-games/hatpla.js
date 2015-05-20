@@ -261,7 +261,8 @@ function calculate_points()
   var points = 1 + life;
   if(!used_hint)
     points += 2;
-  document.getElementById("points").value = points;
+  document.getElementById("points").setAttribute("value", points);
+  console.log("Points: " + document.getElementById("points").value);
 }
 
 //enet listener to the page loading

@@ -1,32 +1,32 @@
 <?php 
-    $log;
-    $word;
-    $description;
-    if(isset($_GET['word']))
-    {
-        $word_id = $_GET['word'];
-        if(is_numeric($word_id))
-        {
-            $log = $word_id;
-            $row = database_call();
-            $word = $row->word;
-            $description = $row->description;
-        }
-    }
+    // $log;
+    // $word;
+    // $description;
+    // if(isset($_GET['word']))
+    // {
+    //     $word_id = $_GET['word'];
+    //     if(is_numeric($word_id))
+    //     {
+    //         $log = $word_id;
+    //         $row = database_call();
+    //         $word = $row->word;
+    //         $description = $row->description;
+    //     }
+    // }
 
-    define('DB_HOST','localhost');
-    define('DB_USER','wordpress');
-    define('DB_PASS','wordpress');
-    define('DB_NAME','wordpress');
+    // define('DB_HOST','localhost');
+    // define('DB_USER','wordpress');
+    // define('DB_PASS','wordpress');
+    // define('DB_NAME','wordpress');
 
-    function database_call()
-    {
-        $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $result = $db->query($query);
-        $query = "SELECT word, description FROM wp_pano_dictionary WHERE id = {$word_id}";
-        $row = $result->fetch_object(); 
-        return $row;
-    }
+    // function database_call()
+    // {
+    //     $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    //     $result = $db->query($query);
+    //     $query = "SELECT word, description FROM wp_pano_dictionary WHERE id = {$word_id}";
+    //     $row = $result->fetch_object(); 
+    //     return $row;
+    // }
 
 ?>
 
@@ -35,7 +35,7 @@
     <head>
         <meta charset="UTF-8">
         <script type="text/javascript">
-            var log = <?= $log ?>;
+            //var log = <?= $log ?>;
             var word = "my test being made";
             //var word = <?= $word ?>;
             var hint = "This is a test! Why hints?";

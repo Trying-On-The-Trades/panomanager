@@ -58,7 +58,7 @@ function loadFrame(frm, width, height, pts){
 
     // Getting points value
     getPts = function(){
-      var iframe = document.getElementsByTagName('iframe')[1];
+      var iframe = document.getElementsByTagName('iframe')[0];
       var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
       window.points = innerDoc.getElementById('points').getAttribute('value');
     }
