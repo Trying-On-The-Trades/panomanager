@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HardHat</title>
+<script language="JavaScript" src="phraselist.js">
+</script>
+<script language="JavaScript" src="wordlist.js">
+</script>
+<script language="JavaScript" src="hangman.2.js">
+</script>
+<link rel="stylesheet" href="hardhat.css">
+</head>
+<body onLoad="Setup();">
+<p id="gameHead">Can you earn your hardhat?</p>
+<p ID="aphrase"></p>
+<img name="hangman" ID="hangman" src="hardhat-smiley-cap.png" width="200" height="200">
+<p>&nbsp;</p>
+<button onclick="history.go(0)" VALUE="Refresh">Start New Game</button> <button onclick="gameHelp()">Help</button> <button onclick="self.close()">Exit</button>
+<p>&nbsp;</p><p ID="status">Click any blue letter.</p>
+<p ID="alphabet"></p>
+<p id="theword"></p>
+</body>
+</html>

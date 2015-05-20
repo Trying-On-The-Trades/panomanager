@@ -58,6 +58,7 @@ function loadFrame(frm, width, height, pts){
 
     // Getting points value
     getPts = function(){
+
       var iframe = document.getElementsByClassName('featherlight-inner')[0];
       var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
       fpoints = innerDoc.getElementById('points').getAttribute('value');
