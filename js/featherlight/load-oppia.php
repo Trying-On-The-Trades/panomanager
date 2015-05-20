@@ -11,7 +11,7 @@
     $worth = $_GET['worth'];
   }
   else{
-    $worth = '10';
+    $worth = '50';
   }
 ?>
 

@@ -65,7 +65,7 @@ function loadFrame(frm, width, height, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addPts(4, fpoints);
+        addPts(fpoints);
       }
     }
 
@@ -122,7 +122,7 @@ function loadOppia(frm, id, width, height, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addPts(4, fpoints);
+        addPts(fpoints);
       }
     }
 
