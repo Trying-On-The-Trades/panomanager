@@ -54,18 +54,19 @@ function loadFrame(frm, width, height, pts){
   // Loading frame with pts
   if(pts){
     // Variable to store points achieved
-    var points = 0;
+    fpoints = 0;
 
     // Getting points value
     getPts = function(){
-      var iframe = document.getElementsByTagName('iframe')[0];
+
+      var iframe = document.getElementsByClassName('featherlight-inner')[0];
       var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-      window.points = innerDoc.getElementById('points').getAttribute('value');
+      fpoints = innerDoc.getElementById('points').getAttribute('value');
     }
     // Adding points to db and toast
     showPts = function(){
-      if(window.points > 0){
-        addPts(4, points);
+      if(fpoints > 0){
+        addPts(4, fpoints);
       }
     }
 
@@ -111,18 +112,18 @@ function loadOppia(frm, id, width, height, pts){
   // Loading frame with pts
   if(pts){
     // Variable to store points achieved
-    var points = 0;
+    fpoints = 0;
 
     // Getting points value
     getPts = function(){
-      var iframe = document.getElementsByTagName('iframe')[1];
+      var iframe = document.getElementsByClassName('featherlight-inner')[0];
       var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-      window.points = innerDoc.getElementById('points').getAttribute('value');
+      fpoints = innerDoc.getElementById('points').getAttribute('value');
     }
     // Adding points to db and toast
     showPts = function(){
-      if(window.points > 0){
-        addPts(4, points);
+      if(fpoints > 0){
+        addPts(4, fpoints);
       }
     }
 
