@@ -4,7 +4,7 @@ CREATE TABLE `wp_pano_terms` (
   `hint` varchar(225) NOT NULL,
   `trade_id` int(11),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (trades_id) REFERENCES wp_pano_trade_type(id)
+  FOREIGN KEY (trade_id) REFERENCES wp_pano_trade_type(id)
  )ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE `wp_pano_trade_type` (

@@ -44,7 +44,7 @@ error7.setAttribute("src", "images/7error.png");
 error7.setAttribute("alt", "No Image");
 
 var winner = document.createElement("img");
-winner.setAttribute("src", "images/hat-smiley-cap.png");
+winner.setAttribute("src", winner_image);
 winner.setAttribute("alt", "WINNER!");
 
 var rightAnswer = document.createElement("img");
