@@ -1,29 +1,30 @@
 <?php 
 
     define('DB_HOST','localhost');
-    define('DB_USER','wordpress');
-    define('DB_PASS','wordpress');
+    define('DB_USER','root');
+    define('DB_PASS','root');
     define('DB_NAME','wordpress');
     // $log;
-    $word;
+    $word = "";
     $description;
     $word_id;
     if(isset($_GET['word']))
     {
+                    
         $word_id = $_GET['word'];
         if(is_numeric($word_id))
         {
-            $log = $word_id;
             $row = database_call($word_id);
             $word = $row->word;
-            $description = $row->description;
+            $description = $row->hint;
+
         }
     }
 
     function database_call($id)
     {
         $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $query = "SELECT word, description FROM wp_pano_dictionary WHERE id = {$id}";
+        $query = "SELECT word, hint FROM wp_pano_terms WHERE id = {$id}";
         $result = $db->query($query);
         $row = $result->fetch_object(); 
         return $row;
@@ -54,10 +55,11 @@
         <div id="hold">
         </div>
         <p id="mylives"></p>
+        <div id="smileImage">
+        </div>
         <p id="clue"></p>
     </div>
-    <div id="smileImage">
-    </div>
+
 </div>
     <div class="container">
       <button id="hint">Hint</button>

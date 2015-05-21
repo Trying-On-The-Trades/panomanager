@@ -7,12 +7,8 @@ body {
   height: 100%;
   text-align: center;
   font-size: 18px;
-<<<<<<< HEAD
   margin-top: 35px;
 }
-=======
-  margin-top: 35px; }
->>>>>>> 80dbcd32d867c839e0bb55410026935a3362415e
 
 .wrappper {
   width: 100%;
@@ -21,6 +17,12 @@ body {
     content: "";
     display: table;
     clear: both; }
+
+img {
+  width: 120px;
+  height: 120px;
+  margin-top: -98px;
+}
 
 h1, h2, h3 {
   font-family: 'Roboto', sans-serif;
@@ -35,26 +37,19 @@ h2 {
   font-size: 1.6em; }
 
 p {
-  font-size: 1.6em; }
-
-#inf {
-  position: relative;
-  right: 115px;
-}
+  font-size: 100%; }
 
 .content {
   height: 378px;
-}
-
-.container {
-  position: relative;
-  right: 110px;
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
 }
 
 #smileImage {
-  position: relative;
-  left: 250px;
-  top: -85px;
+    position: absolute;
+    right: 30px;
+    bottom:50px;
 }
 
 #alphabet {
@@ -65,6 +60,11 @@ p {
     content: "";
     display: table;
     clear: both; }
+
+#clue {
+    width: 70%;
+    margin: 0 auto
+}
 
 #alphabet li {
   float: left;
@@ -93,7 +93,7 @@ p {
   display: block; }
 
 #my-word li {
-  position: relative;
+
   list-style: none;
   margin: 0;
   display: inline-block;
@@ -127,8 +127,8 @@ button {
   -webkit-border-radius: 5px;
   border-radius: 5px;
   -khtml-border-radius: 5px;
-  background: #c1d72e;
-  color: #fff;
+  background: #fff;
+  color: #147BB5;
   border: solid 1px #fff;
   text-decoration: none;
   cursor: pointer;
@@ -141,9 +141,9 @@ button {
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    background: #fff;
+    background: #e2e2e2;
     border: solid 1px #fff;
-    color: #c1d72e; }
+    color: #147BB5; }
 
 @media (max-width: 767px) {
   #alphabet {
@@ -151,5 +151,12 @@ button {
 @media (max-width: 480px) {
   #alphabet {
     padding: 0 0 0 25px; } }
+
+@media all and (max-width : 1024px){ 
+    #smileImage {
+        right: 30px;
+        bottom:50px;
+    }
+}
 
 /*# sourceMappingURL=style-2.css.map */
