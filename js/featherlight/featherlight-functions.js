@@ -130,3 +130,33 @@ function loadOppia(frm, oppia_id, width, height, pts){
     $.featherlight({iframe: frm + oppia_id, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
   }
 }
+
+/*
+  Adds points to extra activities.
+  Parameters:
+  - id (activity id)
+  - pts (number of points to be added)
+*/
+function addPointsFeather(id, pts){
+  // Checking if activity was previously done
+  var done = false;
+  if(!window.completed){
+    window.completed = [];
+    done = false;
+  }
+  else{
+    for(var i = 0; i < window.completed.length; i++){
+      if(id == window.completed[i]){
+        done = true;
+      }
+    }
+  }
+  if(!done){
+    // Checking for positive number of points
+    if(pts > 0){
+      var totalPoints = $('#bonus_points').text();
+      totalPoints = totalPoints + pts;
+      $.toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
+    }
+  }
+}
