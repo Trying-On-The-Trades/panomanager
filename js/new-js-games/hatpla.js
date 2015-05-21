@@ -44,6 +44,7 @@ error7.setAttribute("src", "images/7error.png");
 error7.setAttribute("alt", "No Image");
 
 var winner = document.createElement("img");
+winner.setAttribute("id", "winner_image");
 winner.setAttribute("src", winner_image);
 winner.setAttribute("alt", "WINNER!");
 
@@ -72,7 +73,7 @@ function load()
   comments();
 
   //gets elements for further use
-	var myButtons = document.getElementById('buttons');
+  var myButtons = document.getElementById('buttons');
   var letters = document.createElement('ul');
   letters.id = 'alphabet'; 
 
@@ -250,8 +251,16 @@ function reset()
 //shows hint and flag that points should be deducted
 function show_hint()
 {
-	document.getElementById("clue").innerHTML = "Hint: " + hint;
-  used_hint = true;
+    if (confirm('Are you sure you want to use hint? You will lose 2 points.')) {
+        document.getElementById("clue").innerHTML = "Hint: " + hint;
+        used_hint = true;
+        if(document.getElementById("clue").value = "true"){  
+            document.getElementById("hint").style.display = "none";
+        }
+    } else {
+        
+    }
+
 }
 
 //calclates final points

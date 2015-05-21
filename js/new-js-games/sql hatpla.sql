@@ -16,7 +16,7 @@ CREATE TABLE `wp_pano_trade_type` (
 
 INSERT INTO `wp_pano_trade_type` (`id`, `image`, `profession`)
 VALUES
-	(1, '/images/hair_style.png', 'Hairstyler');
+	(1, 'images/hair_style.png', 'Hairstyler');
 
 INSERT INTO `wp_pano_terms` (`id`, `word`, `hint`, `trade_id`)
 VALUES

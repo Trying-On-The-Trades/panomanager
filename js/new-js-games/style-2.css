@@ -39,6 +39,11 @@ h2 {
 p {
   font-size: 100%; }
 
+#winner_image {
+  width: 200px;
+  height: 150px;
+}
+
 .content {
   height: 378px;
     width: 70%;
