@@ -7,7 +7,12 @@
     // $log;
     $word = "";
     $description;
+    require('db.php');
+    $db = database_connection();
+    $word;
+    $hint;
     $word_id;
+    $profession = "";
     if(isset($_GET['word']))
     {
                     
@@ -29,6 +34,14 @@
         $row = $result->fetch_object(); 
         return $row;
     }
+            $term = select_word($db, $word_id);
+            $word = $term->word;
+            $hint = $term->hint;
+            $trade = select_trade($db, $word_id);
+            $profession = $trade->profession;
+            $winner = $trade->image;
+        }
+    }
 
 ?>
 
@@ -38,14 +51,15 @@
         <meta charset="UTF-8">
         <script type="text/javascript">
             var word = "<?= $word ?>";
-            var hint = "<?= $description ?>";
+            var hint = "<?= $hint ?>";
+            var winner_image = "<?= $winner ?>";
         </script>
         <script src="hatpla.js"></script>
         <link rel="stylesheet" href="style-2.css">
         <title>Hat Pla</title>
     </head>
 <div class="wrapper">
-    <h2>Can you earn your Stylist's Hat?</h2>
+    <h2>Can you earn your <?= $profession ?>'s Hat?</h2>
 </div>
 <div class="content">
     <div id="buttons">
