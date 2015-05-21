@@ -607,6 +607,10 @@ function build_menu_nav($quest){
                 <ul >
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
+                        <span class="user_points">
+                          <span>Bonus Points: </span>
+                          <span id="bonus_points">0</span>
+                        </span>
                     </li>';
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);

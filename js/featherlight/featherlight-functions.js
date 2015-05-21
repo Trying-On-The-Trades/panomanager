@@ -32,7 +32,7 @@ function loadAjax(htm){
   - height (Pop-up height) [Default value: 315]
   - pts (Save points) [Default value: false]
 */
-function loadFrame(frm, width, height, pts){
+function loadFrame(act_id, frm, width, height, pts){
   // Standard width: 560
   if(width == null){
     width = 560;
@@ -66,7 +66,7 @@ function loadFrame(frm, width, height, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addPts(fpoints);
+        addPointsFeather(act_id, fpoints);
       }
     }
 
@@ -94,7 +94,7 @@ function loadImage(img){
   - height (Pop-up height)
   - pts (Save points) [Default value: false]
 */
-function loadOppia(frm, oppia_id, width, height, pts){
+function loadOppia(act_id, frm, oppia_id, width, height, pts){
   // Saving oppia id
   aux = '?oppia=' + oppia_id;
   oppia_id = aux;
@@ -123,7 +123,7 @@ function loadOppia(frm, oppia_id, width, height, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addPts(fpoints);
+        addPointsFeather(act_id, fpoints);
       }
     }
 
@@ -137,26 +137,77 @@ function loadOppia(frm, oppia_id, width, height, pts){
   - id (activity id)
   - pts (number of points to be added)
 */
-function addPointsFeather(id, pts){
+function addPointsFeather(act_id, pts){
   // Checking if activity was previously done
   var done = false;
-  if(!window.completed){
-    window.completed = [];
+  console.log(document.cookie);
+  if(cookie = ''){
     done = false;
-  }
-  else{
-    for(var i = 0; i < window.completed.length; i++){
-      if(id == window.completed[i]){
-        done = true;
-      }
+    document.cookie="act_id=" + act_id + "";
+    // setCookie('act_id', act_id.toString());
+  }else{
+    cookie_content = getCookie('act_id');
+    if(act_id == cookie_content){
+      done = true;
     }
   }
+  // if(!window.completed){
+  //   window.completed = [];
+  //   done = false;
+  // }
+  // else{
+  //   for(var i = 0; i < window.completed.length; i++){
+  //     if(act_id == window.completed[i]){
+  //       done = true;
+  //     }else{
+  //       window.completed.push(act_id);
+  //     }
+  //   }
+  // }
+  // console.log(window.completed);
   if(!done){
     // Checking for positive number of points
     if(pts > 0){
       var totalPoints = $('#bonus_points').text();
-      totalPoints = totalPoints + pts;
-      $.toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
+      totalPoints = parseInt(totalPoints, 10);
+      totalPoints = totalPoints + parseInt(pts, 10);
+      $('#bonus_points').html(totalPoints);
+      $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
     }
   }
+}
+
+// Cookie functions
+function setCookie(cname, cvalue, exdays) {
+    if(exdays != null){
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      var expires = "expires="+d.toUTCString();
+    }else{
+      expires = "";
+    }
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user = getCookie("username");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user, 365);
+        }
+    }
 }
