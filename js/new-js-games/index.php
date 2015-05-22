@@ -14,9 +14,8 @@
             $term = select_word($db, $word_id);
             $word = $term->word;
             $hint = $term->hint;
-            $trade = select_trade($db, $word_id);
-            $profession = $trade->profession;
-            $winner = $trade->image;
+            $profession = $term->profession;
+            $winner = $term->image;
 
         }
     }
