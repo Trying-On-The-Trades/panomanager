@@ -13,6 +13,35 @@
 */
 
 /*
+  Adds points to extra activities.
+  Parameters:
+  - id (activity id)
+  - pts (number of points to be added)
+*/
+function addPointsFeather(act_id, pts){
+  // Checking if activity was previously done
+  var done = false;
+  var done_activities = $('#done_activities').text();
+  acts = done_activities.split(',');
+  for(var i = 0; i < acts.length; i++){
+    if(act_id == acts[i]){
+      done = true;
+    }
+  }
+  if(!done){
+    // Checking for positive number of points
+    if(pts > 0){
+      var totalPoints = $('#bonus_points').text();
+      totalPoints = parseInt(totalPoints, 10);
+      totalPoints = totalPoints + parseInt(pts, 10);
+      $('#bonus_points').html(totalPoints);
+      $('#done_activities').html(done_activities + act_id.toString() + ',');
+      $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
+    }
+  }
+}
+
+/*
   Opens a pop-up with html content using ajax.
   Parameters:
   - htm (Ajax path)
@@ -86,81 +115,20 @@ function loadImage(img){
 
 /*
   Opens a pop-up with an Oppia Exploration.
-  If you want to save your activity points, set the pts parameter to true.
+  If you want to save your activity points, set the award_points parameter to true.
+  For bonus points, set timer to true.
   Parameters:
-  - frm (Frame address)
-  - oppia_id (Oppia unique identifier)
+  - act_id (Activity unique id)
+  - frm (Location of load-oppia.php)
+  - oppia_id (Oppia unique id)
   - width (Pop-up width)
   - height (Pop-up height)
-  - pts (Save points) [Default value: false]
+  - award_points (Award points) [Default value: false]
+  - base_points (Base points to be awarded)
+  - timer (Award bonus points) [Default value: false]
+  - bonus_points (Bonus points)
 */
-function loadOppia(act_id, frm, oppia_id, width, height, pts){
-  // Saving oppia id
-  aux = '?oppia=' + oppia_id;
-  oppia_id = aux;
-
-  // Standard pts: false
-  if(pts == null){
-    pts = false;
-  }
-
-  // Loading frame without pts
-  if(!pts){
-    $.featherlight({iframe: frm + oppia_id, iframeWidth: width, iframeHeight: height});
-  }
-
-  // Loading frame with pts
-  if(pts){
-    // Variable to store points achieved
-    fpoints = 0;
-
-    // Getting points value
-    getPts = function(){
-      var iframe = document.getElementsByClassName('featherlight-inner')[0];
-      var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-      fpoints = innerDoc.getElementById('points').getAttribute('value');
-    }
-    // Adding points to db and toast
-    showPts = function(){
-      if(fpoints > 0){
-        addPointsFeather(act_id, fpoints);
-      }
-    }
-
-    $.featherlight({iframe: frm + oppia_id, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
-  }
-}
-
-/*
-  Adds points to extra activities.
-  Parameters:
-  - id (activity id)
-  - pts (number of points to be added)
-*/
-function addPointsFeather(act_id, pts){
-  // Checking if activity was previously done
-  var done = false;
-  var done_activities = $('#done_activities').text();
-  acts = done_activities.split(',');
-  for(var i = 0; i < acts.length; i++){
-    if(act_id == acts[i]){
-      done = true;
-    }
-  }
-  if(!done){
-    // Checking for positive number of points
-    if(pts > 0){
-      var totalPoints = $('#bonus_points').text();
-      totalPoints = parseInt(totalPoints, 10);
-      totalPoints = totalPoints + parseInt(pts, 10);
-      $('#bonus_points').html(totalPoints);
-      $('#done_activities').html(done_activities + act_id.toString() + ',');
-      $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
-    }
-  }
-}
-
-function oppiaTest(act_id, frm, oppia_id, width, height, award_points, base_points, timer, bonus_points){
+function loadOppia(act_id, frm, oppia_id, width, height, award_points, base_points, timer, bonus_points){
   var frame_address = '';
   if(award_points == null){
     award_points = false;
@@ -177,6 +145,5 @@ function oppiaTest(act_id, frm, oppia_id, width, height, award_points, base_poin
       frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points;
     }
   }
-  console.log(frame_address);
   loadFrame(act_id, frame_address, width, height, award_points);
 }

@@ -33,7 +33,6 @@
         var worth = document.getElementById('worth').getAttribute('value');
         var points = document.getElementById('points');
         points.setAttribute('value', worth);
-        console.log(worth);
       };
     </script>
     <title>Oppia test</title>
