@@ -141,8 +141,9 @@ function addPointsFeather(act_id, pts){
   // Checking if activity was previously done
   var done = false;
   var done_activities = $('#done_activities').text();
-  for(var i = 0; i < done_activities.length; i++){
-    if(act_id == done_activities[i]){
+  acts = done_activities.split(',');
+  for(var i = 0; i < acts.length; i++){
+    if(act_id == acts[i]){
       done = true;
     }
   }
@@ -153,7 +154,7 @@ function addPointsFeather(act_id, pts){
       totalPoints = parseInt(totalPoints, 10);
       totalPoints = totalPoints + parseInt(pts, 10);
       $('#bonus_points').html(totalPoints);
-      $('#done_activities').html(done_activities + ", " + act_id.toString());
+      $('#done_activities').html(done_activities + act_id.toString() + ",");
       $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
     }
   }
