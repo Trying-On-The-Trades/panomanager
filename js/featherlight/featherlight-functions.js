@@ -140,31 +140,12 @@ function loadOppia(act_id, frm, oppia_id, width, height, pts){
 function addPointsFeather(act_id, pts){
   // Checking if activity was previously done
   var done = false;
-  console.log(document.cookie);
-  if(cookie = ''){
-    done = false;
-    document.cookie="act_id=" + act_id + "";
-    // setCookie('act_id', act_id.toString());
-  }else{
-    cookie_content = getCookie('act_id');
-    if(act_id == cookie_content){
+  var done_activities = $('#done_activities').text();
+  for(var i = 0; i < done_activities.length; i++){
+    if(act_id == done_activities[i]){
       done = true;
     }
   }
-  // if(!window.completed){
-  //   window.completed = [];
-  //   done = false;
-  // }
-  // else{
-  //   for(var i = 0; i < window.completed.length; i++){
-  //     if(act_id == window.completed[i]){
-  //       done = true;
-  //     }else{
-  //       window.completed.push(act_id);
-  //     }
-  //   }
-  // }
-  // console.log(window.completed);
   if(!done){
     // Checking for positive number of points
     if(pts > 0){
@@ -172,6 +153,7 @@ function addPointsFeather(act_id, pts){
       totalPoints = parseInt(totalPoints, 10);
       totalPoints = totalPoints + parseInt(pts, 10);
       $('#bonus_points').html(totalPoints);
+      $('#done_activities').html(done_activities + ", " + act_id.toString());
       $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
     }
   }

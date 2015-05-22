@@ -611,6 +611,7 @@ function build_menu_nav($quest){
                           <span>Bonus Points: </span>
                           <span id="bonus_points">0</span>
                         </span>
+                        <input id="done_activities" type="hidden" value="0" />
                     </li>';
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
