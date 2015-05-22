@@ -1,18 +1,25 @@
 <?php
   $oppia = '';
-  $worth = '';
+
   if(isset($_GET['oppia'])){
     $oppia = $_GET['oppia'];
-  }
-  else{
+  }else{
     $oppia = '4';
   }
-  if(isset($_GET['worth'])){
-    $worth = $_GET['worth'];
+
+  if(isset($_GET['base_points'])){
+    $base_points = $_GET['base_points'];
+  }else{
+    $base_points = 0;
   }
-  else{
-    $worth = '5';
+
+  if(isset($_GET['bonus_points'])){
+    $bonus_points = $_GET['bonus_points'];
+  }else{
+    $bonus_points = 0;
   }
+
+  $worth = $base_points + $bonus_points;
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +33,7 @@
         var worth = document.getElementById('worth').getAttribute('value');
         var points = document.getElementById('points');
         points.setAttribute('value', worth);
+        console.log(worth);
       };
     </script>
     <title>Oppia test</title>

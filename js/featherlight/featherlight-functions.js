@@ -154,43 +154,29 @@ function addPointsFeather(act_id, pts){
       totalPoints = parseInt(totalPoints, 10);
       totalPoints = totalPoints + parseInt(pts, 10);
       $('#bonus_points').html(totalPoints);
-      $('#done_activities').html(done_activities + act_id.toString() + ",");
+      $('#done_activities').html(done_activities + act_id.toString() + ',');
       $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
     }
   }
 }
 
-// Cookie functions
-function setCookie(cname, cvalue, exdays) {
-    if(exdays != null){
-      var d = new Date();
-      d.setTime(d.getTime() + (exdays*24*60*60*1000));
-      var expires = "expires="+d.toUTCString();
+function oppiaTest(act_id, frm, oppia_id, width, height, award_points, base_points, timer, bonus_points){
+  var frame_address = '';
+  if(award_points == null){
+    award_points = false;
+  }
+  if(timer == null){
+    timer = false;
+  }
+  if(!award_points){
+    frame_address = frm + '?oppia=' + oppia_id;
+  }else{
+    if(!timer){
+      frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points;
     }else{
-      expires = "";
+      frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points;
     }
-    document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-    }
-    return "";
-}
-
-function checkCookie() {
-    var user = getCookie("username");
-    if (user != "") {
-        alert("Welcome again " + user);
-    } else {
-        user = prompt("Please enter your name:", "");
-        if (user != "" && user != null) {
-            setCookie("username", user, 365);
-        }
-    }
+  }
+  console.log(frame_address);
+  loadFrame(act_id, frame_address, width, height, award_points);
 }
