@@ -11,12 +11,11 @@
         $word_id = $_GET['word'];
         if(is_numeric($word_id))
         {
-            $term = select_word($db, $word_id);
-            $word = $term->word;
-            $hint = $term->hint;
-            $trade = select_trade($db, $word_id);
-            $profession = $trade->profession;
-            $winner = $trade->image;
+           $term = select_word($db, $word_id);
+           $word = $term->word;
+           $hint = $term->hint;
+           $profession = $term->profession;
+           $winner = $term->image;
 
         }
     }
@@ -33,8 +32,12 @@
             var hint = "<?= $hint ?>";
             var winner_image = "<?= $winner ?>";
         </script>
-        <script src="hatpla.js"></script>
-        <link rel="stylesheet" href="style-2.css">
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
+        <script src="js/jquery.easy-confirm-dialog.js"></script>
+        <script src="js/hatpla.js"></script>
+        <link rel="stylesheet" href="css/style-2.css">
         <title>Hat Pla</title>
     </head>
 <div class="wrapper">
@@ -59,5 +62,7 @@
       <button id="reset">Play again</button>
       <input id="points" type="hidden" value="0"/>
     </div>
-
+<script>
+    $("#hint").easyconfirm({locale: { text: 'Are you sure you want to use hint? You will lose 2 points!', button: ['No','Yes']}});
+</script>
 </html>

@@ -249,19 +249,20 @@ function reset()
 }
 
 //shows hint and flag that points should be deducted
+
 function show_hint()
 {
-    if (confirm('Are you sure you want to use hint? You will lose 2 points.')) {
-        document.getElementById("clue").innerHTML = "Hint: " + hint;
-        used_hint = true;
-        if(document.getElementById("clue").value = "true"){  
+        $("#hint").click(function() { 
+            document.getElementById("clue").innerHTML = "Hint: " + hint;
+            used_hint = true;
+       
+        if(document.getElementById("hint").value = "true"){  
             document.getElementById("hint").style.display = "none";
         }
-    } else {
-        
-    }
+             });
 
 }
+
 
 //calclates final points
 function calculate_points()
