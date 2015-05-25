@@ -1,5 +1,8 @@
 <?php
   $oppia = '';
+  $base_points = 0;
+  $bonus_points = 0;
+  $enable_bonus = false;
 
   if(isset($_GET['oppia'])){
     $oppia = $_GET['oppia'];
@@ -19,6 +22,12 @@
     $bonus_points = 0;
   }
 
+  if(isset($_GET['time_limit'])){
+    $time_limit = $_GET['time_limit'];
+  }else{
+    $time_limit = 0;
+  }
+
   $worth = $base_points + $bonus_points;
 ?>
 
@@ -30,15 +39,33 @@
       body{
         overflow-x: hidden;
         overflow-y: hidden;
-      }      
+      }
     </style>
     <script src="oppia-player.min.js"></script>
     <script type="text/javascript">
+      var beginTime = 0;
+      var endTime = 0;
+      window.OPPIA_PLAYER.onExplorationLoadedPostHook =
+      function(iframeNode){
+        beginTime = Date.now();
+      };
       window.OPPIA_PLAYER.onExplorationCompletedPostHook =
       function(iframeNode){
-        var worth = document.getElementById('worth').getAttribute('value');
+        endTime = Date.now();
+        var base = document.getElementById('base');
+        var bonus = document.getElementById('bonus');
+        var limit = document.getElementById('limit');
+        var limitTime = (parseInt(limit.getAttribute('value')) * 1000);
+        var totalTime = endTime - beginTime;
+        totalTime = parseInt(totalTime);
+        var total = 0;
+        if((limitTime > 0) && (totalTime < limitTime)){
+          total = parseInt(base.getAttribute('value')) + parseInt(bonus.getAttribute('value'));
+        }else{
+          total = parseInt(base.getAttribute('value'));
+        }
         var points = document.getElementById('points');
-        points.setAttribute('value', worth);
+        points.setAttribute('value', total);
       };
     </script>
     <title>Oppia test</title>
@@ -48,6 +75,8 @@
       <oppia oppia-id="<?= $oppia ?>" src="https://www.oppia.org"></oppia>
     </div>
     <input id="points" type="hidden" value="0" />
-    <input id="worth" type="hidden" value="<?= $worth ?>" />
+    <input id="base" type="hidden" value="<?= $base_points ?>" />
+    <input id="bonus" type="hidden" value="<?= $bonus_points ?>" />
+    <input id="limit" type="hidden" value="<?= $time_limit ?>" />
   </body>
 </html>

@@ -116,8 +116,9 @@ function loadImage(img){
   - base_points (Base points to be awarded)
   - timer (Award bonus points) [Default value: false]
   - bonus_points (Bonus points)
+  - time_limit (Time limit to be awarded with bonus points)
 */
-function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points){
+function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
   var frame_address = '';
   if(award_points == null){
     award_points = false;
@@ -131,7 +132,7 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
     if(!timer){
       frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points;
     }else{
-      frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points;
+      frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points + '&time_limit=' + time_limit;
     }
   }
   loadFrame(act_id, frame_address, award_points);
