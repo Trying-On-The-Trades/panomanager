@@ -1,13 +1,20 @@
 <?php
 
 // Build the settings page
-function new_mission_settings_page() {
+function edit_mission_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-	$words    = get_words();
+    
+    $words    = get_words();
+
 	$trades   = get_trades();
+
+    if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
+        $words = build_words($_GET['id']);
+    }
+
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Create a new pano!</h2>
+<h2>Edit a word!</h2>
 <hr>
 <style type="text/css">
 	#wpfooter{
@@ -24,35 +31,42 @@ function new_mission_settings_page() {
 		margin: 0px auto;
 	}
 </style>
+
+<?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
+    <div class="updated"><p>Dictionary updated successfully.</p></div>
+<?php elseif ( isset( $_GET[ 'error' ] ) ): ?>
+    <div class="error"><p>Error updating dictionary.</p></div>
+<?php endif; ?>
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
-    <input type="hidden" name="action" value="create_new_word" />
-    <div class="ui form segment new_word_form">
+    <input type="hidden" name="action" value="edit_words" />
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="trade_id">Select a Trade</label>
+	        <label for="prereq_trade_id">Select a Trade</label>
 	        <select name="trade_id">
 				 <option value="NA">...</option>
                  <?php foreach($trades as $trade): ?>
-					<option value="<?php echo $trade->id ?>"><?php echo $trade->name ?></option>
+					<option value="<?php echo $trade->id ?>" <?php echo ($trade->id === $words->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
 				 <?php endforeach; ?>
 			</select>
 	      </div>
 	    </div>
+    <div class="ui form segment new_pano_form">
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
 	        	<label for="words_name">Word Name</label>
-	    		<input type="text" name="words_name" id="name" placeholder="Fun Mission" required />
+	    		<input name="words_name" id="name" placeholder="Fun Mission" value="<?php echo $words->get_word() ?>" required />
      	 	</div>
 	      </div>
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="words_hint">Hint</label>
-	        <textarea name="words_hint" required ></textarea>
+	        <textarea name="words_hint" required ><?php echo $words->get_hint() ?></textarea>
 	      </div>
 	    </div>
+
 	    <?php submit_button(); ?>
 	</div>
 </form>
