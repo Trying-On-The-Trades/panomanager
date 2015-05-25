@@ -53,23 +53,14 @@ function loadAjax(htm){
 
 /*
   Opens a pop-up with a frame.
-  Widht and height can be specified, or they will use YouTube standard embedded video size (560 x 315).
   If you want to save your activity points, set the pts parameter to true.
   Parameters:
   - frm (Frame address)
-  - width (Pop-up width) [Default value: 560]
-  - height (Pop-up height) [Default value: 315]
   - pts (Save points) [Default value: false]
 */
-function loadFrame(act_id, frm, width, height, pts){
-  // Standard width: 560
-  if(width == null){
-    width = 560;
-  }
-  // Standard height: 315
-  if(height == null){
-    height = 315;
-  }
+function loadFrame(act_id, frm, pts){
+  var width = '100%';
+  var height = '100%';
   // Standard pts: false
   if(pts == null){
     pts = false;
@@ -121,14 +112,12 @@ function loadImage(img){
   - act_id (Activity unique id)
   - frm (Location of load-oppia.php)
   - oppia_id (Oppia unique id)
-  - width (Pop-up width)
-  - height (Pop-up height)
   - award_points (Award points) [Default value: false]
   - base_points (Base points to be awarded)
   - timer (Award bonus points) [Default value: false]
   - bonus_points (Bonus points)
 */
-function loadOppia(act_id, frm, oppia_id, width, height, award_points, base_points, timer, bonus_points){
+function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points){
   var frame_address = '';
   if(award_points == null){
     award_points = false;
@@ -145,5 +134,5 @@ function loadOppia(act_id, frm, oppia_id, width, height, award_points, base_poin
       frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points;
     }
   }
-  loadFrame(act_id, frame_address, width, height, award_points);
+  loadFrame(act_id, frame_address, award_points);
 }

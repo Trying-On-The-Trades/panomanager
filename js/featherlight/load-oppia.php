@@ -26,6 +26,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <style rel="stylesheet" type="text/css">
+      body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }      
+    </style>
     <script src="oppia-player.min.js"></script>
     <script type="text/javascript">
       window.OPPIA_PLAYER.onExplorationCompletedPostHook =
