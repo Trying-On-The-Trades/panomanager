@@ -86,7 +86,7 @@ function loadFrame(act_id, frm, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addBnsPtsFeather(act_id, pts);
+        addRegPtsFeather(act_id, fpoints);
       }
     }
 
@@ -139,38 +139,18 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
 }
 
 
-/*
-  Adds points to extra activities.
-  Parameters:
-  - id (activity id)
-  - pts (number of points to be added)
-*/
 function addBnsPtsFeather(hot_id, pts){
-  // Checking if activity was previously done
-    // var done = false;
-    // var done_activities = $('#done_activities').text();
-    // acts = done_activities.split(',');
-    // for(var i = 0; i < acts.length; i++){
-    //   if(hot_id == acts[i]){
-    //     done = true;
-    //   }
-    // }
-    // if(!done){
-    // Checking for positive number of points
   if(pts > 0){
-    var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin.php';
+    var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
     $.ajax({
       type: 'POST',
       url: postUrl,
-      // url: 'http://192.168.56.100/wordpress/wp-admin/admin.php',
       data: {
         action: 'update_progress_with_bonus',
         hotspot: hot_id,
-        // trade_id: null,
         bonus_points: pts
       },
       success: function(){
-        console.log('on_success');
         var totalPoints = $('#bonus_points').text();
         totalPoints = parseInt(totalPoints, 10);
         totalPoints = totalPoints + parseInt(pts, 10);
@@ -180,47 +160,23 @@ function addBnsPtsFeather(hot_id, pts){
       }
     });
   }
-    // }
 }
 
-/*
-  Adds points to extra activities.
-  Parameters:
-  - id (activity id)
-  - pts (number of points to be added)
-*/
-function addRegPtsFeather(hot_id, trd_id){
-  // Checking if activity was previously done
-    // var done = false;
-    // var done_activities = $('#done_activities').text();
-    // acts = done_activities.split(',');
-    // for(var i = 0; i < acts.length; i++){
-    //   if(hot_id == acts[i]){
-    //     done = true;
-    //   }
-    // }
-    // if(!done){
-    // Checking for positive number of points
-    // if(pts > 0){
-  var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin.php';
+
+function addRegPtsFeather(hot_id){
+  var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
   $.ajax({
     type: 'POST',
     url: postUrl,
-    // url: 'http://192.168.56.100/wordpress/wp-admin/admin.php',
     data: {
       action: 'update_progress',
-      hotspot: hot_id,
-      trade_id: trd_id,
+      hotspot: hot_id
     },
     success: function(){
-        // var totalPoints = $('#bonus_points').text();
-        // totalPoints = parseInt(totalPoints, 10);
-        // totalPoints = totalPoints + parseInt(pts, 10);
-        // $('#bonus_points').html(totalPoints);
-        // $('#done_activities').html(done_activities + hot_id.toString() + ',');
-      $().toastmessage('showSuccessToast', 'You earned 10 points!');
+      var hotspot = document.getElementById(hot_id+'_menu_item');
+      hotspot.setAttribute('class', 'hotspot_done');
+      var hotspotPoints = parseInt(hotspot.getElementsByClassName('hotspot_points')[0].innerHTML);
+      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' points!');
     }
   });
-    // }
-    // }
 }
