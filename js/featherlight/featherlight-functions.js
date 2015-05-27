@@ -96,6 +96,32 @@ function addRegPtsFeather(hot_id){
 }
 
 /*
+  Gets the browser width and height to apply custom featherlight size options.
+  Returns:
+  - size (Array -> [0 - width] [1 - height])
+*/
+function getClientBrowserSize(){
+  var myWidth;
+  var myHeight;
+  var size = [];
+
+  if(typeof(window.innerWidth) == 'number' ){
+    myWidth = window.innerWidth;
+    myHeight = window.innerHeight;
+  }else if(document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)){
+    myWidth = document.documentElement.clientWidth;
+    myHeight = document.documentElement.clientHeight;
+  }else if(document.body && (document.body.clientWidth || document.body.clientHeight)){
+    myWidth = document.body.clientWidth;
+    myHeight = document.body.clientHeight;
+  }
+  size.push(myWidth);
+  size.push(myHeight);
+  return size;
+}
+
+
+/*
   Opens a pop-up with html content using ajax.
   Parameters:
   - htm (Ajax path)
@@ -113,8 +139,11 @@ function loadAjax(htm){
   - pts (Save points) [Default value: false]
 */
 function loadFrame(act_id, frm, pts){
-  var width = '100%';
-  var height = '100%';
+  var size = getClientBrowserSize();
+  var width = parseInt(size[0] * 0.6);
+  var height = parseInt(size[1] * 0.8);
+  // var width = '100%';
+  // var height = '100%';
   // Standard pts: false
   if(pts == null){
     pts = false;
