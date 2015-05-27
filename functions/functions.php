@@ -281,7 +281,15 @@ function get_hotspot_objects($quest){
 // ***********************************************************
 
 function allow_new_attempt(){
-  $attempt_allowed = true;
+  $hotspot_id = $_POST['hot_id'];
+  $attempt_allowed = false;
+
+  $maximum_attempts = get_maximum_attempts($hotspot_id);
+  $number_of_attempts = get_number_of_attemts($hotspot_id);
+  if($number_of_attempts < $maximum_attempts){
+    $attempt_allowed = true;
+  }
+
   return $attempt_allowed;
 }
 
