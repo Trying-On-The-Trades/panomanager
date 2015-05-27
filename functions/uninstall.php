@@ -21,7 +21,7 @@ function panno_uninstall() {
   $activation_code_table_name = get_activation_code_table_name();
   $ads_table_name             = get_ads_table_name();
   $ads_text_table_name        = get_ads_text_table_name();
-  $trade_table_name           = get_trade_table_name();
+  $domain_table_name          = get_domain_table_name();
   $tool_table_name            = get_tool_table_name();
 
   // Drop all the tables
@@ -40,7 +40,7 @@ function panno_uninstall() {
   $wpdb->query( "DROP TABLE IF EXISTS $activation_code_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $ads_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $ads_text_table_name" );
-  $wpdb->query( "DROP TABLE IF EXISTS $trade_table_name" );
+  $wpdb->query( "DROP TABLE IF EXISTS $domain_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $tool_table_name" );
 
   // Update the db version to 0 so the next time the plugin is run it will reinstall
