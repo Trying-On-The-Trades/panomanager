@@ -104,22 +104,26 @@ function addRegPtsFeather(hot_id){
   - allow (Boolean -> [false - can't open activity] [true - can open activity])
 */
 allowNewAttept = function(hot_id){
-  var allow = false;
+  var allow = true;
   var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
   $.ajax({
     type: 'POST',
     async: false,
     url: postUrl,
     data: {
-      action: 'allow_new_attempt'
+      action: 'allow_new_attempt',
+      hotspot: hot_id
     },
     success: function(para){
+      console.log(para);
       if(para == ''){
         para = false;
       }
       allow = para;
     }
   });
+  console.log(allow);
+  allow = true;
   if(!allow){
     $().toastmessage('showNoticeToast', 'You reached the limit number of attempts for this activity');
   }
