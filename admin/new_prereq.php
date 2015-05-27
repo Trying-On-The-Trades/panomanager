@@ -3,7 +3,7 @@
 // Build the settings page
 function prereq_new_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-    $trades   = get_trades();
+    $domains   = get_domains();
 
     $pano_id = null;
     if(isset($_GET['pano_id']) && is_numeric($_GET['pano_id'])){
@@ -43,11 +43,11 @@ function prereq_new_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="prereq_trade_id">Select a Prereq Trade</label>
-	        <select name="prereq_trade_id">
+	        <label for="prereq_domain_id">Select a Prereq Domain</label>
+	        <select name="prereq_domain_id">
 	             <option value="NA">...</option>
-                 <?php foreach($trades as $trade): ?>
-                     <option value="<?php echo $trade->id ?>"><?php echo $trade->name ?></option>
+                 <?php foreach($domains as $domain): ?>
+                     <option value="<?php echo $domain->id ?>"><?php echo $domain->name ?></option>
                  <?php endforeach; ?>
 			</select>
 	      </div>
