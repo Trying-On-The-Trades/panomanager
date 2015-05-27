@@ -15,11 +15,11 @@ class domain{
         }
     }
 
-    function build($trade_row){
-        if ($trade_row->id > 0){
+    function build($domain_row){
+        if ($domain_row->id > 0){
             $this->exists = 1;
-            $this->id     = $trade_row->id;
-            $this->name   = $trade_row->name;
+            $this->id     = $domain_row->id;
+            $this->name   = $domain_row->name;
         }
     }
 

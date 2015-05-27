@@ -5,7 +5,7 @@ class hotspot{
 	protected $id, $pano_id, $mission_id, $description,
                   $name, $menu_name, $language_code, 
                   $xml, $action_xml, $points, $menu_item,
-                  $type_id, $attempts, $trade_id, $modal_url,
+                  $type_id, $attempts, $domain_id, $modal_url,
                   $mission_name, $type_name,
                   $type_description,
                   $type_js_function;
@@ -34,7 +34,7 @@ class hotspot{
             $this->points      = $hotspot_row->points;
             $this->xml         = $hotspot_row->hotspot_xml;
             $this->action_xml  = $hotspot_row->action_xml;
-            $this->trade_id    = $hotspot_row->trade_id;
+            $this->domain_id    = $hotspot_row->domain_id;
             $this->modal_url   = $hotspot_row->modal_url;
             $this->type_id     = $hotspot_row->type_id;
             $this->type_name   = $hotspot_row->type_name;
@@ -42,21 +42,21 @@ class hotspot{
             $this->type_js_function = $hotspot_row->type_js_function;
 
             $this->build_mission();
-            $this->build_trade();
+            $this->build_domain();
         }
 	}
 
     function build_mission(){
-        // Gets the trade name associated with the mission
+        // Gets the domain name associated with the mission
         $mission = get_mission($this->mission_id);
         $this->mission_name = $mission->name;
     }
 
 
-    function build_trade(){
-        // Gets the trade name associated with the mission
-        $trade = get_trade($this->trade_id);
-        $this->trade_name = $trade->name;
+    function build_domain(){
+        // Gets the domain name associated with the mission
+        $domain = get_domain($this->domain_id);
+        $this->domain_name = $domain->name;
     }
 
     function get_id(){
@@ -91,12 +91,12 @@ class hotspot{
         return $this->action_xml;
     }
 
-    function get_trade_id(){
-        return $this->trade_id;
+    function get_domain_id(){
+        return $this->domain_id;
     }
 
-    function get_trade_name(){
-        return $this->trade_name;
+    function get_domain_name(){
+        return $this->domain_name;
     }
 
     function get_modal_url(){
