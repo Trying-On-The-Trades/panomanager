@@ -1,18 +1,25 @@
 <?php
   $oppia = '';
-  $worth = '';
+
   if(isset($_GET['oppia'])){
     $oppia = $_GET['oppia'];
-  }
-  else{
+  }else{
     $oppia = '4';
   }
-  if(isset($_GET['worth'])){
-    $worth = $_GET['worth'];
+
+  if(isset($_GET['base_points'])){
+    $base_points = $_GET['base_points'];
+  }else{
+    $base_points = 0;
   }
-  else{
-    $worth = '50';
+
+  if(isset($_GET['bonus_points'])){
+    $bonus_points = $_GET['bonus_points'];
+  }else{
+    $bonus_points = 0;
   }
+
+  $worth = $base_points + $bonus_points;
 ?>
 
 <!DOCTYPE html>
