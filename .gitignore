@@ -49,3 +49,6 @@ cs-build.properties
 
 #mac files
 .DS_Store
+
+#game plugins
+/js/js_games
