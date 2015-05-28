@@ -32,14 +32,14 @@ function load_pano($pano_id){
 
 	$pano  = build_pano($id);
     $quest = build_quest($id);
-        
+
 	$javascript = build_pano_javascript($id, $pano, $quest);
 
 	return $javascript;
 }
 
 function check_user_progress($pano_id){
-	// Check the user's progress before allowing 
+	// Check the user's progress before allowing
 	// the user to see the pano
 	$allowed      = true;
     $flag_not_set = true;
@@ -193,15 +193,15 @@ function get_current_pano_id(){
 }
 
 function get_hotspot_menu_objects($quest){
-    
+
     $user_id = get_current_user_id();
     $hotspot_ids    = array();
     $hotspots       = array();
     $missions_array = array();
-    
+
     // Get the missions
     if ($quest->exists){
-        
+
         $missions = $quest->get_missions();
 
         foreach ($missions as $mission) {
@@ -223,14 +223,14 @@ function get_hotspot_menu_objects($quest){
             $new_hotspot = new hotspot($hid);
 
             $progress = check_hotspot_prgress($hid, $user_id);
-            
+
             if(count($progress) > 0){
                 $new_hotspot->set_completed_state(true);
             }
-            
+
             array_push($hotspots, $new_hotspot);
         }
-    
+
     }
     return $hotspots;
 }
@@ -240,10 +240,10 @@ function get_hotspot_objects($quest){
     $hotspots       = array();
     $hotspot_xml_objects = array();
     $missions_array = array();
-    
+
     // Get the missions
     if ($quest->exists){
-        
+
         $missions = $quest->get_missions();
 
         foreach ($missions as $mission) {
@@ -271,7 +271,7 @@ function get_hotspot_objects($quest){
             $new_xml_obj = simplexml_load_string($xml->get_xml());
             array_push($hotspot_xml_objects, $new_xml_obj);
         }
-    
+
     }
     return $hotspot_xml_objects;
 }
@@ -280,12 +280,29 @@ function get_hotspot_objects($quest){
 //				    Processing User Progress
 // ***********************************************************
 
+function allow_new_attempt(){
+  $hotspot_id = 0;
+  if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
+    $hotspot_id = $_POST['hotspot'];
+  }
+  $attempt_allowed = false;
+  $maximum_attempts = get_maximum_attempts($hotspot_id);
+  $number_of_attempts = get_number_of_attemts($hotspot_id);
+  if($number_of_attempts < $maximum_attempts){
+    $attempt_allowed = true;
+  }
+
+  echo $attempt_allowed;
+
+  die();
+}
+
 function update_pano_user_progress() {
         // Get the user id and hotspot id
         $user_id  = get_current_user_id();
         $points = 0;
         $points_allowed = false;
-        
+
         // Make sure a numeric id is supplied
         if (is_numeric($_POST['hotspot'])){
             $hotspot_id = $_POST['hotspot'];
@@ -298,7 +315,7 @@ function update_pano_user_progress() {
         } else {
             $trade_id = 0;
         }
-        
+
         // Update the user progress
         if ($user_id == 0){
             // maybe do session stuff?
@@ -314,7 +331,7 @@ function update_pano_user_progress() {
 
 	// Return the points associated to flash on the screen
         echo $points;
-        
+
 	die(); // this is required to terminate immediately and return a proper response
 }
 
@@ -352,13 +369,13 @@ function update_pano_user_progress_with_bonus() {
 
 // check to make sure the user is aloud to get the points
 function check_points($user_id, $hotspot_id){
-    
+
     // Check if there is a limit on the attempts on a pano
     $hotspot = new hotspot($hotspot_id);
-    
+
     // Make sure the hotspot exists
     if ($hotspot->exists){
-        
+
         // Check if there are multiple attempts
         if ($hotspot->get_attempts() == 0){
             return true;
@@ -366,10 +383,10 @@ function check_points($user_id, $hotspot_id){
 
             // Get user progress on the hotspot
             $progress = check_hotspot_prgress($hotspot_id, $user_id);
-            
+
             // check the number of attempts
             $attempts = count($progress);
-            
+
             // return if they are aloud
             if ($attempts >= $hotspot->get_attempts()){
                 return false;
@@ -377,7 +394,7 @@ function check_points($user_id, $hotspot_id){
                 return true;
             }
         }
-        
+
     }
 }
 
@@ -387,7 +404,7 @@ function calculate_total_user_points(){
     //
     // Get the user id
     $user_id = get_current_user_id();
-    
+
     if ($user_id == 0){
         return 0;
     } else {

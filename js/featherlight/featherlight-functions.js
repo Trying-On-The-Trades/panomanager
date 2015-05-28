@@ -96,6 +96,39 @@ function addRegPtsFeather(hot_id){
 }
 
 /*
+  Tests if user can open an activity based on a post to the database.
+  If user is allowed a new attempt, the activity will open normally. If the user is not allowed a new attempt, a toast will be shown.
+  Parameter:
+  - hot_id (Hotspot id)
+  Returns:
+  - allow (Boolean -> [false - can't open activity] [true - can open activity])
+*/
+allowNewAttempt = function(hot_id){
+  var allow = true;
+  var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: postUrl,
+    data: {
+      action: 'allow_new_attempt',
+      hotspot: hot_id
+    },
+    success: function(para){
+      if(para == ''){
+        para = false;
+      }
+      allow = para;
+    }
+  });
+  console.log(allow);
+  if(!allow){
+    $().toastmessage('showNoticeToast', 'You reached the limit number of attempts for this activity');
+  }
+  return allow;
+}
+
+/*
   Gets the browser width and height to apply custom featherlight size options.
   Returns:
   - size (Array -> [0 - width] [1 - height])
@@ -149,6 +182,11 @@ function loadFrame(act_id, frm, pts){
     pts = false;
   }
 
+  allowed = function(){
+    var follow = allowNewAttempt(act_id);
+    return follow;
+  }
+
   // Loading frame without pts
   if(!pts){
 
@@ -156,7 +194,7 @@ function loadFrame(act_id, frm, pts){
     showPts = function(){
         addRegPtsFeather(act_id);
     }
-    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, afterClose: showPts});
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
 
   // Loading frame with pts
@@ -178,7 +216,7 @@ function loadFrame(act_id, frm, pts){
       }
     }
 
-    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeClose: getPts, afterClose: showPts});
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, beforeClose: getPts, afterClose: showPts});
   }
 }
 
