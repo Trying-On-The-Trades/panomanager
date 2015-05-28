@@ -286,14 +286,15 @@ function allow_new_attempt(){
     $hotspot_id = $_POST['hotspot'];
   }
   $attempt_allowed = false;
-
   $maximum_attempts = get_maximum_attempts($hotspot_id);
   $number_of_attempts = get_number_of_attemts($hotspot_id);
   if($number_of_attempts < $maximum_attempts){
     $attempt_allowed = true;
   }
 
-  return $attempt_allowed;
+  echo $attempt_allowed;
+
+  die();
 }
 
 function update_pano_user_progress() {

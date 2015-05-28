@@ -103,7 +103,7 @@ function addRegPtsFeather(hot_id){
   Returns:
   - allow (Boolean -> [false - can't open activity] [true - can open activity])
 */
-allowNewAttept = function(hot_id){
+allowNewAttempt = function(hot_id){
   var allow = true;
   var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
   $.ajax({
@@ -115,7 +115,6 @@ allowNewAttept = function(hot_id){
       hotspot: hot_id
     },
     success: function(para){
-      console.log(para);
       if(para == ''){
         para = false;
       }
@@ -123,7 +122,6 @@ allowNewAttept = function(hot_id){
     }
   });
   console.log(allow);
-  allow = true;
   if(!allow){
     $().toastmessage('showNoticeToast', 'You reached the limit number of attempts for this activity');
   }
@@ -184,6 +182,11 @@ function loadFrame(act_id, frm, pts){
     pts = false;
   }
 
+  allowed = function(){
+    var follow = allowNewAttempt(act_id);
+    return follow;
+  }
+
   // Loading frame without pts
   if(!pts){
 
@@ -191,7 +194,7 @@ function loadFrame(act_id, frm, pts){
     showPts = function(){
         addRegPtsFeather(act_id);
     }
-    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowNewAttept, afterClose: showPts});
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
 
   // Loading frame with pts
@@ -213,7 +216,7 @@ function loadFrame(act_id, frm, pts){
       }
     }
 
-    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowNewAttept, beforeClose: getPts, afterClose: showPts});
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, beforeClose: getPts, afterClose: showPts});
   }
 }
 
