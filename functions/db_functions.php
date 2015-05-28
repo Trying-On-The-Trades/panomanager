@@ -87,6 +87,7 @@ function list_allowed_panos($user_id){
     $pano_table_name     = get_pano_table_name();
     $text_table_name     = get_pano_text_table_name();
     $user_progress_table = get_user_skill_progress_table_name();
+    $bonus_pts_table = get_user_skill_bonus_pts_table_name();
     $hotspot_table_name  = get_hotspot_table_name();
     $prereq_table_name   = get_prereq_table_name();
 
@@ -1014,12 +1015,12 @@ function delete_trade($trade_id){
 
 function get_maximum_attempts($hotspot_id){
   global $wpdb;
-  $maximum_attempts = $wpdb->get_results("SELECT attempts FROM wordpress.wp_pano_hotspot WHERE id = " . $hotspot_id);
+  $maximum_attempts = $wpdb->get_results("SELECT attempts FROM $hotspot_table_name WHERE id = " . $hotspot_id);
   return $maximum_attempts;
 }
 
 function get_number_of_attemts($hotspot_id){
   global $wpdb;
-  $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) FROM wordpress.wp_pano_user_skill_bonus_pts WHERE skill_id = " . $hotspot_id);
+  $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) FROM $bonus_pts_table WHERE skill_id = " . $hotspot_id);
   return $number_of_attempts;
 }
