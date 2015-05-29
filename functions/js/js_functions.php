@@ -41,6 +41,7 @@ function register_scripts($pano_directory){
     $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.min.js";
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
+    $main_js          = WP_PLUGIN_URL . "/panomanager/js/main.js";
 
     //// APP CUSTOMIZED CSS
     wp_register_style('app_css', $app_css);
@@ -88,6 +89,10 @@ function register_scripts($pano_directory){
     wp_enqueue_script('jqueryui_js');
     wp_register_style('jqueryui_css', $jqueryui_css);
     wp_enqueue_style('jqueryui_css');
+
+    //// MAIN JS
+    wp_register_script('main_js', $main_js);
+    wp_enqueue_script('main_js');
 }
 
 function build_embed_script($pano_swf_location, $pano_php_location){
@@ -116,7 +121,7 @@ function add_nav_script($quest, $pano_id){
     $script = "\n<script type='text/javascript'>\n";
 
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = '" .  the_permalink() . "?pano_id=';\n";
+    // $script .=	"var siteAdr = '" .  the_permalink() . "?pano_id=';\n";
 
     // Build the array of names
     $script .= build_names_array();
@@ -607,6 +612,12 @@ function build_menu_nav($quest){
                 <ul >
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
+                        <span class="user_points">
+                          <span>Mission Points: </span>
+                          <span id="current_points">0</span>
+                          <span>/</span>
+                          <span id="total_mission_points">0</span>
+                        </span>
                         <span class="user_points">
                           <span>Bonus Points: </span>
                           <span id="bonus_points">0</span>

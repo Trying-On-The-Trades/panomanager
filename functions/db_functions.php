@@ -8,9 +8,9 @@
 function get_schools(){
     global $wpdb;
     $school_table_name = get_school_table_name();
-    
+
     // Get the schools out of the database
-    $schools = $wpdb->get_results( 
+    $schools = $wpdb->get_results(
             "SELECT * FROM " . $school_table_name . " wps ");
 
     return $schools;
@@ -18,8 +18,9 @@ function get_schools(){
 
 function get_tools(){
     global $wpdb;
-    
+
     $tool_table_name = get_tool_table_name();
+
     $domain_table_name = get_domain_table_name();
     
     $tools = $wpdb->get_results( 
@@ -54,7 +55,7 @@ function get_panos(){
     $language_code    = get_user_language();
 
     // DB query joining the pano table and the pano text table
-    $panos = $wpdb->get_results( 
+    $panos = $wpdb->get_results(
             "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " . "wppt.pano_id = wpp.id " .
             "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
@@ -71,7 +72,7 @@ function get_pano_ids(){
     $language_code = get_user_language();
 
     // DB query joining the pano table and the pano text table
-    $panos = $wpdb->get_results( 
+    $panos = $wpdb->get_results(
             "SELECT wpp.id FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " .
             "wppt.pano_id = wpp.id " .
@@ -83,21 +84,22 @@ function get_pano_ids(){
 // Get the ids and names of the panos the user is aloud to see
 function list_allowed_panos($user_id){
     global $wpdb;
-    
+
     $pano_table_name     = get_pano_table_name();
     $text_table_name     = get_pano_text_table_name();
     $user_progress_table = get_user_skill_progress_table_name();
+    $bonus_pts_table = get_user_skill_bonus_pts_table_name();
     $hotspot_table_name  = get_hotspot_table_name();
     $prereq_table_name   = get_prereq_table_name();
-    
+
     $language_code = get_user_language();
-    
-    $pano = $wpdb->get_results( 
-            "SELECT DISTINCT 
-                wp.id, 
-                wpt.name 
+
+    $pano = $wpdb->get_results(
+            "SELECT DISTINCT
+                wp.id,
+                wpt.name
             FROM " . $pano_table_name . " wp
-            INNER JOIN " . $text_table_name .  " wpt 
+            INNER JOIN " . $text_table_name .  " wpt
             ON wp.`id` = wpt.`pano_id`
             WHERE wpt.`language_code` = " . $language_code .
             " ORDER BY wp.id"
@@ -113,7 +115,7 @@ function get_pano($id){
     $language_code = get_user_language();
 
     // DB query
-    $pano = $wpdb->get_row( $wpdb->prepare( 
+    $pano = $wpdb->get_row( $wpdb->prepare(
             "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " .
             "wppt.pano_id = wpp.id " .
@@ -169,7 +171,7 @@ function get_quest_by_pano($pano_id){
 	$quest_table_name = get_quest_table_name();
 
 	// DB query
-	$quest = $wpdb->get_row( $wpdb->prepare( 
+	$quest = $wpdb->get_row( $wpdb->prepare(
 		"SELECT wpq.id FROM " . $quest_table_name . " wpq " .
 		" WHERE wpq.panno_id = %d", $pano_id)
 	);
@@ -222,7 +224,7 @@ function get_mission_ids($quest_id){
 	$language_code = get_user_language();
 
 	// DB query
-	$quest = $wpdb->get_results( $wpdb->prepare( 
+	$quest = $wpdb->get_results( $wpdb->prepare(
 		"SELECT wpm.id FROM " . $mission_table_name . " wpm " .
 		"INNER JOIN " . $mission_text_table_name . " wpmt ON " .
 		"wpmt.mission_id = wpm.id " .
@@ -257,7 +259,7 @@ function get_hotspot_ids($mission_id){
 	$hotspot_table_name = get_hotspot_table_name();
 
 	// DB query joining the pano table and the pano text table
-	$hotspots = $wpdb->get_results( $wpdb->prepare( 
+	$hotspots = $wpdb->get_results( $wpdb->prepare(
 		"SELECT wph.id FROM " . $hotspot_table_name . " wph " .
 		"WHERE wph.mission_id = " . $mission_id . " ORDER BY id ASC", ARRAY_A)
         );
@@ -271,7 +273,7 @@ function get_hotspot($hotspot_id){
     $hotspot_type_table_name = get_type_table_name();
 
     // DB query
-    $mission = $wpdb->get_row( $wpdb->prepare( 
+    $mission = $wpdb->get_row( $wpdb->prepare(
             "SELECT wph.*, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
             $hotspot_table_name . " wph " .
             "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
@@ -286,11 +288,11 @@ function get_types(){
 	$type_table_name = get_type_table_name();
 
 	// get all the types
-	$hotspot = $wpdb->get_results( 
+	$hotspot = $wpdb->get_results(
 		"SELECT * FROM " . $type_table_name . " wpht ");
 
 	return $hotspot;
-}	
+}
 
 function get_hotspot_type($hotspot_type_id){
 	global $wpdb;
@@ -328,7 +330,7 @@ function get_pano_prereq($pano_id){
 	$prereq_table_name = get_prereq_table_name();
 	$domain_table_name  = get_domain_table_name();
 
-	$prereq = $wpdb->get_results( 
+	$prereq = $wpdb->get_results(
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
 		"WHERE wppr.`pano_id` = " . $pano_id);
 
@@ -357,7 +359,7 @@ function get_user_mission_points($mission_id, $user_id){
 	$progress_table = get_user_progress_table_name();
 	$mission_table  = get_mission_table_name();
 
-	$points = $wpdb->get_results( 
+	$points = $wpdb->get_results(
 		"SELECT sum(wpm.`points`) FROM " . $progress_table . " wup " .
 		"INNER JOIN " . $mission_table . " wpm ON " .
 		"wup.`mission_id` = wpm.`id` " .
@@ -374,7 +376,7 @@ function get_user_skill_points($skill_id, $user_id){
 	$progress_table = get_user_skill_progress_table_name();
 	$mission_table  = get_mission_table_name();
 
-	$points = $wpdb->get_results( 
+	$points = $wpdb->get_results(
 		"SELECT sum(wpm.`points`) FROM " . $progress_table . " wup " .
 		"INNER JOIN " . $mission_table . " wpm ON " .
 		"wup.`skill_id` = wpm.`id` " .
@@ -445,13 +447,13 @@ function get_user_accumulated_bonus_pts_for_prereq($user_id, $domain_id){
 
 function check_hotspot_prgress($hotspot_id, $user_id){
     global $wpdb;
-    
+
     $progress_table = get_user_skill_progress_table_name();
-    
+
     $hs = $wpdb->get_results("SELECT * FROM " . $progress_table . " wpusp" .
                              " WHERE wpusp.`skill_id` = " . $hotspot_id .
                              " AND wpusp.`user_id` = " . $user_id);
-    
+
     return $hs;
 }
 
@@ -521,18 +523,18 @@ function add_user_progress_with_bonus($user_id, $hotspot_id,  $domain_id, $bonus
 
 function get_leaderboard(){
     global $wpdb;
-    
+
     // Table names
     $hotspot_table = get_hotspot_table_name();
     $progress_table = get_user_skill_progress_table_name();
-    
+
     // Buddypress table names
     $profile_data_table = "wp_bp_xprofile_data";
     $profile_field_table = "wp_bp_xprofile_fields";
-    
+
     // WordPress tables names
     $user_table = "wp_users";
-    
+
     $leaderboard = $wpdb->get_results(
             "SELECT wu.id, wu.`display_name` `name`, " .
             "sum(wph.`points`) score, " .
@@ -548,7 +550,7 @@ function get_leaderboard(){
             "ON wph.`id` = wpusp.`skill_id` ".
             "GROUP BY wu.ID " .
             "ORDER BY score DESC");
-    
+
     return $leaderboard;
 }
 
@@ -584,15 +586,15 @@ function get_leaderboard_bonus_pts(){
 
 function get_school_leaderboard(){
     global $wpdb;
-    
+
     // Table names
     $hotspot_table   = get_hotspot_table_name();
     $progress_table  = get_user_skill_progress_table_name();
-    
+
     // Buddypress table names
     $profile_data_table = "wp_bp_xprofile_data";
     $profile_field_table = "wp_bp_xprofile_fields";
-    
+
     // WordPress tables names
     $user_table = "wp_users";
 
@@ -610,7 +612,7 @@ function get_school_leaderboard(){
             "ON wph.`id` = wpusp.`skill_id` ".
             "GROUP BY wbxf.`name` " .
             "ORDER BY score DESC");
-    
+
     return $leaderboard;
 }
 
@@ -649,21 +651,21 @@ function get_school_leaderboard_bonus_pts(){
 
 function get_pano_ads($quest_id){
     global $wpdb;
-    
-    // Table names 
+
+    // Table names
     $mission_table  = get_mission_table_name();
-    $ads_table      = get_ads_table_name(); 
+    $ads_table      = get_ads_table_name();
     $ads_text_table = get_ads_text_table_name();
     $language_code  = get_user_language();
-    
-    $ad_messages = $wpdb->get_results("SELECT wpat.`message` FROM " . $ads_text_table . " wpat " . 
+
+    $ad_messages = $wpdb->get_results("SELECT wpat.`message` FROM " . $ads_text_table . " wpat " .
                                       "INNER JOIN " . $ads_table . " wpa ON wpa.`id` = wpat.`ads_id`" .
                                       "INNER JOIN " . $mission_table . " wpm ON wpm.`domain_id` = wpa.`domain_id`" .
                                       "WHERE wpat.`language_code` = " . $language_code .
                                       "AND wpm.quest_id = " . $quest_id);
-    
+
     return $ad_messages;
-    
+
 }
 
 // ***********************************************************
@@ -1008,6 +1010,21 @@ function delete_hotspot_type($hotspot_type_id){
 function delete_domain($domain_id){
     global $wpdb;
     $domain_table_name = get_domain_table_name();
-
     $wpdb->delete( $domain_table_name, array( 'id' => $domain_id ) );
 }
+
+
+function get_maximum_attempts($hotspot_id){
+  global $wpdb;
+  $hotspot_table_name  = get_hotspot_table_name();
+  $maximum_attempts = $wpdb->get_results("SELECT attempts FROM $hotspot_table_name WHERE id = " . $hotspot_id);
+  return $maximum_attempts[0]->attempts;
+}
+
+function get_number_of_attemts($hotspot_id){
+  global $wpdb;
+  $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+  $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) AS mynumber FROM $bonus_pts_table WHERE skill_id = " . $hotspot_id);
+  return $number_of_attempts[0]->mynumber;
+}
+
