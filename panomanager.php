@@ -64,10 +64,10 @@ add_action( 'admin_post_create_new_hotspot_type', 'process_new_hotspot_type' );
 add_action( 'admin_post_edit_hotspot_type', 'process_edit_hotspot_type' );
 add_action( 'admin_post_delete_hotspot_type', 'process_delete_hotspot_type' );
 
-// Add the process trade type hook
-add_action( 'admin_post_create_new_trade', 'process_new_trade' );
-add_action( 'admin_post_edit_trade', 'process_edit_trade' );
-add_action( 'admin_post_delete_trade', 'process_delete_trade' );
+// Add the process domain type hook
+add_action( 'admin_post_create_new_domain', 'process_new_domain' );
+add_action( 'admin_post_edit_domain', 'process_edit_domain' );
+add_action( 'admin_post_delete_domain', 'process_delete_domain' );
 
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
@@ -92,7 +92,7 @@ require_once("includes/quest.php");
 require_once("includes/mission.php");
 require_once("includes/hotspot.php");
 require_once("includes/hotspotType.php");
-require_once("includes/trade.php");
+require_once("includes/domain.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");
@@ -114,9 +114,9 @@ require_once("admin/edit_hotspot.php");
 require_once("admin/hotspot_types.php");
 require_once("admin/new_hotspot_type.php");
 require_once("admin/edit_hotspot_type.php");
-require_once("admin/trades.php");
-require_once("admin/new_trade.php");
-require_once("admin/edit_trade.php");
+require_once("admin/domains.php");
+require_once("admin/new_domain.php");
+require_once("admin/edit_domain.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

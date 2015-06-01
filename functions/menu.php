@@ -168,30 +168,30 @@ function create_sub_menus(){
 					"edit_hotspot_type_settings",
 					"edit_hotspot_type_settings_page");
 
-	// Create the sub menu item for trades
+	// Create the sub menu item for domains
 	add_submenu_page("pano_menu",
-					"Trades",
-					"Trades",
+					"Domains",
+					"Domains",
 					"administrator",
-					"pano_trade_settings",
-					"pano_trade_settings_page");
+					"pano_domain_settings",
+					"pano_domain_settings_page");
 
 
-	// Create the sub menu item for trades
+	// Create the sub menu item for domains
 	add_submenu_page(null,
-					"New Trade",
-					"New Trade",
+					"New Domain",
+					"New Domain",
 					"administrator",
-					"new_trade_settings",
-					"new_trade_settings_page");
+					"new_domain_settings",
+					"new_domain_settings_page");
 
 
-	// Create the sub menu item for editng trades
+	// Create the sub menu item for editng domains
 	add_submenu_page(null,
-					"Edit Trade",
-					"Edit Trade",
+					"Edit Domain",
+					"Edit Domain",
 					"administrator",
-					"edit_trade_settings",
-					"edit_trade_settings_page");
+					"edit_domain_settings",
+					"edit_domain_settings_page");
 
 }
