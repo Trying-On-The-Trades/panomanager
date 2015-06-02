@@ -75,6 +75,7 @@ add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
 // callback functions
 add_action( 'admin_post_get_leaderboard_div', 'get_leaderboard_div' );
+add_action( 'admin_post_nopriv_get_leaderboard_div', 'get_leaderboard_div');
 add_action( 'admin_post_check_user_progress', 'check_user_progress_ajax' );
 add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_with_bonus' );
