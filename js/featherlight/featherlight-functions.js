@@ -13,37 +13,6 @@
 */
 
 /*
-  Adds points to extra activities.
-  Parameters:
-  - id (activity id)
-  - pts (number of points to be added)
-*/
-
-// Old function
-// function addPointsFeather(act_id, pts){
-//   // Checking if activity was previously done
-//   var done = false;
-//   var done_activities = $('#done_activities').text();
-//   acts = done_activities.split(',');
-//   for(var i = 0; i < acts.length; i++){
-//     if(act_id == acts[i]){
-//       done = true;
-//     }
-//   }
-//   if(!done){
-//     // Checking for positive number of points
-//     if(pts > 0){
-//       var totalPoints = $('#bonus_points').text();
-//       totalPoints = parseInt(totalPoints, 10);
-//       totalPoints = totalPoints + parseInt(pts, 10);
-//       $('#bonus_points').html(totalPoints);
-//       $('#done_activities').html(done_activities + act_id.toString() + ',');
-//       $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
-//     }
-//   }
-// }
-
-/*
   Adds bonus points from activities to database.
   Parameters:
   - hot_id (Hotspot id)
@@ -51,7 +20,7 @@
 */
 function addBnsPtsFeather(hot_id, pts){
   if(pts > 0){
-    var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
+    var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
     $.ajax({
       type: 'POST',
       url: postUrl,
@@ -78,7 +47,7 @@ function addBnsPtsFeather(hot_id, pts){
   - hot_id (Hotspot id)
 */
 function addRegPtsFeather(hot_id){
-  var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   $.ajax({
     type: 'POST',
     url: postUrl,
@@ -105,7 +74,7 @@ function addRegPtsFeather(hot_id){
 */
 allowNewAttempt = function(hot_id){
   var allow = true;
-  var postUrl = document.getElementById('app_css-css').getAttribute('href').split('wordpress')[0]+'wordpress/wp-admin/admin-post.php';
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   $.ajax({
     type: 'POST',
     async: false,

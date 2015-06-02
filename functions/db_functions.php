@@ -1026,3 +1026,29 @@ function get_number_of_attemts($hotspot_id){
   $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) AS mynumber FROM $bonus_pts_table WHERE skill_id = " . $hotspot_id);
   return $number_of_attempts[0]->mynumber;
 }
+
+function get_regular_points_for_mission_tab(){
+  global $wpdb;
+
+  $regular_points = $wpdb->get_results("SELECT SUM(points) AS regular_points FROM wp_pano_hotspot WHERE id IN (SELECT DISTINCT skill_id FROM wp_pano_user_skill_progress)");
+  $regular_points = $regular_points[0]->regular_points;
+
+  if($regular_points == null){
+    $regular_points = 0;
+  }
+
+  return $regular_points;
+}
+
+function get_bonus_points_for_mission_tab(){
+  global $wpdb;
+
+  $bonus_points = $wpdb->get_results("SELECT SUM(bonus_points) AS bonus_points FROM wp_pano_user_skill_bonus_pts");
+  $bonus_points = $bonus_points[0]->bonus_points;
+  
+  if($bonus_points == null){
+    $bonus_points = 0;
+  }
+
+  return $bonus_points;
+}
