@@ -1027,10 +1027,13 @@ function get_number_of_attemts($hotspot_id){
   return $number_of_attempts[0]->mynumber;
 }
 
-function get_regular_points_for_mission_tab(){
+function get_regular_points_for_mission_tab($id){
   global $wpdb;
 
-  $regular_points = $wpdb->get_results("SELECT SUM(points) AS regular_points FROM wp_pano_hotspot WHERE id IN (SELECT DISTINCT skill_id FROM wp_pano_user_skill_progress)");
+  $hotspot_table_name  = get_hotspot_table_name();
+  $user_progress_table = get_user_skill_progress_table_name();
+
+  $regular_points = $wpdb->get_results("SELECT SUM(points) AS regular_points FROM $hotspot_table_name WHERE id IN (SELECT DISTINCT skill_id FROM $user_progress_table WHERE user_id = $id)");
   $regular_points = $regular_points[0]->regular_points;
 
   if($regular_points == null){
@@ -1040,15 +1043,34 @@ function get_regular_points_for_mission_tab(){
   return $regular_points;
 }
 
-function get_bonus_points_for_mission_tab(){
+function get_bonus_points_for_mission_tab($id){
   global $wpdb;
 
-  $bonus_points = $wpdb->get_results("SELECT SUM(bonus_points) AS bonus_points FROM wp_pano_user_skill_bonus_pts");
+  $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+
+  $bonus_points = $wpdb->get_results("SELECT SUM(bonus_points) AS bonus_points FROM $bonus_pts_table WHERE user_id = $id");
   $bonus_points = $bonus_points[0]->bonus_points;
-  
+
   if($bonus_points == null){
     $bonus_points = 0;
   }
 
   return $bonus_points;
+}
+
+function get_user_name($id){
+  global $wpdb;
+
+  $username = $wpdb->get_results("SELECT display_name FROM wp_users WHERE id = $id LIMIT 1");
+  $username = $username[0]->display_name;
+
+  return $username;
+}
+
+function get_all_users(){
+  global $wpdb;
+
+  $users = $wpdb->get_results("SELECT id, display_name FROM wp_users");
+
+  return $users;
 }

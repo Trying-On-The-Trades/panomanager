@@ -302,7 +302,11 @@ function build_menu_launch(){
 }
 
 function get_leaderboard_div(){
-    echo build_leaderboard_div();
+  if (is_user_logged_in()){
+	   echo build_leaderboard_login_on_div();
+  }else{
+    echo build_leaderboard_login_off_div();
+  }
 }
 
 function build_leader_launch(){
@@ -661,16 +665,67 @@ function get_mission_tasks($quest){
 }
 
 /////////// LEADERBOARD FUNCTIONS
-function build_leaderboard_div(){
+function build_leaderboard_login_on_div(){
+  $board = '<div class="white-popup">';
+  $board .= '<h2>Leaderboard</h2>';
 
+  $board .= '<table>';
+  $board .= '  <thead>';
+  $board .= '    <tr>';
+  $board .= '      <th>Name</th>';
+  $board .= '      <th>Mission Points</th>';
+  $board .= '      <th>Bonus Points</th>';
+  $board .= '    </tr>';
+  $board .= '  </thead>';
+  $board .= '  <tbody>';
+
+  $users = get_all_users();
+  foreach($users as $user){
+    $board .= '    <tr>';
+    $board .= '      <td>' . get_user_name($user->id) . '</td>';
+    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
+    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
+    $board .= '    </tr>';
+  }
+
+  $board .= '  </tbody>';
+  $board .= '</table>';
+
+  // Create the table for schools
+  // $board .= build_school_table();
+
+  // Create the table for individuals
+  // $board .= build_individual_table();
+
+  // Close the modal
+  $board .= '</div>';
+  return $board;
+}
+
+function build_leaderboard_login_off_div(){
     $board = '<div class="white-popup">';
     $board .= '<h2>Leaderboard</h2>';
 
+    $board .= '<table>';
+    $board .= '  <thead>';
+    $board .= '    <tr>';
+  	$board .= '      <th>Mission Points</th>';
+  	$board .= '      <th>Bonus Points</th>';
+  	$board .= '    </tr>';
+    $board .= '  </thead>';
+    $board .= '  <tbody>';
+    $board .= '    <tr>';
+  	$board .= '      <td>' . get_regular_points_for_mission_tab() . '</td>';
+  	$board .= '      <td>' . get_bonus_points_for_mission_tab() . '</td>';
+  	$board .= '    </tr>';
+    $board .= '  </tbody>';
+    $board .= '</table>';
+
     // Create the table for schools
-    $board .= build_school_table();
+    // $board .= build_school_table();
 
     // Create the table for individuals
-    $board .= build_individual_table();
+    // $board .= build_individual_table();
 
     // Close the modal
     $board .= '</div>';
