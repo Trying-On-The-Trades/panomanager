@@ -20,26 +20,27 @@ function get_tools(){
     global $wpdb;
 
     $tool_table_name = get_tool_table_name();
-    $trade_table_name = get_trade_table_name();
+
+    $domain_table_name = get_domain_table_name();
 
     $tools = $wpdb->get_results(
-            "SELECT wpt.*, wptt.name trade_name FROM " . $tool_table_name . " wpt " .
-            "INNER JOIN " . $trade_table_name . " wptt ON " .
-            "wpt.`trade_id` = wptt.`id` ");
+            "SELECT wpt.*, wptt.name domain_name FROM " . $tool_table_name . " wpt " .
+            "INNER JOIN " . $domain_table_name . " wptt ON " .
+            "wpt.`domain_id` = wptt.`id` ");
 
     return $tools;
 }
 
-function get_trades(){
+function get_domains(){
     global $wpdb;
 
-    $trade_table_name = get_trade_table_name();
+    $domain_table_name = get_domain_table_name();
 
      // Get the schools out of the database
-    $trades = $wpdb->get_results(
-            "SELECT * FROM " . $trade_table_name . " wpt ");
+    $domains = $wpdb->get_results(
+            "SELECT * FROM " . $domain_table_name . " wpt ");
 
-    return $trades;
+    return $domains;
 }
 
 // ***********************************************************
@@ -135,7 +136,7 @@ function get_quests(){
 
     // DB query
     $quests = $wpdb->get_results(
-            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.trade_id, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
+            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.domain_id, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpq.id " .
             "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.pano_id = wpq.panno_id " .
             "WHERE wpqt.language_code = " . $language_code . " ORDER BY id ASC");
@@ -153,7 +154,7 @@ function get_quest($quest_id){
 
     // DB query
     $quest = $wpdb->get_row( $wpdb->prepare(
-            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.trade_id, wpqt.* FROM " . $quest_table_name . " wpq " .
+            "SELECT wpq.id as quest_id, wpq.panno_id, wpq.domain_id, wpqt.* FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
             "wpqt.quest_id = wpq.id " .
             "WHERE wpqt.language_code = " . $language_code .
@@ -243,7 +244,7 @@ function get_mission($mission_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare(
-            "SELECT wpm.id as mission_id, wpm.quest_id, wpm.pano_id, wpm.trade_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
+            "SELECT wpm.id as mission_id, wpm.quest_id, wpm.pano_id, wpm.domain_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
             "INNER JOIN " . $mission_text_table_name . " wpmt ON " .
             " wpm.`id` = wpmt.`mission_id` " .
             " WHERE wpmt.language_code = " . $language_code .
@@ -307,18 +308,18 @@ function get_hotspot_type($hotspot_type_id){
 	return $hotspot_type;
 }
 
-function get_trade($trade_id){
+function get_domain($domain_id){
     global $wpdb;
-    $trade_table_name = get_trade_table_name();
+    $domain_table_name = get_domain_table_name();
 
     // Get a specific type from the db
 
-    $trade = $wpdb->get_row( $wpdb->prepare(
-        "SELECT * FROM " . $trade_table_name . " wpt " .
-        "WHERE wpt.id = %d", $trade_id)
+    $domain = $wpdb->get_row( $wpdb->prepare(
+        "SELECT * FROM " . $domain_table_name . " wpt " .
+        "WHERE wpt.id = %d", $domain_id)
     );
 
-    return $trade;
+    return $domain;
 }
 
 
@@ -327,7 +328,7 @@ function get_pano_prereq($pano_id){
 	global $wpdb;
 
 	$prereq_table_name = get_prereq_table_name();
-	$trade_table_name  = get_trade_table_name();
+	$domain_table_name  = get_domain_table_name();
 
 	$prereq = $wpdb->get_results(
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
@@ -341,7 +342,7 @@ function get_db_prereq($prereq_id){
 
     $prereq_table_name = get_prereq_table_name();
     $pano_text_table_name = get_pano_text_table_name();
-    $pano_trade_table_name = get_trade_table_name();
+    $pano_domain_table_name = get_domain_table_name();
 
     $prereq = $wpdb->get_row( $wpdb->prepare(
         "SELECT wppr.*, wppt.name as pano_name FROM " . $prereq_table_name ." wppr " .
@@ -401,7 +402,7 @@ function get_user_accumulated_points($user_id){
     return $points;
 }
 
-function get_user_accumulated_points_for_prereq($user_id, $trade_id){
+function get_user_accumulated_points_for_prereq($user_id, $domain_id){
     global $wpdb;
 
     $progress_table = get_user_skill_progress_table_name();
@@ -412,7 +413,7 @@ function get_user_accumulated_points_for_prereq($user_id, $trade_id){
         "INNER JOIN " . $hotspot_table . " wph ON " .
         "wpusp.`skill_id` = wph.`id` " .
         "WHERE wpusp.`user_id` = " . $user_id . " " .
-        "AND wpusp.`trade_id` = %d",  $trade_id));
+        "AND wpusp.`domain_id` = %d",  $domain_id));
 
     return $points;
 }
@@ -431,7 +432,7 @@ function get_user_accumulated_bonus_pts($user_id){
 }
 
 // Return a user's accumulated points
-function get_user_accumulated_bonus_pts_for_prereq($user_id, $trade_id){
+function get_user_accumulated_bonus_pts_for_prereq($user_id, $domain_id){
     global $wpdb;
 
     $bonus_pts_table = get_user_skill_bonus_pts_table_name();
@@ -439,7 +440,7 @@ function get_user_accumulated_bonus_pts_for_prereq($user_id, $trade_id){
     $bonus_points =  $wpdb->get_row( $wpdb->prepare(
         "SELECT sum(wpusbp.`bonus_points`) as bonus_points FROM " . $bonus_pts_table . " wpusbp " .
         "WHERE wpusbp.`user_id` = " . $user_id . " " .
-        "AND wpusbp.`trade_id` = %d",  $trade_id));
+        "AND wpusbp.`domain_id` = %d",  $domain_id));
 
     return $bonus_points;
 }
@@ -458,13 +459,13 @@ function check_hotspot_prgress($hotspot_id, $user_id){
 
 //
 
-function add_user_progress($user_id, $hotspot_id, $trade_id){
+function add_user_progress($user_id, $hotspot_id, $domain_id){
     global $wpdb;
 
     // Assign variables for the query
     $uid = $user_id;
     $sid = $hotspot_id;
-    $tid = $trade_id;
+    $tid = $domain_id;
 
     // Get the table names for the query
     $progress_table = get_user_skill_progress_table_name();
@@ -473,7 +474,7 @@ function add_user_progress($user_id, $hotspot_id, $trade_id){
     // Insert the progress
     $wpdb->insert( $progress_table, array( 'user_id'  => $uid,
                                            'skill_id' => $sid,
-                                           'trade_id' => $tid  ),
+                                           'domain_id' => $tid  ),
                                     array( '%s', '%d' ) );
 
     // Get the id of the last row
@@ -490,13 +491,13 @@ function add_user_progress($user_id, $hotspot_id, $trade_id){
     return $pano->points;
 }
 
-function add_user_progress_with_bonus($user_id, $hotspot_id,  $trade_id, $bonus_points){
+function add_user_progress_with_bonus($user_id, $hotspot_id,  $domain_id, $bonus_points){
     global $wpdb;
 
     // Assign variables for the query
     $uid = $user_id;
     $sid = $hotspot_id;
-    $tid = $trade_id;
+    $tid = $domain_id;
 
     // Get the table names for the query
     $progress_table = get_user_skill_bonus_pts_table_name();
@@ -504,7 +505,7 @@ function add_user_progress_with_bonus($user_id, $hotspot_id,  $trade_id, $bonus_
     // Insert the progress
     $wpdb->insert( $progress_table, array( 'user_id'      => $uid,
                                            'skill_id'     => $sid,
-                                           'trade_id'     => $tid,
+                                           'domain_id'     => $tid,
                                            'bonus_points' => $bonus_points ),
                                     array( '%s', '%d' ) );
 
@@ -645,7 +646,7 @@ function get_school_leaderboard_bonus_pts(){
 }
 
 // ***********************************************************
-//				    Trade Ads
+//				    Domain Ads
 // ***********************************************************
 
 function get_pano_ads($quest_id){
@@ -659,7 +660,7 @@ function get_pano_ads($quest_id){
 
     $ad_messages = $wpdb->get_results("SELECT wpat.`message` FROM " . $ads_text_table . " wpat " .
                                       "INNER JOIN " . $ads_table . " wpa ON wpa.`id` = wpat.`ads_id`" .
-                                      "INNER JOIN " . $mission_table . " wpm ON wpm.`trade_id` = wpa.`trade_id`" .
+                                      "INNER JOIN " . $mission_table . " wpm ON wpm.`domain_id` = wpa.`domain_id`" .
                                       "WHERE wpat.`language_code` = " . $language_code .
                                       "AND wpm.quest_id = " . $quest_id);
 
@@ -697,14 +698,14 @@ function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
     }
 }
 
-function update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id){
+function update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id){
     global $wpdb;
     $prereq_table_name = get_prereq_table_name();
 
     if(isset($id) && is_numeric($id)){
         $wpdb->update( $prereq_table_name,
             array('prereq_pts'      => $prereq_pts,
-                  'prereq_trade_id' => $prereq_trade_id),
+                  'prereq_domain_id' => $prereq_domain_id),
             array('id'      => $id,
                   'pano_id' => $pano_id));
         return true;
@@ -713,7 +714,7 @@ function update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id){
     }
 }
 
-function update_quest($quest_id, $quest_name, $quest_description, $pano_id, $trade_id){
+function update_quest($quest_id, $quest_name, $quest_description, $pano_id, $domain_id){
     global $wpdb;
     $quest_table_name = get_quest_table_name();
     $text_table_name  = get_quest_text_table_name();
@@ -723,7 +724,7 @@ function update_quest($quest_id, $quest_name, $quest_description, $pano_id, $tra
     if(isset($quest_id) && is_numeric($quest_id)){
         $wpdb->update( $quest_table_name,
             array('panno_id' => $pano_id,
-                  'trade_id' => $trade_id),
+                  'domain_id' => $domain_id),
             array('id'       => $quest_id));
 
         $wpdb->update( $text_table_name,
@@ -741,7 +742,7 @@ function update_quest($quest_id, $quest_name, $quest_description, $pano_id, $tra
 
 }
 
-function update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $trade_id){
+function update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $domain_id){
     global $wpdb;
     $mission_table_name = get_mission_table_name();
     $text_table_name    = get_mission_text_table_name();
@@ -753,7 +754,7 @@ function update_mission($mission_id, $mission_name, $mission_description, $missi
                 array(
                     'quest_id'    => $quest_id,
                     'pano_id'     => $pano_id,
-                    'trade_id'    => $trade_id,
+                    'domain_id'   => $domain_id,
                     'points'      => $mission_points,
                     'mission_xml' => $mission_xml),
                 array('id'        => $mission_id));
@@ -774,7 +775,7 @@ function update_mission($mission_id, $mission_name, $mission_description, $missi
 
 }
 
-function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url){
+function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
     global $wpdb;
     $hotspot_table_name = get_hotspot_table_name();
 
@@ -790,7 +791,7 @@ function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hots
                 'action_xml'  => $hotspot_action_xml,
                 'points'      => $hotspot_points,
                 'attempts'    => $hotspot_attempts,
-                'trade_id'    => $hotspot_trade_id,
+                'domain_id'   => $hotspot_domain_id,
                 'modal_url'   => $hotspot_modal_url),
             array('id'        => $hotspot_id));
 
@@ -819,14 +820,14 @@ function update_hotspot_type($hotspot_type_id, $hotspot_type_name, $hotspot_type
     }
 }
 
-function update_trade($trade_id, $trade_name){
+function update_domain($domain_id, $domain_name){
     global $wpdb;
-    $trade_table_name = get_trade_table_name();
+    $domain_table_name = get_domain_table_name();
 
-    if(isset($trade_id) && is_numeric($trade_id)){
-        $wpdb->update( $trade_table_name,
-                       array('name' => $trade_name),
-                       array('id' => $trade_id));
+    if(isset($domain_id) && is_numeric($domain_id)){
+        $wpdb->update( $domain_table_name,
+                       array('name' => $domain_name),
+                       array('id' => $domain_id));
 
         return true;
     } else {
@@ -860,14 +861,14 @@ function create_pano($pano_xml, $pano_name, $pano_description){
     return $pano_id;
 }
 
-function create_prereq($pano_id, $prereq_pts, $prereq_trade_id){
+function create_prereq($pano_id, $prereq_pts, $prereq_domain_id){
     global $wpdb;
     $prereq_table_name = get_prereq_table_name();
 
     // Insert the pano
     $wpdb->insert( $prereq_table_name, array( 'pano_id'         => $pano_id,
                                               'prereq_pts'      => $prereq_pts,
-                                              'prereq_trade_id' => $prereq_trade_id));
+                                              'prereq_domain_id' => $prereq_domain_id));
 
     // Get the id of the last row
     $prereq_id = $wpdb->insert_id;
@@ -888,7 +889,7 @@ function create_quest($pano_id){
     return $lastid;
 }
 
-function create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $trade_id, $quest_id, $mission_points){
+function create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $domain_id, $quest_id, $mission_points){
     global $wpdb;
     $mission_table_name      = get_mission_table_name();
     $mission_text_table_name = get_mission_text_table_name();
@@ -900,7 +901,7 @@ function create_mission($mission_name, $mission_description, $mission_xml, $pano
                                                'points'      => $mission_points,
                                                'mission_xml' => $mission_xml,
                                                'pano_id'     => $pano_id,
-                                               'trade_id'    => $trade_id));
+                                               'domain_id'    => $domain_id));
 
     // Get the id of the last row
     $lastid = $wpdb->insert_id;
@@ -913,7 +914,7 @@ function create_mission($mission_name, $mission_description, $mission_xml, $pano
     return $wpdb->insert_id;
 }
 
-function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url){
+function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
     global $wpdb;
     $hotspot_table_name = get_hotspot_table_name();
 
@@ -927,7 +928,7 @@ function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name
                                                'action_xml'  => $hotspot_action_xml,
                                                'points'      => $hotspot_points,
                                                'attempts'    => $hotspot_attempts,
-                                               'trade_id'    => $hotspot_trade_id,
+                                               'domain_id'    => $hotspot_domain_id,
                                                'modal_url'   => $hotspot_modal_url,));
 
     return $wpdb->insert_id;
@@ -946,12 +947,12 @@ function create_hotspot_type($hotspot_type_name, $hotspot_type_description, $hot
     return $wpdb->insert_id;
 }
 
-function create_trade($trade_name){
+function create_domain($domain_name){
     global $wpdb;
-    $trade_table_name = get_trade_table_name();
+    $domain_table_name = get_domain_table_name();
 
     // Insert the pano
-    $wpdb->insert( $trade_table_name, array( 'name' => $trade_name));
+    $wpdb->insert( $domain_table_name, array( 'name' => $domain_name));
 
     return $wpdb->insert_id;
 }
@@ -1006,12 +1007,12 @@ function delete_hotspot_type($hotspot_type_id){
     $wpdb->delete( $hotspot_type_table_name, array( 'id' => $hotspot_type_id ) );
 }
 
-function delete_trade($trade_id){
+function delete_domain($domain_id){
     global $wpdb;
-    $trade_table_name = get_trade_table_name();
-
-    $wpdb->delete( $trade_table_name, array( 'id' => $trade_id ) );
+    $domain_table_name = get_domain_table_name();
+    $wpdb->delete( $domain_table_name, array( 'id' => $domain_id ) );
 }
+
 
 function get_maximum_attempts($hotspot_id){
   global $wpdb;

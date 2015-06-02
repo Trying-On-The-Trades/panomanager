@@ -27,7 +27,7 @@ function pano_install () {
     $activation_sql      = build_activation_code_sql();
     $tool_sql            = build_tools_sql();
     $school_sql          = build_school_sql();
-    $trade_sql           = build_trades_sql();
+    $domain_sql          = build_domains_sql();
     $ads_sql             = build_ads_sql();
     $ads_text_sql        = build_ads_text_sql();
 
@@ -49,7 +49,7 @@ function pano_install () {
     dbDelta( $activation_sql     );
     dbDelta( $tool_sql           );
     dbDelta( $school_sql         );
-    dbDelta( $trade_sql          );
+    dbDelta( $domain_sql         );
     dbDelta( $ads_sql            );
     dbDelta( $ads_text_sql       );
 

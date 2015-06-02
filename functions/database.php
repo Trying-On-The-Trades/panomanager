@@ -82,9 +82,9 @@ function get_ads_text_table_name(){
     return $wpdb->prefix . "pano_ads_text";
 }
 
-function get_trade_table_name(){
+function get_domain_table_name(){
     global $wpdb;
-    return $wpdb->prefix . "pano_trades";
+    return $wpdb->prefix . "pano_domains";
 }
 
 function get_tool_table_name(){
@@ -125,7 +125,7 @@ function build_quest_sql(){
     $sql = 'CREATE TABLE ' .$table_name. ' (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
       `panno_id` bigint(20) NOT NULL,
-      `trade_id` int(11) NOT NULL,
+      `domain_id` int(11) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 
@@ -156,7 +156,7 @@ function build_mission_sql(){
       `points` int(10) NOT NULL,
       `mission_xml` text NOT NULL,
       `pano_id` bigint(20) NOT NULL,
-      `trade_id` int(11) NOT NULL,
+      `domain_id` int(11) NOT NULL,
       PRIMARY KEY (`id`)
     );';
 
@@ -202,7 +202,7 @@ function build_user_skill_progress_table_sql(){
         `skill_id` int(11) NOT NULL,
         `time_started` timestamp NULL DEFAULT NULL,
         `time_completed` timestamp NULL DEFAULT NULL,
-        `trade_id` int(11) DEFAULT NULL,
+        `domain_id` int(11) DEFAULT NULL,
         `points` int(10) DEFAULT NULL,
         PRIMARY KEY (`id`)
     );';
@@ -217,7 +217,7 @@ function build_user_skill_bonus_pts_table_sql(){
        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
        `user_id` bigint(20) NOT NULL,
        `skill_id` int(11) NOT NULL,
-       `trade_id` int(11) DEFAULT NULL,
+       `domain_id` int(11) DEFAULT NULL,
        `bonus_points` int(10) DEFAULT NULL,
        PRIMARY KEY (`id`)
     );';
@@ -239,7 +239,7 @@ function build_hotspot_sql(){
       `action_xml` text,
       `points` int(10) NOT NULL,
       `attempts` int(10) NOT NULL,
-      `trade_id` int(11) DEFAULT NULL,
+      `domain_id` int(11) DEFAULT NULL,
       `modal_url` text,
       PRIMARY KEY (`id`)
     );';
@@ -270,7 +270,7 @@ function build_prereq_sql(){
       `pano_id` int(11) DEFAULT NULL,
       `prereq_id` int(11) DEFAULT NULL,
       `prereq_pts` int(11) NOT NULL,
-      `prereq_trade_id` int(11) DEFAULT NULL,
+      `prereq_domain_id` int(11) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
     
@@ -303,8 +303,8 @@ function build_school_sql(){
     return $sql;
 }
 
-function build_trades_sql(){
-    $table_name = get_trade_table_name();
+function build_domains_sql(){
+    $table_name = get_domain_table_name();
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -320,7 +320,7 @@ function build_ads_sql(){
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `trade_id` int(11) DEFAULT NULL,
+        `domain_id` int(11) DEFAULT NULL,
         PRIMARY KEY (`id`)
     );';
     
@@ -346,7 +346,7 @@ function build_tools_sql(){
 
     $sql = 'CREATE TABLE ' .$table_name. ' (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `trade_id` int(11) NOT NULL,
+        `domain_id` int(11) NOT NULL,
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';

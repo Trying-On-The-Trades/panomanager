@@ -369,7 +369,7 @@ function build_manage_lightbox($quest, $current_pano_url){
             $script  .=	"   addPts(0,10);\n";
             $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
         } else {
-            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_trade_id() . ");\n";
+            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_domain_id() . ");\n";
         }
 
         $script  .=	"break;\n";
@@ -387,7 +387,7 @@ function build_manage_lightbox($quest, $current_pano_url){
 function build_launch_image($quest)
 {
 
-	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -402,7 +402,7 @@ function build_launch_image($quest)
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -415,7 +415,7 @@ function build_launch_image($quest)
 
 function build_launch_hairstyling($quest)
 {
-	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -434,7 +434,7 @@ function build_launch_hairstyling($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -448,7 +448,7 @@ function build_launch_hairstyling($quest)
 
 function build_launch_hazard($quest)
 {
-	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
         //$script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -468,7 +468,7 @@ function build_launch_hazard($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -482,7 +482,7 @@ function build_launch_hazard($quest)
 
 function build_launch_game($quest)
 {
-	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -503,7 +503,7 @@ function build_launch_game($quest)
 	$script  .=						"var bonusPts = $(contents).find('#points').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -516,7 +516,7 @@ function build_launch_game($quest)
 
 function build_launch_quizlet($quest)
 {
-	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
@@ -534,7 +534,7 @@ function build_launch_quizlet($quest)
 	$script  .=						"var bonusPts = $(contents).find('#scorevalue').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -548,7 +548,7 @@ function build_launch_quizlet($quest)
 function build_launch_Khan($quest)
 {
 
-	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -572,9 +572,9 @@ function build_launch_Khan($quest)
 	$script  .=						"var bonusPts = $(khanFrame).find('#points').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points, tradeId); \n";
+	$script  .=						"addPts(mnuId,points, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -800,7 +800,7 @@ function build_points_callback_function(){
 }
 
 function build_bonus_points_callback_function(){
-    $script  = "function addBonusPts(id, pts, trade_id){\n";
+    $script  = "function addBonusPts(id, pts, domain_id){\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
 
     $script .= "$.ajax({\n";
@@ -808,7 +808,7 @@ function build_bonus_points_callback_function(){
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
     $script .= "data: {action: 'update_progress_with_bonus',\n";
     $script .= "       hotspot: id,\n";
-    $script .= "       trade_id: trade_id,\n";
+    $script .= "       domain_id: domain_id,\n";
     $script .= "       bonus_points: pts},\n";
     $script .= "success: function(d){\n";
     $script .= "    var earned_points = (d && d != '') ? parseInt(d) : 0;\n";
