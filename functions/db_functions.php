@@ -22,8 +22,8 @@ function get_tools(){
     $tool_table_name = get_tool_table_name();
 
     $domain_table_name = get_domain_table_name();
-    
-    $tools = $wpdb->get_results( 
+
+    $tools = $wpdb->get_results(
             "SELECT wpt.*, wptt.name domain_name FROM " . $tool_table_name . " wpt " .
             "INNER JOIN " . $domain_table_name . " wptt ON " .
             "wpt.`domain_id` = wptt.`id` ");
@@ -33,11 +33,11 @@ function get_tools(){
 
 function get_domains(){
     global $wpdb;
-    
+
     $domain_table_name = get_domain_table_name();
-    
+
      // Get the schools out of the database
-    $domains = $wpdb->get_results( 
+    $domains = $wpdb->get_results(
             "SELECT * FROM " . $domain_table_name . " wpt ");
 
     return $domains;
@@ -135,7 +135,7 @@ function get_quests(){
     $language_code = get_user_language();
 
     // DB query
-    $quests = $wpdb->get_results( 
+    $quests = $wpdb->get_results(
             "SELECT wpq.id as quest_id, wpq.panno_id, wpq.domain_id, wpqt.*, wpt.name as pano_name FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON wpqt.quest_id = wpq.id " .
             "INNER JOIN " . $pano_text_table_name . " wpt ON wpt.pano_id = wpq.panno_id " .
@@ -153,7 +153,7 @@ function get_quest($quest_id){
     $language_code = get_user_language();
 
     // DB query
-    $quest = $wpdb->get_row( $wpdb->prepare( 
+    $quest = $wpdb->get_row( $wpdb->prepare(
             "SELECT wpq.id as quest_id, wpq.panno_id, wpq.domain_id, wpqt.* FROM " . $quest_table_name . " wpq " .
             "INNER JOIN " . $quest_text_table_name . " wpqt ON " .
             "wpqt.quest_id = wpq.id " .
@@ -243,7 +243,7 @@ function get_mission($mission_id){
     $language_code = get_user_language();
 
     // DB query
-    $mission = $wpdb->get_row( $wpdb->prepare( 
+    $mission = $wpdb->get_row( $wpdb->prepare(
             "SELECT wpm.id as mission_id, wpm.quest_id, wpm.pano_id, wpm.domain_id, wpm.points, wpm.mission_xml, wpmt.* FROM " . $mission_table_name . " wpm " .
             "INNER JOIN " . $mission_text_table_name . " wpmt ON " .
             " wpm.`id` = wpmt.`mission_id` " .
@@ -1028,3 +1028,50 @@ function get_number_of_attemts($hotspot_id){
   return $number_of_attempts[0]->mynumber;
 }
 
+function get_regular_points_for_mission_tab($id){
+  global $wpdb;
+
+  $hotspot_table_name  = get_hotspot_table_name();
+  $user_progress_table = get_user_skill_progress_table_name();
+
+  $regular_points = $wpdb->get_results("SELECT SUM(points) AS regular_points FROM $hotspot_table_name WHERE id IN (SELECT DISTINCT skill_id FROM $user_progress_table WHERE user_id = $id)");
+  $regular_points = $regular_points[0]->regular_points;
+
+  if($regular_points == null){
+    $regular_points = 0;
+  }
+
+  return $regular_points;
+}
+
+function get_bonus_points_for_mission_tab($id){
+  global $wpdb;
+
+  $bonus_pts_table = get_user_skill_bonus_pts_table_name();
+
+  $bonus_points = $wpdb->get_results("SELECT SUM(bonus_points) AS bonus_points FROM $bonus_pts_table WHERE user_id = $id");
+  $bonus_points = $bonus_points[0]->bonus_points;
+
+  if($bonus_points == null){
+    $bonus_points = 0;
+  }
+
+  return $bonus_points;
+}
+
+function get_user_name($id){
+  global $wpdb;
+
+  $username = $wpdb->get_results("SELECT display_name FROM wp_users WHERE id = $id LIMIT 1");
+  $username = $username[0]->display_name;
+
+  return $username;
+}
+
+function get_all_users(){
+  global $wpdb;
+
+  $users = $wpdb->get_results("SELECT id, display_name FROM wp_users");
+
+  return $users;
+}

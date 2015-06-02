@@ -614,15 +614,16 @@ function build_menu_nav($quest){
                         <span class="mission_title">MISSIONS</span>
                         <span class="user_points">
                           <span>Mission Points: </span>
-                          <span id="current_points">0</span>
+                          <span id="current_points">' . get_regular_points_for_mission_tab() . '</span>
                           <span>/</span>
                           <span id="total_mission_points">0</span>
                         </span>
                         <span class="user_points">
                           <span>Bonus Points: </span>
-                          <span id="bonus_points">0</span>
+                          <span id="bonus_points">' . get_bonus_points_for_mission_tab() . '</span>
                         </span>
                         <input id="done_activities" type="hidden" value="0" />
+                        <input id="admin_dir" type="hidden" value="' . get_admin_url() . '" />
                     </li>';
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
@@ -661,19 +662,40 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
+  $board = '<div class="white-popup">';
+  $board .= '<h2>Leaderboard</h2>';
 
-    $board = '<div class="white-popup">';
-    $board .= '<h2>Leaderboard</h2>';
+  $board .= '<table>';
+  $board .= '  <thead>';
+  $board .= '    <tr>';
+  $board .= '      <th>Name</th>';
+  $board .= '      <th>Mission Points</th>';
+  $board .= '      <th>Bonus Points</th>';
+  $board .= '    </tr>';
+  $board .= '  </thead>';
+  $board .= '  <tbody>';
 
-    // Create the table for schools
-    $board .= build_school_table();
+  $users = get_all_users();
+  foreach($users as $user){
+    $board .= '    <tr>';
+    $board .= '      <td>' . get_user_name($user->id) . '</td>';
+    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
+    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
+    $board .= '    </tr>';
+  }
 
-    // Create the table for individuals
-    $board .= build_individual_table();
+  $board .= '  </tbody>';
+  $board .= '</table>';
 
-    // Close the modal
-    $board .= '</div>';
-    return $board;
+  // Create the table for schools
+  // $board .= build_school_table();
+
+  // Create the table for individuals
+  // $board .= build_individual_table();
+
+  // Close the modal
+  $board .= '</div>';
+  return $board;
 }
 
 function build_school_table(){
