@@ -288,7 +288,7 @@ function allow_new_attempt(){
   $attempt_allowed = false;
   $maximum_attempts = get_maximum_attempts($hotspot_id);
   $number_of_attempts = get_number_of_attemts($hotspot_id);
-  if($number_of_attempts < $maximum_attempts){
+  if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
     $attempt_allowed = true;
   }
 
