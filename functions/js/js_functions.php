@@ -614,13 +614,13 @@ function build_menu_nav($quest){
                         <span class="mission_title">MISSIONS</span>
                         <span class="user_points">
                           <span>Mission Points: </span>
-                          <span id="current_points">' . get_regular_points_for_mission_tab() . '</span>
+                          <span id="current_points">' . get_regular_points_for_mission_tab(get_current_user_id()) . '</span>
                           <span>/</span>
                           <span id="total_mission_points">0</span>
                         </span>
                         <span class="user_points">
                           <span>Bonus Points: </span>
-                          <span id="bonus_points">' . get_bonus_points_for_mission_tab() . '</span>
+                          <span id="bonus_points">' . get_bonus_points_for_mission_tab(get_current_user_id()) . '</span>
                         </span>
                         <input id="done_activities" type="hidden" value="0" />
                         <input id="admin_dir" type="hidden" value="' . get_admin_url() . '" />
