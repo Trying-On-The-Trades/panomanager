@@ -142,7 +142,7 @@ function loadAjax(htm){
 */
 function loadFrame(act_id, frm, pts){
   var size = getClientBrowserSize();
-  var width = parseInt(size[0] * 0.6);
+  var width = parseInt(size[0] * 0.8);
   var height = parseInt(size[1] * 0.8);
   // var width = '100%';
   // var height = '100%';
