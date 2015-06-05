@@ -154,6 +154,7 @@ function add_nav_script($quest, $pano_id){
 
     $script .= build_menu_launch();
     $script .= build_leader_launch();
+    $script .= redirect_pano();
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
     $script .= build_login_button();
@@ -822,6 +823,15 @@ function build_bonus_points_callback_function(){
     $script .= "});\n";
 
     $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function redirect_pano(){
+    $script = "function redirectPano(pano_id){\n";
+    $script .= "  var current_pano = '" . get_permalink() . "';\n";
+    $script .= "  var next_pano = current_pano + '?pano_id=' + pano_id;\n";
+    $script .= "  window.location = next_pano;\n";
     $script .= "}\n";
     return $script;
 }
