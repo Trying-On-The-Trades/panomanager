@@ -121,7 +121,7 @@ function add_nav_script($quest, $pano_id){
     $script = "\n<script type='text/javascript'>\n";
 
     $script .= "var krpano;\n";
-    // $script .=	"var siteAdr = '" .  the_permalink() . "?pano_id=';\n";
+    $script .=	"var siteAdr = '" .  get_permalink() . "?pano_id=';\n";
 
     // Build the array of names
     $script .= build_names_array();
@@ -154,6 +154,7 @@ function add_nav_script($quest, $pano_id){
 
     $script .= build_menu_launch();
     $script .= build_leader_launch();
+    $script .= redirect_pano();
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
     $script .= build_login_button();
@@ -614,13 +615,13 @@ function build_menu_nav($quest){
                         <span class="mission_title">MISSIONS</span>
                         <span class="user_points">
                           <span>Mission Points: </span>
-                          <span id="current_points">' . get_regular_points_for_mission_tab() . '</span>
+                          <span id="current_points">' . get_regular_points_for_mission_tab(get_current_user_id()) . '</span>
                           <span>/</span>
                           <span id="total_mission_points">0</span>
                         </span>
                         <span class="user_points">
                           <span>Bonus Points: </span>
-                          <span id="bonus_points">' . get_bonus_points_for_mission_tab() . '</span>
+                          <span id="bonus_points">' . get_bonus_points_for_mission_tab(get_current_user_id()) . '</span>
                         </span>
                         <input id="done_activities" type="hidden" value="0" />
                         <input id="admin_dir" type="hidden" value="' . get_admin_url() . '" />
@@ -822,6 +823,15 @@ function build_bonus_points_callback_function(){
     $script .= "});\n";
 
     $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function redirect_pano(){
+    $script = "function redirectPano(pano_id){\n";
+    $script .= "  var current_pano = '" . get_permalink() . "';\n";
+    $script .= "  var next_pano = current_pano + '?pano_id=' + pano_id;\n";
+    $script .= "  window.location = next_pano;\n";
     $script .= "}\n";
     return $script;
 }
