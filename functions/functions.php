@@ -495,6 +495,7 @@ function process_new_hotspot(){
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
@@ -503,7 +504,7 @@ function process_new_hotspot(){
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
-    create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+    create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
@@ -623,6 +624,7 @@ function process_edit_hotspot(){
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
@@ -631,7 +633,7 @@ function process_edit_hotspot(){
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
-    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&settings-saved') );
