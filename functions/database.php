@@ -92,6 +92,11 @@ function get_tool_table_name(){
     return $wpdb->prefix . "pano_tools";
 }
 
+function get_points_info_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "points_info";
+}
+
 function build_pano_sql(){
     $table_name = get_pano_table_name();
 
@@ -273,7 +278,7 @@ function build_prereq_sql(){
       `prereq_domain_id` int(11) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }
 
@@ -287,7 +292,7 @@ function build_activation_code_sql(){
         `activated` tinyint(2) NOT NULL DEFAULT "0",
         PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }
 
@@ -299,7 +304,7 @@ function build_school_sql(){
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }
 
@@ -311,7 +316,7 @@ function build_domains_sql(){
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }
 
@@ -323,7 +328,7 @@ function build_ads_sql(){
         `domain_id` int(11) DEFAULT NULL,
         PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }
 
@@ -350,6 +355,6 @@ function build_tools_sql(){
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';
-    
+
     return $sql;
 }

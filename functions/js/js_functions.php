@@ -614,13 +614,16 @@ function build_menu_nav($quest){
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
                         <span class="user_points">
-                          <span>Mission Points: </span>
+                          <span>Mission ' . get_points_name_plural(1) . ': </span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
                           <span id="current_points">' . get_regular_points_for_mission_tab(get_current_user_id()) . '</span>
                           <span>/</span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
                           <span id="total_mission_points">0</span>
                         </span>
                         <span class="user_points">
-                          <span>Bonus Points: </span>
+                          <span>Bonus ' . get_points_name_plural(1) . ': </span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
                           <span id="bonus_points">' . get_bonus_points_for_mission_tab(get_current_user_id()) . '</span>
                         </span>
                         <input id="done_activities" type="hidden" value="0" />
@@ -670,8 +673,8 @@ function build_leaderboard_div(){
   $board .= '  <thead>';
   $board .= '    <tr>';
   $board .= '      <th>Name</th>';
-  $board .= '      <th>Mission Points</th>';
-  $board .= '      <th>Bonus Points</th>';
+  $board .= '      <th>Mission ' . get_points_name_plural(1) . '</th>';
+  $board .= '      <th>Bonus ' . get_points_name_plural(1) . '</th>';
   $board .= '    </tr>';
   $board .= '  </thead>';
   $board .= '  <tbody>';

@@ -35,7 +35,7 @@ function addBnsPtsFeather(hot_id, pts){
         totalPoints = totalPoints + parseInt(pts, 10);
         $('#bonus_points').html(totalPoints);
         $('#done_activities').html(done_activities + hot_id.toString() + ',');
-        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
+        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' ' + getPointsName(1, pts) + '!');
       }
     });
   }
@@ -59,7 +59,7 @@ function addRegPtsFeather(hot_id){
       var hotspot = document.getElementById(hot_id+'_menu_item');
       hotspot.setAttribute('class', 'hotspot_done');
       var hotspotPoints = parseInt(hotspot.getElementsByClassName('hotspot_points')[0].innerHTML);
-      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' points!');
+      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' ' + getPointsName(1, hotspotPoints) + '!');
     }
   });
 }
@@ -90,7 +90,6 @@ allowNewAttempt = function(hot_id){
       allow = para;
     }
   });
-  console.log(allow);
   if(!allow){
     $().toastmessage('showNoticeToast', 'You reached the limit number of attempts for this activity');
   }
@@ -122,6 +121,39 @@ function getClientBrowserSize(){
   return size;
 }
 
+function getPointsName(pts_info_id, pts_qty){
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var pointsName = 'points';
+  if(pts_qty > 1){
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: postUrl,
+      data: {
+        action: 'get_points_name_plural',
+        points_info_id: pts_info_id
+      },
+      success: function(plural){
+        pointsName = plural;
+      }
+    });
+  }
+  else{
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: postUrl,
+      data: {
+        action: 'get_points_name_singular',
+        points_info_id: pts_info_id
+      },
+      success: function(singular){
+        pointsName = singular;
+      }
+    });
+  }  
+  return pointsName;
+}
 
 /*
   Opens a pop-up with html content using ajax.
