@@ -74,7 +74,7 @@ function edit_hotspot_settings_page() {
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_info">Hotspot Info</label>
-	        <textarea name="hotspot_info" required ></textarea>
+	        <textarea name="hotspot_info" required > <?php echo $hotspot->get_hotspot_info() ?> </textarea>
 	      </div>
 	    </div>
 	    <div class="ui form">
