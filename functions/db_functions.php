@@ -775,7 +775,8 @@ function update_mission($mission_id, $mission_name, $mission_description, $missi
 
 }
 
-function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
+function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
+    $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
     global $wpdb;
     $hotspot_table_name = get_hotspot_table_name();
 
@@ -787,6 +788,7 @@ function update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hots
                 'name'        => $hotspot_name,
                 'menu_name'   => $hotspot_menu_name,
                 'description' => $hotspot_description,
+                'hotspot_info' => $hotspot_info,
                 'hotspot_xml' => $hotspot_xml,
                 'action_xml'  => $hotspot_action_xml,
                 'points'      => $hotspot_points,
@@ -914,7 +916,7 @@ function create_mission($mission_name, $mission_description, $mission_xml, $pano
     return $wpdb->insert_id;
 }
 
-function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
+function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url){
     global $wpdb;
     $hotspot_table_name = get_hotspot_table_name();
 
@@ -924,6 +926,7 @@ function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name
                                                'name'        => $hotspot_name,
                                                'menu_name'   => $hotspot_menu_name,
                                                'description' => $hotspot_description,
+                                               'hotspot_info' => $hotspot_info,
                                                'hotspot_xml' => $hotspot_xml,
                                                'action_xml'  => $hotspot_action_xml,
                                                'points'      => $hotspot_points,
