@@ -18,7 +18,7 @@
   - hot_id (Hotspot id)
   - pts (Number of bonus points)
 */
-function addBnsPtsFeather(hot_id, pts){
+function addBonusPoints(hot_id, pts){
   if(pts > 0){
     var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
     $.ajax({
@@ -46,7 +46,7 @@ function addBnsPtsFeather(hot_id, pts){
   Parameter:
   - hot_id (Hotspot id)
 */
-function addRegPtsFeather(hot_id){
+function addRegularPoints(hot_id){
   var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   $.ajax({
     type: 'POST',
@@ -204,7 +204,7 @@ function loadFrame(act_id, frm, pts){
 
     // Adding points to db and toast
     showPts = function(){
-        addRegPtsFeather(act_id);
+        addRegularPoints(act_id);
     }
     $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
@@ -224,7 +224,7 @@ function loadFrame(act_id, frm, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addBnsPtsFeather(act_id, fpoints);
+        addBonusPoints(act_id, fpoints);
       }
     }
 
