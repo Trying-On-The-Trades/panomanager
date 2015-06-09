@@ -1037,7 +1037,7 @@ function get_regular_points_for_mission_tab($id){
   $regular_points = $wpdb->get_results("SELECT SUM(points) AS regular_points FROM $hotspot_table_name WHERE id IN (SELECT DISTINCT skill_id FROM $user_progress_table WHERE user_id = $id)");
   $regular_points = $regular_points[0]->regular_points;
 
-  if($regular_points == null){
+  if(empty($regular_points)){
     $regular_points = 0;
   }
 
@@ -1052,7 +1052,7 @@ function get_bonus_points_for_mission_tab($id){
   $bonus_points = $wpdb->get_results("SELECT SUM(bonus_points) AS bonus_points FROM $bonus_pts_table WHERE user_id = $id");
   $bonus_points = $bonus_points[0]->bonus_points;
 
-  if($bonus_points == null){
+  if(empty($bonus_points)){
     $bonus_points = 0;
   }
 
