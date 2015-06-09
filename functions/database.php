@@ -240,6 +240,7 @@ function build_hotspot_sql(){
       `name` varchar(255) NOT NULL DEFAULT "",
       `menu_name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
+      `hotspot_info` text,
       `hotspot_xml` text,
       `action_xml` text,
       `points` int(10) NOT NULL,

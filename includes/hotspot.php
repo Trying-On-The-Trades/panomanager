@@ -2,7 +2,7 @@
 
 class hotspot{
 
-	protected $id, $pano_id, $mission_id, $description,
+	protected $id, $pano_id, $mission_id, $description, $hotspot_info,
                   $name, $menu_name, $language_code, 
                   $xml, $action_xml, $points, $menu_item,
                   $type_id, $attempts, $domain_id, $modal_url,
@@ -31,6 +31,7 @@ class hotspot{
             $this->name        = $hotspot_row->name;
             $this->menu_name   = $hotspot_row->menu_name;
             $this->description = $hotspot_row->description;
+            $this->hotspot_info = $hotspot_row->hotspot_info;
             $this->points      = $hotspot_row->points;
             $this->xml         = $hotspot_row->hotspot_xml;
             $this->action_xml  = $hotspot_row->action_xml;
@@ -81,6 +82,10 @@ class hotspot{
 
     function get_description(){
         return $this->description;
+    }
+
+    function get_hotspot_info(){
+        return $this->hotspot_info;
     }
 
     function get_xml(){

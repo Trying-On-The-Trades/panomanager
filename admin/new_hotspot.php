@@ -59,6 +59,12 @@ function new_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
+	        <label for="hotspot_info">Hotspot Info</label>
+	        <textarea name="hotspot_info" required ></textarea>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
 	        <label for="hotspot_xml">Hotspot XML</label>
 	        <textarea name="hotspot_xml" required ></textarea>
 	      </div>
