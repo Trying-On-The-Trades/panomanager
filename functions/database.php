@@ -100,13 +100,19 @@ function get_points_info_table_name(){
 function build_points_info_sql(){
   $table_name = get_points_info_table_name();
 
-  $sql = "CREATE TABLE " . $table_name . "(
+  $sql = "CREATE TABLE " . $table_name . " (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `symbol` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '$',
     `singular` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
     `plural` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
     `multiplier` double(7,2) NOT NULL DEFAULT '1.00',
     PRIMARY KEY (`id`)
+  );";
+
+  $sql .= "INSERT INTO " . $table_name . " (
+    `symbol`, `singular`, `plural`, `multiplier`
+  ) VALUES(
+    '$', 'dollar', 'dollars', '1'
   );";
 
   return $sql;
