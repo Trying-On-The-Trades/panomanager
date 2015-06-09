@@ -861,3 +861,21 @@ function check_file($file){
 
     return false;
 }
+
+function get_points_name_plural_post(){
+  $points_name_plural = '';
+
+  $points_name_plural = get_points_name_plural();
+
+  echo $points_name_plural;
+  die();
+}
+
+function get_points_name_singular_post(){
+  $points_name_singular = '';
+
+  $points_name_singular = get_points_name_singular();
+
+  echo $points_name_singular;
+  die();
+}

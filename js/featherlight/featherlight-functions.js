@@ -35,7 +35,7 @@ function addBonusPoints(hot_id, pts){
         totalPoints = totalPoints + parseInt(pts, 10);
         $('#bonus_points').html(totalPoints);
         $('#done_activities').html(done_activities + hot_id.toString() + ',');
-        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' ' + getPointsName(1, pts) + '!');
+        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' ' + getPointsName(pts) + '!');
       }
     });
   }
@@ -59,7 +59,7 @@ function addRegularPoints(hot_id){
       var hotspot = document.getElementById(hot_id+'_menu_item');
       hotspot.setAttribute('class', 'hotspot_done');
       var hotspotPoints = parseInt(hotspot.getElementsByClassName('hotspot_points')[0].innerHTML);
-      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' ' + getPointsName(1, hotspotPoints) + '!');
+      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' ' + getPointsName(hotspotPoints) + '!');
     }
   });
 }
@@ -124,12 +124,11 @@ function getClientBrowserSize(){
 /*
   Returns the alias for points chosen by the user, in the plural form (if points > 1), or singular form (otherwise).
   Parameters:
-  - pts_info_id (Id of points info table entry)
   - pts_qty (The quantity of points awarded)
   Returns:
   - pointsName (String)
 */
-function getPointsName(pts_info_id, pts_qty){
+function getPointsName(pts_qty){
   var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   var pointsName = 'points';
   if(pts_qty > 1){
@@ -138,8 +137,7 @@ function getPointsName(pts_info_id, pts_qty){
       async: false,
       url: postUrl,
       data: {
-        action: 'get_points_name_plural',
-        points_info_id: pts_info_id
+        action: 'get_points_name_plural'
       },
       success: function(plural){
         pointsName = plural;
@@ -152,8 +150,7 @@ function getPointsName(pts_info_id, pts_qty){
       async: false,
       url: postUrl,
       data: {
-        action: 'get_points_name_singular',
-        points_info_id: pts_info_id
+        action: 'get_points_name_singular'
       },
       success: function(singular){
         pointsName = singular;

@@ -837,6 +837,24 @@ function update_domain($domain_id, $domain_name){
     }
 }
 
+function update_points_info($symbol, $singular, $plural, $multiplier = 1){
+  global $wpdb;
+  $points_info_table_name = get_points_info_table_name();
+
+  if(isset($singular) && isset($plural)){
+    $wpdb->update($points_info_table_name,
+      array(
+        'symbol'     => $symbol,
+        'singular'   => $singular,
+        'plural'     => $plural,
+        'multiplier' => $multiplier),
+      array('id'     => 1));
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // ***********************************************************
 //				    Creating New Panos
 // ***********************************************************
@@ -1079,84 +1097,46 @@ function get_all_users(){
   return $users;
 }
 
-function get_points_name_singular($id){
+function get_points_name_singular(){
   global $wpdb;
-  if(empty($id)){
-    $id = 1;
-  }
 
   $points_info_table_name = get_points_info_table_name();
 
-  $points_name_singular = $wpdb->get_results("SELECT singular FROM $points_info_table_name WHERE id = $id LIMIT 1");
+  $points_name_singular = $wpdb->get_results("SELECT singular FROM $points_info_table_name WHERE id = 1 LIMIT 1");
   $points_name_singular = $points_name_singular[0]->singular;
 
   return $points_name_singular;
 }
 
-function get_points_name_plural($id){
+function get_points_name_plural(){
   global $wpdb;
-  if(empty($id)){
-    $id = 1;
-  }
 
   $points_info_table_name = get_points_info_table_name();
 
-  $points_name_plural = $wpdb->get_results("SELECT plural FROM $points_info_table_name WHERE id = $id LIMIT 1");
+  $points_name_plural = $wpdb->get_results("SELECT plural FROM $points_info_table_name WHERE id = 1 LIMIT 1");
   $points_name_plural = $points_name_plural[0]->plural;
 
   return $points_name_plural;
 }
 
-function get_points_symbol($id){
+function get_points_symbol(){
   global $wpdb;
-  if(empty($id)){
-    $id = 1;
-  }
 
   $points_info_table_name = get_points_info_table_name();
 
-  $points_symbol = $wpdb->get_results("SELECT symbol FROM $points_info_table_name WHERE id = $id LIMIT 1");
+  $points_symbol = $wpdb->get_results("SELECT symbol FROM $points_info_table_name WHERE id = 1 LIMIT 1");
   $points_symbol = $points_symbol[0]->symbol;
 
   return $points_symbol;
 }
 
-function get_points_multiplier($id){
+function get_points_multiplier(){
   global $wpdb;
-  if(empty($id)){
-    $id = 1;
-  }
 
   $points_info_table_name = get_points_info_table_name();
 
-  $points_multiplier = $wpdb->get_results("SELECT multiplier FROM $points_info_table_name WHERE id = $id LIMIT 1");
+  $points_multiplier = $wpdb->get_results("SELECT multiplier FROM $points_info_table_name WHERE id = 1 LIMIT 1");
   $points_multiplier = $points_multiplier[0]->multiplier;
 
   return $points_multiplier;
-}
-
-function get_points_name_plural_post(){
-  $id = 1;
-  $points_name_plural = '';
-
-  if(isset($_POST['points_info_id'])){
-    $id = $_POST['points_info_id'];
-  }
-  $points_name_plural = get_points_name_plural($id);
-
-  echo $points_name_plural;
-  die();
-}
-
-function get_points_name_singular_post(){
-  $id = 1;
-  $points_name_singular = '';
-
-  if(isset($_POST['points_info_id'])){
-    $id = $_POST['points_info_id'];
-  }
-  $points_name_singular = get_points_name_singular($id);
-
-  echo $points_name_singular;
-  die();
 }

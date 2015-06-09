@@ -97,6 +97,21 @@ function get_points_info_table_name(){
   return $wpdb->prefix . "points_info";
 }
 
+function build_points_info_sql(){
+  $table_name = get_points_info_table_name();
+
+  $sql = "CREATE TABLE " . $table_name . "(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `symbol` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '$',
+    `singular` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+    `plural` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+    `multiplier` double(7,2) NOT NULL DEFAULT '1.00',
+    PRIMARY KEY (`id`)
+  );";
+
+  return $sql;
+}
+
 function build_pano_sql(){
     $table_name = get_pano_table_name();
 
