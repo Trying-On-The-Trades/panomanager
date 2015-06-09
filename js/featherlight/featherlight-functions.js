@@ -121,6 +121,14 @@ function getClientBrowserSize(){
   return size;
 }
 
+/*
+  Returns the alias for points chosen by the user, in the plural form (if points > 1), or singular form (otherwise).
+  Parameters:
+  - pts_info_id (Id of points info table entry)
+  - pts_qty (The quantity of points awarded)
+  Returns:
+  - pointsName (String)
+*/
 function getPointsName(pts_info_id, pts_qty){
   var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   var pointsName = 'points';
@@ -151,7 +159,7 @@ function getPointsName(pts_info_id, pts_qty){
         pointsName = singular;
       }
     });
-  }  
+  }
   return pointsName;
 }
 
@@ -167,20 +175,18 @@ function loadAjax(htm){
 
 /*
   Opens a pop-up with a frame.
-  If you want to save your activity points, set the pts parameter to true.
+  If you want to save your activity points, set the pts parameter.
   Parameters:
   - frm (Frame address)
-  - pts (Save points) [Default value: false]
+  - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
 function loadFrame(act_id, frm, pts){
   var size = getClientBrowserSize();
   var width = parseInt(size[0] * 0.8);
   var height = parseInt(size[1] * 0.8);
-  // var width = '100%';
-  // var height = '100%';
-  // Standard pts: false
+  // Standard pts: 'none'
   if(pts == null){
-    pts = false;
+    pts = 'none';
   }
 
   allowed = function(){
@@ -188,8 +194,13 @@ function loadFrame(act_id, frm, pts){
     return follow;
   }
 
-  // Loading frame without pts
-  if(!pts){
+  // Loading frame with no points
+  if(pts == 'none'){
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed});
+  }
+
+  // Loading frame with regular points
+  else if(pts == 'reg'){
 
     // Adding points to db and toast
     showPts = function(){
@@ -198,8 +209,8 @@ function loadFrame(act_id, frm, pts){
     $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
 
-  // Loading frame with pts
-  if(pts){
+  // Loading frame with bonus points
+  else if(pts == 'bns'){
     // Variable to store points achieved
     fpoints = 0;
 
@@ -239,7 +250,7 @@ function loadImage(img){
   - act_id (Activity unique id)
   - frm (Location of load-oppia.php)
   - oppia_id (Oppia unique id)
-  - award_points (Award points) [Default value: false]
+  - award_points (Award points) [Default value: 'none']
   - base_points (Base points to be awarded)
   - timer (Award bonus points) [Default value: false]
   - bonus_points (Bonus points)
@@ -248,12 +259,12 @@ function loadImage(img){
 function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
   var frame_address = '';
   if(award_points == null){
-    award_points = false;
+    award_points = 'none';
   }
   if(timer == null){
     timer = false;
   }
-  if(!award_points){
+  if(award_points == 'none'){
     frame_address = frm + '?oppia=' + oppia_id;
   }else{
     if(!timer){
