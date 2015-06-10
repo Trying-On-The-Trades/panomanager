@@ -64,6 +64,10 @@ function addRegPtsFeather(hot_id){
   });
 }
 
+wordpress_admin_url = function(){
+    return document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+}
+
 /*
   Tests if user can open an activity based on a post to the database.
   If user is allowed a new attempt, the activity will open normally. If the user is not allowed a new attempt, a toast will be shown.
@@ -74,7 +78,7 @@ function addRegPtsFeather(hot_id){
 */
 allowNewAttempt = function(hot_id){
   var allow = true;
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = wordpress_admin_url();
   $.ajax({
     type: 'POST',
     async: false,
@@ -141,6 +145,10 @@ function loadAjax(htm){
   - pts (Save points) [Default value: false]
 */
 function loadFrame(act_id, frm, pts){
+
+    /* shame */
+  last_hostpot = act_id;
+
   var size = getClientBrowserSize();
   var width = parseInt(size[0] * 0.6);
   var height = parseInt(size[1] * 0.8);
@@ -232,3 +240,24 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
   }
   loadFrame(act_id, frame_address, award_points);
 }
+
+    function info(){
+
+
+        //$("#info_hotspot").click(function() {
+            $.ajax(
+                {
+                    method: 'POST'
+                    , url : wordpress_admin_url()
+                    , data : {
+                        action : 'get_hotspot_info'
+                        ,hotspot_id : last_hostpot
+                    }
+                    , complete: function(data){
+                        //console.log(data)
+                        $("#info_hotspot").easyconfirm({locale: { text: data.responseText, button: ['Got it!']}});
+                    }
+                })
+
+        //})
+    }
