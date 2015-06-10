@@ -33,9 +33,9 @@ function register_scripts($pano_directory){
     $magnific_js      = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
     $magnific_css     = $pano_directory . "/magnific-popup/magnific-popup.css";
     $pano_js_location = $pano_directory . "/tour.js";
-    $featherlight_js  = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.js";
+    $featherlight_js  = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.js";
     $featherlight_fnc = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight-functions.js";
-    $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.css";
+    $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.css";
     $toast_js         = WP_PLUGIN_URL . "/panomanager/js/toast/javascript/jquery.toastmessage.js";
     $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
     $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.js";

@@ -98,7 +98,12 @@ function get_points_info_table_name(){
 }
 
 function build_points_info_sql(){
+  global $wpdb;
   $table_name = get_points_info_table_name();
+
+  $sql = "DROP TABLE IF EXISTS " . $table_name . ";";
+
+  $wpdb->query($sql);
 
   $sql = "CREATE TABLE " . $table_name . " (
     `id` int(11) NOT NULL AUTO_INCREMENT,
