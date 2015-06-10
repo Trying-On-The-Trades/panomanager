@@ -867,6 +867,50 @@ function get_hotspot_info(){
 
     $hotspot = get_hotspot($hotspot_id);
 
-    echo $hotspot->description;
+    echo $hotspot->hotspot_info;
+  }
+
+function get_points_name_plural_post(){
+  $points_name_plural = '';
+
+  $points_name_plural = get_points_name_plural();
+
+  echo $points_name_plural;
+  die();
+}
+
+function get_points_name_singular_post(){
+  $points_name_singular = '';
+
+  $points_name_singular = get_points_name_singular();
+
+  echo $points_name_singular;
+  die();
+}
+
+function set_points_info(){
+  $symbol = '';
+  $singular = '';
+  $plural = '';
+
+  if(isset($_POST['symbol'])){
+    $symbol = $_POST['symbol'];
+  }
+
+  if(isset($_POST['singular'])){
+    $singular = $_POST['singular'];
+  }
+
+  if(isset($_POST['plural'])){
+    $plural = $_POST['plural'];
+  }
+
+  $status = update_points_info($symbol, $singular, $plural);
+
+  if($status){
+    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&settings-saved=true' ) );
+  } else {
+    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&error=true' ) );
+  }
 
 }
