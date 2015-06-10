@@ -10,7 +10,7 @@ function get_registration_tools(){
     
 }
 
-function get_registration_trades(){
+function get_registration_domains(){
     
 }
 

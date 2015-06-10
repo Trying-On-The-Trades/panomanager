@@ -32,14 +32,14 @@ function load_pano($pano_id){
 
 	$pano  = build_pano($id);
     $quest = build_quest($id);
-        
+
 	$javascript = build_pano_javascript($id, $pano, $quest);
 
 	return $javascript;
 }
 
 function check_user_progress($pano_id){
-	// Check the user's progress before allowing 
+	// Check the user's progress before allowing
 	// the user to see the pano
 	$allowed      = true;
     $flag_not_set = true;
@@ -57,18 +57,18 @@ function check_user_progress($pano_id){
 	// enough skills and missions
     if(count($prereqs) > 0){
         foreach($prereqs as $prereq){
-            if (is_null($prereq->prereq_trade_id) || $prereq->prereq_trade_id == 0){
+            if (is_null($prereq->prereq_domain_id) || $prereq->prereq_domain_id == 0){
                 // Get the accumulated points
                 $accumulated_points = get_user_accumulated_points($user_id);
 
                 // Get the bonus points
                 $bonus_points = get_user_accumulated_bonus_pts($user_id);
             } else {
-                // Get the accumulated points based on the prereq trade
-                $accumulated_points = get_user_accumulated_points_for_prereq($user_id, $prereq->prereq_trade_id);
+                // Get the accumulated points based on the prereq domain
+                $accumulated_points = get_user_accumulated_points_for_prereq($user_id, $prereq->prereq_domain_id);
 
                 // Get the bonus points
-                $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereq->prereq_trade_id);
+                $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereq->prereq_domain_id);
             }
 
             // Ensures the values are not null
@@ -150,10 +150,10 @@ function build_hotspot_type($hotspot_type_id = 1){
     return $hotspot_type;
 }
 
-function build_trade($trade_id = 1){
+function build_domain($domain_id = 1){
 
-    $trade = new trade($trade_id);
-    return $trade;
+    $domain = new domain($domain_id);
+    return $domain;
 }
 
 // Get the user's prefered language
@@ -193,15 +193,15 @@ function get_current_pano_id(){
 }
 
 function get_hotspot_menu_objects($quest){
-    
+
     $user_id = get_current_user_id();
     $hotspot_ids    = array();
     $hotspots       = array();
     $missions_array = array();
-    
+
     // Get the missions
     if ($quest->exists){
-        
+
         $missions = $quest->get_missions();
 
         foreach ($missions as $mission) {
@@ -223,14 +223,14 @@ function get_hotspot_menu_objects($quest){
             $new_hotspot = new hotspot($hid);
 
             $progress = check_hotspot_prgress($hid, $user_id);
-            
+
             if(count($progress) > 0){
                 $new_hotspot->set_completed_state(true);
             }
-            
+
             array_push($hotspots, $new_hotspot);
         }
-    
+
     }
     return $hotspots;
 }
@@ -240,10 +240,10 @@ function get_hotspot_objects($quest){
     $hotspots       = array();
     $hotspot_xml_objects = array();
     $missions_array = array();
-    
+
     // Get the missions
     if ($quest->exists){
-        
+
         $missions = $quest->get_missions();
 
         foreach ($missions as $mission) {
@@ -271,7 +271,7 @@ function get_hotspot_objects($quest){
             $new_xml_obj = simplexml_load_string($xml->get_xml());
             array_push($hotspot_xml_objects, $new_xml_obj);
         }
-    
+
     }
     return $hotspot_xml_objects;
 }
@@ -280,12 +280,29 @@ function get_hotspot_objects($quest){
 //				    Processing User Progress
 // ***********************************************************
 
+function allow_new_attempt(){
+  $hotspot_id = 0;
+  if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
+    $hotspot_id = $_POST['hotspot'];
+  }
+  $attempt_allowed = false;
+  $maximum_attempts = get_maximum_attempts($hotspot_id);
+  $number_of_attempts = get_number_of_attemts($hotspot_id);
+  if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
+    $attempt_allowed = true;
+  }
+
+  echo $attempt_allowed;
+
+  die();
+}
+
 function update_pano_user_progress() {
         // Get the user id and hotspot id
         $user_id  = get_current_user_id();
         $points = 0;
         $points_allowed = false;
-        
+
         // Make sure a numeric id is supplied
         if (is_numeric($_POST['hotspot'])){
             $hotspot_id = $_POST['hotspot'];
@@ -293,12 +310,12 @@ function update_pano_user_progress() {
             $hotspot_id = 0;
         }
 
-        if (is_numeric($_POST['trade_id'])){
-            $trade_id = $_POST['trade_id'];
+        if (is_numeric($_POST['domain_id'])){
+            $domain_id = $_POST['domain_id'];
         } else {
-            $trade_id = 0;
+            $domain_id = 0;
         }
-        
+
         // Update the user progress
         if ($user_id == 0){
             // maybe do session stuff?
@@ -308,13 +325,13 @@ function update_pano_user_progress() {
 
             // If yes, give them points
             if ($points_allowed){
-                $points = add_user_progress($user_id, $hotspot_id, $trade_id);
+                $points = add_user_progress($user_id, $hotspot_id, $domain_id);
             }
         }
 
 	// Return the points associated to flash on the screen
         echo $points;
-        
+
 	die(); // this is required to terminate immediately and return a proper response
 }
 
@@ -331,17 +348,17 @@ function update_pano_user_progress_with_bonus() {
         $hotspot_id = $_POST['hotspot'];
     }
 
-    if (is_numeric($_POST['trade_id'])){
-        $trade_id = $_POST['trade_id'];
+    if (is_numeric($_POST['domain_id'])){
+        $domain_id = $_POST['domain_id'];
     } else {
-        $trade_id = 0;
+        $domain_id = 0;
     }
 
     // Update the user progress
     if ($user_id == 0){
         // maybe do session stuff?
     } else {
-        $points = add_user_progress_with_bonus($user_id, $hotspot_id, $trade_id, $bonus_points);
+        $points = add_user_progress_with_bonus($user_id, $hotspot_id, $domain_id, $bonus_points);
     }
 
     // Return the points associated to flash on the screen
@@ -352,13 +369,13 @@ function update_pano_user_progress_with_bonus() {
 
 // check to make sure the user is aloud to get the points
 function check_points($user_id, $hotspot_id){
-    
+
     // Check if there is a limit on the attempts on a pano
     $hotspot = new hotspot($hotspot_id);
-    
+
     // Make sure the hotspot exists
     if ($hotspot->exists){
-        
+
         // Check if there are multiple attempts
         if ($hotspot->get_attempts() == 0){
             return true;
@@ -366,10 +383,10 @@ function check_points($user_id, $hotspot_id){
 
             // Get user progress on the hotspot
             $progress = check_hotspot_prgress($hotspot_id, $user_id);
-            
+
             // check the number of attempts
             $attempts = count($progress);
-            
+
             // return if they are aloud
             if ($attempts >= $hotspot->get_attempts()){
                 return false;
@@ -377,7 +394,7 @@ function check_points($user_id, $hotspot_id){
                 return true;
             }
         }
-        
+
     }
 }
 
@@ -387,7 +404,7 @@ function calculate_total_user_points(){
     //
     // Get the user id
     $user_id = get_current_user_id();
-    
+
     if ($user_id == 0){
         return 0;
     } else {
@@ -431,10 +448,10 @@ function process_new_prereq(){
     // Create a new pano using the post data
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
-    $prereq_trade_id = ($_POST['prereq_trade_id'] == "NA") ? null : $_POST['prereq_trade_id'];
+    $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
 
     // Get the id
-    $id = create_prereq($pano_id, $prereq_pts, $prereq_trade_id);
+    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id);
 
     wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
@@ -445,10 +462,10 @@ function process_new_quest(){
     $quest_name        = $_POST['quest_name'];
     $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
-    $trade_id          = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
+    $domain_id          = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
 
     // Get the id
-    create_quest($quest_name, $quest_description, $pano_id, $trade_id);
+    create_quest($quest_name, $quest_description, $pano_id, $domain_id);
 
     wp_redirect( admin_url( 'admin.php?page=pano_quest_settings' ) );
 }
@@ -462,10 +479,10 @@ function process_new_mission(){
     $mission_points      = $_POST['mission_points'];
     $quest_id            = $_POST['quest_id'];
     $pano_id             = $_POST['pano_id'];
-    $trade_id            = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
+    $domain_id            = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
 
     // Get the id
-    create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $trade_id, $quest_id, $mission_points);
+    create_mission($mission_name, $mission_description, $mission_xml, $pano_id, $domain_id, $quest_id, $mission_points);
 
     wp_redirect( admin_url( 'admin.php?page=pano_mission_settings' ) );
 }
@@ -478,15 +495,16 @@ function process_new_hotspot(){
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_trade_id    = ($_POST['hotspot_trade_id'] == "NA") ? null : $_POST['hotspot_trade_id'];
+    $hotspot_domain_id    = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
-    create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url);
+    create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
@@ -505,15 +523,15 @@ function process_new_hotspot_type(){
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_type_settings' ) );
 }
 
-function process_new_trade(){
+function process_new_domain(){
 
     // Create a new quest using the post data
-    $trade_name = $_POST['trade_name'];
+    $domain_name = $_POST['domain_name'];
 
     // Get the id
-    create_trade($trade_name);
+    create_domain($domain_name);
 
-    wp_redirect( admin_url( 'admin.php?page=pano_trade_settings' ) );
+    wp_redirect( admin_url( 'admin.php?page=pano_domain_settings' ) );
 }
 
 // ***********************************************************
@@ -543,10 +561,10 @@ function process_edit_prereq(){
     $id              = $_POST['id'];
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
-    $prereq_trade_id = ($_POST['prereq_trade_id'] == "NA") ? null : $_POST['prereq_trade_id'];
+    $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
 
     // Get the id
-    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_trade_id);
+    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
@@ -562,10 +580,10 @@ function process_edit_quest(){
     $quest_name        = $_POST['quest_name'];
     $quest_description = trim($_POST['quest_description']);
     $pano_id           = $_POST['pano_id'];
-    $trade_id          = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
+    $domain_id          = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
 
     // Get the id
-    $return = update_quest($quest_id, $quest_name, $quest_description, $pano_id, $trade_id);
+    $return = update_quest($quest_id, $quest_name, $quest_description, $pano_id, $domain_id);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_quest_settings&settings-saved') );
@@ -585,10 +603,10 @@ function process_edit_mission(){
     $mission_points      = $_POST['mission_points'];
     $quest_id            = $_POST['quest_id'];
     $pano_id             = $_POST['pano_id'];
-    $trade_id            = ($_POST['trade_id'] == "NA") ? null : $_POST['trade_id'];
+    $domain_id            = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
 
     // Get the id
-    $return = update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $trade_id);
+    $return = update_mission($mission_id, $mission_name, $mission_description, $mission_xml, $mission_points, $quest_id, $pano_id, $domain_id);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_mission_settings&settings-saved') );
@@ -606,15 +624,16 @@ function process_edit_hotspot(){
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_trade_id    = ($_POST['hotspot_trade_id'] == "NA") ? null : $_POST['hotspot_trade_id'];
+    $hotspot_domain_id    = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
 
     // Get the id
-    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_trade_id, $hotspot_modal_url);
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&settings-saved') );
@@ -642,19 +661,19 @@ function process_edit_hotspot_type(){
     }
 }
 
-function process_edit_trade(){
+function process_edit_domain(){
 
     // Create a new hotspot using the post data
-    $trade_id   = $_POST['trade_id'];
-    $trade_name = $_POST['trade_name'];
+    $domain_id   = $_POST['domain_id'];
+    $domain_name = $_POST['domain_name'];
 
     // Get the id
-    $return = update_trade($trade_id, $trade_name);
+    $return = update_domain($domain_id, $domain_name);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=pano_trade_settings&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=pano_domain_settings&settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=pano_trade_settings&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_domain_settings&error') );
     }
 }
 
@@ -723,14 +742,14 @@ function process_delete_hotspot_type(){
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_type_settings') );
 }
 
-function process_delete_trade(){
+function process_delete_domain(){
 
-    // Delete a trade using the post data
-    $trade_id = $_POST['trade_id'];
+    // Delete a domain using the post data
+    $domain_id = $_POST['domain_id'];
 
-    delete_trade($trade_id);
+    delete_domain($domain_id);
 
-    wp_redirect( admin_url( 'admin.php?page=pano_trade_settings') );
+    wp_redirect( admin_url( 'admin.php?page=pano_domain_settings') );
 }
 
 // ***********************************************************
@@ -841,4 +860,57 @@ function check_file($file){
 		return true;
 
     return false;
+}
+
+function get_hotspot_info(){
+    $hotspot_id = $_POST['hotspot_id'];
+
+    $hotspot = get_hotspot($hotspot_id);
+
+    echo $hotspot->hotspot_info;
+  }
+
+function get_points_name_plural_post(){
+  $points_name_plural = '';
+
+  $points_name_plural = get_points_name_plural();
+
+  echo $points_name_plural;
+  die();
+}
+
+function get_points_name_singular_post(){
+  $points_name_singular = '';
+
+  $points_name_singular = get_points_name_singular();
+
+  echo $points_name_singular;
+  die();
+}
+
+function set_points_info(){
+  $symbol = '';
+  $singular = '';
+  $plural = '';
+
+  if(isset($_POST['symbol'])){
+    $symbol = $_POST['symbol'];
+  }
+
+  if(isset($_POST['singular'])){
+    $singular = $_POST['singular'];
+  }
+
+  if(isset($_POST['plural'])){
+    $plural = $_POST['plural'];
+  }
+
+  $status = update_points_info($symbol, $singular, $plural);
+
+  if($status){
+    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&settings-saved=true' ) );
+  } else {
+    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&error=true' ) );
+  }
+
 }

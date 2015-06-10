@@ -5,7 +5,7 @@ function edit_quest_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
     $panos  = get_panos();
-	$trades = get_trades();
+	$domains = get_domains();
     $quest  = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -67,10 +67,10 @@ function edit_quest_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="prereq_trade_id">Select a Trade</label>
-	        <select name="prereq_trade_id">
-                 <?php foreach($trades as $trade): ?>
-					 <option value="<?php echo $trade->id ?>" <?php echo ($trade->id === $quest->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
+	        <label for="prereq_domain_id">Select a Domain</label>
+	        <select name="prereq_domain_id">
+                 <?php foreach($domains as $domain): ?>
+					 <option value="<?php echo $domain->id ?>" <?php echo ($domain->id === $quest->get_domain_id()) ? "selected" : "" ?>><?php echo $domain->name ?></option>
 				 <?php endforeach; ?>
 			</select>
 	      </div>

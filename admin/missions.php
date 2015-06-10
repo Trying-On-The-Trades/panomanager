@@ -26,7 +26,7 @@ function pano_mission_settings_page() {
         <th>Description</th>
         <th>Language Code</th>
         <th>Pano</th>
-        <th>Trade</th>
+        <th>Domain</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -40,7 +40,7 @@ function pano_mission_settings_page() {
                 <td><?php echo $current_mission->get_description() ?></td>
                 <td><?php echo $current_mission->get_language() ?></td>
                 <td><?php echo $mission->pano_name ?></td>
-                <td><?php echo $current_mission->get_trade_name() ?></td>
+                <td><?php echo $current_mission->get_domain_name() ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_missoin_url ?>&id=<?php echo $current_mission->get_id() ?>" style="padding: 7px">Edit</a></td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_mission_form<?php echo $current_mission->get_id() ?>">
