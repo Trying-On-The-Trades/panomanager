@@ -861,3 +861,12 @@ function check_file($file){
 
     return false;
 }
+
+function get_hotspot_info(){
+    $hotspot_id = $_POST['hotspot_id'];
+
+    $hotspot = get_hotspot($hotspot_id);
+
+    echo $hotspot->description;
+
+}

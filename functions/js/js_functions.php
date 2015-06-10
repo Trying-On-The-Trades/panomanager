@@ -38,10 +38,11 @@ function register_scripts($pano_directory){
     $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.css";
     $toast_js         = WP_PLUGIN_URL . "/panomanager/js/toast/javascript/jquery.toastmessage.js";
     $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
-    $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.min.js";
+    $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.js";
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
     $main_js          = WP_PLUGIN_URL . "/panomanager/js/main.js";
+    $jq_dialog        = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery.easy-confirm-dialog.js";
 
     //// APP CUSTOMIZED CSS
     wp_register_style('app_css', $app_css);
@@ -89,6 +90,8 @@ function register_scripts($pano_directory){
     wp_enqueue_script('jqueryui_js');
     wp_register_style('jqueryui_css', $jqueryui_css);
     wp_enqueue_style('jqueryui_css');
+    wp_register_script('jq_dialog', $jq_dialog, array('jquery'));
+    wp_enqueue_script('jq_dialog');
 
     //// MAIN JS
     wp_register_script('main_js', $main_js);
@@ -307,7 +310,7 @@ function get_leaderboard_div(){
 }
 
 function build_leader_launch(){
-    $script = "function leaderLaunch()\n";
+    $script = "function t()\n";
     $script .= "{\n";
 
     $script .= "$.ajax({\n";
