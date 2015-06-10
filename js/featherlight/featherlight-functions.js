@@ -18,7 +18,7 @@
   - hot_id (Hotspot id)
   - pts (Number of bonus points)
 */
-function addBnsPtsFeather(hot_id, pts){
+function addBonusPoints(hot_id, pts){
   if(pts > 0){
     var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
     $.ajax({
@@ -35,7 +35,7 @@ function addBnsPtsFeather(hot_id, pts){
         totalPoints = totalPoints + parseInt(pts, 10);
         $('#bonus_points').html(totalPoints);
         $('#done_activities').html(done_activities + hot_id.toString() + ',');
-        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');
+        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' ' + getPointsName(pts) + '!');
       }
     });
   }
@@ -46,7 +46,7 @@ function addBnsPtsFeather(hot_id, pts){
   Parameter:
   - hot_id (Hotspot id)
 */
-function addRegPtsFeather(hot_id){
+function addRegularPoints(hot_id){
   var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   $.ajax({
     type: 'POST',
@@ -59,9 +59,13 @@ function addRegPtsFeather(hot_id){
       var hotspot = document.getElementById(hot_id+'_menu_item');
       hotspot.setAttribute('class', 'hotspot_done');
       var hotspotPoints = parseInt(hotspot.getElementsByClassName('hotspot_points')[0].innerHTML);
-      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' points!');
+      $().toastmessage('showSuccessToast', 'You earned ' + hotspotPoints + ' ' + getPointsName(hotspotPoints) + '!');
     }
   });
+}
+
+wordpress_admin_url = function(){
+    return document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
 }
 
 /*
@@ -74,7 +78,7 @@ function addRegPtsFeather(hot_id){
 */
 allowNewAttempt = function(hot_id){
   var allow = true;
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = wordpress_admin_url();
   $.ajax({
     type: 'POST',
     async: false,
@@ -90,7 +94,6 @@ allowNewAttempt = function(hot_id){
       allow = para;
     }
   });
-  console.log(allow);
   if(!allow){
     $().toastmessage('showNoticeToast', 'You reached the limit number of attempts for this activity');
   }
@@ -122,6 +125,44 @@ function getClientBrowserSize(){
   return size;
 }
 
+/*
+  Returns the alias for points chosen by the user, in the plural form (if points > 1), or singular form (otherwise).
+  Parameters:
+  - pts_qty (The quantity of points awarded)
+  Returns:
+  - pointsName (String)
+*/
+function getPointsName(pts_qty){
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var pointsName = 'points';
+  if(pts_qty > 1){
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: postUrl,
+      data: {
+        action: 'get_points_name_plural'
+      },
+      success: function(plural){
+        pointsName = plural;
+      }
+    });
+  }
+  else{
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: postUrl,
+      data: {
+        action: 'get_points_name_singular'
+      },
+      success: function(singular){
+        pointsName = singular;
+      }
+    });
+  }
+  return pointsName;
+}
 
 /*
   Opens a pop-up with html content using ajax.
@@ -135,20 +176,22 @@ function loadAjax(htm){
 
 /*
   Opens a pop-up with a frame.
-  If you want to save your activity points, set the pts parameter to true.
+  If you want to save your activity points, set the pts parameter.
   Parameters:
   - frm (Frame address)
-  - pts (Save points) [Default value: false]
+  - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
 function loadFrame(act_id, frm, pts){
+
+    /* shame */
+  last_hostpot = act_id;
+
   var size = getClientBrowserSize();
-  var width = parseInt(size[0] * 0.6);
+  var width = parseInt(size[0] * 0.8);
   var height = parseInt(size[1] * 0.8);
-  // var width = '100%';
-  // var height = '100%';
-  // Standard pts: false
+  // Standard pts: 'none'
   if(pts == null){
-    pts = false;
+    pts = 'none';
   }
 
   allowed = function(){
@@ -156,18 +199,23 @@ function loadFrame(act_id, frm, pts){
     return follow;
   }
 
-  // Loading frame without pts
-  if(!pts){
+  // Loading frame with no points
+  if(pts == 'none'){
+    $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed});
+  }
+
+  // Loading frame with regular points
+  else if(pts == 'reg'){
 
     // Adding points to db and toast
     showPts = function(){
-        addRegPtsFeather(act_id);
+        addRegularPoints(act_id);
     }
     $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
 
-  // Loading frame with pts
-  if(pts){
+  // Loading frame with bonus points
+  else if(pts == 'bns'){
     // Variable to store points achieved
     fpoints = 0;
 
@@ -181,7 +229,7 @@ function loadFrame(act_id, frm, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints > 0){
-        addBnsPtsFeather(act_id, fpoints);
+        addBonusPoints(act_id, fpoints);
       }
     }
 
@@ -207,7 +255,7 @@ function loadImage(img){
   - act_id (Activity unique id)
   - frm (Location of load-oppia.php)
   - oppia_id (Oppia unique id)
-  - award_points (Award points) [Default value: false]
+  - award_points (Award points) [Default value: 'none']
   - base_points (Base points to be awarded)
   - timer (Award bonus points) [Default value: false]
   - bonus_points (Bonus points)
@@ -216,12 +264,12 @@ function loadImage(img){
 function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
   var frame_address = '';
   if(award_points == null){
-    award_points = false;
+    award_points = 'none';
   }
   if(timer == null){
     timer = false;
   }
-  if(!award_points){
+  if(award_points == 'none'){
     frame_address = frm + '?oppia=' + oppia_id;
   }else{
     if(!timer){
@@ -231,4 +279,19 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
     }
   }
   loadFrame(act_id, frame_address, award_points);
+}
+
+function info(){
+  $.ajax(
+    {
+      method: 'POST',
+      url : wordpress_admin_url(),
+      data : {
+        action : 'get_hotspot_info',
+        hotspot_id : last_hostpot
+      },
+      complete: function(data){
+        $("#info_hotspot").easyconfirm({locale: { text: data.responseText, button: ['Got it!']}});
+      }
+    })
 }
