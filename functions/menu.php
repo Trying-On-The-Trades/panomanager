@@ -8,10 +8,10 @@ function pano_create_menu() {
 
 // function to create the top level meny
 function create_top_menu(){
-	add_menu_page('pano-settings', 
-				  'Panos', 
+	add_menu_page('pano-settings',
+				  'Panos',
 				  'administrator',
-				  'pano_menu', 
+				  'pano_menu',
 				  'pano_settings_page',
 				  plugins_url('/images/icon.png', __FILE__)
 				  );
@@ -22,8 +22,8 @@ function create_sub_menus(){
 
 	// Create the sub menu item for new panos
 	add_submenu_page(null,
-					 "New Pano", 
-					 "New Pano", 
+					 "New Pano",
+					 "New Pano",
 					 "administrator",
 					 "new_pano_settings",
 					 "new_pano_settings_page");
@@ -193,5 +193,21 @@ function create_sub_menus(){
 					"administrator",
 					"edit_domain_settings",
 					"edit_domain_settings_page");
+
+
+					// Create the sub menu item for editng domains
+		add_submenu_page(pano_menu,
+						"Points",
+						"Points",
+						"administrator",
+						"edit_points_info_settings",
+						"edit_points_info_settings_page");
+
+		add_submenu_page(null,
+						"Edit Points Info",
+						"Edit Points Info",
+						"administrator",
+						"edit_points_info_settings",
+						"edit_points_info_settings_page");
 
 }
