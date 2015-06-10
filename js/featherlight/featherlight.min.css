@@ -81,6 +81,7 @@
         background: rgba(255, 255, 255, .3);
         color: #000;
         background-image:url('0269-info.png');
+        background-repeat: no-repeat;
     }
 
     .featherlight .featherlight-image {
