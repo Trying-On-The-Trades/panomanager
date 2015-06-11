@@ -97,6 +97,11 @@ function get_points_info_table_name(){
   return $wpdb->prefix . "points_info";
 }
 
+function get_wallet_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_wallet";
+}
+
 function build_points_info_sql(){
   global $wpdb;
   $table_name = get_points_info_table_name();
@@ -382,6 +387,20 @@ function build_tools_sql(){
         `name` varchar(255) NOT NULL DEFAULT "",
         PRIMARY KEY (`id`)
     );';
+
+    return $sql;
+}
+
+function get_wallet_sql(){
+    $wallet_table = get_wallet_table_name();
+
+    $sql = "CREATE TABLE {$walet_table} (
+     `id` int(10) NOT NULL AUTO INCREMENT,
+     `user_id` int(10) NOT NULL.
+     `available_currency` int(11) NOT NULL, 
+     PRIMARY KEY(`id`),
+     FOREIGN KEY (`user_id`) REFERENCES wp_users(`id`),
+    );";
 
     return $sql;
 }
