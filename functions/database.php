@@ -391,7 +391,7 @@ function build_tools_sql(){
     return $sql;
 }
 
-function get_wallet_sql(){
+function build_wallet_sql(){
     $wallet_table = get_wallet_table_name();
 
     $sql = "CREATE TABLE {$walet_table} (

@@ -31,6 +31,7 @@ function pano_install () {
     $ads_sql             = build_ads_sql();
     $ads_text_sql        = build_ads_text_sql();
     $points_info_sql     = build_points_info_sql();
+    $wallet_sql          build_wallet_sql();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -54,6 +55,7 @@ function pano_install () {
     dbDelta( $ads_sql            );
     dbDelta( $ads_text_sql       );
     dbDelta( $points_info_sql    );
+    dbDelta( $wallet_sql         );
 
     update_option( "pano_db_version", PANO_DB_VERSION );
     // create_first_row();
