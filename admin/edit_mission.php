@@ -5,7 +5,7 @@ function edit_mission_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
 	$panos    = get_panos();
-	$trades   = get_trades();
+	$domains   = get_domains();
     $mission = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -54,11 +54,11 @@ function edit_mission_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="prereq_trade_id">Select a Trade</label>
-	        <select name="trade_id">
+	        <label for="prereq_domain_id">Select a domain</label>
+	        <select name="domain_id">
 				 <option value="NA">...</option>
-                 <?php foreach($trades as $trade): ?>
-					<option value="<?php echo $trade->id ?>" <?php echo ($trade->id === $mission->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
+                 <?php foreach($domains as $domain): ?>
+					<option value="<?php echo $domain->id ?>" <?php echo ($domain->id === $mission->get_domain_id()) ? "selected" : "" ?>><?php echo $domain->name ?></option>
 				 <?php endforeach; ?>
 			</select>
 	      </div>

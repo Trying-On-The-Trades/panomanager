@@ -6,7 +6,7 @@ function edit_hotspot_settings_page() {
 
     $missions = get_missions();
 	$types	  = get_types();
-	$trades	  = get_trades();
+	$domains	  = get_domains();
     $hotspot  = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -73,6 +73,12 @@ function edit_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
+	        <label for="hotspot_info">Hotspot Info</label>
+	        <textarea name="hotspot_info" required > <?php echo $hotspot->get_hotspot_info() ?> </textarea>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
 	        <label for="hotspot_xml">Hotspot XML</label>
 	        <textarea name="hotspot_xml" required > <?php echo $hotspot->get_xml() ?> </textarea>
 	      </div>
@@ -107,11 +113,11 @@ function edit_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_trade_id">Select a Trade</label>
-	        <select name="hotspot_trade_id">
+	        <label for="hotspot_domain_id">Select a domain</label>
+	        <select name="hotspot_domain_id">
 				 <option value="NA">...</option>
-                 <?php foreach($trades as $trade): ?>
-					<option value="<?php echo $trade->id ?>"  <?php echo ($trade->id === $hotspot->get_trade_id()) ? "selected" : "" ?>><?php echo $trade->name ?></option>
+                 <?php foreach($domains as $domain): ?>
+					<option value="<?php echo $domain->id ?>"  <?php echo ($domain->id === $hotspot->get_domain_id()) ? "selected" : "" ?>><?php echo $domain->name ?></option>
 				 <?php endforeach; ?>
 			</select>
 	      </div>

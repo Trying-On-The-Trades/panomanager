@@ -1,16 +1,16 @@
 <?php
 
 // Build the settings page
-function edit_trade_settings_page() {
+function edit_domain_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-    $trade    = null;
+    $domain    = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
-        $trade = build_trade($_GET['id']);
+        $domain = build_domain($_GET['id']);
     }
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Create a new trade!</h2>
+<h2>Create a new domain!</h2>
 <hr>
 <style type="text/css">
 	#wpfooter{
@@ -34,14 +34,14 @@ function edit_trade_settings_page() {
 <?php endif; ?>
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
-    <input type="hidden" name="action" value="edit_trade" />
-    <input type="hidden" name="trade_id" value="<?php echo $trade->get_id(); ?>" />
-    <div class="ui form segment new_trade_form">
+    <input type="hidden" name="action" value="edit_domain" />
+    <input type="hidden" name="domain_id" value="<?php echo $domain->get_id(); ?>" />
+    <div class="ui form segment new_domain_form">
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
-	        	<label for="trade_name">Trade Name</label>
-	    		<input name="trade_name" id="name" placeholder="Fun Trade" value="<?php echo $trade->get_name(); ?>" required />
+	        	<label for="domain_name">domain Name</label>
+	    		<input name="domain_name" id="name" placeholder="Fun domain" value="<?php echo $domain->get_name(); ?>" required />
      	 	</div>
 	      </div>
 	    </div>

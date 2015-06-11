@@ -5,7 +5,7 @@ function new_hotspot_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $missions = get_missions();
 	$types	  = get_types();
-	$trades   = get_trades();
+	$domains   = get_domains();
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Create a new hotspot!</h2>
@@ -59,6 +59,12 @@ function new_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
+	        <label for="hotspot_info">Hotspot Info</label>
+	        <textarea name="hotspot_info" required ></textarea>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
 	        <label for="hotspot_xml">Hotspot XML</label>
 	        <textarea name="hotspot_xml" required ></textarea>
 	      </div>
@@ -93,11 +99,11 @@ function new_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_trade_id">Select a Trade</label>
-	        <select name="hotspot_trade_id">
+	        <label for="hotspot_domain_id">Select a Domain</label>
+	        <select name="hotspot_domain_id">
 				 <option value="NA">...</option>
-                 <?php foreach($trades as $trade): ?>
-					<option value="<?php echo $trade->id ?>"><?php echo $trade->name ?></option>
+                 <?php foreach($domains as $domain): ?>
+					<option value="<?php echo $domain->id ?>"><?php echo $domain->name ?></option>
   				 <?php endforeach; ?>
 			</select>
 	      </div>

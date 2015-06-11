@@ -64,10 +64,10 @@ add_action( 'admin_post_create_new_hotspot_type', 'process_new_hotspot_type' );
 add_action( 'admin_post_edit_hotspot_type', 'process_edit_hotspot_type' );
 add_action( 'admin_post_delete_hotspot_type', 'process_delete_hotspot_type' );
 
-// Add the process trade type hook
-add_action( 'admin_post_create_new_trade', 'process_new_trade' );
-add_action( 'admin_post_edit_trade', 'process_edit_trade' );
-add_action( 'admin_post_delete_trade', 'process_delete_trade' );
+// Add the process domain type hook
+add_action( 'admin_post_create_new_domain', 'process_new_domain' );
+add_action( 'admin_post_edit_domain', 'process_edit_domain' );
+add_action( 'admin_post_delete_domain', 'process_delete_domain' );
 
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
@@ -75,9 +75,17 @@ add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
 
 // callback functions
 add_action( 'admin_post_get_leaderboard_div', 'get_leaderboard_div' );
+add_action( 'admin_post_nopriv_get_leaderboard_div', 'get_leaderboard_div');
 add_action( 'admin_post_check_user_progress', 'check_user_progress_ajax' );
 add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_with_bonus' );
+add_action( 'admin_post_allow_new_attempt', 'allow_new_attempt' );
+add_action( 'admin_post_get_hotspot_info', 'get_hotspot_info' );
+add_action( 'admin_post_get_points_name_plural', 'get_points_name_plural_post' );
+add_action( 'admin_post_nopriv_get_points_name_plural', 'get_points_name_plural_post' );
+add_action( 'admin_post_get_points_name_singular', 'get_points_name_singular_post' );
+add_action( 'admin_post_nopriv_get_points_name_singular', 'get_points_name_singular_post' );
+add_action( 'admin_post_update_points_info', 'set_points_info' );
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
@@ -91,7 +99,7 @@ require_once("includes/quest.php");
 require_once("includes/mission.php");
 require_once("includes/hotspot.php");
 require_once("includes/hotspotType.php");
-require_once("includes/trade.php");
+require_once("includes/domain.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");
@@ -113,9 +121,10 @@ require_once("admin/edit_hotspot.php");
 require_once("admin/hotspot_types.php");
 require_once("admin/new_hotspot_type.php");
 require_once("admin/edit_hotspot_type.php");
-require_once("admin/trades.php");
-require_once("admin/new_trade.php");
-require_once("admin/edit_trade.php");
+require_once("admin/domains.php");
+require_once("admin/new_domain.php");
+require_once("admin/edit_domain.php");
+require_once("admin/edit_points_info.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

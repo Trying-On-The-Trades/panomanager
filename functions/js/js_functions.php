@@ -33,15 +33,16 @@ function register_scripts($pano_directory){
     $magnific_js      = $pano_directory . "/magnific-popup/jquery.magnific-popup.js";
     $magnific_css     = $pano_directory . "/magnific-popup/magnific-popup.css";
     $pano_js_location = $pano_directory . "/tour.js";
-    $featherlight_js  = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.js";
+    $featherlight_js  = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.js";
     $featherlight_fnc = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight-functions.js";
-    $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.min.css";
+    $featherlight_css = WP_PLUGIN_URL . "/panomanager/js/featherlight/featherlight.css";
     $toast_js         = WP_PLUGIN_URL . "/panomanager/js/toast/javascript/jquery.toastmessage.js";
     $toast_css        = WP_PLUGIN_URL . "/panomanager/js/toast/css/jquery.toastmessage.css";
-    $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.min.js";
+    $jqueryui_js      = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery-ui.js";
     $jqueryui_css     = WP_PLUGIN_URL . "/panomanager/js/jqueryui/css/jquery-ui.css";
     $jquery_migrate   = WP_PLUGIN_URL . "/panomanager/js/jquery-migrate-1.2.1.min.js";
     $main_js          = WP_PLUGIN_URL . "/panomanager/js/main.js";
+    $jq_dialog        = WP_PLUGIN_URL . "/panomanager/js/jqueryui/js/jquery.easy-confirm-dialog.js";
 
     //// APP CUSTOMIZED CSS
     wp_register_style('app_css', $app_css);
@@ -89,6 +90,8 @@ function register_scripts($pano_directory){
     wp_enqueue_script('jqueryui_js');
     wp_register_style('jqueryui_css', $jqueryui_css);
     wp_enqueue_style('jqueryui_css');
+    wp_register_script('jq_dialog', $jq_dialog, array('jquery'));
+    wp_enqueue_script('jq_dialog');
 
     //// MAIN JS
     wp_register_script('main_js', $main_js);
@@ -121,7 +124,7 @@ function add_nav_script($quest, $pano_id){
     $script = "\n<script type='text/javascript'>\n";
 
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = '" .  the_permalink() . "?pano_id=';\n";
+    $script .=	"var siteAdr = '" .  get_permalink() . "?pano_id=';\n";
 
     // Build the array of names
     $script .= build_names_array();
@@ -154,6 +157,7 @@ function add_nav_script($quest, $pano_id){
 
     $script .= build_menu_launch();
     $script .= build_leader_launch();
+    $script .= redirect_pano();
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
     $script .= build_login_button();
@@ -306,7 +310,7 @@ function get_leaderboard_div(){
 }
 
 function build_leader_launch(){
-    $script = "function leaderLaunch()\n";
+    $script = "function t()\n";
     $script .= "{\n";
 
     $script .= "$.ajax({\n";
@@ -369,7 +373,7 @@ function build_manage_lightbox($quest, $current_pano_url){
             $script  .=	"   addPts(0,10);\n";
             $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
         } else {
-            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_trade_id() . ");\n";
+            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_domain_id() . ");\n";
         }
 
         $script  .=	"break;\n";
@@ -387,7 +391,7 @@ function build_manage_lightbox($quest, $current_pano_url){
 function build_launch_image($quest)
 {
 
-	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -402,7 +406,7 @@ function build_launch_image($quest)
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -415,7 +419,7 @@ function build_launch_image($quest)
 
 function build_launch_hairstyling($quest)
 {
-	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -434,7 +438,7 @@ function build_launch_hairstyling($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -448,7 +452,7 @@ function build_launch_hairstyling($quest)
 
 function build_launch_hazard($quest)
 {
-	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
         //$script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -468,7 +472,7 @@ function build_launch_hazard($quest)
 	$script  .=			      "callbacks: {\n";
 	$script  .=					"close: function() {\n";
 	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, tradeId); \n";
+	$script  .=						"addPts(mnuId, points, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
@@ -482,7 +486,7 @@ function build_launch_hazard($quest)
 
 function build_launch_game($quest)
 {
-	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -503,7 +507,7 @@ function build_launch_game($quest)
 	$script  .=						"var bonusPts = $(contents).find('#points').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -516,7 +520,7 @@ function build_launch_game($quest)
 
 function build_launch_quizlet($quest)
 {
-	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
 	$script  .=		"$.magnificPopup.open({\n";
 	$script  .=			"items: {\n";
@@ -534,7 +538,7 @@ function build_launch_quizlet($quest)
 	$script  .=						"var bonusPts = $(contents).find('#scorevalue').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -548,7 +552,7 @@ function build_launch_quizlet($quest)
 function build_launch_Khan($quest)
 {
 
-	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, tradeId)\n";
+	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, domainId)\n";
 	$script  .=	"{\n";
     $script  .=             build_ad_message($quest);
 	$script  .=		"$.magnificPopup.open({\n";
@@ -572,9 +576,9 @@ function build_launch_Khan($quest)
 	$script  .=						"var bonusPts = $(khanFrame).find('#points').html();\n";
 	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, tradeId); \n";
+	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
 	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points, tradeId); \n";
+	$script  .=						"addPts(mnuId,points, domainId); \n";
 	$script  .=					"}\n";
 	$script  .=			     " }\n";
 	$script  .=		"});\n";
@@ -613,16 +617,20 @@ function build_menu_nav($quest){
                     <li class="Label">
                         <span class="mission_title">MISSIONS</span>
                         <span class="user_points">
-                          <span>Mission Points: </span>
-                          <span id="current_points">0</span>
+                          <span>Mission ' . get_points_name_plural(1) . ': </span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
+                          <span id="current_points">' . get_regular_points_for_mission_tab(get_current_user_id()) . '</span>
                           <span>/</span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
                           <span id="total_mission_points">0</span>
                         </span>
                         <span class="user_points">
-                          <span>Bonus Points: </span>
-                          <span id="bonus_points">0</span>
+                          <span>Bonus ' . get_points_name_plural(1) . ': </span>
+                          <span class="points_symbol">' . get_points_symbol(1) . '</span>
+                          <span id="bonus_points">' . get_bonus_points_for_mission_tab(get_current_user_id()) . '</span>
                         </span>
                         <input id="done_activities" type="hidden" value="0" />
+                        <input id="admin_dir" type="hidden" value="' . get_admin_url() . '" />
                     </li>';
     // Get the elements needed to build the menu
     $script .= get_mission_tasks($quest);
@@ -661,19 +669,40 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
+  $board = '<div class="white-popup">';
+  $board .= '<h2>Leaderboard</h2>';
 
-    $board = '<div class="white-popup">';
-    $board .= '<h2>Leaderboard</h2>';
+  $board .= '<table>';
+  $board .= '  <thead>';
+  $board .= '    <tr>';
+  $board .= '      <th>Name</th>';
+  $board .= '      <th>Mission ' . get_points_name_plural(1) . '</th>';
+  $board .= '      <th>Bonus ' . get_points_name_plural(1) . '</th>';
+  $board .= '    </tr>';
+  $board .= '  </thead>';
+  $board .= '  <tbody>';
 
-    // Create the table for schools
-    $board .= build_school_table();
+  $users = get_all_users();
+  foreach($users as $user){
+    $board .= '    <tr>';
+    $board .= '      <td>' . get_user_name($user->id) . '</td>';
+    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
+    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
+    $board .= '    </tr>';
+  }
 
-    // Create the table for individuals
-    $board .= build_individual_table();
+  $board .= '  </tbody>';
+  $board .= '</table>';
 
-    // Close the modal
-    $board .= '</div>';
-    return $board;
+  // Create the table for schools
+  // $board .= build_school_table();
+
+  // Create the table for individuals
+  // $board .= build_individual_table();
+
+  // Close the modal
+  $board .= '</div>';
+  return $board;
 }
 
 function build_school_table(){
@@ -778,7 +807,7 @@ function build_points_callback_function(){
 }
 
 function build_bonus_points_callback_function(){
-    $script  = "function addBonusPts(id, pts, trade_id){\n";
+    $script  = "function addBonusPts(id, pts, domain_id){\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
 
     $script .= "$.ajax({\n";
@@ -786,7 +815,7 @@ function build_bonus_points_callback_function(){
     $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
     $script .= "data: {action: 'update_progress_with_bonus',\n";
     $script .= "       hotspot: id,\n";
-    $script .= "       trade_id: trade_id,\n";
+    $script .= "       domain_id: domain_id,\n";
     $script .= "       bonus_points: pts},\n";
     $script .= "success: function(d){\n";
     $script .= "    var earned_points = (d && d != '') ? parseInt(d) : 0;\n";
@@ -800,6 +829,15 @@ function build_bonus_points_callback_function(){
     $script .= "});\n";
 
     $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function redirect_pano(){
+    $script = "function redirectPano(pano_id){\n";
+    $script .= "  var current_pano = '" . get_permalink() . "';\n";
+    $script .= "  var next_pano = current_pano + '?pano_id=' + pano_id;\n";
+    $script .= "  window.location = next_pano;\n";
     $script .= "}\n";
     return $script;
 }
