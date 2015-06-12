@@ -31,7 +31,7 @@ function pano_install () {
     $ads_sql             = build_ads_sql();
     $ads_text_sql        = build_ads_text_sql();
     $points_info_sql     = build_points_info_sql();
-    $wallet_sql          build_wallet_sql();
+    $wallet_sql          = build_wallet_sql();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

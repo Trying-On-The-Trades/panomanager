@@ -1147,7 +1147,7 @@ function add_points($user_id, $quantity){
     $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
         WHERE user_id = {$user_id}");
 
-    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {$available + $quantity})
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available + $quantity)})
         WHERE user_id = {$user_id}");
 }
 
@@ -1157,6 +1157,6 @@ function remove_points($user_id, $quantity){
     $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
         WHERE user_id = {$user_id}");
 
-    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {$available - $quantity})
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available - $quantity)})
         WHERE user_id = {$user_id}");
 }
