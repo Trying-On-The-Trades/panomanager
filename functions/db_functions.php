@@ -1160,3 +1160,56 @@ function remove_points($user_id, $quantity){
     $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available - $quantity)})
         WHERE user_id = {$user_id}");
 }
+
+//PURCHASES
+
+function get_purchases(){
+    global $wpdb;
+
+    $purchases = $wpdb->get_results("SELECT * FROM {get_purchases_table_name()}");
+
+    return $purchases;
+}
+
+function get_puchase($id){
+    global $wpdb;
+
+    $purchase = $wpdb->get_row("SELECT * FROM {get_purchases_table_name()}
+                                WHERE id = {$id}");
+
+    return $purchase;
+}
+
+function get_item_types(){
+    global $wpdb;
+
+    $item_types = $wpdb->get_results("SELECT * FROM {get_item_types_table_name()}");
+
+    return $item_types;
+}
+
+function get_item_type($id){
+    global $wpdb;
+
+    $item_type = $wpdb->get_row("SELECT * FROM {get_item_types_table_name()}
+                                WHERE id = {$id}");
+
+    return $item_type;
+}
+
+function get_items(){
+    global $wpdb;
+
+    $items = $wpdb->get_results("SELECT * FROM {get_items_table_name()}");
+
+    return $items;
+}
+
+function get_item($id){
+    global $wpdb;
+
+    $item = $wpdb->get_row("SELECT * FROM {get_items_table_name}
+                            WHERE id = {$id}");
+
+    return $item;
+}
