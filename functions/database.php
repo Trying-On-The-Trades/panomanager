@@ -394,12 +394,12 @@ function build_tools_sql(){
 function build_wallet_sql(){
     $wallet_table = get_wallet_table_name();
 
-    $sql = "CREATE TABLE {$walet_table} (
-     `id` int(10) NOT NULL AUTO INCREMENT,
-     `user_id` int(10) NOT NULL.
+    $sql = "CREATE TABLE {$wallet_table} (
+     `id` int(10) NOT NULL AUTO_INCREMENT,
+     `user_id` bigint(20) unsigned NOT NULL,
      `available_currency` int(11) NOT NULL, 
      PRIMARY KEY(`id`),
-     FOREIGN KEY (`user_id`) REFERENCES wp_users(`id`),
+     FOREIGN KEY (`user_id`) REFERENCES wp_users(`ID`)
     );";
 
     return $sql;
