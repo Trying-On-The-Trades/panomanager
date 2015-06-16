@@ -27,7 +27,7 @@ function trigger_bonus_points_to_wallet(){
   FOR EACH ROW
   BEGIN
     UPDATE $wallet_table_name
-    SET available_quantity = available_quantity + :NEW.bonus_points
+    SET available_currency = available_currency + :NEW.bonus_points
     WHERE(user_id = :NEW.user_id);
   END;
   /";
