@@ -112,16 +112,6 @@ function get_line_items_table_name(){
   return $wpdb->prefix . "pano_line_items";
 }
 
-function get_items_table_name(){
-  global $wpdb;
-  return $wpdb->prefix . "pano_items";
-}
-
-function get_item_types_table_name(){
-  global $wpdb;
-  return $wpdb->prefix . "pano_item_types";
-}
-
 function get_item_types_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_item_types";
