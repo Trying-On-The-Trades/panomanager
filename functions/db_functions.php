@@ -5,6 +5,10 @@
 //				      Registration FUNCTIONS
 // ***********************************************************
 
+function register_db_triggers(){
+  trigger_bonus_points_to_wallet();
+}
+
 function get_schools(){
     global $wpdb;
     $school_table_name = get_school_table_name();
