@@ -6,19 +6,19 @@ function trigger_points_to_wallet(){
   $points_table_name = get_user_skill_progress_table_name();
   $wallet_table_name = get_wallet_table_name();
 
-  $sql = "DELIMITER //
-  CREATE OR REPLACE TRIGGER PointsWallet
+  $sql = "DELIMITER $$
+  CREATE TRIGGER PointsWallet
   AFTER INSERT ON $points_table_name
   FOR EACH ROW
   BEGIN
-    DECLARE points AS INT(10);
-    SELECT points INTO points FROM $hotspost_table_name
-      WHERE id = :NEW.skill_id;
+    DECLARE currency INT(10);
+    SELECT points INTO currency FROM $hotspost_table_name
+      WHERE id = NEW.skill_id;
     UPDATE $wallet_table_name
-    SET available_currency = available_currency + points
-    WHERE(user_id = :NEW.user_id);
+    SET available_currency = available_currency + currency
+    WHERE(user_id = NEW.user_id);
   END;
-  DELIMITER ;";
+$$";
 
   return $sql;
 }
@@ -28,16 +28,16 @@ function trigger_bonus_points_to_wallet(){
   $bonus_points_table_name = get_user_skill_bonus_pts_table_name();
   $wallet_table_name = get_wallet_table_name();
 
-  $sql = "DELIMITER //
-  CREATE OR REPLACE TRIGGER BonusPointsWallet
+  $sql = "DELIMITER $$
+  CREATE TRIGGER BonusPointsWallet
   AFTER INSERT ON $bonus_points_table_name
   FOR EACH ROW
   BEGIN
     UPDATE $wallet_table_name
-    SET available_currency = available_currency + :NEW.bonus_points
-    WHERE (user_id = :NEW.user_id);
+    SET available_currency = available_currency + NEW.bonus_points
+    WHERE (user_id = NEW.user_id);
   END;
-  DELIMITER ;";
+$$";
 
   return $sql;
 }
