@@ -1158,3 +1158,169 @@ function get_points_multiplier(){
 
   return $points_multiplier;
 }
+
+function add_points($user_id, $quantity){
+    global $wpdb;
+
+    $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
+        WHERE user_id = {$user_id}");
+
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available + $quantity)})
+        WHERE user_id = {$user_id}");
+}
+
+function remove_points($user_id, $quantity){
+    global $wpdb;
+
+    $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
+        WHERE user_id = {$user_id}");
+
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available - $quantity)})
+        WHERE user_id = {$user_id}");
+}
+
+//PURCHASES
+
+function get_purchases(){
+    global $wpdb;
+
+    $purchases = $wpdb->get_results("SELECT * FROM {get_purchases_table_name()}");
+
+    return $purchases;
+}
+
+function get_puchase($id){
+    global $wpdb;
+
+    $purchase = $wpdb->get_row("SELECT * FROM {get_purchases_table_name()}
+                                WHERE id = {$id}");
+
+    return $purchase;
+}
+
+function get_item_types(){
+    global $wpdb;
+
+    $item_types = $wpdb->get_results("SELECT * FROM {get_item_types_table_name()}");
+
+    return $item_types;
+}
+
+function get_item_type($id){
+    global $wpdb;
+
+    $item_type = $wpdb->get_row("SELECT * FROM {get_item_types_table_name()}
+                                WHERE id = {$id}");
+
+    return $item_type;
+}
+
+function get_items(){
+    global $wpdb;
+
+    $items = $wpdb->get_results("SELECT * FROM {get_items_table_name()}");
+
+    return $items;
+}
+
+function get_item($id){
+    global $wpdb;
+
+    $item = $wpdb->get_row("SELECT * FROM {get_items_table_name}
+                            WHERE id = {$id}");
+
+    return $item;
+}
+
+function delete_purchase($id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->delete( $purchase_table, array('id' => $id));
+}
+
+function delete_item_type($id){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->delete($item_type_table, array('id' => $id));
+}
+
+function delete_item($id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->delete($item_table, array('id' => $id));
+}
+
+function delete_line_item($purchase_id, $item_id){
+    global $wpdb;
+
+    $line_item_table = get_line_items_table_name();
+
+    $wpdb->delete($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
+}
+
+function create_purchase($date, $user_id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->insert($purchase_table, array('date'=>$date, 'user_id' => $user_id));
+}
+
+function create_item_type($name, $description){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->insert($item_type_table, array('name' => $name, 'description' => $description));
+}
+
+function create_item($name, $description, $image, $price, $type_id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->insert($item_table, array('name' => $name, 'description' => $description,
+        'image' => $image, 'price' => $price, 'type_id' => $item_type_id));
+}
+
+function create_line_item($purchase_id, $item_id){
+    global $wpdb;
+
+    $line_item_table = get_line_items_table_name();
+
+    $wpdb->insert($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
+}
+
+function update_purchase($id, $date, $user_id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->update($purchase_table, array('date' => $date, 'user_id' => $user_id), 
+        array('id' => $user_id));
+}
+
+function update_item_type($id, $name, $description){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description), 
+        array('id' => $id));
+}
+
+function update_item($id, $name, $description, $image, $price, $type_id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description, 
+        'image' => $image, 'price' => $price, 'type_id' => $type_id), 
+        array('id' => $id));
+}
