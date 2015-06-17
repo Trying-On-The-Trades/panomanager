@@ -27,6 +27,7 @@ require_once("functions/install.php");
 require_once("functions/uninstall.php");
 require_once("functions/menu.php");
 require_once("functions/js/js_functions.php");
+require_once("functions/db_triggers.php");
 
 // Create a shortcode for the handler
 add_shortcode("pano", "pano_handler");

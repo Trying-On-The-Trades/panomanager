@@ -37,6 +37,9 @@ function pano_install () {
     $items_sql           = build_items_sql();
     $line_items_sql      = build_line_items_sql();
     $points_initial_sql  = build_points_initial_bonus_sql();
+    $create_new_wallet   = procedure_create_new_wallet();
+    $reg_points_wallet   = trigger_points_to_wallet();
+    $bns_points_wallet   = trigger_bonus_points_to_wallet();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -66,6 +69,9 @@ function pano_install () {
     dbDelta( $items_sql          );
     dbDelta( $line_items_sql     );
     dbDelta( $points_initial_sql );
+    dbDelta( $create_new_wallet );
+    dbDelta( $reg_points_wallet );
+    dbDelta( $bns_points_wallet );
 
     update_option( "pano_db_version", PANO_DB_VERSION );
     // create_first_row();
