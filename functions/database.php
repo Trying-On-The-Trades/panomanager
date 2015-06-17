@@ -97,6 +97,34 @@ function get_points_info_table_name(){
   return $wpdb->prefix . "points_info";
 }
 
+function get_points_initial_bonus_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "points_initial_bonus";
+}
+
+function build_points_initial_bonus_sql(){
+  global $wpdb;
+  $table_name = get_points_initial_bonus_table_name();
+
+  $sql = "DROP TABLE IF EXISTS " . $table_name . ";";
+
+  $wpdb->query($sql);
+
+  $sql = "CREATE TABLE " . $table_name . "(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `quantity` int(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT '100',
+    PRIMARY KEY (`id`)
+  );";
+
+  $sql .= "INSERT INTO " . $table_name . "(
+    `quantity`
+  ) VALUES (
+    '100'
+  );";
+
+  return $sql;
+}
+
 function build_points_info_sql(){
   global $wpdb;
   $table_name = get_points_info_table_name();

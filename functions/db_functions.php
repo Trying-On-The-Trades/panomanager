@@ -859,6 +859,20 @@ function update_points_info($symbol, $singular, $plural, $multiplier = 1){
   }
 }
 
+function update_points_initial_bonus($quantity){
+  global $wpdb;
+  $points_initial_bonus_table_name = get_points_initial_bonus_table_name();
+
+  if(isset($quantity)){
+    $wpdb->update($points_initial_bonus_table_name,
+      array('quantity' => $quantity),
+      array('id'        => 1));
+    return true;
+  } else{
+    return false;
+  }
+}
+
 // ***********************************************************
 //				    Creating New Panos
 // ***********************************************************
