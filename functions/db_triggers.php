@@ -41,3 +41,9 @@ $$";
 
   return $sql;
 }
+
+function trigger_drop($trigger_name){
+  $sql = "DROP TRIGGER IF EXISTS " . $trigger_name . ";";
+
+  return $sql;
+}
