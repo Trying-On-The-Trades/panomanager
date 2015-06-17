@@ -19,7 +19,7 @@
   - pts (Number of bonus points)
 */
 function addBonusPoints(hot_id, pts){
-  if(pts > 0){
+  if(pts != 0){
     var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
     $.ajax({
       type: 'POST',
@@ -30,12 +30,13 @@ function addBonusPoints(hot_id, pts){
         bonus_points: pts
       },
       success: function(){
+        var verb = pointsVerb(pts);
         var totalPoints = $('#bonus_points').text();
         totalPoints = parseInt(totalPoints, 10);
         totalPoints = totalPoints + parseInt(pts, 10);
         $('#bonus_points').html(totalPoints);
         $('#done_activities').html(done_activities + hot_id.toString() + ',');
-        $().toastmessage('showSuccessToast', 'You earned ' + pts + ' ' + getPointsName(pts) + '!');
+        $().toastmessage('showSuccessToast', 'You ' + verb + ' ' + pts + ' ' + getPointsName(pts) + '!');
       }
     });
   }
@@ -135,7 +136,7 @@ function getClientBrowserSize(){
 function getPointsName(pts_qty){
   var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   var pointsName = 'points';
-  if(pts_qty > 1){
+  if(pts_qty > 1 || pts_qty < -1){
     $.ajax({
       type: 'POST',
       async: false,
@@ -228,7 +229,7 @@ function loadFrame(act_id, frm, pts){
     }
     // Adding points to db and toast
     showPts = function(){
-      if(fpoints > 0){
+      if(fpoints != 0){
         addBonusPoints(act_id, fpoints);
       }
     }
@@ -279,6 +280,22 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
     }
   }
   loadFrame(act_id, frame_address, award_points);
+}
+
+/*
+  Returns the verb according to the amount of points.
+  Returns:
+  - verb [earned - if positive] [lost - if negative]
+*/
+function pointsVerb(pts){
+  var verb = '';
+  if(pts > 0){
+    verb = 'earned';
+  }
+  else if(pts < 0){
+    verb = 'lost';
+  }
+  return verb;
 }
 
 function info(){
