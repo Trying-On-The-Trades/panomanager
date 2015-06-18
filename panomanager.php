@@ -88,6 +88,7 @@ add_action( 'admin_post_nopriv_get_points_name_plural', 'get_points_name_plural_
 add_action( 'admin_post_get_points_name_singular', 'get_points_name_singular_post' );
 add_action( 'admin_post_nopriv_get_points_name_singular', 'get_points_name_singular_post' );
 add_action( 'admin_post_update_points_info', 'set_points_info' );
+add_action( 'admin_post_update_initial_points', 'update_initial_points');
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
@@ -127,6 +128,7 @@ require_once("admin/domains.php");
 require_once("admin/new_domain.php");
 require_once("admin/edit_domain.php");
 require_once("admin/edit_points_info.php");
+require_once("admin/edit_initial_points.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

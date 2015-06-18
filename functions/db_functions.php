@@ -1159,6 +1159,15 @@ function get_points_multiplier(){
   return $points_multiplier;
 }
 
+function get_points_initial_bonus(){
+  global $wpdb;
+  $initial_points_table_name = get_points_initial_bonus_table_name();
+
+  $quantity = $wpdb->get_var("SELECT quantity FROM {$initial_points_table_name} WHERE id = 1 LIMIT 1");
+
+  return $quantity;
+}
+
 function add_points($user_id, $quantity){
     global $wpdb;
 
@@ -1302,7 +1311,7 @@ function update_purchase($id, $date, $user_id){
 
     $purchase_table = get_purchases_table_name();
 
-    $wpdb->update($purchase_table, array('date' => $date, 'user_id' => $user_id), 
+    $wpdb->update($purchase_table, array('date' => $date, 'user_id' => $user_id),
         array('id' => $user_id));
 }
 
@@ -1311,7 +1320,7 @@ function update_item_type($id, $name, $description){
 
     $item_type_table = get_item_types_table_name();
 
-    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description), 
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description),
         array('id' => $id));
 }
 
@@ -1320,7 +1329,7 @@ function update_item($id, $name, $description, $image, $price, $type_id){
 
     $item_table = get_items_table_name();
 
-    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description, 
-        'image' => $image, 'price' => $price, 'type_id' => $type_id), 
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description,
+        'image' => $image, 'price' => $price, 'type_id' => $type_id),
         array('id' => $id));
 }

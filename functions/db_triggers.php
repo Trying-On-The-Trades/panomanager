@@ -64,7 +64,6 @@ function procedure_create_new_wallet(){
   return $sql;
 }
 
-
 function trigger_drop($trigger_name){
   $sql = "DROP TRIGGER IF EXISTS " . $trigger_name . ";";
 
