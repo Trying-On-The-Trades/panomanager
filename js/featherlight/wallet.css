@@ -1,0 +1,31 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+
+html{
+
+}
+
+#wrapper{
+  font-family: 'Roboto', Helvetica, sans-serif;
+  width: 70%;
+  height: 60vh;
+  margin: 20vh auto 0;
+  border: 2px solid #147BB5;
+  text-align: center;
+  border-radius: 5%;
+  background-color: #DDDDDD;
+}
+
+h1, h2{
+  color: #FFFFFF;
+  text-shadow: 2px 2px 2px #147BB5;
+  /*text-shadow: -2px -2px -2px #147BB5;*/
+
+}
+
+#wrapper p{
+  position: relative;
+  color: #DDDDDD;
+  text-shadow: 2px 2px 2px #147BB5;
+  font-size: 2em;
+  top: -175px;
+}
