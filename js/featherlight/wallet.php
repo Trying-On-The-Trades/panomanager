@@ -4,6 +4,8 @@
    define('DB_PASS','wordpress');
    define('DB_NAME','wordpress');
 
+   $currency_class = 'pos';
+
    function database_connection()
    {
        return new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -23,6 +25,11 @@
        return $final['symbol'];
    }
 
+   $x =  get_currency_available(1);
+
+   if($x < 0){
+     $currency_class = 'neg';
+   }
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,7 +42,7 @@
       <h1>Wallet</h1>
       <h2>Your current balance is:</h2>
       <img src="./wallet-icon.png" alt="wallet icon" />
-      <p><?= get_currency_symbol(1) ?> <?= get_currency_available(1) ?></p>
+      <p class="<?= $currency_class ?>"><?= get_currency_symbol(1) ?> <?= get_currency_available(1) ?></p>
     </div>
   </body>
 </html>
