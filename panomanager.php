@@ -92,6 +92,7 @@ add_action( 'admin_post_update_initial_points', 'update_initial_points');
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
+register_uninstall_hook( __DIR__ . "/functions/uninstall.php", 'panno_uninstall' );
 
 // Version of the DB used
 define( 'PANO_DB_VERSION', '1.1.6' );

@@ -43,11 +43,13 @@ function panno_uninstall() {
   $wpdb->query( "DROP TABLE IF EXISTS $domain_table_name" );
   $wpdb->query( "DROP TABLE IF EXISTS $tool_table_name" );
 
+  echo "bbbbbbbbb";
+
   // Update the db version to 0 so the next time the plugin is run it will reinstall
   update_option( "panno_db_version", PANO_DB_VERSION );
 }
 
 // Hook is commented out so we don't lose data for now
-// register_uninstall_hook( __FILE__, 'panno_uninstall' );
+register_uninstall_hook( __FILE__, 'panno_uninstall' );
 
 // End of Uninstall
