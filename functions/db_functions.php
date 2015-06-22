@@ -5,9 +5,6 @@
 //				      Registration FUNCTIONS
 // ***********************************************************
 
-function register_db_triggers(){
-  trigger_bonus_points_to_wallet();
-}
 
 function get_schools(){
     global $wpdb;
@@ -491,6 +488,8 @@ function add_user_progress($user_id, $hotspot_id, $domain_id){
                                             ON wpup.`skill_id` = wph.`id`
                                             WHERE wpup.`id` = %d", $lastid));
 
+    regular_points_to_wallet($uid, $pano->points, $sid);
+
     // Return those points
     return $pano->points;
 }
@@ -512,6 +511,8 @@ function add_user_progress_with_bonus($user_id, $hotspot_id,  $domain_id, $bonus
                                            'domain_id'     => $tid,
                                            'bonus_points' => $bonus_points ),
                                     array( '%s', '%d' ) );
+
+    bonus_points_to_wallet($uid, $bonus_points);
 
     // Get the id of the last row
     $lastid = $wpdb->insert_id;
