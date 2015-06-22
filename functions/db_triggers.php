@@ -70,7 +70,7 @@ function check_create_new_wallet($user_id){
 
   $flag = $wpdb->query("SELECT 1 FROM {$wallet_table_name} WHERE user_id = {$user_id}");
   if($flag != 1){
-    $currency_qty = $wpdb->query("SELECT quantity FROM {$points_initial_bonus_table_name} LIMIT 1");
+    $currency_qty = $wpdb->get_var("SELECT quantity FROM {$points_initial_bonus_table_name} WHERE id = 1");
     $wpdb->insert($wallet_table_name, array('user_id' => $user_id, 'available_quantity' => $currency_qty));
   }
 
