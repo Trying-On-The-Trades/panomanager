@@ -68,8 +68,8 @@ function check_create_new_wallet($user_id){
   $wallet_table_name = get_wallet_table_name();
   $points_initial_bonus_table_name = get_points_initial_bonus_table_name();
 
-  $flag = $wpdb->query("SELECT 1 FROM {$wallet_table_name} WHERE user_id = {$user_id}");
-  if($flag != 1){
+  $flag = $wpdb->get_var("SELECT 1 FROM {$wallet_table_name} WHERE user_id = {$user_id}");
+  if(is_null($flag)){
     $currency_qty = $wpdb->get_var("SELECT quantity FROM {$points_initial_bonus_table_name} WHERE id = 1");
     $wpdb->insert($wallet_table_name, array('user_id' => $user_id, 'available_quantity' => $currency_qty));
   }
