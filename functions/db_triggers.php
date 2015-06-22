@@ -46,7 +46,7 @@ function bonus_points_to_wallet($user_id, $points){
   $total = $wpdb->get_var("SELECT available_currency FROM {$wallet_table_name} WHERE user_id = {$user_id}");
   $total += $points;
 
-  $wpdb->update($wallet_table_name, array('available_currency' => $total), array('user_id' -> $user_id));
+  $wpdb->update($wallet_table_name, array('available_currency' => $total), array('user_id' => $user_id));
 }
 
 //   $sql = "DELIMITER $$
