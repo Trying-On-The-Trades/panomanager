@@ -38,7 +38,6 @@ function regular_points_to_wallet($user_id, $skill_id){
 
 function bonus_points_to_wallet($user_id, $points){
   global $wpdb;
-  $bonus_points_table_name = get_user_skill_bonus_pts_table_name();
   $wallet_table_name = get_wallet_table_name();
 
   check_create_new_wallet($user_id);
@@ -72,7 +71,8 @@ function check_create_new_wallet($user_id){
   $flag = $wpdb->get_var("SELECT 1 FROM {$wallet_table_name} WHERE user_id = {$user_id}");
   if(is_null($flag)){
     $currency_qty = $wpdb->get_var("SELECT quantity FROM {$points_initial_bonus_table_name} WHERE id = 1");
-    $wpdb->insert($wallet_table_name, array('user_id' => $user_id, 'available_quantity' => $currency_qty));
+    $wpdb->insert($wallet_table_name, array('user_id' => $user_id, 'available_currency' => $currency_qty),
+        array('%d', '%d'));
   }
 
 }
