@@ -196,18 +196,17 @@ function create_sub_menus(){
 
 
 					// Create the sub menu item for editng domains
-		add_submenu_page(pano_menu,
-						"Points",
-						"Points",
+	 add_submenu_page("pano_menu",
+						"Points Name",
+						"Points Name",
 						"administrator",
 						"edit_points_info_settings",
 						"edit_points_info_settings_page");
 
-		add_submenu_page(null,
-						"Edit Points Info",
-						"Edit Points Info",
+		add_submenu_page("pano_menu",
+						"Initial Points",
+						"Initial Points",
 						"administrator",
-						"edit_points_info_settings",
-						"edit_points_info_settings_page");
-
+						"edit_initial_points_settings",
+						"edit_initial_points_settings_page");
 }

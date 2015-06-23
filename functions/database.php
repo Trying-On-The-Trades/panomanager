@@ -97,6 +97,59 @@ function get_points_info_table_name(){
   return $wpdb->prefix . "points_info";
 }
 
+function get_points_initial_bonus_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "points_initial_bonus";
+}
+
+function get_wallet_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_wallet";
+}
+
+function get_purchases_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_purchases";
+}
+
+function get_line_items_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_line_items";
+}
+
+function get_item_types_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_item_types";
+}
+
+function get_items_table_name(){
+  global $wpdb;
+  return $wpdb->prefix . "pano_items";
+}
+
+function build_points_initial_bonus_sql(){
+  global $wpdb;
+  $table_name = get_points_initial_bonus_table_name();
+
+  $sql = "DROP TABLE IF EXISTS " . $table_name . ";";
+
+  $wpdb->query($sql);
+
+  $sql = "CREATE TABLE " . $table_name . "(
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `quantity` int(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT '100',
+    PRIMARY KEY (`id`)
+  );";
+
+  $sql .= "INSERT INTO " . $table_name . "(
+    `quantity`
+  ) VALUES (
+    '100'
+  );";
+
+  return $sql;
+}
+
 function build_points_info_sql(){
   global $wpdb;
   $table_name = get_points_info_table_name();
@@ -384,4 +437,80 @@ function build_tools_sql(){
     );';
 
     return $sql;
+}
+
+function build_wallet_sql(){
+    $wallet_table = get_wallet_table_name();
+
+    $sql = "CREATE TABLE {$wallet_table} (
+     `id` int(10) NOT NULL AUTO_INCREMENT,
+     `user_id` bigint(20) unsigned NOT NULL,
+     `available_currency` int(11) NOT NULL,
+     PRIMARY KEY(`id`),
+     FOREIGN KEY (`user_id`) REFERENCES wp_users(`ID`)
+    );";
+
+    return $sql;
+}
+
+function build_purchases_sql(){
+  $purchases_table = get_purchases_table_name();
+
+  $sql = "CREATE TABLE {$purchases_table} (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `date` datetime,
+    `user_id` bigint(20) unsigned NOT NULL,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`user_id`) REFERENCES wp_users(`ID`)
+    );";
+
+  return $sql;
+}
+
+function build_line_items_sql(){
+  $line_items_table = get_line_items_table_name();
+  $items_table = get_items_table_name();
+  $purchases_table = get_purchases_table_name();
+
+  $sql = "CREATE TABLE {$line_items_table} (
+    `purchase_id` int(10) NOT NULL,
+    `item_id` int(10) NOT NULL,
+    `price` decimal(10, 2),
+    PRIMARY KEY (`purchase_id`, `item_id`),
+    FOREIGN KEY (`purchase_id`) REFERENCES {$purchases_table}(`id`),
+    FOREIGN KEY (`item_id`) REFERENCES {$items_table}(`id`)
+    );";
+
+  return $sql;
+}
+
+function build_items_sql(){
+  $items_table = get_items_table_name();
+  $item_types_table = get_item_types_table_name();
+
+  $sql = "CREATE TABLE {$items_table} (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `name` varchar(30),
+    `description` text,
+    `image` varchar(80),
+    `price`  decimal(10, 2),
+    `type_id` int(10) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`type_id`) REFERENCES {$item_types_table}(`id`)
+    );";
+
+  return $sql;
+}
+
+function build_item_types_sql(){
+  $item_types_table = get_item_types_table_name();
+
+  $sql = "CREATE TABLE {$item_types_table} (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `name` varchar(30),
+    `description` text,
+    PRIMARY KEY(`id`)
+    );";
+
+  return $sql;
 }

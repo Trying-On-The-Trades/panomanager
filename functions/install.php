@@ -31,6 +31,12 @@ function pano_install () {
     $ads_sql             = build_ads_sql();
     $ads_text_sql        = build_ads_text_sql();
     $points_info_sql     = build_points_info_sql();
+    $wallet_sql          = build_wallet_sql();
+    $purchases_sql       = build_purchases_sql();
+    $item_types_sql      = build_item_types_sql();
+    $items_sql           = build_items_sql();
+    $line_items_sql      = build_line_items_sql();
+    $points_initial_sql  = build_points_initial_bonus_sql();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -54,6 +60,12 @@ function pano_install () {
     dbDelta( $ads_sql            );
     dbDelta( $ads_text_sql       );
     dbDelta( $points_info_sql    );
+    dbDelta( $wallet_sql         );
+    dbDelta( $purchases_sql      );
+    dbDelta( $item_types_sql     );
+    dbDelta( $items_sql          );
+    dbDelta( $line_items_sql     );
+    dbDelta( $points_initial_sql );
 
     update_option( "pano_db_version", PANO_DB_VERSION );
     // create_first_row();
