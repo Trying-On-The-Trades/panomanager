@@ -939,3 +939,19 @@ function set_points_info(){
   }
 
 }
+
+function update_initial_points(){
+
+  if(isset($_POST['quantity'])){
+    $quantity = $_POST['quantity'];
+  }
+
+  $status = update_points_initial_bonus($quantity);
+
+  if($status){
+    wp_redirect( admin_url( 'admin.php?page=edit_initial_points_settings&settings-saved=true' ) );
+  } else {
+    wp_redirect( admin_url( 'admin.php?page=eedit_initial_points_settings&error=true' ) );
+  }
+
+}

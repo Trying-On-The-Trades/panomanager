@@ -27,6 +27,7 @@ require_once("functions/install.php");
 require_once("functions/uninstall.php");
 require_once("functions/menu.php");
 require_once("functions/js/js_functions.php");
+require_once("functions/db_triggers.php");
 
 // Create a shortcode for the handler
 add_shortcode("pano", "pano_handler");
@@ -83,14 +84,17 @@ add_action( 'admin_post_create_new_hotspot_ajax', 'process_new_hotspot_ajax' );
 add_action( 'admin_post_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_nopriv_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_get_hotspot_info', 'get_hotspot_info' );
+add_action( 'admin_post_nopriv_get_hotspot_info', 'get_hotspot_info' );
 add_action( 'admin_post_get_points_name_plural', 'get_points_name_plural_post' );
 add_action( 'admin_post_nopriv_get_points_name_plural', 'get_points_name_plural_post' );
 add_action( 'admin_post_get_points_name_singular', 'get_points_name_singular_post' );
 add_action( 'admin_post_nopriv_get_points_name_singular', 'get_points_name_singular_post' );
 add_action( 'admin_post_update_points_info', 'set_points_info' );
+add_action( 'admin_post_update_initial_points', 'update_initial_points');
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );
+register_uninstall_hook( __DIR__ . "/functions/uninstall.php", 'panno_uninstall' );
 
 // Version of the DB used
 define( 'PANO_DB_VERSION', '1.1.6' );
@@ -127,6 +131,7 @@ require_once("admin/domains.php");
 require_once("admin/new_domain.php");
 require_once("admin/edit_domain.php");
 require_once("admin/edit_points_info.php");
+require_once("admin/edit_initial_points.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");
