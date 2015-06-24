@@ -835,7 +835,7 @@ function build_bonus_points_callback_function(){
 }
 
 function build_new_hotspot_callback_function(){
-    $script  = "function add_new_hotspot(domain_id, mission_id, hotspot_description){\n";
+    $script  = "function add_new_hotspot(domain_id, mission_id, hotspot_description, hotspot_icon, x, y){\n";
     $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
 
     $script .= "$.ajax({\n";
@@ -844,9 +844,12 @@ function build_new_hotspot_callback_function(){
     $script .= "data: {action: 'create_new_hotspot_ajax',\n";
     $script .= "       mission_id: mission_id,\n";
     $script .= "       domain_id: domain_id,\n";
-    $script .= "       hotspot_description: hotspot_description},\n";
+    $script .= "       hotspot_description: hotspot_description,\n";
+    $script .= "       hotspot_icon: hotspot_icon,\n";
+    $script .= "       hotspot_x: x,\n";
+    $script .= "       hotspot_y: y},\n";
     $script .= "success: function(d){\n";
-    $script .= "        $().toastmessage('showSuccessToast', 'Success: ' + d );\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'Hotspot Added!');\n";
     $script .= "}\n";
     $script .= "});\n";
 

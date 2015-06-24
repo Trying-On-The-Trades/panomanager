@@ -513,13 +513,29 @@ function process_new_hotspot_ajax(){
 
     // Create a new hotspot using the post data
     $mission_id          = $_POST['mission_id'];
+    $hotspot_x           = $_POST['hotspot_x'];
+    $hotspot_y           = $_POST['hotspot_y'];
     $type_id             = '3';
     $hotspot_name        = 'FlashCard';
     $hotspot_menu_name   = '';
     $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_description']);
-    $hotspot_xml         = '';
-    $hotspot_action_xml  = '';
+    $hotspot_icon        = $_POST['hotspot_icon'];
+    $content_root = content_url();
+
+    if($hotspot_icon == 'true'){
+        $image = 'url="info.png"';
+    }else{
+        $image = "";
+    }
+
+    $hotspot_xml         = '<hotspot name="' . $hotspot_name . '" ' . $image .
+                            ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
+                            ' width="150" height="128" scale="0.425" zoom="true"'	.
+                            ' onclick="function_to_call"/>';
+    $hotspot_action_xml  = '<action name="function_to_call">' .
+                            'js(loadFrame(12, "../wp-content/plugins/vocabulary-plugin/wordpla/index.php?id=2", "bns"));' .
+                            '</action>';
     $hotspot_points      = '0';
     $hotspot_attempts    = '1';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
