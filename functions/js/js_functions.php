@@ -160,6 +160,7 @@ function add_nav_script($quest, $pano_id){
     $script .= redirect_pano();
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
+    $script .= build_new_hotspot_callback_function();
     $script .= build_login_button();
 
     $script .= "</script>";
@@ -825,6 +826,27 @@ function build_bonus_points_callback_function(){
     $script .= "    if(earned_points > 0){\n";
     $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
     $script .= "    }\n";
+    $script .= "}\n";
+    $script .= "});\n";
+
+    $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function build_new_hotspot_callback_function(){
+    $script  = "function add_new_hotspot(domain_id, mission_id, hotspot_description){\n";
+    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+
+    $script .= "$.ajax({\n";
+    $script .= "type: 'POST',\n";
+    $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "data: {action: 'create_new_hotspot_ajax',\n";
+    $script .= "       mission_id: mission_id,\n";
+    $script .= "       domain_id: domain_id,\n";
+    $script .= "       hotspot_description: hotspot_description},\n";
+    $script .= "success: function(d){\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'Success: ' + d );\n";
     $script .= "}\n";
     $script .= "});\n";
 

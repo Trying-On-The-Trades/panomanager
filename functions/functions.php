@@ -509,6 +509,31 @@ function process_new_hotspot(){
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
 
+function process_new_hotspot_ajax(){
+
+    // Create a new hotspot using the post data
+    $mission_id          = $_POST['mission_id'];
+    $type_id             = '3';
+    $hotspot_name        = 'FlashCard';
+    $hotspot_menu_name   = '';
+    $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_description']);
+    $hotspot_xml         = '';
+    $hotspot_action_xml  = '';
+    $hotspot_points      = '0';
+    $hotspot_attempts    = '1';
+    $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
+    $hotspot_modal_url   = '';
+    $menu_item           = '0';
+
+    // Get the id
+    $result = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
+
+    echo $result;
+
+    die();
+}
+
 function process_new_hotspot_type(){
 
     // Create a new hotspot using the post data
