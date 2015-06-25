@@ -526,16 +526,11 @@ function process_new_hotspot_ajax(){
     if($hotspot_icon == 'true'){
         $image = 'url="info.png"';
     }else{
-        $image = "";
+        $image = 'url="Blank.png"';
     }
 
-    $hotspot_xml         = '<hotspot name="' . $hotspot_name . '" ' . $image .
-                            ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
-                            ' width="150" height="128" scale="0.425" zoom="true"'	.
-                            ' onclick="function_to_call"/>';
-    $hotspot_action_xml  = '<action name="function_to_call">' .
-                            'js(loadFrame(12, "../wp-content/plugins/vocabulary-plugin/wordpla/index.php?id=2", "bns"));' .
-                            '</action>';
+    $hotspot_xml = "";
+    $hotspot_action_xml = "";
     $hotspot_points      = '0';
     $hotspot_attempts    = '1';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
@@ -543,9 +538,20 @@ function process_new_hotspot_ajax(){
     $menu_item           = '0';
 
     // Get the id
-    $result = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
+    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
-    echo $result;
+    $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
+        ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
+        ' width="150" height="128" scale="0.425" zoom="true"'	.
+        ' onclick="function_' . $hotspot_id . '"/>';
+    $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+        'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/wordpla/index.php?id=2", "bns"));' .
+        '</action>';
+
+    update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
+        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+
+    echo $hotspot_id;
 
     die();
 }
