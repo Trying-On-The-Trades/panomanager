@@ -310,7 +310,7 @@ function get_leaderboard_div(){
 }
 
 function build_leader_launch(){
-    $script = "function t()\n";
+    $script = "function leaderLaunch()\n";
     $script .= "{\n";
 
     $script .= "$.ajax({\n";
