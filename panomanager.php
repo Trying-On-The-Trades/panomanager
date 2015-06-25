@@ -83,6 +83,7 @@ add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_
 add_action( 'admin_post_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_nopriv_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_get_hotspot_info', 'get_hotspot_info' );
+add_action( 'admin_post_nopriv_get_hotspot_info', 'get_hotspot_info' );
 add_action( 'admin_post_get_points_name_plural', 'get_points_name_plural_post' );
 add_action( 'admin_post_nopriv_get_points_name_plural', 'get_points_name_plural_post' );
 add_action( 'admin_post_get_points_name_singular', 'get_points_name_singular_post' );

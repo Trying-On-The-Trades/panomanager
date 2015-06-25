@@ -64,6 +64,7 @@ function bonus_points_to_wallet($user_id, $points){
 // }
 
 function check_create_new_wallet($user_id){
+
   global $wpdb;
   $wallet_table_name = get_wallet_table_name();
   $points_initial_bonus_table_name = get_points_initial_bonus_table_name();

@@ -299,16 +299,17 @@ function pointsVerb(pts){
 }
 
 function info(){
-  $.ajax(
+  var ret = $.ajax(
     {
+      async : false,
       method: 'POST',
       url : wordpress_admin_url(),
       data : {
         action : 'get_hotspot_info',
         hotspot_id : last_hostpot
-      },
-      complete: function(data){
-        $("#info_hotspot").easyconfirm({locale: { text: data.responseText, button: ['Got it!']}});
       }
     })
+  console.log(ret);
+  return ret.responseText;
 }
+

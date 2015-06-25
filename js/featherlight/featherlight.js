@@ -135,7 +135,7 @@
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							'<span id="info_hotspot" onclick="info()" class="'+css+'-info-icon '+ self.namespace + '-info">',
+							'<span id="info_hotspot" class="'+css+'-info-icon '+ self.namespace + '-info">',
 								self.infoIcon,
 							'</span>',
 							'<span class="'+css+'-close-icon '+ self.namespace + '-close">',
@@ -143,7 +143,7 @@
 							'</span>',
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
-					'</div>'].join('')),
+					'</div><script>$("#info_hotspot").easyconfirm({ locale: { text: info() , button: ["Got it!"]}});</script>'].join('')),
 				closeButtonSelector = '.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : '');
 
 			self.$instance = $background.clone().addClass(self.variant); /* clone DOM for the background, wrapper and the close button */

@@ -540,8 +540,14 @@ function process_new_domain(){
 }
 
 function process_new_item_type(){
+
     $name = $_POST['item_type_name'];
+
     $description = $_POST['item_type_description'];
+
+    create_item_type($name, $description);
+
+    wp_redirect() admin_url( 'admin.php?page=item_type_settings');
 }
 
 // ***********************************************************
@@ -687,6 +693,23 @@ function process_edit_domain(){
     }
 }
 
+function process_edit_item_type(){
+
+    $item_type_id = $_POST['item_type_id'];
+
+    $item_type_name = $_POST['item_type_name'];
+
+    $item_type_description = $_POST['item_type_description'];
+
+    $return = update_type_type($item_type_id, $item_type_name, $item_type_description);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=item_types_settings&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=item_types_settings&error') );
+    }
+}
+
 // ***********************************************************
 //			   Deleting Panos
 // ***********************************************************
@@ -760,6 +783,15 @@ function process_delete_domain(){
     delete_domain($domain_id);
 
     wp_redirect( admin_url( 'admin.php?page=pano_domain_settings') );
+}
+
+function process_delete_item_type(){
+
+    $item_type_id = $_POST['item_type_id'];
+
+    delete_item_type($item_type_id);
+
+    wp_redirect( admin_url( 'admin.php?page=item_types_settings') );
 }
 
 // ***********************************************************
