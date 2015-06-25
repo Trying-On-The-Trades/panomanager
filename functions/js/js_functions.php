@@ -676,36 +676,47 @@ function build_leaderboard_div(){
   $board .= '  <thead>';
   $board .= '    <tr>';
   $board .= '      <th>Name</th>';
-  $board .= '      <th>Mission ' . get_points_name_plural(1) . '</th>';
-  $board .= '      <th>Bonus ' . get_points_name_plural(1) . '</th>';
+  $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
   $board .= '    </tr>';
   $board .= '  </thead>';
   $board .= '  <tbody>';
 
   $users = get_all_users();
+
+  $leaderboard_unsorted = array();
+  $leaderboard_sorted = array();
   foreach($users as $user){
-    $user_points = 0;
-    $user_points += get_regular_points_for_mission_tab($user->id);
-    $user_points += get_bonus_points_for_mission_tab($user->id);
-    if($user_points > 0){
-      $board .= '    <tr>';
-      $board .= '      <td>' . get_user_name($user->id) . '</td>';
-      $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
-      $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
-      $board .= '    </tr>';
-    }
+    $entry = array();
+    $total_points = 0;
+    $total_points += get_regular_points_for_mission_tab($user->id);
+    $total_points += get_bonus_points_for_mission_tab($user->id);
+    $user_name = get_user_name($user->id);
+    array_push($entry, $user_name);
+    array_push($entry, $total_points);
+    array_push($leaderboard_unsorted, $entry);
   }
 
+  // while(count($leaderboard_unsorted) > 0){
+  //   $biggest = $leaderboard_unsorted[0][1];
+  //   $index = 0;
+  //   for($i = 0; $i < count($leaderboard_unsorted); $i++){
+  //     if($leaderboard_unsorted[i][1] > $biggest){
+  //       $biggest = $leaderboard_unsorted[i][1];
+  //       $index = $i;
+  //     }
+  //   }
+  //   array_push($leaderboard_sorted, $leaderboard_unsorted[$index]);
+  //   array_splice($leaderboard_unsorted, $index, 1);
+  // }
+
+  for($i = 0; $i < count($leaderboard_unsorted); $i++){
+      $board .= '    <tr>';
+      $board .= '      <td>' . $leaderboard_unsorted[$i][0] . '</td>';
+      $board .= '      <td>' . $leaderboard_unsorted[$i][1] . '</td>';
+      $board .= '    </tr>';
+  }
   $board .= '  </tbody>';
   $board .= '</table>';
-
-  // Create the table for schools
-  // $board .= build_school_table();
-
-  // Create the table for individuals
-  // $board .= build_individual_table();
-
-  // Close the modal
   $board .= '</div>';
   return $board;
 }
