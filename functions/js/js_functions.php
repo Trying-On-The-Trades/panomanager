@@ -684,11 +684,16 @@ function build_leaderboard_div(){
 
   $users = get_all_users();
   foreach($users as $user){
-    $board .= '    <tr>';
-    $board .= '      <td>' . get_user_name($user->id) . '</td>';
-    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
-    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
-    $board .= '    </tr>';
+    $user_points = 0;
+    $user_points += get_regular_points_for_mission_tab($user->id);
+    $user_points += get_bonus_points_for_mission_tab($user->id);
+    if($user_points > 0){
+      $board .= '    <tr>';
+      $board .= '      <td>' . get_user_name($user->id) . '</td>';
+      $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
+      $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
+      $board .= '    </tr>';
+    }
   }
 
   $board .= '  </tbody>';
