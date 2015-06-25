@@ -156,6 +156,11 @@ function build_domain($domain_id = 1){
     return $domain;
 }
 
+function build_item_types($item_type_id = 1){
+    $item_type = new item_type($item_type_id);
+    return $item_type;
+}
+
 // Get the user's prefered language
 function get_user_language(){
 	// placeholder
@@ -532,6 +537,11 @@ function process_new_domain(){
     create_domain($domain_name);
 
     wp_redirect( admin_url( 'admin.php?page=pano_domain_settings' ) );
+}
+
+function process_new_item_type(){
+    $name = $_POST['item_type_name'];
+    $description = $_POST['item_type_description'];
 }
 
 // ***********************************************************

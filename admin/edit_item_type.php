@@ -10,7 +10,7 @@ function edit_item_type_settings_page() {
     }
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Create a new item_type!</h2>
+<h2>Create a new item type!</h2>
 <hr>
 <style type="text/css">
 	#wpfooter{
@@ -28,7 +28,7 @@ function edit_item_type_settings_page() {
 	}
 </style>
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
-    <div class="updated"><p>Quest updated successfully.</p></div>
+    <div class="updated"><p>Item type updated successfully.</p></div>
 <?php elseif ( isset( $_GET[ 'error' ] ) ): ?>
     <div class="error"><p>Error updating quest.</p></div>
 <?php endif; ?>
