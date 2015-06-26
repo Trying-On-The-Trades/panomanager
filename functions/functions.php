@@ -516,12 +516,12 @@ function process_new_hotspot_ajax(){
     $hotspot_x           = $_POST['hotspot_x'];
     $hotspot_y           = $_POST['hotspot_y'];
     $type_id             = '3';
-    $hotspot_name        = 'FlashCard';
+    $hotspot_name        = 'SpotGame';
     $hotspot_menu_name   = '';
     $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_description']);
     $hotspot_icon        = $_POST['hotspot_icon'];
-    $content_root = content_url();
+    $game_type           = $_POST['game_type'];
 
     if($hotspot_icon == 'true'){
         $image = 'url="info.png"';
@@ -537,6 +537,8 @@ function process_new_hotspot_ajax(){
     $hotspot_modal_url   = '';
     $menu_item           = '0';
 
+    $deck_id = $_POST['deck_id'];
+
     // Get the id
     $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
@@ -545,7 +547,7 @@ function process_new_hotspot_ajax(){
         ' width="150" height="128" scale="0.425" zoom="true"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
     $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-        'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/wordpla/index.php?id=2", "bns"));' .
+        'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
         '</action>';
 
     update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
