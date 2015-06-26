@@ -669,12 +669,15 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
-  $board = '<div class="white-popup">';
-  $board .= '<h2>Leaderboard</h2>';
+  $board = '<div id="leaderboard" class="white-popup">';
 
   $board .= '<table>';
   $board .= '  <thead>';
   $board .= '    <tr>';
+  $board .= '      <th colspan="3" class="table-title">Leaderboard</th>';
+  $board .= '    </tr>';
+  $board .= '    <tr>';
+  $board .= '      <th>#</th>';
   $board .= '      <th>Name</th>';
   $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
   $board .= '    </tr>';
@@ -709,11 +712,16 @@ function build_leaderboard_div(){
   //   array_splice($leaderboard_unsorted, $index, 1);
   // }
 
+  $pos = 1;
   for($i = 0; $i < count($leaderboard_unsorted); $i++){
+    if($leaderboard_unsorted[$i][1] > 0){
       $board .= '    <tr>';
+      $board .= '      <td>' . $pos . '</td>';
       $board .= '      <td>' . $leaderboard_unsorted[$i][0] . '</td>';
       $board .= '      <td>' . $leaderboard_unsorted[$i][1] . '</td>';
       $board .= '    </tr>';
+      $pos++;
+    }
   }
   $board .= '  </tbody>';
   $board .= '</table>';
