@@ -70,6 +70,10 @@ add_action( 'admin_post_create_new_domain', 'process_new_domain' );
 add_action( 'admin_post_edit_domain', 'process_edit_domain' );
 add_action( 'admin_post_delete_domain', 'process_delete_domain' );
 
+add_action( 'admin_post_create_new_item_type', 'process_new_item_type' );
+add_action( 'admin_post_edit_item_type', 'process_edit_item_type');
+add_action( 'admin_post_delete_item_type', 'process_delete_item_type');
+
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
@@ -105,6 +109,11 @@ require_once("includes/mission.php");
 require_once("includes/hotspot.php");
 require_once("includes/hotspotType.php");
 require_once("includes/domain.php");
+require_once("includes/wallet.php");
+require_once("includes/purchase.php");
+require_once("includes/item_type.php");
+require_once("includes/item.php");
+require_once("includes/line_item.php");
 
 // Require the admin pages
 require_once("admin/admin_page.php");
@@ -131,6 +140,9 @@ require_once("admin/new_domain.php");
 require_once("admin/edit_domain.php");
 require_once("admin/edit_points_info.php");
 require_once("admin/edit_initial_points.php");
+require_once("admin/item_types.php");
+require_once("admin/new_item_type.php");
+require_once("admin/edit_item_type.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");
