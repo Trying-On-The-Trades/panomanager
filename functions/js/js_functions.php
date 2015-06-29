@@ -669,38 +669,50 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
-  $board = '<div class="white-popup">';
-  $board .= '<h2>Leaderboard</h2>';
+  $board = '<div id="leaderboard" class="white-popup">';
 
   $board .= '<table>';
   $board .= '  <thead>';
   $board .= '    <tr>';
+  $board .= '      <th colspan="3" class="table-title">Leaderboard</th>';
+  $board .= '    </tr>';
+  $board .= '    <tr>';
+  $board .= '      <th>#</th>';
   $board .= '      <th>Name</th>';
-  $board .= '      <th>Mission ' . get_points_name_plural(1) . '</th>';
-  $board .= '      <th>Bonus ' . get_points_name_plural(1) . '</th>';
+  $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
   $board .= '    </tr>';
   $board .= '  </thead>';
   $board .= '  <tbody>';
 
   $users = get_all_users();
+
+  $names = array();
+  $scores = array();
   foreach($users as $user){
-    $board .= '    <tr>';
-    $board .= '      <td>' . get_user_name($user->id) . '</td>';
-    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
-    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
-    $board .= '    </tr>';
+    $total_points = 0;
+    $total_points += get_regular_points_for_mission_tab($user->id);
+    $total_points += get_bonus_points_for_mission_tab($user->id);
+    $user_name = get_user_name($user->id);
+    array_push($names, $user_name);
+    array_push($scores, $total_points);
+  }
+
+  array_multisort($scores, SORT_DESC, $names);
+
+  $pos = 1;
+  for($i = 0; $i < count($scores); $i++){
+    if(($scores[$i] > 0) && ($pos < 11)){
+      $board .= '    <tr>';
+      $board .= '      <td>' . $pos . '</td>';
+      $board .= '      <td>' . $names[$i] . '</td>';
+      $board .= '      <td>' . $scores[$i] . '</td>';
+      $board .= '    </tr>';
+      $pos++;
+    }
   }
 
   $board .= '  </tbody>';
   $board .= '</table>';
-
-  // Create the table for schools
-  // $board .= build_school_table();
-
-  // Create the table for individuals
-  // $board .= build_individual_table();
-
-  // Close the modal
   $board .= '</div>';
   return $board;
 }
