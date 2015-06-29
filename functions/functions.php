@@ -532,7 +532,7 @@ function process_new_hotspot_ajax(){
     $hotspot_xml = "";
     $hotspot_action_xml = "";
     $hotspot_points      = '0';
-    $hotspot_attempts    = '1';
+    $hotspot_attempts    = '0';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
     $hotspot_modal_url   = '';
     $menu_item           = '0';
