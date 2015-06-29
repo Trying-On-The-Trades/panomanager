@@ -547,7 +547,7 @@ function process_new_item_type(){
 
     create_item_type($name, $description);
 
-    wp_redirect() admin_url( 'admin.php?page=item_type_settings');
+    wp_redirect( admin_url( 'admin.php?page=item_type_settings&settings-saved'));
 }
 
 // ***********************************************************
