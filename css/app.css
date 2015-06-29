@@ -9,13 +9,13 @@
 }
 
 #leaderboard table tr:nth-child(odd) td{
-  background-color: #147BB5;
-  color: #FFF;
+  background-color: #6FB1D6;
+  color: #000;
 }
 
 #leaderboard table tr:nth-child(even) td{
-  background-color: #FFF;
-  color: #147BB5;
+  background-color: #DDD;
+  color: #000;
 }
 
 #leaderboard table th{

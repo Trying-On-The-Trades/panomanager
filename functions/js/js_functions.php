@@ -686,43 +686,31 @@ function build_leaderboard_div(){
 
   $users = get_all_users();
 
-  $leaderboard_unsorted = array();
-  $leaderboard_sorted = array();
+  $names = array();
+  $scores = array();
   foreach($users as $user){
-    $entry = array();
     $total_points = 0;
     $total_points += get_regular_points_for_mission_tab($user->id);
     $total_points += get_bonus_points_for_mission_tab($user->id);
     $user_name = get_user_name($user->id);
-    array_push($entry, $user_name);
-    array_push($entry, $total_points);
-    array_push($leaderboard_unsorted, $entry);
+    array_push($names, $user_name);
+    array_push($scores, $total_points);
   }
 
-  // while(count($leaderboard_unsorted) > 0){
-  //   $biggest = $leaderboard_unsorted[0][1];
-  //   $index = 0;
-  //   for($i = 0; $i < count($leaderboard_unsorted); $i++){
-  //     if($leaderboard_unsorted[i][1] > $biggest){
-  //       $biggest = $leaderboard_unsorted[i][1];
-  //       $index = $i;
-  //     }
-  //   }
-  //   array_push($leaderboard_sorted, $leaderboard_unsorted[$index]);
-  //   array_splice($leaderboard_unsorted, $index, 1);
-  // }
+  array_multisort($scores, SORT_DESC, $names);
 
   $pos = 1;
-  for($i = 0; $i < count($leaderboard_unsorted); $i++){
-    if($leaderboard_unsorted[$i][1] > 0){
+  for($i = 0; $i < count($scores); $i++){
+    if(($scores[$i] > 0) && ($pos < 11)){
       $board .= '    <tr>';
       $board .= '      <td>' . $pos . '</td>';
-      $board .= '      <td>' . $leaderboard_unsorted[$i][0] . '</td>';
-      $board .= '      <td>' . $leaderboard_unsorted[$i][1] . '</td>';
+      $board .= '      <td>' . $names[$i] . '</td>';
+      $board .= '      <td>' . $scores[$i] . '</td>';
       $board .= '    </tr>';
       $pos++;
     }
   }
+
   $board .= '  </tbody>';
   $board .= '</table>';
   $board .= '</div>';
