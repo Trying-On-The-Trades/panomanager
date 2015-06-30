@@ -182,6 +182,7 @@ function loadAjax(htm){
   - frm (Frame address)
   - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
+last_hostpot = 0;
 function loadFrame(act_id, frm, pts){
 
     /* shame */

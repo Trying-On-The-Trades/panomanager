@@ -974,6 +974,28 @@ function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name
     return $wpdb->insert_id;
 }
 
+function create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item){
+    global $wpdb;
+    $hotspot_table_name = get_hotspot_table_name();
+
+    // Insert the pano
+    $wpdb->insert( $hotspot_table_name, array( 'mission_id'  => $mission_id,
+        'type_id'     => $type_id,
+        'menu_item'   =>  $menu_item,
+        'name'        => $hotspot_name,
+        'menu_name'   => $hotspot_menu_name,
+        'description' => $hotspot_description,
+        'hotspot_info' => $hotspot_info,
+        'hotspot_xml' => $hotspot_xml,
+        'action_xml'  => $hotspot_action_xml,
+        'points'      => $hotspot_points,
+        'attempts'    => $hotspot_attempts,
+        'domain_id'    => $hotspot_domain_id,
+        'modal_url'   => $hotspot_modal_url,));
+
+    return $wpdb->insert_id;
+}
+
 function create_hotspot_type($hotspot_type_name, $hotspot_type_description, $hotspot_type_xml, $hotspot_type_action_xml){
     global $wpdb;
     $hotspot_type_table_name = get_type_table_name();

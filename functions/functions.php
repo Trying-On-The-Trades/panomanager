@@ -514,6 +514,55 @@ function process_new_hotspot(){
     wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings' ) );
 }
 
+function process_new_hotspot_ajax(){
+
+    // Create a new hotspot using the post data
+    $mission_id          = $_POST['mission_id'];
+    $hotspot_x           = $_POST['hotspot_x'];
+    $hotspot_y           = $_POST['hotspot_y'];
+    $type_id             = '3';
+    $hotspot_name        = 'SpotGame';
+    $hotspot_menu_name   = '';
+    $hotspot_description = trim($_POST['hotspot_description']);
+    $hotspot_info        = trim($_POST['hotspot_description']);
+    $hotspot_icon        = $_POST['hotspot_icon'];
+    $game_type           = $_POST['game_type'];
+
+    if($hotspot_icon == 'true'){
+        $image = 'url="info.png"';
+    }else{
+        $image = 'url="Blank.png"';
+    }
+
+    $hotspot_xml = "";
+    $hotspot_action_xml = "";
+    $hotspot_points      = '0';
+    $hotspot_attempts    = '0';
+    $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
+    $hotspot_modal_url   = '';
+    $menu_item           = '0';
+
+    $deck_id = $_POST['deck_id'];
+
+    // Get the id
+    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
+
+    $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
+        ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
+        ' width="150" height="128" scale="0.425" zoom="true"'	.
+        ' onclick="function_' . $hotspot_id . '"/>';
+    $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+        'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
+        '</action>';
+
+    update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
+        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+
+    echo $hotspot_id;
+
+    die();
+}
+
 function process_new_hotspot_type(){
 
     // Create a new hotspot using the post data

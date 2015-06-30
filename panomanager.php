@@ -84,6 +84,7 @@ add_action( 'admin_post_nopriv_get_leaderboard_div', 'get_leaderboard_div');
 add_action( 'admin_post_check_user_progress', 'check_user_progress_ajax' );
 add_action( 'admin_post_update_progress', 'update_pano_user_progress' );
 add_action( 'admin_post_update_progress_with_bonus', 'update_pano_user_progress_with_bonus' );
+add_action( 'admin_post_create_new_hotspot_ajax', 'process_new_hotspot_ajax' );
 add_action( 'admin_post_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_nopriv_allow_new_attempt', 'allow_new_attempt' );
 add_action( 'admin_post_get_hotspot_info', 'get_hotspot_info' );
