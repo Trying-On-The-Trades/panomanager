@@ -34,7 +34,7 @@
        return $final['symbol'];
    }
 
-   $x =  get_currency_available(1);
+   $x =  get_currency_available($user);
 
    if($x < 0){
      $currency_class = 'neg';
