@@ -1,10 +1,19 @@
 <?php
-    define('DB_HOST','localhost');
-   define('DB_USER','root');
-   define('DB_PASS','root');
-   define('DB_NAME','wordpress');
+    define('DB_HOST','10.132.18.49');
+    define('DB_USER','dev1_usr');
+    define('DB_PASS','bsd_dev_2015');
+    define('DB_NAME','dev1');
 
    $currency_class = 'pos';
+
+   // $user = get_current_user();
+   // $user = $user->ID;
+
+  require_once('../../../../../wp-config.php');
+  require_once('../../../../../wp-includes/wp-db.php');
+  require_once('../../../../../wp-includes/pluggable.php');
+
+   $user = wp_get_current_user()->ID;
 
    function database_connection()
    {
@@ -25,11 +34,14 @@
        return $final['symbol'];
    }
 
-   $x =  get_currency_available(1);
+   $x =  get_currency_available($user);
 
    if($x < 0){
      $currency_class = 'neg';
    }
+
+   $symbol = get_currency_symbol($user);
+   $currency = get_currency_available($user);
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,7 +54,7 @@
       <h1>Wallet</h1>
       <h2>Your current balance is:</h2>
       <img src="./wallet-icon.png" alt="wallet icon" />
-      <p class="<?= $currency_class ?>"><?= get_currency_symbol(1) ?> <?= get_currency_available(1) ?></p>
+      <p class="<?= $currency_class ?>"><?= $symbol ?> <?= $currency ?></p>
     </div>
   </body>
 </html>
