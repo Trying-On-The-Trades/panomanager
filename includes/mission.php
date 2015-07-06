@@ -9,7 +9,7 @@ class mission{
                   $hotspots = array(),
 		  $exists   = 0;
 	
-	function __construct($id = 1){
+	function __construct($id){
 
 		// Get the Quest (Skill) based on the id
 		if (is_numeric($id)){
