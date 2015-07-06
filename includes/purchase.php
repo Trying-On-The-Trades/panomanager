@@ -1,7 +1,7 @@
 <?php
 
 class purchase{
-  protected $id, $date, $user_id
+  protected $id, $date, $user_id;
 
   function __construct($id){
     if(is_numeric($id)){

@@ -160,6 +160,7 @@ function add_nav_script($quest, $pano_id){
     $script .= redirect_pano();
     $script .= build_points_callback_function();
     $script .= build_bonus_points_callback_function();
+    $script .= build_new_hotspot_callback_function();
     $script .= build_login_button();
 
     $script .= "</script>";
@@ -312,7 +313,7 @@ function get_leaderboard_div(){
 }
 
 function build_leader_launch(){
-    $script = "function t()\n";
+    $script = "function leaderLaunch()\n";
     $script .= "{\n";
 
     $script .= "$.ajax({\n";
@@ -671,38 +672,50 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
-  $board = '<div class="white-popup">';
-  $board .= '<h2>Leaderboard</h2>';
+  $board = '<div id="leaderboard" class="white-popup">';
 
   $board .= '<table>';
   $board .= '  <thead>';
   $board .= '    <tr>';
+  $board .= '      <th colspan="3" class="table-title">Leaderboard</th>';
+  $board .= '    </tr>';
+  $board .= '    <tr>';
+  $board .= '      <th>#</th>';
   $board .= '      <th>Name</th>';
-  $board .= '      <th>Mission ' . get_points_name_plural(1) . '</th>';
-  $board .= '      <th>Bonus ' . get_points_name_plural(1) . '</th>';
+  $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
   $board .= '    </tr>';
   $board .= '  </thead>';
   $board .= '  <tbody>';
 
   $users = get_all_users();
+
+  $names = array();
+  $scores = array();
   foreach($users as $user){
-    $board .= '    <tr>';
-    $board .= '      <td>' . get_user_name($user->id) . '</td>';
-    $board .= '      <td>' . get_regular_points_for_mission_tab($user->id) . '</td>';
-    $board .= '      <td>' . get_bonus_points_for_mission_tab($user->id) . '</td>';
-    $board .= '    </tr>';
+    $total_points = 0;
+    $total_points += get_regular_points_for_mission_tab($user->id);
+    $total_points += get_bonus_points_for_mission_tab($user->id);
+    $user_name = get_user_name($user->id);
+    array_push($names, $user_name);
+    array_push($scores, $total_points);
+  }
+
+  array_multisort($scores, SORT_DESC, $names);
+
+  $pos = 1;
+  for($i = 0; $i < count($scores); $i++){
+    if(($scores[$i] > 0) && ($pos < 11)){
+      $board .= '    <tr>';
+      $board .= '      <td>' . $pos . '</td>';
+      $board .= '      <td>' . $names[$i] . '</td>';
+      $board .= '      <td>' . $scores[$i] . '</td>';
+      $board .= '    </tr>';
+      $pos++;
+    }
   }
 
   $board .= '  </tbody>';
   $board .= '</table>';
-
-  // Create the table for schools
-  // $board .= build_school_table();
-
-  // Create the table for individuals
-  // $board .= build_individual_table();
-
-  // Close the modal
   $board .= '</div>';
   return $board;
 }
@@ -827,6 +840,30 @@ function build_bonus_points_callback_function(){
     $script .= "    if(earned_points > 0){\n";
     $script .= "        $().toastmessage('showSuccessToast', 'You earned ' + d + ' points!');\n";
     $script .= "    }\n";
+    $script .= "}\n";
+    $script .= "});\n";
+
+    $script .= "console.log(id);\n";
+    $script .= "}\n";
+    return $script;
+}
+
+function build_new_hotspot_callback_function(){
+    $script  = "function add_new_hotspot(domain_id, mission_id, hotspot_description, hotspot_icon, x, y){\n";
+    $script .= "var points = parseInt($('#displayed_points').attr('data-points'));\n";
+
+    $script .= "$.ajax({\n";
+    $script .= "type: 'POST',\n";
+    $script .= "url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "data: {action: 'create_new_hotspot_ajax',\n";
+    $script .= "       mission_id: mission_id,\n";
+    $script .= "       domain_id: domain_id,\n";
+    $script .= "       hotspot_description: hotspot_description,\n";
+    $script .= "       hotspot_icon: hotspot_icon,\n";
+    $script .= "       hotspot_x: x,\n";
+    $script .= "       hotspot_y: y},\n";
+    $script .= "success: function(d){\n";
+    $script .= "        $().toastmessage('showSuccessToast', 'Hotspot Added!');\n";
     $script .= "}\n";
     $script .= "});\n";
 
