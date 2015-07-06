@@ -4,7 +4,7 @@
 function pano_settings_page() {
   
     $panos = get_panos();
-
+    echo var_dump($panos);
     // Create urls
     $semantic      = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $new_pano_url  = admin_url() . "admin.php?page=new_pano_settings";
