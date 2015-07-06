@@ -20,7 +20,7 @@ function pano_handler($incomingfrompost) {
 // function that can be called from a page template
 function load_pano($pano_id){
 
-    $id = 1;
+    $id = $pano_id;
 
     // Check if the user is aloud to see it
     if(check_user_progress($pano_id)){

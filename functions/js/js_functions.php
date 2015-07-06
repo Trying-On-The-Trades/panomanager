@@ -172,6 +172,7 @@ function add_nav_script($quest, $pano_id){
 function build_names_array(){
     $allowed_panos = list_allowed_panos(get_current_user_id());
 
+
     $script =  "var panoArray = Array(";
 
     for ($i = 0; $i < count($allowed_panos); $i++) {
@@ -208,6 +209,7 @@ function build_ids_array(){
     }
 
     $script .= ");\n";
+
     return $script;
 }
 

@@ -59,7 +59,7 @@ function get_panos(){
     $panos = $wpdb->get_results(
             "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " . "wppt.pano_id = wpp.id " .
-            "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
+            "ORDER BY wpp.id ASC");
 
     return $panos;
 }
