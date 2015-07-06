@@ -521,11 +521,12 @@ function process_new_hotspot_ajax(){
     $hotspot_x           = $_POST['hotspot_x'];
     $hotspot_y           = $_POST['hotspot_y'];
     $type_id             = '3';
-    $hotspot_name        = 'SpotGame';
-    $hotspot_menu_name   = '';
+    $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_menu_name   = $_POST['hotspot_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_description']);
     $hotspot_icon        = $_POST['hotspot_icon'];
+    $hotspot_menu        = $_POST['hotspot_menu'];
     $game_type           = $_POST['game_type'];
 
     if($hotspot_icon == 'true'){
@@ -534,13 +535,18 @@ function process_new_hotspot_ajax(){
         $image = 'url="Blank.png"';
     }
 
+    if($hotspot_menu == 'true'){
+        $menu_item = '1';
+    }else{
+        $menu_item = '0';
+    }
+
     $hotspot_xml = "";
     $hotspot_action_xml = "";
-    $hotspot_points      = '0';
+    $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = '0';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
     $hotspot_modal_url   = '';
-    $menu_item           = '0';
 
     $deck_id = $_POST['deck_id'];
 
