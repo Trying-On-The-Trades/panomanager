@@ -209,8 +209,8 @@ function add_pano_hotspots($xml_object, $quest, $pano_id){
     $dom_sxe = $dom->appendChild($new);
     
     // Get the child node of scene
-    $scene = $dom->getElementsByTagName('scene')->item(0);
-    $first_action = $dom->getElementsByTagName('action')->item(0);
+    $scene = $dom->getElementsByTagName('scene')->item($pano_id - 1);
+    $first_action = $dom->getElementsByTagName('action')->item($pano_id - 1);
     // Loop through and append the hotspots as dom objects
     foreach ($hotspots as $hs) {
         $new_dom = dom_import_simplexml($hs);

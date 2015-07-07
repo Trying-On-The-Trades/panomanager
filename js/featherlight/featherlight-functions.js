@@ -182,6 +182,7 @@ function loadAjax(htm){
   - frm (Frame address)
   - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
+last_hostpot = 0;
 function loadFrame(act_id, frm, pts){
 
     /* shame */
@@ -248,6 +249,11 @@ function loadImage(img){
   $.featherlight(img, {type: 'image'});
 }
 
+function loadMessage(message){
+
+  $.featherlight("<p style=\"white-space: pre;\">           " + message + "</p>", null, false);
+}
+
 /*
   Opens a pop-up with an Oppia Exploration.
   If you want to save your activity points, set the award_points parameter to true.
@@ -309,7 +315,7 @@ function info(){
         hotspot_id : last_hostpot
       }
     })
-  console.log(ret);
+  //console.log(ret);
   return ret.responseText;
 }
 

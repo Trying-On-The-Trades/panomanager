@@ -209,4 +209,25 @@ function create_sub_menus(){
 						"administrator",
 						"edit_initial_points_settings",
 						"edit_initial_points_settings_page");
+
+	add_submenu_page("pano_menu",
+					"Item Types",
+					"Item Types",
+					"administrator",
+					"item_type_settings",
+					"item_type_settings_page");
+
+	add_submenu_page(null,
+					"New Item Type",
+					"New Item Type",
+					"administrator",
+					"new_item_type_settings",
+					"new_item_type_settings_page");
+
+	add_submenu_page(null,
+					"Edit Item Types",
+					"Edit Item Types",
+					"administrator",
+					"edit_item_type_settings",
+					"edit_item_type_settings_page");
 }
