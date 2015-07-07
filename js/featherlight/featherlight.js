@@ -33,13 +33,13 @@
 	   CoffeeScript's `super`.
 	*/
 
-	function Featherlight($content, config) {
+	function Featherlight($content, config, info) {
 		if(this instanceof Featherlight) {  /* called with new */
 			this.id = Featherlight.id++;
-			this.setup($content, config);
+			this.setup($content, config, info);
 			this.chainCallbacks(Featherlight._callbackChain);
 		} else {
-			var fl = new Featherlight($content, config);
+			var fl = new Featherlight($content, config, info);
 			fl.open();
 			return fl;
 		}
@@ -123,19 +123,22 @@
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
-		setup: function(target, config){
+		setup: function(target, config, info){
 			/* all arguments are optional */
 			if (typeof target === 'object' && target instanceof $ === false && !config) {
 				config = target;
 				target = undefined;
 			}
 
+			var showInfo = (typeof info == 'undefined') ? true : info;
+			var displayed = (showInfo) ? "block": "none";
+
 			var self = $.extend(this, config, {target: target}),
 				css = !self.resetCss ? self.namespace : self.namespace+'-reset', /* by adding -reset to the classname, we reset all the default css */
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							'<span id="info_hotspot" class="'+css+'-info-icon '+ self.namespace + '-info">',
+							'<span id="info_hotspot" class="'+css+'-info-icon '+ self.namespace + '-info" onclick="loadMessage(info())" style="display: ' + displayed + ';">',
 								self.infoIcon,
 							'</span>',
 							'<span class="'+css+'-close-icon '+ self.namespace + '-close">',
@@ -143,8 +146,9 @@
 							'</span>',
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
-					'</div><script>$("#info_hotspot").easyconfirm({ locale: { text: info() , button: ["Got it!"]}});</script>'].join('')),
+					'</div>'].join('')),
 				closeButtonSelector = '.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : '');
+				// style="display: ' + (showInfo) ? "block" : "none" + '";
 
 			self.$instance = $background.clone().addClass(self.variant); /* clone DOM for the background, wrapper and the close button */
 
