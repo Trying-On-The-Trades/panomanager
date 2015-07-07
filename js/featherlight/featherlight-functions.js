@@ -249,6 +249,11 @@ function loadImage(img){
   $.featherlight(img, {type: 'image'});
 }
 
+function loadMessage(message){
+
+  $.featherlight("<p style=\"white-space: pre;\">           " + message + "</p>", null, false);
+}
+
 /*
   Opens a pop-up with an Oppia Exploration.
   If you want to save your activity points, set the award_points parameter to true.
@@ -310,7 +315,7 @@ function info(){
         hotspot_id : last_hostpot
       }
     })
-  console.log(ret);
+  //console.log(ret);
   return ret.responseText;
 }
 
