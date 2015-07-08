@@ -1,6 +1,9 @@
 <?php
-    function item_page_settings(){
+
+
+    function item_settings_page(){
         $items = get_items();
+
         $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
         $new_item_url = admin_url() . 'admin.php?page=new_item_settings' ;
         $edit_item_url = admin_url() . 'admin.php?page=edit_item_settings';
@@ -9,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<?= $semantic ?>"/>
 <p>Manage your items!</p>
 <hr>
+
 <?php if(isset($_GET['settings-saved'])): ?>
     <div class="updated"><p>Settings saved successfully.</p></div>
 <?php endif; ?>
@@ -21,6 +25,8 @@
             <th>Image</th>
             <th>Price</th>
             <th>Item Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
         <?php foreach($items as $item): ?>
             <tr>
@@ -28,7 +34,7 @@
                 <td><?= $item->description ?></td>
                 <td><?= $item->image ?></td>
                 <td><?= $item->price ?></td>
-                <td><?= $item->item_type ?></td>
+                <td><?= $item->type_id ?></td>
                 <td><a class="ui blue icon button" href="<?= $edit_item_url ?>&id=<?= $item->id ?>" style="...">Edit</a> </td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_item_form<?= $item->id ?>">

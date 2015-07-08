@@ -1317,7 +1317,7 @@ function create_item($name, $description, $image, $price, $type_id){
     $item_table = get_items_table_name();
 
     $wpdb->insert($item_table, array('name' => $name, 'description' => $description,
-        'image' => $image, 'price' => $price, 'type_id' => $item_type_id));
+        'image' => $image, 'price' => $price, 'type_id' => $type_id));
 }
 
 function create_line_item($purchase_id, $item_id){
