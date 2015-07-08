@@ -1233,7 +1233,8 @@ function get_puchase($id){
 function get_item_types(){
     global $wpdb;
 
-    $item_types = $wpdb->get_results("SELECT * FROM {get_item_types_table_name()}");
+    $item_types_table = get_item_types_table_name();
+    $item_types = $wpdb->get_results("SELECT * FROM {$item_types_table}");
 
     return $item_types;
 }
