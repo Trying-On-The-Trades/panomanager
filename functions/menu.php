@@ -230,4 +230,11 @@ function create_sub_menus(){
 					"administrator",
 					"edit_item_type_settings",
 					"edit_item_type_settings_page");
+
+	add_submenu_page("pano_menu",
+					"View Purchases",
+					"View Purchases",
+					"administrator",
+					"pano_purchases_settings",
+					"pano_purchases_settings_page");
 }

@@ -144,6 +144,7 @@ require_once("admin/edit_initial_points.php");
 require_once("admin/item_types.php");
 require_once("admin/new_item_type.php");
 require_once("admin/edit_item_type.php");
+require_once("admin/view_purchases.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");
