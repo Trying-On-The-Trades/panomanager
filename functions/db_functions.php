@@ -1215,17 +1215,16 @@ function remove_points($user_id, $quantity){
 
 function get_purchases(){
     global $wpdb;
-
-    $purchases = $wpdb->get_results("SELECT * FROM {get_purchases_table_name()}");
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM ". $purchases_table);
 
     return $purchases;
 }
 
 function get_puchase($id){
     global $wpdb;
-
-    $purchase = $wpdb->get_row("SELECT * FROM {get_purchases_table_name()}
-                                WHERE id = {$id}");
+    $purchases_table = get_purchases_table_name();
+    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = {$id}");
 
     return $purchase;
 }
@@ -1236,31 +1235,30 @@ function get_item_types(){
     $item_types_table = get_item_types_table_name();
     $item_types = $wpdb->get_results("SELECT * FROM {$item_types_table}");
 
+
     return $item_types;
 }
 
 function get_item_type($id){
     global $wpdb;
-
-    $item_type = $wpdb->get_row("SELECT * FROM {get_item_types_table_name()}
-                                WHERE id = {$id}");
+    $item_types_table = get_item_types_table_name();
+    $item_type = $wpdb->get_row("SELECT * FROM " . $item_types_table . " WHERE id = {$id}");
 
     return $item_type;
 }
 
 function get_items(){
     global $wpdb;
-
-    $items = $wpdb->get_results("SELECT * FROM {get_items_table_name()}");
+    $items_table = get_items_table_name();
+    $items = $wpdb->get_results("SELECT * FROM " . $items_table );
 
     return $items;
 }
 
 function get_item($id){
     global $wpdb;
-
-    $item = $wpdb->get_row("SELECT * FROM {get_items_table_name}
-                            WHERE id = {$id}");
+    $items_table = get_items_table_name();
+    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = {$id}");
 
     return $item;
 }
