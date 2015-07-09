@@ -196,6 +196,21 @@ function create_sub_menus(){
 
 
 					// Create the sub menu item for editng domains
+
+    add_submenu_page("pano_menu",
+        "View Purchases",
+        "View Purchases",
+        "administrator",
+        "purchases_settings",
+        "purchases_settings_page");
+
+    add_submenu_page(null,
+                    "View Single Purchase",
+                    "View Single Purchase",
+                    "administrator",
+                    "view_purchase_settings",
+                    "view_purchase_settings_page");
+
 	 add_submenu_page("pano_menu",
 						"Points Name",
 						"Points Name",
@@ -209,6 +224,27 @@ function create_sub_menus(){
 						"administrator",
 						"edit_initial_points_settings",
 						"edit_initial_points_settings_page");
+
+    add_submenu_page("pano_menu",
+        "Items",
+        "Items",
+        "administrator",
+        "items_settings",
+        "item_settings_page");
+
+    add_submenu_page(null,
+        "New Item",
+        "New Item",
+        "administrator",
+        "new_item_settings",
+        "new_item_settings_page");
+
+    add_submenu_page(null,
+        "Edit Items",
+        "Edit Items",
+        "administrator",
+        "edit_item_settings",
+        "edit_item_settings_page");
 
 	add_submenu_page("pano_menu",
 					"Item Types",
@@ -231,31 +267,4 @@ function create_sub_menus(){
 					"edit_item_type_settings",
 					"edit_item_type_settings_page");
 
-    add_submenu_page("pano_menu",
-                    "Items",
-                    "Items",
-                    "administrator",
-                    "items_settings",
-                    "item_settings_page");
-
-    add_submenu_page(null,
-                    "New Item",
-                    "New Item",
-                    "administrator",
-                    "new_item_settings",
-                    "new_item_settings_page");
-
-    add_submenu_page(null,
-                    "Edit Items",
-                    "Edit Items",
-                    "administrator",
-                    "edit_item_settings",
-                    "edit_item_settings_page");
-
-	add_submenu_page("pano_menu",
-					"View Purchases",
-					"View Purchases",
-					"administrator",
-					"pano_purchases_settings",
-					"pano_purchases_settings_page");
 }

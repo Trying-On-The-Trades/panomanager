@@ -1,8 +1,8 @@
 <?php
 
-function pano_purchases_settings_page(){
+function purchases_settings_page(){
   $purchases = get_purchases();
-
+  $view_purchase_url = admin_url() . 'admin.php?page=view_purchase_settings';
   $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 ?>
 
@@ -15,11 +15,13 @@ function pano_purchases_settings_page(){
   <tr>
     <th>User</th>
     <th>Date</th>
+    <th>View</th>
   </tr>
   <?php foreach($purchases as $purchase): ?>
     <tr>
       <td><?= $purchase->user_id ?></td>
       <td><?= $purchase->date ?></td>
+      <td><a class="ui blue icon button" href="<?= $view_purchase_url ?>">View</a></td>
     </tr>
   <?php endforeach; ?>
 </table>
