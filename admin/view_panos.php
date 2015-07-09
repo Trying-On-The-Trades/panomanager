@@ -2,7 +2,7 @@
 
 // Build the settings page
 function view_panos_settings_page() {
-    $semantic = WP_PLUGIN_URL . '/vocabulary-plugin/css/semantic.css';
+    $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $panos = get_all_panos();
     $pano_editor = WP_PLUGIN_URL . '../pano_editor/';
     $game_id = $_POST['game_id'];

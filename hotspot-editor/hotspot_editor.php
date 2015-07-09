@@ -4,7 +4,7 @@ require('db.php');
     $pano_id   = $_GET['pano_id'];
     $missions  = get_missions($db, $pano_id);
     $domains   = get_domains($db);
-    $semantic  = "../wp-content/plugins/vocabulary-plugin/hotspot-editor/css/semantic.css";
+    $semantic  = "../wp-content/plugins/panomanager/css/semantic.css";
     $point_x   = $_GET['point_x'];
     $point_y   = $_GET['point_y'];
     $deck_id   = $_GET['deck_id'];
