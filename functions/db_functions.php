@@ -5,6 +5,7 @@
 //				      Registration FUNCTIONS
 // ***********************************************************
 
+
 function get_schools(){
     global $wpdb;
     $school_table_name = get_school_table_name();
@@ -58,7 +59,7 @@ function get_panos(){
     $panos = $wpdb->get_results(
             "SELECT wpp.id as pano_id, wpp.pano_xml, wppt.* FROM " . $pano_table_name . " wpp " .
             "INNER JOIN " . $text_table_name . " wppt ON " . "wppt.pano_id = wpp.id " .
-            "WHERE wppt.language_code = " . $language_code . " ORDER BY wpp.id ASC");
+            "ORDER BY wpp.id ASC");
 
     return $panos;
 }
@@ -487,6 +488,8 @@ function add_user_progress($user_id, $hotspot_id, $domain_id){
                                             ON wpup.`skill_id` = wph.`id`
                                             WHERE wpup.`id` = %d", $lastid));
 
+    regular_points_to_wallet($uid, $pano->points, $sid);
+
     // Return those points
     return $pano->points;
 }
@@ -508,6 +511,8 @@ function add_user_progress_with_bonus($user_id, $hotspot_id,  $domain_id, $bonus
                                            'domain_id'     => $tid,
                                            'bonus_points' => $bonus_points ),
                                     array( '%s', '%d' ) );
+
+    bonus_points_to_wallet($uid, $bonus_points);
 
     // Get the id of the last row
     $lastid = $wpdb->insert_id;
@@ -855,6 +860,20 @@ function update_points_info($symbol, $singular, $plural, $multiplier = 1){
   }
 }
 
+function update_points_initial_bonus($quantity){
+  global $wpdb;
+  $points_initial_bonus_table_name = get_points_initial_bonus_table_name();
+
+  if(isset($quantity)){
+    $wpdb->update($points_initial_bonus_table_name,
+      array('quantity' => $quantity),
+      array('id'        => 1));
+    return true;
+  } else{
+    return false;
+  }
+}
+
 // ***********************************************************
 //				    Creating New Panos
 // ***********************************************************
@@ -951,6 +970,28 @@ function create_hotspot($mission_id, $type_id, $hotspot_name, $hotspot_menu_name
                                                'attempts'    => $hotspot_attempts,
                                                'domain_id'    => $hotspot_domain_id,
                                                'modal_url'   => $hotspot_modal_url,));
+
+    return $wpdb->insert_id;
+}
+
+function create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item){
+    global $wpdb;
+    $hotspot_table_name = get_hotspot_table_name();
+
+    // Insert the pano
+    $wpdb->insert( $hotspot_table_name, array( 'mission_id'  => $mission_id,
+        'type_id'     => $type_id,
+        'menu_item'   =>  $menu_item,
+        'name'        => $hotspot_name,
+        'menu_name'   => $hotspot_menu_name,
+        'description' => $hotspot_description,
+        'hotspot_info' => $hotspot_info,
+        'hotspot_xml' => $hotspot_xml,
+        'action_xml'  => $hotspot_action_xml,
+        'points'      => $hotspot_points,
+        'attempts'    => $hotspot_attempts,
+        'domain_id'    => $hotspot_domain_id,
+        'modal_url'   => $hotspot_modal_url,));
 
     return $wpdb->insert_id;
 }
@@ -1139,4 +1180,179 @@ function get_points_multiplier(){
   $points_multiplier = $points_multiplier[0]->multiplier;
 
   return $points_multiplier;
+}
+
+function get_points_initial_bonus(){
+  global $wpdb;
+  $initial_points_table_name = get_points_initial_bonus_table_name();
+
+  $quantity = $wpdb->get_var("SELECT quantity FROM {$initial_points_table_name} WHERE id = 1 LIMIT 1");
+
+  return $quantity;
+}
+
+function add_points($user_id, $quantity){
+    global $wpdb;
+
+    $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
+        WHERE user_id = {$user_id}");
+
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available + $quantity)})
+        WHERE user_id = {$user_id}");
+}
+
+function remove_points($user_id, $quantity){
+    global $wpdb;
+
+    $available = $wpdb->get_var("SELECT available_currency FROM {get_wallet_table_name()}
+        WHERE user_id = {$user_id}");
+
+    $wpdb->query("UPDATE {get_wallet_table_name()} SET(available_currency = {($available - $quantity)})
+        WHERE user_id = {$user_id}");
+}
+
+//PURCHASES
+
+function get_purchases(){
+    global $wpdb;
+
+    $purchases = $wpdb->get_results("SELECT * FROM {get_purchases_table_name()}");
+
+    return $purchases;
+}
+
+function get_puchase($id){
+    global $wpdb;
+
+    $purchase = $wpdb->get_row("SELECT * FROM {get_purchases_table_name()}
+                                WHERE id = {$id}");
+
+    return $purchase;
+}
+
+function get_item_types(){
+    global $wpdb;
+
+    $item_types = $wpdb->get_results("SELECT * FROM {get_item_types_table_name()}");
+
+    return $item_types;
+}
+
+function get_item_type($id){
+    global $wpdb;
+
+    $item_type = $wpdb->get_row("SELECT * FROM {get_item_types_table_name()}
+                                WHERE id = {$id}");
+
+    return $item_type;
+}
+
+function get_items(){
+    global $wpdb;
+
+    $items = $wpdb->get_results("SELECT * FROM {get_items_table_name()}");
+
+    return $items;
+}
+
+function get_item($id){
+    global $wpdb;
+
+    $item = $wpdb->get_row("SELECT * FROM {get_items_table_name}
+                            WHERE id = {$id}");
+
+    return $item;
+}
+
+function delete_purchase($id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->delete( $purchase_table, array('id' => $id));
+}
+
+function delete_item_type($id){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->delete($item_type_table, array('id' => $id));
+}
+
+function delete_item($id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->delete($item_table, array('id' => $id));
+}
+
+function delete_line_item($purchase_id, $item_id){
+    global $wpdb;
+
+    $line_item_table = get_line_items_table_name();
+
+    $wpdb->delete($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
+}
+
+function create_purchase($date, $user_id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->insert($purchase_table, array('date'=>$date, 'user_id' => $user_id));
+}
+
+function create_item_type($name, $description){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->insert($item_type_table, array('name' => $name, 'description' => $description));
+}
+
+function create_item($name, $description, $image, $price, $type_id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->insert($item_table, array('name' => $name, 'description' => $description,
+        'image' => $image, 'price' => $price, 'type_id' => $item_type_id));
+}
+
+function create_line_item($purchase_id, $item_id){
+    global $wpdb;
+
+    $line_item_table = get_line_items_table_name();
+
+    $wpdb->insert($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
+}
+
+function update_purchase($id, $date, $user_id){
+    global $wpdb;
+
+    $purchase_table = get_purchases_table_name();
+
+    $wpdb->update($purchase_table, array('date' => $date, 'user_id' => $user_id),
+        array('id' => $user_id));
+}
+
+function update_item_type($id, $name, $description){
+    global $wpdb;
+
+    $item_type_table = get_item_types_table_name();
+
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description),
+        array('id' => $id));
+}
+
+function update_item($id, $name, $description, $image, $price, $type_id){
+    global $wpdb;
+
+    $item_table = get_items_table_name();
+
+    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description,
+        'image' => $image, 'price' => $price, 'type_id' => $type_id),
+        array('id' => $id));
 }
