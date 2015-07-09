@@ -156,12 +156,12 @@ function build_domain($domain_id = 1){
     return $domain;
 }
 
-function build_item_types($item_type_id = 1){
+function build_item_type($item_type_id = 1){
     $item_type = new item_type($item_type_id);
     return $item_type;
 }
 
-function build_items($item_id = 1){
+function build_item($item_id = 1){
     $item = new item($item_id);
     return $item;
 }

@@ -214,8 +214,8 @@ function create_sub_menus(){
 					"Item Types",
 					"Item Types",
 					"administrator",
-					"item_type_settings",
-					"item_type_settings_page");
+					"item_types_settings",
+					"item_types_settings_page");
 
 	add_submenu_page(null,
 					"New Item Type",
