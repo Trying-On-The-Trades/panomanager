@@ -151,6 +151,7 @@ require_once("admin/edit_item_type.php");
 require_once("admin/items.php");
 require_once("admin/new_item.php");
 require_once("admin/edit_item.php");
+require_once("admin/view_purchases.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");
