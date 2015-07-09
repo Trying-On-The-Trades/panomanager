@@ -541,6 +541,10 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
+    if($game_type == "website" || $game_type == "image"){
+        $url = $_POST['hotspot_url'];
+    }
+
     $hotspot_xml = "";
     $hotspot_action_xml = "";
     $hotspot_points      = $_POST['hotspot_points'];
@@ -557,9 +561,20 @@ function process_new_hotspot_ajax(){
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
         ' width="150" height="128" scale="0.425" zoom="true"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
-    $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-        'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
-        '</action>';
+
+    if($game_type == "website"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+    }elseif($game_type == "image"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+    }else{
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
+            '</action>';
+    }
 
     update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
         $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);

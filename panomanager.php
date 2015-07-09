@@ -149,6 +149,8 @@ require_once("admin/edit_item_type.php");
 require_once("functions/register_functions.php");
 require_once("functions/js/register_js.php");
 
+require_once("admin/view_panos.php");
+
 // Register the scripts that we need to alter the registration page
 $register_location = WP_PLUGIN_URL . "/panomanager.php?registration_js=1";
 wp_register_script('pano_register_js', $register_location, false, false, true);
