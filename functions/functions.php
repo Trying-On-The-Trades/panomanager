@@ -613,7 +613,7 @@ function process_new_item(){
 
     create_item($name, $description, $image, $price, $type_id);
 
-    wp_redirect( admin_url( 'admin.php?page=item_settings&settings-saved') );
+    wp_redirect( admin_url( 'admin.php?page=items_settings&settings-saved') );
 }
 
 // ***********************************************************
@@ -784,12 +784,13 @@ function process_edit_item(){
     $item_price = $_POST['item_price'];
     $item_type_id = $_POST['item_type_id'];
 
+
     $return = update_item($item_id, $item_name, $item_description, $item_image, $item_price, $item_type_id);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=item_settings&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=items_settings&settings-saved') );
     } else {
-        wp_redirect( aadmin_url( 'admin.phppage=item_settings&error') );
+        wp_redirect( admin_url( 'admin.php?page=items_settings&error') );
     }
 
 }
@@ -883,7 +884,7 @@ function process_delete_item(){
 
     delete_item($item_id);
 
-    wp_redirect( admin_url('admin.php?page=item_settings') );
+    wp_redirect( admin_url('admin.php?page=items_settings') );
 }
 
 // ***********************************************************

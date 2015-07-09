@@ -149,6 +149,8 @@ require_once("admin/item_types.php");
 require_once("admin/new_item_type.php");
 require_once("admin/edit_item_type.php");
 require_once("admin/items.php");
+require_once("admin/new_item.php");
+require_once("admin/edit_item.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

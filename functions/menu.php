@@ -237,4 +237,18 @@ function create_sub_menus(){
                     "administrator",
                     "items_settings",
                     "item_settings_page");
+
+    add_submenu_page(null,
+                    "New Item",
+                    "New Item",
+                    "administrator",
+                    "new_item_settings",
+                    "new_item_settings_page");
+
+    add_submenu_page(null,
+                    "Edit Items",
+                    "Edit Items",
+                    "administrator",
+                    "edit_item_settings",
+                    "edit_item_settings_page");
 }
