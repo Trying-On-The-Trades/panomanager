@@ -166,6 +166,11 @@ function build_item($item_id = 1){
     return $item;
 }
 
+function build_purchase($purchase_id){
+    $purchase = new purchase($purchase_id);
+    return $purchase;
+}
+
 // Get the user's prefered language
 function get_user_language(){
 	// placeholder

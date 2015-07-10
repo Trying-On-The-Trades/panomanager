@@ -1221,12 +1221,39 @@ function get_purchases(){
     return $purchases;
 }
 
-function get_puchase($id){
+function get_purchase($id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
     $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = {$id}");
 
     return $purchase;
+}
+
+function get_purchase_items($id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+    $items_table = get_items_table_name();
+
+    $items = $wpdb->get_results("SELECT i.id, i.name, i.description, i.image, l.price, i.type_id " .
+                                "FROM {$purchases_table} p " .
+                                "INNER JOIN {$line_items_table} l ON p.id = l.purchase_id " .
+                                "INNER JOIN {$items_table} i ON l.item_id = i.id " .
+                                "WHERE p.id = {$id}");
+
+    return $items;
+}
+
+function get_purchase_total($id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $total = $wpdb->get_var("SELECT SUM(l.price) FROM {$purchases_table} p " .
+                            "INNER JOIN {$line_items_table} l ON p.id = l.purchase_id " .
+                            "WHERE p.id = {$id}");
+
+    return $total;
 }
 
 function get_item_types(){

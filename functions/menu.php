@@ -198,8 +198,8 @@ function create_sub_menus(){
 					// Create the sub menu item for editng domains
 
     add_submenu_page("pano_menu",
-        "View Purchases",
-        "View Purchases",
+        "Purchases",
+        "Purchases",
         "administrator",
         "purchases_settings",
         "purchases_settings_page");
