@@ -612,9 +612,16 @@ function process_new_item_type(){
 function process_new_item(){
     $name = $_POST['item_name'];
     $description = $_POST['item_description'];
-    $image = $_POST['item_image'];
     $price = $_POST['item_price'];
     $type_id = $_POST['item_type_id'];
+
+
+    if( !empty( $_FILES['item_image']['name'] ) ){
+        $image_file = wp_upload_bits( $_FILES['item_image']['name'], null, @file_get_contents( $_FILES['item_image']['tmp_name'] ) );
+        $image_file_name = $image_file['file'];
+        $pos = strpos($image_file_name, 'upload');
+        $image = substr_replace($image_file_name, '', 0, $pos);
+    }
 
     create_item($name, $description, $image, $price, $type_id);
 
@@ -785,7 +792,14 @@ function process_edit_item(){
     $item_id = $_POST['item_id'];
     $item_name = $_POST['item_name'];
     $item_description = $_POST['item_description'];
-    $item_image = $_POST['item_image'];
+
+    if ( !empty( $_FILES['item_image']['name'] ) ) {
+        $image_file = wp_upload_bits( $_FILES['item_image']['name'], null, @file_get_contents( $_FILES['item_image']['tmp_name'] ) );
+        $image_file_name = $image_file['file'];
+        $pos = strpos($image_file_name,'upload');
+        $item_image = substr_replace($image_file_name,'',0,$pos);
+    }
+
     $item_price = $_POST['item_price'];
     $item_type_id = $_POST['item_type_id'];
 

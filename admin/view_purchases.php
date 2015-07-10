@@ -21,7 +21,7 @@ function purchases_settings_page(){
     <tr>
       <td><?= $purchase->user_id ?></td>
       <td><?= $purchase->date ?></td>
-      <td><a class="ui blue icon button" href="<?= $view_purchase_url ?>">View</a></td>
+      <td><a class="ui blue icon button" href="<?= $view_purchase_url ?>&id=<?= $purchase->id ?>">View</a></td>
     </tr>
   <?php endforeach; ?>
 </table>

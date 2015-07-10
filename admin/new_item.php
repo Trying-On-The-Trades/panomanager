@@ -34,7 +34,7 @@ function new_item_settings_page(){
             <div class="ui form ">
                 <div class="field">
                     <div class="ui left labeled icon input">
-                        <label>Item Name</label>
+                        <label for="name">Item Name</label>
                         <input name="item_name" id="name" placeholder="Name" required/>
                     </div>
                 </div>
@@ -42,23 +42,23 @@ function new_item_settings_page(){
             <div class="ui form ">
                 <div class="field">
                     <div class="ui left labeled icon input">
-                        <label>Item Descriptioon</label>
+                        <label for="description">Item Descriptioon</label>
                         <input name="item_description" id=description" placeholder="Description" required />
                     </div>
                 </div>
             </div>
-            <div class="ui form ">
+            <div class="ui form">
                 <div class="field">
                     <div class="ui left labeled icon input">
-                        <label>Item Image</label>
-                        <input name="item_image" id="image" placeholder="Image" />
+                        <label for="image">Choose an image <b>(Preferably 120x120)</b></label>
+                        <input type="file" name="item_image" id="image"  />
                     </div>
                 </div>
             </div>
             <div class="ui form ">
                 <div class="field">
                     <div class="ui left labeled icon input">
-                        <label>Item Price</label>
+                        <label for="price">Item Price</label>
                         <input name="item_price" id="price" placeholder="Price" />
                     </div>
                 </div>

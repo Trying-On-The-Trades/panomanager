@@ -53,11 +53,12 @@ function edit_item_settings_page(){
                 </div>
             </div>
         </div>
-        <div class="ui form ">
+        <div class="ui form">
             <div class="field">
                 <div class="ui left labeled icon input">
-                    <label>Item Image</label>
-                    <input name="item_image" id="image" placeholder="Image" value="<?= $item->get_image(); ?>"/>
+                    <label for="image">Choose an image: <b>(Preferably 120x120)</b> </label>
+                    <img class="item_image" src="<?= content_url().'/'.$item->get_image() ?>" alt="Image"/>
+                    <input type="file" name="item_image" id="image"  />
                 </div>
             </div>
         </div>
