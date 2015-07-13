@@ -1373,12 +1373,18 @@ function update_item_type($id, $name, $description){
         array('id' => $id));
 }
 
-function update_item($id, $name, $description, $image, $price, $type_id){
+function update_item($id, $name, $description, $image = null, $price, $type_id){
     global $wpdb;
 
     $item_table = get_items_table_name();
 
-    $wpdb->update($item_table, array('name' => $name, 'description' => $description,
-        'image' => $image, 'price' => $price, 'type_id' => $type_id),
-        array('id' => $id));
+    $params = array('name' => $name,
+                    'description' => $description,
+                    'price' => $price, 'type_id' => $type_id);
+
+    if(!is_null($image)){
+        $params['image'] = $image;
+    }
+
+    $wpdb->update($item_table, $params, array('id' => $id));
 }
