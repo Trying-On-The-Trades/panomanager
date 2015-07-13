@@ -196,6 +196,21 @@ function create_sub_menus(){
 
 
 					// Create the sub menu item for editng domains
+
+    add_submenu_page("pano_menu",
+        "Purchases",
+        "Purchases",
+        "administrator",
+        "purchases_settings",
+        "purchases_settings_page");
+
+    add_submenu_page(null,
+                    "View Single Purchase",
+                    "View Single Purchase",
+                    "administrator",
+                    "view_purchase_settings",
+                    "view_purchase_settings_page");
+
 	 add_submenu_page("pano_menu",
 						"Points Name",
 						"Points Name",
@@ -210,12 +225,33 @@ function create_sub_menus(){
 						"edit_initial_points_settings",
 						"edit_initial_points_settings_page");
 
+    add_submenu_page("pano_menu",
+        "Items",
+        "Items",
+        "administrator",
+        "items_settings",
+        "item_settings_page");
+
+    add_submenu_page(null,
+        "New Item",
+        "New Item",
+        "administrator",
+        "new_item_settings",
+        "new_item_settings_page");
+
+    add_submenu_page(null,
+        "Edit Items",
+        "Edit Items",
+        "administrator",
+        "edit_item_settings",
+        "edit_item_settings_page");
+
 	add_submenu_page("pano_menu",
 					"Item Types",
 					"Item Types",
 					"administrator",
-					"item_type_settings",
-					"item_type_settings_page");
+					"item_types_settings",
+					"item_types_settings_page");
 
 	add_submenu_page(null,
 					"New Item Type",
@@ -237,4 +273,5 @@ function create_sub_menus(){
         "administrator",
         "view_panos_settings",
         "view_panos_settings_page");
+
 }
