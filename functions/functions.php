@@ -439,6 +439,7 @@ function process_new_pano(){
     $pano_xml         = stripslashes($_POST['pano_xml']);
     $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
+    $pano_autopan     = $_POST['autopan'];
 
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_name, $pano_description);
