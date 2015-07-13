@@ -1347,12 +1347,12 @@ function create_item($name, $description, $image, $price, $type_id){
         'image' => $image, 'price' => $price, 'type_id' => $type_id));
 }
 
-function create_line_item($purchase_id, $item_id){
+function create_line_item($purchase_id, $item_id, $price){
     global $wpdb;
 
     $line_item_table = get_line_items_table_name();
 
-    $wpdb->insert($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
+    $wpdb->insert($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id, 'price' => $price));
 }
 
 function update_purchase($id, $date, $user_id){
