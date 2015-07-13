@@ -1,7 +1,7 @@
 <?php
 
 
-function item_type_settings_page(){
+function item_types_settings_page(){
     $item_types = get_item_types();
 
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';

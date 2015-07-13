@@ -1,7 +1,7 @@
 <?php
 
 class item{
-  protected $id, $name, $description, $imge, $price, $type_id;
+  protected $id, $name, $description, $image, $price, $type_id;
 
   function __construct($id){
     $item_row = get_item($id);
