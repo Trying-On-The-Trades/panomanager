@@ -7,6 +7,11 @@ function purchases_settings_page(){
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?= $semantic ?>"/>
+<style>
+#wpfooter{
+  display: none;
+}
+</style>
 <p>View your purchases</p>
 <hr>
 
@@ -21,7 +26,7 @@ function purchases_settings_page(){
     <tr>
       <td><?= $purchase->user_id ?></td>
       <td><?= $purchase->date ?></td>
-      <td><a class="ui blue icon button" href="<?= $view_purchase_url ?>&id=<?= $purchase->id ?>">View</a></td>
+      <td><a class="ui blue icon button" style="padding: 7px" href="<?= $view_purchase_url ?>&id=<?= $purchase->id ?>">View</a></td>
     </tr>
   <?php endforeach; ?>
 </table>

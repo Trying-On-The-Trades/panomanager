@@ -10,6 +10,11 @@ function item_types_settings_page(){
     ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
+<style>
+#wpfooter{
+  display: none;
+}
+</style>
 <p>Manage your item types!</p>
 <hr>
 
@@ -28,21 +33,21 @@ function item_types_settings_page(){
 
     <tr>
         <td><?php echo $item_type->name ?></td>
-        <td><a class="ui blue icon button" href="<?php echo $edit_item_type_url ?>&id=<?php echo $item_type->id ?>" style="padding: 7px">Edit</a></td>
+        <td><a class="ui blue icon button" style="padding: 7px" href="<?php echo $edit_item_type_url ?>&id=<?php echo $item_type->id ?>">Edit</a></td>
         <td>
             <form method="post" action="admin-post.php" id="delete_item_type_form<?php echo $item_type->id ?>">
 
                 <input type="hidden" name="action" value="delete_item_type" />
                 <input type="hidden" name="item_type_id" value="<?php echo $item_type->id ?>" />
 
-                <input type="submit" class="ui blue icon button" value="Delete" style="padding: 7px" >
+                <input type="submit" class="ui blue icon button" style="padding: 7px" value="Delete">
             </form>
         </td>
     </tr>
 
     <?php endforeach; ?>
 </table>
-<a class="ui blue icon button" href="<?php echo $new_item_type_url ?>" style="padding: 7px">New Item Type</a>
+<a class="ui blue icon button" style="padding: 7px" href="<?php echo $new_item_type_url ?>">New Item Type</a>
 </div>
 
 <?php }

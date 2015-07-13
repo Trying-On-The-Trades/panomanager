@@ -33,8 +33,10 @@ function edit_initial_points_settings_page(){
     <input type="hidden" name="action" value="update_initial_points" />
     <div class="ui form">
       <div class="field">
-        <label for="quantity">Initial Points Quantity: </label>
-        <input name="quantity" id="quantity" placeholder="Edit the initial quantity of points" value="<?= get_points_initial_bonus() ?>"/>
+        <div class="ui left labeled icon input">
+          <label for="quantity">Initial Points Quantity: </label>
+          <input name="quantity" id="quantity" placeholder="Edit the initial quantity of points" value="<?= get_points_initial_bonus() ?>"/>
+        </div>
       </div>
     </div>
     <?php submit_button(); ?>
