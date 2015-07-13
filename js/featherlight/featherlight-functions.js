@@ -289,6 +289,17 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
 }
 
 /*
+  Opens a pop-up with a video from a url.
+  Parameters:
+  - url (Video url)
+*/
+function loadVideo(url){
+  var width = 560;
+  var height = 315;
+  $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
+}
+
+/*
   Returns the verb according to the amount of points.
   Returns:
   - verb [earned - if positive] [lost - if negative]
@@ -318,4 +329,3 @@ function info(){
   //console.log(ret);
   return ret.responseText;
 }
-
