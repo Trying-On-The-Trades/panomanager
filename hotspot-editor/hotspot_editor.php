@@ -27,12 +27,7 @@ require('db.php');
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2 class="title" >Create a new hotspot!</h2>
 <hr>
-<!--<style type="text/css">-->
-<!--	.new_pano_form{-->
-<!--		width:85%;-->
-<!--		margin: 0px auto;-->
-<!--	}-->
-<!--</style>-->
+
 <body>
 <form method="post" enctype="multipart/form-data" action="../wp-content/plugins/panomanager/hotspot-editor/action.php">
     <!-- pano processing hook -->

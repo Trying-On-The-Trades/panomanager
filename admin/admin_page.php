@@ -23,7 +23,7 @@ function pano_settings_page() {
 <table id="panoTable" class="ui table segment tablesorter">
     <thead>
       <tr>
-          <th>Name</th>
+          <th>Title</th>
           <th>Description</th>
           <th>Prereqs Points</th>
           <th>Edit</th>
@@ -35,7 +35,7 @@ function pano_settings_page() {
         <?php foreach ($panos as $pano): ?>
             <?php $prereqs = get_pano_prereq($pano->id); ?>
             <tr>
-                <td><?php echo $pano->name ?></td>
+                <td><?php echo $pano->title ?></td>
                 <td><?php echo $pano->description ?></td>
                 <td>
                    <?php foreach ($prereqs as $prereq): ?>

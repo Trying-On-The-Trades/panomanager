@@ -8,32 +8,27 @@ function new_pano_settings_page() {
 <h2>Create a new pano!</h2>
 <hr>
 <style type="text/css">
-	#wpfooter{
-		display: none;
-	}
-
-	#file_input {
-	    border: 1px solid #cccccc;
-	    padding: 5px;
-	}
-
 	.new_pano_form{
 		width:85%;
 		margin: 0px auto;
 	}
 </style>
+<script type="text/javascript">
+
+
+</script>
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
-<form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
+<form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_pano" />  
     <div class="ui form segment new_pano_form">
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
-	        	<label for="pano_name">Pano Name</label>
-	    		<input name="pano_name" id="name" placeholder="Cool Pano" required />
+	        	<label for="pano_title">Pano Title</label>
+	    		<input name="pano_title" id="pano_title" placeholder="Cool Pano" required />
      	 	</div>
 	      </div>
 	    </div>
@@ -47,6 +42,12 @@ function new_pano_settings_page() {
 	      <div class="field">
 	        <label>Pano XML</label>
 	        <textarea name="pano_xml" required ></textarea>
+	      </div>
+	    </div>
+	    <div class="ui form">
+	      <div class="field">
+	        <label>Autopan - speed</label>
+	        <input type="number" name="autopan" placeholder="0" required />
 	      </div>
 	    </div>
 	    <?php submit_button(); ?>

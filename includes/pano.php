@@ -26,6 +26,7 @@ class pano{
 			$this->exists      = 1;
 			$this->xml         = $pano_row->pano_xml;
 			$this->id          = $pano_row->pano_id;
+			$this->title       = $pano_row->pano_title;
 			$this->name        = $pano_row->name;
 			$this->description = $pano_row->description;
 
@@ -52,6 +53,10 @@ class pano{
 
 	function get_name(){
 		return $this->name;
+	}
+
+	function get_title(){
+		return $this->title;
 	}
 
 	function get_description(){
