@@ -16,15 +16,6 @@ function edit_pano_settings_page() {
 <h2>Edit Pano</h2>
 <hr>
 <style type="text/css">
-	#wpfooter{
-		display: none;
-	}
-
-	#file_input {
-	    border: 1px solid #cccccc;
-	    padding: 5px;
-	}
-
 	.new_pano_form{
 		width:85%;
 		margin: 0px auto;
@@ -43,8 +34,8 @@ function edit_pano_settings_page() {
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
-	        	<label for="pano_name">Pano Name</label>
-	    		<input name="pano_name" id="name" placeholder="Cool Pano" required value="<?php echo $pano->get_name(); ?>"/>
+	        	<label for="pano_title">Pano Title</label>
+	    		<input name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
      	 	</div>
 	      </div>
 	    </div>

@@ -195,6 +195,7 @@ function build_pano_text_sql(){
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `pano_id` int(11) NOT NULL,
       `language_code` varchar(2) NOT NULL DEFAULT "",
+      `title` varchar(255) NOT NULL DEFAULT "",
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
       PRIMARY KEY (`id`)
