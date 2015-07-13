@@ -782,7 +782,7 @@ function process_edit_item_type(){
     $return = update_item_type($item_type_id, $item_type_name, $item_type_description);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=item_types_settings&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=items_types_settings&settings-saved') );
     } else {
         wp_redirect( admin_url( 'admin.php?page=item_types_settings&error') );
     }

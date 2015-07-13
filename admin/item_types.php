@@ -14,8 +14,8 @@ function item_types_settings_page(){
 <hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
-        <div class="updated"><p>Settings updated successfully.</p></div>
-    <?php endif ?>
+    <div class="updated"><p>Settings updated successfully.</p></div>
+<?php endif ?>
 
 <h2>Item Types</h2>
 <table class="ui table segment">

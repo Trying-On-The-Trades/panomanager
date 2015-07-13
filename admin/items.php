@@ -34,7 +34,7 @@
                 <td><?= $item->description ?></td>
                 <td><?= $item->image ?></td>
                 <td><?= $item->price ?></td>
-                <td><?= $item->type_id ?></td>
+                <td><?= get_item_type($item->type_id)->name ?></td>
                 <td><a class="ui blue icon button" href="<?= $edit_item_url ?>&id=<?= $item->id ?>" style="...">Edit</a> </td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_item_form<?= $item->id ?>">
