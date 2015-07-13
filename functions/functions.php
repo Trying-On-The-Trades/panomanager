@@ -542,7 +542,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($game_type == "website" || $game_type == "image"){
+    if($game_type == "website" || $game_type == "image" || $game_type == "video" ){
         $url = $_POST['hotspot_url'];
     }
 
@@ -570,6 +570,10 @@ function process_new_hotspot_ajax(){
     }elseif($game_type == "image"){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+    }elseif($game_type == "video"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadAjax(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
     }else{
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
