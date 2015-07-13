@@ -7,14 +7,17 @@
 
 	if(isset($_GET['id'])){
 		//search for an item
-		$item;
-		$symbol;
+		$item = get_item($_GET['id']);
+		$symbol = get_points_symbol();
 		$path = '../../../';
 	}
 ?>
 <!DOCTYPE HTML>
-<html>
-	<head></head>
+<html lang="en">
+	<head>
+		<title>Shop</title>
+		<meta charset="UTF-8">
+	</head>
 	<body>
 		<div class="content">
 			<img src="<?= $path . $item['image'] ?>" alt="Image">
