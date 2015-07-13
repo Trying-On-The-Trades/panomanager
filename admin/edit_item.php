@@ -49,7 +49,7 @@ function edit_item_settings_page(){
             <div class="field">
                 <div class="ui left labeled icon input">
                     <label>Item Descriptioon</label>
-                    <input name="item_description" id=description" placeholder="Description" value="<?= $item->get_description(); ?>" required />
+                    <input name="item_description" id="description" placeholder="Description" value="<?= $item->get_description(); ?>" required />
                 </div>
             </div>
         </div>

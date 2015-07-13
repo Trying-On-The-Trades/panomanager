@@ -10,6 +10,11 @@
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?= $semantic ?>"/>
+<style>
+#wpfooter{
+  display: none;
+}
+</style>
 <p>Manage your items!</p>
 <hr>
 
@@ -34,18 +39,18 @@
                 <td><?= $item->description ?></td>
                 <td><?= $item->image ?></td>
                 <td><?= $item->price ?></td>
-                <td><?= get_item_type($item->type_id)->name ?></td>
-                <td><a class="ui blue icon button" href="<?= $edit_item_url ?>&id=<?= $item->id ?>" style="...">Edit</a> </td>
+                <td><?= $item->type_id ?></td>
+                <td><a class="ui blue icon button" style="padding: 7px" href="<?= $edit_item_url ?>&id=<?= $item->id ?>">Edit</a> </td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_item_form<?= $item->id ?>">
                         <input type="hidden" name="action" value="delete_item"/>
                         <input type="hidden" name="item_id" value="<?= $item->id ?>"/>
-                        <input type="submit" class="ui blue icon button" value="Delete" style="..."/>
+                        <input type="submit" class="ui blue icon button" style="padding: 7px" value="Delete" />
                     </form>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table>
-    <a class="ui blue icon button" href="<?= $new_item_url ?>" style="...">New Item</a>
+    <a class="ui blue icon button" style="padding: 7px" href="<?= $new_item_url ?>">New Item</a>
     </div>
 <?php    }

@@ -48,16 +48,22 @@ function edit_points_info_settings_page(){
     <input type="hidden" name="action" value="update_points_info" />
     <div class="ui form">
       <div class="field">
-        <label for="symbol">Symbol: </label>
-        <input name="symbol" id="symbol" placeholder="Edit the symbol of your currency (optional)" value="<?= get_points_symbol() ?>" />
+        <div class="ui left labeled icon input">
+          <label for="symbol">Symbol: </label>
+          <input name="symbol" id="symbol" placeholder="Edit the symbol of your currency (optional)" value="<?= get_points_symbol() ?>" />
+        </div>
       </div>
       <div class="field">
-        <label for="singular">Name (singular): </label>
-        <input name="singular" id="singular" placeholder="Edit the singular name of your currency" value="<?= get_points_name_singular() ?>" />
+        <div class="ui left labeled icon input">
+          <label for="singular">Name (singular): </label>
+          <input name="singular" id="singular" placeholder="Edit the singular name of your currency" value="<?= get_points_name_singular() ?>" />
+        </div>
       </div>
       <div class="field">
-        <label for="plural">Name (plural): </label>
-        <input name="plural" id="plural" placeholder="Edit the plural name of your currency" value="<?= get_points_name_plural() ?>" />
+        <div class="ui left labeled icon input">
+          <label for="plural">Name (plural): </label>
+          <input name="plural" id="plural" placeholder="Edit the plural name of your currency" value="<?= get_points_name_plural() ?>" />
+        </div>
       </div>
     </div>
     <?php submit_button(); ?>
