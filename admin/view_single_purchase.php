@@ -11,6 +11,11 @@ function view_purchase_settings_page(){
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 ?>
 <link rel="stylesheet" type="text/css" href="<?= $semantic ?>"/>
+<style>
+#wpfooter{
+  display: none;
+}
+</style>
 <p>User: <?= get_userdata($purchase->get_user_id())->user_nicename ?></p>
 <p>Date: <?= $date ?></p>
 
