@@ -357,6 +357,7 @@ function build_prereq_sql(){
       `prereq_id` int(11) DEFAULT NULL,
       `prereq_pts` int(11) NOT NULL,
       `prereq_domain_id` int(11) DEFAULT NULL,
+      `prereq_desc` varchar(255) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
 

@@ -3,9 +3,9 @@
 // Build the settings page
 function view_panos_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
-    $panos = get_all_panos();
     $pano_editor = WP_PLUGIN_URL . '../pano_editor/';
     $game_id = $_POST['game_id'];
+    $panos = get_pano_title();
 
     ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
@@ -21,8 +21,9 @@ function view_panos_settings_page() {
             <label>Choose a deck:</label>
             <select name="panos" id="pano_id">
 				 <option value="NA">Select a Pano</option>
-                 <?php foreach($panos as $pano): ?>
-                    <option value="<?php echo $pano->id ?>"><?php echo $pano->id ?></option>
+
+                <?php foreach($panos as $pano):  ?>
+                    <option value="<?= $pano->id ?>"><?= $pano['title']  ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

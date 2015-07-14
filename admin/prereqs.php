@@ -14,23 +14,8 @@ function prereq_settings_page() {
     $prereqs = get_pano_prereqs($pano_id);
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-    <h2>Create a new pano!</h2>
+    <h2>Create a new prereq!</h2>
     <hr>
-    <style type="text/css">
-        #wpfooter{
-            display: none;
-        }
-
-        #file_input {
-            border: 1px solid #cccccc;
-            padding: 5px;
-        }
-
-        .new_pano_form{
-            width:85%;
-            margin: 0px auto;
-        }
-    </style>
     <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
         <div class="updated"><p>Settings updated successfully.</p></div>
     <?php endif ?>
