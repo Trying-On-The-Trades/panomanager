@@ -44,6 +44,9 @@ function edit_points_info_settings_page(){
       Name (plural): dollars
     </li>
   </ul>
+  <p>
+    You can also add web entity symbols, such as &yen; - to see a list of symbol codes, visit <a href="http://www.fileformat.info/format/w3c/entitytest.htm" target="_blank">this website</a>.
+  </p>
   <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <input type="hidden" name="action" value="update_points_info" />
     <div class="ui form">
