@@ -448,11 +448,10 @@ function process_new_pano(){
 	// Create a new pano using the post data
     $pano_xml         = stripslashes($_POST['pano_xml']);
     $pano_title       = $_POST['pano_title'];
-    $pano_name        = $_POST['pano_name'];
     $pano_description = $_POST['pano_description'];
 
 	// Get the id
-    $pano_id = create_pano($pano_xml, $pano_title, $pano_name, $pano_description);
+    $pano_id = create_pano($pano_xml, $pano_title, $pano_description);
 
     create_quest($pano_id);
 
@@ -465,9 +464,10 @@ function process_new_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id);
+    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
@@ -659,11 +659,10 @@ function process_edit_pano(){
     $pano_id          = $_POST['pano_id'];
     $pano_xml         = trim(stripslashes($_POST['pano_xml']));
     $pano_title        = $_POST['pano_title'];
-    $pano_name        = $_POST['pano_name'];
     $pano_description = trim($_POST['pano_description']);
 
     // Get the id
-    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_name, $pano_description);
+    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_description);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_menu&settings-saved') );
@@ -679,9 +678,10 @@ function process_edit_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id);
+    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );

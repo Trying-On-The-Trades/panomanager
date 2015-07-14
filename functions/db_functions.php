@@ -677,7 +677,7 @@ function get_pano_ads($quest_id){
 //				    Updating Panos
 // ***********************************************************
 
-function update_pano($pano_id, $pano_xml, $pano_title, $pano_name, $pano_description){
+function update_pano($pano_id, $pano_xml, $pano_title, $pano_description){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -693,7 +693,6 @@ function update_pano($pano_id, $pano_xml, $pano_title, $pano_name, $pano_descrip
             array(
                 'language_code' => $language_code,
                 'title'         => $pano_title,
-                'name'          => $pano_name,
                 'description'   => $pano_description
             ),
             array('pano_id' => $pano_id));
@@ -704,14 +703,15 @@ function update_pano($pano_id, $pano_xml, $pano_title, $pano_name, $pano_descrip
     }
 }
 
-function update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id){
+function update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc){
     global $wpdb;
     $prereq_table_name = get_prereq_table_name();
 
     if(isset($id) && is_numeric($id)){
         $wpdb->update( $prereq_table_name,
             array('prereq_pts'      => $prereq_pts,
-                  'prereq_domain_id' => $prereq_domain_id),
+                  'prereq_domain_id' => $prereq_domain_id,
+                  'prereq_desc'     => $prereq_desc),
             array('id'      => $id,
                   'pano_id' => $pano_id));
         return true;
@@ -879,7 +879,7 @@ function update_points_initial_bonus($quantity){
 //				    Creating New Panos
 // ***********************************************************
 
-function create_pano($pano_xml, $pano_title, $pano_name, $pano_description){
+function create_pano($pano_xml, $pano_title, $pano_description){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -896,20 +896,20 @@ function create_pano($pano_xml, $pano_title, $pano_name, $pano_description){
     $wpdb->insert( $text_table_name, array( 'pano_id'       => $pano_id,
                                             'language_code' => $language_code,
                                             'title'         => $pano_title,
-                                            'name'          => $pano_name,
                                             'description'   => $pano_description));
 
     return $pano_id;
 }
 
-function create_prereq($pano_id, $prereq_pts, $prereq_domain_id){
+function create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc){
     global $wpdb;
     $prereq_table_name = get_prereq_table_name();
 
     // Insert the pano
     $wpdb->insert( $prereq_table_name, array( 'pano_id'         => $pano_id,
                                               'prereq_pts'      => $prereq_pts,
-                                              'prereq_domain_id' => $prereq_domain_id));
+                                              'prereq_domain_id' => $prereq_domain_id,
+                                              'prereq_desc'     => $prereq_desc  ));
 
     // Get the id of the last row
     $prereq_id = $wpdb->insert_id;

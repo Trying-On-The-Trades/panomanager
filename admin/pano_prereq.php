@@ -15,15 +15,6 @@ function edit_pano_settings_page() {
 <h2>Edit Pano</h2>
 <hr>
 <style type="text/css">
-	#wpfooter{
-		display: none;
-	}
-
-	#file_input {
-	    border: 1px solid #cccccc;
-	    padding: 5px;
-	}
-
 	.new_pano_form{
 		width:85%;
 		margin: 0px auto;
