@@ -2,10 +2,10 @@
 	require('db.php');
 
     $ordered = false;
-	if(isset($_POST['item']) && isset($_POST['price'])){
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['item'])){
         $ordered = true;
 
-        $purchased = process_purchase($_POST['item'], $_POST['price']);
+        $purchased = process_purchase($_POST['item']);
 
 	}
 
@@ -44,7 +44,6 @@
                 <p><?= $symbol . $item->price ?></p>
                 <form method="post">
                     <input type="hidden" name="item" value="<?= $item->id ?> "/>
-                    <input type="hidden" name="price" value="<?= $item->price ?>" />
                     <button id="submit" type="submit">Buy it</button>
                 </form>
             </div>

@@ -48,9 +48,12 @@ function get_currency_available(){
 //
 //}
 
-function process_purchase($id, $price){
+function process_purchase($id){
     $user_id = wp_get_current_user()->ID;
     $currency = get_currency_available();
+
+    $item = get_item($id);
+    $price = $item->price;
     if(intval($price) > intval($currency)){
         return false;
     } else {
