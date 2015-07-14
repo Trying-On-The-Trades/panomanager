@@ -74,6 +74,10 @@ add_action( 'admin_post_create_new_item_type', 'process_new_item_type' );
 add_action( 'admin_post_edit_item_type', 'process_edit_item_type');
 add_action( 'admin_post_delete_item_type', 'process_delete_item_type');
 
+add_action( 'admin_post_create_new_item', 'process_new_item' );
+add_action( 'admin_post_edit_item', 'process_edit_item');
+add_action( 'admin_post_delete_item', 'process_delete_item' );
+
 // Handle the XML AJAX return
 add_action( 'wp_ajax_return_pano_xml_tott', 'return_pano_xml' );
 add_action( 'wp_ajax_nopriv_return_pano_xml_tott', 'return_pano_xml' );
@@ -144,6 +148,11 @@ require_once("admin/edit_initial_points.php");
 require_once("admin/item_types.php");
 require_once("admin/new_item_type.php");
 require_once("admin/edit_item_type.php");
+require_once("admin/items.php");
+require_once("admin/new_item.php");
+require_once("admin/edit_item.php");
+require_once("admin/view_purchases.php");
+require_once("admin/view_single_purchase.php");
 
 // Require in the registration functions
 require_once("functions/register_functions.php");

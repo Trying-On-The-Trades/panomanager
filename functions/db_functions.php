@@ -677,7 +677,7 @@ function get_pano_ads($quest_id){
 //				    Updating Panos
 // ***********************************************************
 
-function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
+function update_pano($pano_id, $pano_xml, $pano_title, $pano_name, $pano_description){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -692,6 +692,7 @@ function update_pano($pano_id, $pano_xml, $pano_name, $pano_description){
         $wpdb->update( $text_table_name,
             array(
                 'language_code' => $language_code,
+                'title'         => $pano_title,
                 'name'          => $pano_name,
                 'description'   => $pano_description
             ),
@@ -878,7 +879,7 @@ function update_points_initial_bonus($quantity){
 //				    Creating New Panos
 // ***********************************************************
 
-function create_pano($pano_xml, $pano_name, $pano_description){
+function create_pano($pano_xml, $pano_title, $pano_name, $pano_description){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -894,6 +895,7 @@ function create_pano($pano_xml, $pano_name, $pano_description){
     // Insert the pano_text
     $wpdb->insert( $text_table_name, array( 'pano_id'       => $pano_id,
                                             'language_code' => $language_code,
+                                            'title'         => $pano_title,
                                             'name'          => $pano_name,
                                             'description'   => $pano_description));
 
@@ -1215,51 +1217,77 @@ function remove_points($user_id, $quantity){
 
 function get_purchases(){
     global $wpdb;
-
-    $purchases = $wpdb->get_results("SELECT * FROM {get_purchases_table_name()}");
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM ". $purchases_table);
 
     return $purchases;
 }
 
-function get_puchase($id){
+function get_purchase($id){
     global $wpdb;
-
-    $purchase = $wpdb->get_row("SELECT * FROM {get_purchases_table_name()}
-                                WHERE id = {$id}");
+    $purchases_table = get_purchases_table_name();
+    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = {$id}");
 
     return $purchase;
+}
+
+function get_purchase_items($id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+    $items_table = get_items_table_name();
+
+    $items = $wpdb->get_results("SELECT i.id, i.name, i.description, i.image, l.price, i.type_id " .
+                                "FROM {$purchases_table} p " .
+                                "INNER JOIN {$line_items_table} l ON p.id = l.purchase_id " .
+                                "INNER JOIN {$items_table} i ON l.item_id = i.id " .
+                                "WHERE p.id = {$id}");
+
+    return $items;
+}
+
+function get_purchase_total($id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $total = $wpdb->get_var("SELECT SUM(l.price) FROM {$purchases_table} p " .
+                            "INNER JOIN {$line_items_table} l ON p.id = l.purchase_id " .
+                            "WHERE p.id = {$id}");
+
+    return $total;
 }
 
 function get_item_types(){
     global $wpdb;
 
-    $item_types = $wpdb->get_results("SELECT * FROM {get_item_types_table_name()}");
+    $item_types_table = get_item_types_table_name();
+    $item_types = $wpdb->get_results("SELECT * FROM {$item_types_table}");
+
 
     return $item_types;
 }
 
 function get_item_type($id){
     global $wpdb;
-
-    $item_type = $wpdb->get_row("SELECT * FROM {get_item_types_table_name()}
-                                WHERE id = {$id}");
+    $item_types_table = get_item_types_table_name();
+    $item_type = $wpdb->get_row("SELECT * FROM " . $item_types_table . " WHERE id = {$id}");
 
     return $item_type;
 }
 
 function get_items(){
     global $wpdb;
-
-    $items = $wpdb->get_results("SELECT * FROM {get_items_table_name()}");
+    $items_table = get_items_table_name();
+    $items = $wpdb->get_results("SELECT * FROM " . $items_table );
 
     return $items;
 }
 
 function get_item($id){
     global $wpdb;
-
-    $item = $wpdb->get_row("SELECT * FROM {get_items_table_name}
-                            WHERE id = {$id}");
+    $items_table = get_items_table_name();
+    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = {$id}");
 
     return $item;
 }
@@ -1318,7 +1346,7 @@ function create_item($name, $description, $image, $price, $type_id){
     $item_table = get_items_table_name();
 
     $wpdb->insert($item_table, array('name' => $name, 'description' => $description,
-        'image' => $image, 'price' => $price, 'type_id' => $item_type_id));
+        'image' => $image, 'price' => $price, 'type_id' => $type_id));
 }
 
 function create_line_item($purchase_id, $item_id){
@@ -1347,12 +1375,18 @@ function update_item_type($id, $name, $description){
         array('id' => $id));
 }
 
-function update_item($id, $name, $description, $image, $price, $type_id){
+function update_item($id, $name, $description, $image = null, $price, $type_id){
     global $wpdb;
 
     $item_table = get_items_table_name();
 
-    $wpdb->update($item_type_table, array('name' => $name, 'description' => $description,
-        'image' => $image, 'price' => $price, 'type_id' => $type_id),
-        array('id' => $id));
+    $params = array('name' => $name,
+                    'description' => $description,
+                    'price' => $price, 'type_id' => $type_id);
+
+    if(!is_null($image)){
+        $params['image'] = $image;
+    }
+
+    $wpdb->update($item_table, $params, array('id' => $id));
 }
