@@ -1,8 +1,8 @@
 <?php 
 	require('db.php');
 
-	if(isset($_POST[''])){
-		//create a purchase
+	if(isset($_POST['item'])){
+		
 	}
 
 	if(isset($_GET['id'])){
@@ -19,16 +19,26 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<div class="content">
-			<img src="<?= $path . $item['image'] ?>" alt="Image">
-			<h4><?= $item['name'] ?></h4>
-			<p><?= $item['description'] ?></p>
-			<p><?= $symbol . $item['price'] ?></p>
-			<form method="post">
-				<input type="hidden" name="item" value="<?= $item['id'] ?> "/>
-				<input type="hidden" name="price" value="<?= $item['price'] ?>" />
-				<button type="submit">Buy it</button>
-			</form>
-		</div>
+		<?php if(isset($_POST['item'])): ?>
+
+			<div class="content">
+				
+			</div>
+
+		<?php else : ?>
+		
+			<div class="content">
+				<img src="<?= $path . $item['image'] ?>" alt="Image">
+				<h4><?= $item['name'] ?></h4>
+				<p><?= $item['description'] ?></p>
+				<p><?= $symbol . $item['price'] ?></p>
+				<form method="post">
+					<input type="hidden" name="item" value="<?= $item['id'] ?> "/>
+					<input type="hidden" name="price" value="<?= $item['price'] ?>" />
+					<button type="submit">Buy it</button>
+				</form>
+			</div>
+
+		<?php endif; ?>
 	</body>
 </html>

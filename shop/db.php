@@ -5,6 +5,10 @@ define('DB_USER', 'wordpress');
 define('DB_PASS', 'wordpress');
 define('DB_NAME', 'wordpress');
 
+require_once('../../../../wp-config.php');
+require_once('../../../../wp-includes/wp-db.php');
+require_once('../../../../wp-includes/pluggable.php');
+
 function database_connection(){
   return new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 }
@@ -32,6 +36,12 @@ function create_purchase($date, $user_id){
     $db->insert('wp_pano_purchases', array('date'=>$date, 'user_id' => $user_id));
 
     return $db->insert_id;
+}
+
+function process_purchase(){
+    $db = database_connection();
+    //return true if purchased
+    //return false if available currency is not enough
 }
 
 ?>
