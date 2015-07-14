@@ -1,12 +1,15 @@
 <?php 
 	require('db.php');
 
-	if(isset($_POST['item'])){
-		
+    $ordered = false;
+	if(isset($_POST['item']) && isset($_POST['price'])){
+        $ordered = true;
+
+        $purchased = process_purchase($_POST['item'], $_POST['price']);
+
 	}
 
 	if(isset($_GET['id'])){
-		//search for an item
 		$item = get_item($_GET['id']);
 		$symbol = get_points_symbol();
 		$path = '../../../';
@@ -19,25 +22,29 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<?php if(isset($_POST['item'])): ?>
+		<?php if($ordered): ?>
 
-			<div class="content">
-				
-			</div>
+            <div class="content">
+                <?php if($purchased === true): ?>
+                    <p>You just purchased an item!</p>
+                <?php else: ?>
+                    <p>You don't have enough <?= get_points_name_plural()?> to purchase this item.</p>
+                <?php endif; ?>
+            </div>
 
 		<?php else : ?>
-		
-			<div class="content">
-				<img src="<?= $path . $item['image'] ?>" alt="Image">
-				<h4><?= $item['name'] ?></h4>
-				<p><?= $item['description'] ?></p>
-				<p><?= $symbol . $item['price'] ?></p>
-				<form method="post">
-					<input type="hidden" name="item" value="<?= $item['id'] ?> "/>
-					<input type="hidden" name="price" value="<?= $item['price'] ?>" />
-					<button type="submit">Buy it</button>
-				</form>
-			</div>
+
+            <div class="content">
+                <img src="<?= $path . $item->image ?>" alt="Image">
+                <h4><?= $item->name ?></h4>
+                <p><?= $item->description ?></p>
+                <p><?= $symbol . $item->price ?></p>
+                <form method="post">
+                    <input type="hidden" name="item" value="<?= $item->id ?> "/>
+                    <input type="hidden" name="price" value="<?= $item->price ?>" />
+                    <button type="submit">Buy it</button>
+                </form>
+            </div>
 
 		<?php endif; ?>
 	</body>

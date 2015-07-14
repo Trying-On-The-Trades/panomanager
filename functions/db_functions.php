@@ -1330,6 +1330,8 @@ function create_purchase($date, $user_id){
     $purchase_table = get_purchases_table_name();
 
     $wpdb->insert($purchase_table, array('date'=>$date, 'user_id' => $user_id));
+
+    return $wpdb->insert_id;
 }
 
 function create_item_type($name, $description){
