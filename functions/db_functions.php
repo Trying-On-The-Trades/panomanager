@@ -1324,12 +1324,12 @@ function delete_line_item($purchase_id, $item_id){
     $wpdb->delete($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id));
 }
 
-function create_purchase($date, $user_id){
+function create_purchase($user_id){
     global $wpdb;
 
     $purchase_table = get_purchases_table_name();
 
-    $wpdb->insert($purchase_table, array('date'=>$date, 'user_id' => $user_id));
+    $wpdb->insert($purchase_table, array('user_id' => $user_id));
 
     return $wpdb->insert_id;
 }
@@ -1359,13 +1359,13 @@ function create_line_item($purchase_id, $item_id, $price){
     $wpdb->insert($line_item_table, array('purchase_id' => $purchase_id, 'item_id' => $item_id, 'price' => $price));
 }
 
-function update_purchase($id, $date, $user_id){
+function update_purchase($id, $user_id){
     global $wpdb;
 
     $purchase_table = get_purchases_table_name();
 
-    $wpdb->update($purchase_table, array('date' => $date, 'user_id' => $user_id),
-        array('id' => $user_id));
+    $wpdb->update($purchase_table, array('user_id' => $user_id),
+        array('id' => $id));
 }
 
 function update_item_type($id, $name, $description){

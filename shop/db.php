@@ -51,13 +51,10 @@ function get_currency_available(){
 function process_purchase($id, $price){
     $user_id = wp_get_current_user()->ID;
     $currency = get_currency_available();
-    $date = date('Y-m-d H:i:s');
-    //return $currency;
     if(intval($price) > intval($currency)){
-
         return false;
     } else {
-        $purchase_id = create_purchase($date, $user_id);
+        $purchase_id = create_purchase($user_id);
         create_line_item($purchase_id, $id, $price);
         $cost = (intval($price) * 1);
         bonus_points_to_wallet($user_id, $cost);
