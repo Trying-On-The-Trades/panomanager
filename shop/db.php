@@ -56,7 +56,7 @@ function process_purchase($id, $price){
     } else {
         $purchase_id = create_purchase($user_id);
         create_line_item($purchase_id, $id, $price);
-        $cost = (intval($price) * 1);
+        $cost = (floatval($price) * -1);
         bonus_points_to_wallet($user_id, $cost);
         return true;
   }
