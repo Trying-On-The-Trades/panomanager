@@ -145,7 +145,7 @@ function add_nav_script($quest, $pano_id){
 	$script .= build_launch_hairstyling($quest);
 	$script .= build_launch_image($quest);
 	$script .= build_launch_game($quest);
-	$script .= build_manage_lightbox($quest, $current_pano_url);
+	// $script .= build_manage_lightbox($quest, $current_pano_url);
 	$script .= build_launch_quizlet($quest);
 	$script .= build_launch_khan($quest);
 	$script .= build_launch_hazard($quest);

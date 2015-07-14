@@ -457,13 +457,13 @@ function build_wallet_sql(){
 function build_purchases_sql(){
   $purchases_table = get_purchases_table_name();
 
-  $sql = "CREATE TABLE {$purchases_table} (
-    `id` int(10) NOT NULL AUTO_INCREMENT,
-    `date` datetime,
-    `user_id` bigint(20) unsigned NOT NULL,
-    PRIMARY KEY(`id`),
-    FOREIGN KEY (`user_id`) REFERENCES wp_users(`ID`)
-    );";
+  $sql = "CREATE TABLE " . $purchases_table . " (
+  	`id` INT( 10 ) AUTO_INCREMENT NOT NULL,
+  	`date` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT '0000-00-00 00:00:00',
+  	`user_id` BIGINT( 20 ) UNSIGNED NOT NULL,
+  	 PRIMARY KEY ( `id` ),
+     FOREIGN KEY (`user_id`) REFERENCES wp_users(`ID`)
+   );";
 
   return $sql;
 }
