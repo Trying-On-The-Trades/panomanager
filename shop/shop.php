@@ -1,4 +1,4 @@
-<?php 
+<?php
 	require('db.php');
 
     $ordered = false;
@@ -26,9 +26,11 @@
 
             <div id="content">
                 <?php if($purchased === true): ?>
-                    <p>You just purchased an item!</p>
+									  <img src="./success.png" alt="success">
+                    <p class="success">You just purchased an item!</p>
                 <?php else: ?>
-                    <p>You don't have enough <?= get_points_name_plural()?> to purchase this item.</p>
+									  <img src="./error.png" alt="error">
+                    <p class="error">You don't have enough <?= get_points_name_plural()?> to purchase this item.</p>
                 <?php endif; ?>
             </div>
 
