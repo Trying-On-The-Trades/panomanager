@@ -156,9 +156,19 @@ function build_domain($domain_id = 1){
     return $domain;
 }
 
-function build_item_types($item_type_id = 1){
+function build_item_type($item_type_id = 1){
     $item_type = new item_type($item_type_id);
     return $item_type;
+}
+
+function build_item($item_id = 1){
+    $item = new item($item_id);
+    return $item;
+}
+
+function build_purchase($purchase_id){
+    $purchase = new purchase($purchase_id);
+    return $purchase;
 }
 
 // Get the user's prefered language
@@ -437,12 +447,11 @@ function process_new_pano(){
 
 	// Create a new pano using the post data
     $pano_xml         = stripslashes($_POST['pano_xml']);
-    $pano_name        = $_POST['pano_name'];
+    $pano_title       = $_POST['pano_title'];
     $pano_description = $_POST['pano_description'];
-    $pano_autopan     = $_POST['autopan'];
 
 	// Get the id
-    $pano_id = create_pano($pano_xml, $pano_name, $pano_description);
+    $pano_id = create_pano($pano_xml, $pano_title, $pano_description);
 
     create_quest($pano_id);
 
@@ -455,9 +464,10 @@ function process_new_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id);
+    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
@@ -618,7 +628,26 @@ function process_new_item_type(){
 
     create_item_type($name, $description);
 
-    wp_redirect( admin_url( 'admin.php?page=item_type_settings&settings-saved'));
+    wp_redirect( admin_url( 'admin.php?page=item_types_settings&settings-saved'));
+}
+
+function process_new_item(){
+    $name = $_POST['item_name'];
+    $description = $_POST['item_description'];
+    $price = $_POST['item_price'];
+    $type_id = $_POST['item_type_id'];
+
+
+    if( !empty( $_FILES['item_image']['name'] ) ){
+        $image_file = wp_upload_bits( $_FILES['item_image']['name'], null, @file_get_contents( $_FILES['item_image']['tmp_name'] ) );
+        $image_file_name = $image_file['file'];
+        $pos = strpos($image_file_name, 'upload');
+        $image = substr_replace($image_file_name, '', 0, $pos);
+    }
+
+    create_item($name, $description, $image, $price, $type_id);
+
+    wp_redirect( admin_url( 'admin.php?page=items_settings&settings-saved') );
 }
 
 // ***********************************************************
@@ -629,11 +658,11 @@ function process_edit_pano(){
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
     $pano_xml         = trim(stripslashes($_POST['pano_xml']));
-    $pano_name        = $_POST['pano_name'];
+    $pano_title        = $_POST['pano_title'];
     $pano_description = trim($_POST['pano_description']);
 
     // Get the id
-    $return = update_pano($pano_id, $pano_xml, $pano_name, $pano_description);
+    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_description);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_menu&settings-saved') );
@@ -649,9 +678,10 @@ function process_edit_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id);
+    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
@@ -772,13 +802,39 @@ function process_edit_item_type(){
 
     $item_type_description = $_POST['item_type_description'];
 
-    $return = update_type_type($item_type_id, $item_type_name, $item_type_description);
+    $return = update_item_type($item_type_id, $item_type_name, $item_type_description);
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=item_types_settings&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=items_types_settings&settings-saved') );
     } else {
         wp_redirect( admin_url( 'admin.php?page=item_types_settings&error') );
     }
+}
+
+function process_edit_item(){
+    $item_id = $_POST['item_id'];
+    $item_name = $_POST['item_name'];
+    $item_description = $_POST['item_description'];
+
+    if ( !empty( $_FILES['item_image']['name'] ) ) {
+        $image_file = wp_upload_bits( $_FILES['item_image']['name'], null, @file_get_contents( $_FILES['item_image']['tmp_name'] ) );
+        $image_file_name = $image_file['file'];
+        $pos = strpos($image_file_name,'upload');
+        $item_image = substr_replace($image_file_name,'',0,$pos);
+    }
+
+    $item_price = $_POST['item_price'];
+    $item_type_id = $_POST['item_type_id'];
+
+
+    $return = update_item($item_id, $item_name, $item_description, $item_image, $item_price, $item_type_id);
+
+    if($return){
+        wp_redirect( admin_url( 'admin.php?page=items_settings&settings-saved') );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=items_settings&error') );
+    }
+
 }
 
 // ***********************************************************
@@ -863,6 +919,14 @@ function process_delete_item_type(){
     delete_item_type($item_type_id);
 
     wp_redirect( admin_url( 'admin.php?page=item_types_settings') );
+}
+
+function process_delete_item(){
+    $item_id = $_POST['item_id'];
+
+    delete_item($item_id);
+
+    wp_redirect( admin_url('admin.php?page=items_settings') );
 }
 
 // ***********************************************************
