@@ -24,7 +24,7 @@
 	<body>
 		<?php if($ordered): ?>
 
-            <div class="content">
+            <div id="content">
                 <?php if($purchased === true): ?>
                     <p>You just purchased an item!</p>
                 <?php else: ?>
@@ -34,7 +34,7 @@
 
 		<?php else : ?>
 
-            <div class="content">
+            <div id="content">
                 <img src="<?= $path . $item->image ?>" alt="Image">
                 <h4><?= $item->name ?></h4>
                 <p><?= $item->description ?></p>
@@ -42,7 +42,7 @@
                 <form method="post">
                     <input type="hidden" name="item" value="<?= $item->id ?> "/>
                     <input type="hidden" name="price" value="<?= $item->price ?>" />
-                    <button type="submit">Buy it</button>
+                    <button id="submit" type="submit">Buy it</button>
                 </form>
             </div>
 
