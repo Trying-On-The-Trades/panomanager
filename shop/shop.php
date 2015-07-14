@@ -20,6 +20,7 @@
 	<head>
 		<title>Shop</title>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="./shop.css" />
 	</head>
 	<body>
 		<?php if($ordered): ?>
