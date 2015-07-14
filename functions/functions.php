@@ -464,9 +464,10 @@ function process_new_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id);
+    $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
@@ -677,9 +678,10 @@ function process_edit_prereq(){
     $pano_id         = $_POST['pano_id'];
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
+    $prereq_desc     = $_POST['prereq_desc'];
 
     // Get the id
-    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id);
+    $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );

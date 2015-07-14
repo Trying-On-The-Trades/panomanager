@@ -22,10 +22,8 @@ function view_panos_settings_page() {
             <select name="panos" id="pano_id">
 				 <option value="NA">Select a Pano</option>
 
-                 <?php foreach($panos as $pano):  ?>
-
-                        <option value="<?= $pano->id ?>"><?= $pano['title']  ?></option>
-
+                <?php foreach($panos as $pano):  ?>
+                    <option value="<?= $pano->id ?>"><?= $pano['title']  ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
