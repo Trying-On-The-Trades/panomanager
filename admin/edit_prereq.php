@@ -24,7 +24,7 @@ function prereq_edit_settings_page() {
     	<div class="ui form">
 	      <div class="field">
 	        	<label for="prereq_desc">Prereq Description</label>
-	    		<textarea name="prereq_desc" id="prereq_desc" value="<?php echo $prereq->prereq_desc ?>"required ></textarea>
+	    		<textarea name="prereq_desc" id="prereq_desc" required ><?php echo $prereq->prereq_desc ?></textarea>
 	      </div>
 	    </div>
 	    <div class="ui form">
