@@ -52,3 +52,6 @@ cs-build.properties
 
 #game plugins
 /js/js_games
+
+#shop test files
+/shop/test
