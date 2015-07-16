@@ -12,6 +12,7 @@
 	if(isset($_GET['id'])){
 		$item = get_item($_GET['id']);
 		$symbol = get_points_symbol();
+		$plural = get_points_name_plural();
 		$path = '../../../';
 	}
 ?>
@@ -29,9 +30,11 @@
                 <?php if($purchased === true): ?>
 									  <img src="./success.png" alt="success">
                     <p class="success">You just purchased an item!</p>
+										<input type="hidden" name="shop_message" id="shop_message" value="You spent <?= $item->price ?> <?= $plural ?>!" />
                 <?php else: ?>
 									  <img src="./error.png" alt="error">
-                    <p class="error">You don't have enough <?= get_points_name_plural()?> to purchase this item.</p>
+                    <p class="error">You don't have enough <?= $plural ?> to purchase this item.</p>
+										<input type="hidden" name="shop_message" id="shop_message" value="" />
                 <?php endif; ?>
             </div>
 
