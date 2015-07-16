@@ -289,6 +289,30 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
 }
 
 /*
+  Opens a pop-up with the item to be sold. If purchase is successful, a toast message will be displayed.
+  Parameters:
+  - item_id (The item database id)
+*/
+function loadShopItem(item_id){
+  var width = 400;
+  var height = 400;
+  var shopUrl = 'wp-content/plugins/panomanager/shop/shop.php?id=' + item_id;
+  sMessage = '';
+  message = function(){
+    var iframe = document.getElementsByClassName('featherlight-inner')[0];
+    var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+    var messageContent = innerDoc.getElementById('shop_message').getAttribute('value');
+    sMessage = messageContent;
+  }
+  messageToast = function(){
+    if(sMessage != ''){
+      $().toastmessage('showSuccessToast', sMessage);
+    }
+  }
+  $.featherlight({iframe: shopUrl, iframeWidth: width, iframeHeight: height, beforeClose: message, afterClose: messageToast});
+}
+
+/*
   Opens a pop-up with a video from a url.
   Parameters:
   - url (Video url)
