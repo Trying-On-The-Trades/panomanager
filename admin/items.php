@@ -33,6 +33,7 @@
             <th>Item Type</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>Create Hotspot</th>
         </tr>
         <?php foreach($items as $item): ?>
             <tr>
@@ -52,7 +53,7 @@
                 <td>
                     <form method="POST" action="<?= $pano_editor ?>">
                         <input name="item_id" type="hidden" value="<?= $item->id ?>">
-                        <input clas="ui blue icon button" type="submit" value="Create Hotspot" style="...">
+                        <input class="ui blue icon button" style="padding: 7px" type="submit" value="Create Hotspot" />
                     </form>
                 </td>
             </tr>
