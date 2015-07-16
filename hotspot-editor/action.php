@@ -12,6 +12,7 @@
     $deck_id           = $_POST['deck_id'];
     $game_type         = $_POST['game_type'];
     $pano_id           = $_POST['pano_id'];
+    $item_id           = $_POST['item_id'];
     $hotspot_url       = $_POST['hotspot_url'];
 
     if($game_type == "url"){
@@ -52,6 +53,7 @@
         hotspot_points    = '<?=$hotspot_points?>';
         hotspot_menu      = '<?=$hotspot_menu?>';
         hotspot_url       = '<?=$hotspot_url?>';
+        item_id           = '<?=$item_id ?>';
 
         var icon = false;
         var menu = false;
@@ -95,8 +97,41 @@
 
         }
 
-        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+        function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url) {
 
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    action: 'create_new_shop_ajax',
+                    mission_id: mission_id,
+                    domain_id: domain_id,
+                    hotspot_description: hotspot_description,
+                    hotspot_icon: hotspot_icon,
+                    hotspot_menu: hotspot_menu,
+                    hotspot_name: hotspot_name,
+                    hotspot_points: hotspot_points,
+                    hotspot_x: x,
+                    hotspot_y: y,
+                    item_id: item_id,
+                    hotspot_url: hotspot_url
+                },
+                success: function (d) {
+                    //alert('Hotspot Added!' + d);
+                    window.location.href = document.location.origin + '/wordpress/pano/?pano_id=<?=$pano_id?>';
+                },
+                error: function (d) {
+                    alert('Hotspot Fail!');
+                }
+            });
+
+        }
+
+        <?php if(is_numeric($deck_id)): ?>
+            add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+        <?php elseif(is_numeric($item_id)): ?>
+            add_new_hotspot(domain, mission, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+        <?php endif; ?>
     </script>
 </head>
 </html>

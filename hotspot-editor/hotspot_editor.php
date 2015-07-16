@@ -8,6 +8,7 @@ require('db.php');
     $point_x   = $_GET['point_x'];
     $point_y   = $_GET['point_y'];
     $deck_id   = $_GET['deck_id'];
+    $item_id   = $_GET['item_id'];
 
     if($deck_id){
         $game_type = get_deck_type($db, $deck_id);
@@ -36,6 +37,7 @@ require('db.php');
     <input type="hidden" name="point_y" value="<?=$point_y?>" />
     <input type="hidden" name="deck_id" value="<?=$deck_id?>" />
     <input type="hidden" name="game_type" value="<?=$game_type?>" />
+    <input type="hidden" name="item_id" value="<?= $item_id ?>" />
     <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
     <div class="ui form segment new_pano_form">
 	    <div class="ui form">

@@ -7,6 +7,7 @@
         $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
         $new_item_url = admin_url() . 'admin.php?page=new_item_settings' ;
         $edit_item_url = admin_url() . 'admin.php?page=edit_item_settings';
+        $pano_editor = admin_url() . "admin.php?page=view_panos_settings";
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?= $semantic ?>"/>
@@ -46,6 +47,12 @@
                         <input type="hidden" name="action" value="delete_item"/>
                         <input type="hidden" name="item_id" value="<?= $item->id ?>"/>
                         <input type="submit" class="ui blue icon button" style="padding: 7px" value="Delete" />
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="<?= $pano_editor ?>">
+                        <input name="item_id" type="hidden" value="<?= $item->id ?>">
+                        <input clas="ui blue icon button" type="submit" value="Create Hotspot" style="...">
                     </form>
                 </td>
             </tr>
