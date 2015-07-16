@@ -329,3 +329,9 @@ function info(){
   //console.log(ret);
   return ret.responseText;
 }
+
+function loadShop(url){
+  var width = 400;
+  var height = 400;
+  $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
+}
