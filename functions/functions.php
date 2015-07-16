@@ -589,7 +589,7 @@ function process_new_hotspot_ajax(){
             '</action>';
     }else{
         $hotspot_action_xml = '<action namme="function_' . $hotspot_id . '">' .
-            'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/shop/shop.php?id=' . $item_id . '"' . ', "bns"));' .
+            'js(loadShopItem(' . $item_id . '));' .
             '</action>';
     }
 

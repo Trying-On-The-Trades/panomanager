@@ -40,6 +40,7 @@
         var hotspot_points    = '';
         var hotspot_menu      = '';
         var hotspot_url       = '';
+        var item_id           = '';
 
         mission           = <?=$mission?>;
         domain            = '<?=$domain?>';
@@ -103,7 +104,7 @@
                 type: 'POST',
                 url: url,
                 data: {
-                    action: 'create_new_shop_ajax',
+                    action: 'create_new_hotspot_ajax',
                     mission_id: mission_id,
                     domain_id: domain_id,
                     hotspot_description: hotspot_description,
@@ -130,7 +131,7 @@
         <?php if(is_numeric($deck_id)): ?>
             add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
         <?php elseif(is_numeric($item_id)): ?>
-            add_new_hotspot(domain, mission, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+            add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
         <?php endif; ?>
     </script>
 </head>

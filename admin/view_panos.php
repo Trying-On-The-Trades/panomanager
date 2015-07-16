@@ -16,7 +16,6 @@ function view_panos_settings_page() {
 <form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <input type="hidden" name="action" value="create_new_spotgame" />
     <div class="ui form segment new_word_form">
-
        <div class="ui form">
         <div class="field">
             <label>Choose a deck:</label>
@@ -24,7 +23,7 @@ function view_panos_settings_page() {
 				 <option value="NA">Select a Pano</option>
 
                 <?php foreach($panos as $pano):  ?>
-                    <option value="<?= $pano->id ?>"><?= $pano['title']  ?></option>
+                    <option value="<?= $pano['id'] ?>"><?= $pano['title']  ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -44,7 +43,8 @@ function view_panos_settings_page() {
         if(user_selected_one_pano(selected)){
             document.getElementById("pano_not_selected").style.display = "none";
             var game_id = "<?php echo $game_id ?>";
-            if(game_id == "" || game_id == null){
+            var item_id = "<?php echo $item_id ?>";
+            if((game_id == "" || game_id == null)&&(item_id == "" || item_id == null)){
                 window.location.href = "<?php echo $pano_editor ?>" + "/?pano_id=" + selected;
             }else{
                 <?php if(isset($game_id)): ?>

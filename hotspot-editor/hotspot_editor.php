@@ -12,6 +12,8 @@ require('db.php');
 
     if($deck_id){
         $game_type = get_deck_type($db, $deck_id);
+    }else if($item_id) {
+        $game_type = "item";
     }else{
         $game_type = "url";
     }
