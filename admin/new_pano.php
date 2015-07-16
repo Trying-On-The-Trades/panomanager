@@ -14,8 +14,6 @@ function new_pano_settings_page() {
 	}
 </style>
 <script type="text/javascript">
-
-
 </script>
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
         <div class="updated"><p>Settings updated successfully.</p></div>
