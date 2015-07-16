@@ -47,6 +47,7 @@
                 <p><?= $symbol . $item->price ?></p>
                 <form method="post">
                     <input type="hidden" name="item" value="<?= $item->id ?> "/>
+										<input type="hidden" name="shop_message" id="shop_message" value="" />
                     <button id="submit" type="submit">Buy it</button>
                 </form>
             </div>
