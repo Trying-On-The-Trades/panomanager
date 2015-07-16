@@ -12,6 +12,9 @@
 *  Author: Douglas Modena
 */
 
+// Initializing variable
+lastHotspot = 0;
+
 /*
   Adds bonus points from activities to database.
   Parameters:
@@ -65,10 +68,6 @@ function addRegularPoints(hot_id){
   });
 }
 
-wordpress_admin_url = function(){
-    return document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
-}
-
 /*
   Tests if user can open an activity based on a post to the database.
   If user is allowed a new attempt, the activity will open normally. If the user is not allowed a new attempt, a toast will be shown.
@@ -79,7 +78,7 @@ wordpress_admin_url = function(){
 */
 allowNewAttempt = function(hot_id){
   var allow = true;
-  var postUrl = wordpress_admin_url();
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   $.ajax({
     type: 'POST',
     async: false,
@@ -182,11 +181,7 @@ function loadAjax(htm){
   - frm (Frame address)
   - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
-last_hostpot = 0;
 function loadFrame(act_id, frm, pts){
-
-    /* shame */
-  last_hostpot = act_id;
 
   var size = getClientBrowserSize();
   var width = parseInt(size[0] * 0.8);
@@ -340,16 +335,28 @@ function pointsVerb(pts){
 }
 
 function info(){
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
   var ret = $.ajax(
     {
       async : false,
       method: 'POST',
-      url : wordpress_admin_url(),
+      url : postUrl,
       data : {
         action : 'get_hotspot_info',
-        hotspot_id : last_hostpot
+        hotspot_id : lastHotspot
       }
     })
   //console.log(ret);
   return ret.responseText;
+}
+
+/*
+  Updates the value of the last hotspot open, in order to have its description shown.
+  Parameters:
+  - hot_id (Last hotspot id open)
+*/
+function updateLastHotspot(hot_id){
+  if(hotspot_id > 0){
+    lastHotspot = hotspot_id;
+  }
 }
