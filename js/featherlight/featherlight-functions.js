@@ -330,8 +330,14 @@ function info(){
   return ret.responseText;
 }
 
-function loadShop(url){
+/*
+  Opens a pop-up with the item to be sold.
+  Parameters:
+  - item_id (The item database id)
+*/
+function loadShopItem(item_id){
   var width = 400;
   var height = 400;
-  $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
+  var shopUrl = 'wp-content/plugins/panomanager/shop/shop.php?id=' + item_id;
+  $.featherlight({iframe: shopUrl, iframeWidth: width, iframeHeight: height});
 }
