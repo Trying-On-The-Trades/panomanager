@@ -7,8 +7,7 @@ html{
 #wrapper{
   font-family: 'Roboto', Helvetica, sans-serif;
   width: 70%;
-  height: 60vh;
-  margin: 20vh auto 0;
+  margin: 1em auto 0;
   border: 2px solid #147BB5;
   text-align: center;
   border-radius: 5%;
@@ -18,8 +17,6 @@ html{
 h1, h2{
   color: #FFFFFF;
   text-shadow: 2px 2px 2px #147BB5;
-  /*text-shadow: -2px -2px -2px #147BB5;*/
-
 }
 
 #wrapper p{
