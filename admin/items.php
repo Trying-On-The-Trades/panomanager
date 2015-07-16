@@ -48,6 +48,12 @@
                         <input type="submit" class="ui blue icon button" style="padding: 7px" value="Delete" />
                     </form>
                 </td>
+                <td>
+                    <form method="POST" action="">
+                        <input name="item_id" type="hidden" value="<?= $item->id ?>">
+                        <input clas="ui blue icon button" type="submit" value="Create Hotspot" style="...">
+                    </form>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>

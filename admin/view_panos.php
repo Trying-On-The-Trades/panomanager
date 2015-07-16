@@ -5,6 +5,7 @@ function view_panos_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $pano_editor = WP_PLUGIN_URL . '../pano_editor/';
     $game_id = $_POST['game_id'];
+    $item_id = $_POST['item_id'];
     $panos = get_pano_title();
 
     ?>
@@ -46,7 +47,11 @@ function view_panos_settings_page() {
             if(game_id == "" || game_id == null){
                 window.location.href = "<?php echo $pano_editor ?>" + "/?pano_id=" + selected;
             }else{
-                window.location.href = "<?php echo $pano_editor ?>" + "/?game_id=<?php echo $game_id ?>&pano_id=" + selected;
+                <?php if(isset($game_id)): ?>
+                    window.location.href = "<?php echo $pano_editor ?>" + "/?game_id=<?php echo $game_id ?>&pano_id=" + selected;
+                <?php elseif(isset($item_id)): ?>
+                    window.location.href = "<?php echo $pano_editor ?>" + "/?item_id=<?php echo $item_id ?>&pano_id=" + selected;
+                <?php endif; ?>
             }
 
         }else{
