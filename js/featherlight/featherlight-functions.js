@@ -12,9 +12,6 @@
 *  Author: Douglas Modena
 */
 
-// Initializing variable
-lastHotspot = 0;
-
 /*
   Adds bonus points from activities to database.
   Parameters:
@@ -70,7 +67,8 @@ function addRegularPoints(hot_id){
 
 /*
   Tests if user can open an activity based on a post to the database.
-  If user is allowed a new attempt, the activity will open normally. If the user is not allowed a new attempt, a toast will be shown.
+  If user is allowed a new attempt, the activity will open normally.
+  If the user is not allowed a new attempt, a toast will be shown.
   Parameter:
   - hot_id (Hotspot id)
   Returns:
@@ -101,6 +99,13 @@ allowNewAttempt = function(hot_id){
 }
 
 /*
+  Displays the hotspot information message in a featherlight pop-up.
+*/
+function displayInfoMessage(message){
+  $.featherlight("<p style=\"white-space: pre;\">           " + message + "</p>", null, false);
+}
+
+/*
   Gets the browser width and height to apply custom featherlight size options.
   Returns:
   - size (Array -> [0 - width] [1 - height])
@@ -123,6 +128,27 @@ function getClientBrowserSize(){
   size.push(myWidth);
   size.push(myHeight);
   return size;
+}
+
+/*
+  Gets the last hotstpot information message trough an ajax call.
+  The global variable 'lastHotspot' keeps track of the hotspot id.
+*/
+// Initializing variable
+lastHotspot = 0;
+function getInfoMessage(){
+  var postUrl = getPostUrl();
+  var ret = $.ajax(
+    {
+      async : false,
+      method: 'POST',
+      url : postUrl,
+      data : {
+        action : 'get_hotspot_info',
+        hotspot_id : lastHotspot
+      }
+    })
+  return ret.responseText;
 }
 
 /*
@@ -175,10 +201,12 @@ function getPostUrl(){
 /*
   Opens a pop-up with html content using ajax.
   Parameters:
+  - hot_id (Hotspot id)
   - htm (Ajax path)
   Returns: void
 */
-function loadAjax(htm){
+function loadAjax(hot_id, htm){
+  updateLastHotspot(hot_id);
   $.featherlight(htm, {type: 'ajax'});
 }
 
@@ -186,11 +214,12 @@ function loadAjax(htm){
   Opens a pop-up with a frame.
   If you want to save your activity points, set the pts parameter.
   Parameters:
+  - hot_id (Hotspot id)
   - frm (Frame address)
   - pts (Save points) [Default value: 'none'] [Regular mission points: 'reg'] [Bonus points: 'bns']
 */
-function loadFrame(act_id, frm, pts){
-
+function loadFrame(hot_id, frm, pts){
+  updateLastHotspot(hot_id);
   var size = getClientBrowserSize();
   var width = parseInt(size[0] * 0.8);
   var height = parseInt(size[1] * 0.8);
@@ -200,7 +229,7 @@ function loadFrame(act_id, frm, pts){
   }
 
   allowed = function(){
-    var follow = allowNewAttempt(act_id);
+    var follow = allowNewAttempt(hot_id);
     return follow;
   }
 
@@ -214,7 +243,7 @@ function loadFrame(act_id, frm, pts){
 
     // Adding points to db and toast
     showPts = function(){
-        addRegularPoints(act_id);
+        addRegularPoints(hot_id);
     }
     $.featherlight({iframe: frm, iframeWidth: width, iframeHeight: height, beforeOpen: allowed, afterClose: showPts});
   }
@@ -234,7 +263,7 @@ function loadFrame(act_id, frm, pts){
     // Adding points to db and toast
     showPts = function(){
       if(fpoints != 0){
-        addBonusPoints(act_id, fpoints);
+        addBonusPoints(hot_id, fpoints);
       }
     }
 
@@ -245,16 +274,13 @@ function loadFrame(act_id, frm, pts){
 /*
   Opens a pop-up with an image.
   Parameters:
+  - hot_id (Hotspot id)
   - img (Image path)
   Returns: void
 */
-function loadImage(img){
+function loadImage(hot_id, img){
+  updateLastHotspot(hot_id);
   $.featherlight(img, {type: 'image'});
-}
-
-function loadMessage(message){
-
-  $.featherlight("<p style=\"white-space: pre;\">           " + message + "</p>", null, false);
 }
 
 /*
@@ -262,7 +288,7 @@ function loadMessage(message){
   If you want to save your activity points, set the award_points parameter to true.
   For bonus points, set timer to true.
   Parameters:
-  - act_id (Activity unique id)
+  - hot_id (Hotspot id)
   - frm (Location of load-oppia.php)
   - oppia_id (Oppia unique id)
   - award_points (Award points) [Default value: 'none']
@@ -271,7 +297,8 @@ function loadMessage(message){
   - bonus_points (Bonus points)
   - time_limit (Time limit to be awarded with bonus points)
 */
-function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
+function loadOppia(hot_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
+  updateLastHotspot(hot_id);
   var frame_address = '';
   if(award_points == null){
     award_points = 'none';
@@ -288,15 +315,17 @@ function loadOppia(act_id, frm, oppia_id, award_points, base_points, timer, bonu
       frame_address = frm + '?oppia=' + oppia_id + '&base_points=' + base_points + '&bonus_points=' + bonus_points + '&time_limit=' + time_limit;
     }
   }
-  loadFrame(act_id, frame_address, award_points);
+  loadFrame(hot_id, frame_address, award_points);
 }
 
 /*
   Opens a pop-up with the item to be sold. If purchase is successful, a toast message will be displayed.
   Parameters:
+  - hot_id (Hotspot id)
   - item_id (The item database id)
 */
-function loadShopItem(item_id){
+function loadShopItem(hot_id, item_id){
+  updateLastHotspot(hot_id);
   var width = 400;
   var height = 400;
   var shopUrl = 'wp-content/plugins/panomanager/shop/shop.php?id=' + item_id;
@@ -318,9 +347,11 @@ function loadShopItem(item_id){
 /*
   Opens a pop-up with a video from a url.
   Parameters:
+  - hot_id (Hotspot id)
   - url (Video url)
 */
-function loadVideo(url){
+function loadVideo(hot_id, url){
+  updateLastHotspot(hot_id);
   var width = 560;
   var height = 315;
   $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
@@ -342,29 +373,13 @@ function pointsVerb(pts){
   return verb;
 }
 
-function info(){
-  var postUrl = getPostUrl();
-  var ret = $.ajax(
-    {
-      async : false,
-      method: 'POST',
-      url : postUrl,
-      data : {
-        action : 'get_hotspot_info',
-        hotspot_id : lastHotspot
-      }
-    })
-  //console.log(ret);
-  return ret.responseText;
-}
-
 /*
   Updates the value of the last hotspot open, in order to have its description shown.
   Parameters:
   - hot_id (Last hotspot id open)
 */
 function updateLastHotspot(hot_id){
-  if(hotspot_id > 0){
-    lastHotspot = hotspot_id;
+  if(hot_id > 0){
+    lastHotspot = hot_id;
   }
 }
