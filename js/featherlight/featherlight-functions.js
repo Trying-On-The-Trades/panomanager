@@ -23,7 +23,7 @@ lastHotspot = 0;
 */
 function addBonusPoints(hot_id, pts){
   if(pts != 0){
-    var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+    postUrl = getPostUrl();
     $.ajax({
       type: 'POST',
       url: postUrl,
@@ -51,7 +51,7 @@ function addBonusPoints(hot_id, pts){
   - hot_id (Hotspot id)
 */
 function addRegularPoints(hot_id){
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = getPostUrl();
   $.ajax({
     type: 'POST',
     url: postUrl,
@@ -78,7 +78,7 @@ function addRegularPoints(hot_id){
 */
 allowNewAttempt = function(hot_id){
   var allow = true;
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = getPostUrl();
   $.ajax({
     type: 'POST',
     async: false,
@@ -133,7 +133,7 @@ function getClientBrowserSize(){
   - pointsName (String)
 */
 function getPointsName(pts_qty){
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = getPostUrl();
   var pointsName = 'points';
   if(pts_qty > 1 || pts_qty < -1){
     $.ajax({
@@ -162,6 +162,14 @@ function getPointsName(pts_qty){
     });
   }
   return pointsName;
+}
+
+/*
+  Returns the url address of the post page.
+*/
+function getPostUrl(){
+  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  return postUrl;
 }
 
 /*
@@ -335,7 +343,7 @@ function pointsVerb(pts){
 }
 
 function info(){
-  var postUrl = document.getElementById('admin_dir').getAttribute('value')+'admin-post.php';
+  var postUrl = getPostUrl();
   var ret = $.ajax(
     {
       async : false,
