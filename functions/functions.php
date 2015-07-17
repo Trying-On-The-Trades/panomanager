@@ -589,7 +589,7 @@ function process_new_hotspot_ajax(){
             '</action>';
     }else{
         $hotspot_action_xml = '<action namme="function_' . $hotspot_id . '">' .
-            'js(loadShopItem(' . $item_id . '));' .
+            'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
             '</action>';
     }
 
