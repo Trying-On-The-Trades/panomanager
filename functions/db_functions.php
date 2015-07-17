@@ -88,7 +88,7 @@ function get_pano_desc(){
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results(
-        "SELECT wpp.id, wppt.desc FROM " . $pano_table_name . " wpp " .
+        "SELECT wpp.id, wppt.description FROM " . $pano_table_name . " wpp " .
         "INNER JOIN " . $text_table_name . " wppt ON " .
         "wppt.pano_id = wpp.id " .
         "WHERE wppt.language_code = " . $language_code, ARRAY_A);
