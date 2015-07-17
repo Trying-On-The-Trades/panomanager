@@ -588,7 +588,7 @@ function process_new_hotspot_ajax(){
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
     }else{
-        $hotspot_action_xml = '<action namme="function_' . $hotspot_id . '">' .
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
             'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
             '</action>';
     }
