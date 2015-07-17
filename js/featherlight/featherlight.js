@@ -138,7 +138,7 @@
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							'<span id="info_hotspot" class="'+css+'-info-icon '+ self.namespace + '-info" onclick="loadMessage(info())" style="display: ' + displayed + ';">',
+							'<span id="info_hotspot" class="'+css+'-info-icon '+ self.namespace + '-info" onclick="displayInfoMessage(getInfoMessage())" style="display: ' + displayed + ';">',
 								self.infoIcon,
 							'</span>',
 							'<span class="'+css+'-close-icon '+ self.namespace + '-close">',
