@@ -8,10 +8,10 @@ function pano_create_menu() {
 
 // function to create the top level meny
 function create_top_menu(){
-	add_menu_page('pano-settings', 
-				  'Panos', 
+	add_menu_page('pano-settings',
+				  'Panos',
 				  'administrator',
-				  'pano_menu', 
+				  'pano_menu',
 				  'pano_settings_page',
 				  plugins_url('/images/icon.png', __FILE__)
 				  );
@@ -22,8 +22,8 @@ function create_sub_menus(){
 
 	// Create the sub menu item for new panos
 	add_submenu_page(null,
-					 "New Pano", 
-					 "New Pano", 
+					 "New Pano",
+					 "New Pano",
 					 "administrator",
 					 "new_pano_settings",
 					 "new_pano_settings_page");
@@ -168,30 +168,110 @@ function create_sub_menus(){
 					"edit_hotspot_type_settings",
 					"edit_hotspot_type_settings_page");
 
-	// Create the sub menu item for trades
+	// Create the sub menu item for domains
 	add_submenu_page("pano_menu",
-					"Trades",
-					"Trades",
+					"Domains",
+					"Domains",
 					"administrator",
-					"pano_trade_settings",
-					"pano_trade_settings_page");
+					"pano_domain_settings",
+					"pano_domain_settings_page");
 
 
-	// Create the sub menu item for trades
+	// Create the sub menu item for domains
 	add_submenu_page(null,
-					"New Trade",
-					"New Trade",
+					"New Domain",
+					"New Domain",
 					"administrator",
-					"new_trade_settings",
-					"new_trade_settings_page");
+					"new_domain_settings",
+					"new_domain_settings_page");
 
 
-	// Create the sub menu item for editng trades
+	// Create the sub menu item for editng domains
 	add_submenu_page(null,
-					"Edit Trade",
-					"Edit Trade",
+					"Edit Domain",
+					"Edit Domain",
 					"administrator",
-					"edit_trade_settings",
-					"edit_trade_settings_page");
+					"edit_domain_settings",
+					"edit_domain_settings_page");
+
+
+					// Create the sub menu item for editng domains
+
+    add_submenu_page("pano_menu",
+        "Purchases",
+        "Purchases",
+        "administrator",
+        "purchases_settings",
+        "purchases_settings_page");
+
+    add_submenu_page(null,
+                    "View Single Purchase",
+                    "View Single Purchase",
+                    "administrator",
+                    "view_purchase_settings",
+                    "view_purchase_settings_page");
+
+	 add_submenu_page("pano_menu",
+						"Points Name",
+						"Points Name",
+						"administrator",
+						"edit_points_info_settings",
+						"edit_points_info_settings_page");
+
+		add_submenu_page("pano_menu",
+						"Initial Points",
+						"Initial Points",
+						"administrator",
+						"edit_initial_points_settings",
+						"edit_initial_points_settings_page");
+
+    add_submenu_page("pano_menu",
+        "Items",
+        "Items",
+        "administrator",
+        "items_settings",
+        "item_settings_page");
+
+    add_submenu_page(null,
+        "New Item",
+        "New Item",
+        "administrator",
+        "new_item_settings",
+        "new_item_settings_page");
+
+    add_submenu_page(null,
+        "Edit Items",
+        "Edit Items",
+        "administrator",
+        "edit_item_settings",
+        "edit_item_settings_page");
+
+	add_submenu_page("pano_menu",
+					"Item Types",
+					"Item Types",
+					"administrator",
+					"item_types_settings",
+					"item_types_settings_page");
+
+	add_submenu_page(null,
+					"New Item Type",
+					"New Item Type",
+					"administrator",
+					"new_item_type_settings",
+					"new_item_type_settings_page");
+
+	add_submenu_page(null,
+					"Edit Item Types",
+					"Edit Item Types",
+					"administrator",
+					"edit_item_type_settings",
+					"edit_item_type_settings_page");
+
+    add_submenu_page(null,
+        "View Panos",
+        "View Panos",
+        "administrator",
+        "view_panos_settings",
+        "view_panos_settings_page");
 
 }

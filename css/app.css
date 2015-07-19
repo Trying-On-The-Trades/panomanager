@@ -1,0 +1,50 @@
+#leaderboard{
+  position: relative;
+}
+
+#leaderboard table{
+  margin: 0px auto;
+  font-size: 1.2em;
+
+}
+
+#leaderboard table tr:nth-child(odd) td{
+  background-color: #6FB1D6;
+  color: #000;
+}
+
+#leaderboard table tr:nth-child(even) td{
+  background-color: #DDD;
+  color: #000;
+}
+
+#leaderboard table th{
+  text-align: left;
+}
+
+#leaderboard table tr:nth-child(1) th{
+  text-align: center;
+  border: 0px;
+}
+
+#leaderboard table th, #leaderboard table td{
+  margin: 5px;
+  border: 2px solid #DDD;
+}
+
+.table-title{
+  font-size: 1.5em;
+}
+
+.hotspot_done{
+  text-decoration: line-through;
+  color: #147BB5 !important;
+}
+
+.hotspot_done > a span{
+	color: #147BB5 !important;
+}
+
+.hotspot_points{
+  float: right;
+}

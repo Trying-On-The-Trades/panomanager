@@ -8,6 +8,8 @@ function pano_hotspot_settings_page() {
     $hotspot_types    = admin_url() . "admin.php?page=pano_hotspot_type_settings";
     $new_hotspot_url  = admin_url() . "admin.php?page=new_hotspot_settings";
     $edit_hotspot_url = admin_url() . "admin.php?page=edit_hotspot_settings";
+
+    $pano_editor = admin_url() . "admin.php?page=view_panos_settings";
     ?>
 
 <!-- style sheet so our admin page looks nice -->
@@ -32,7 +34,7 @@ function pano_hotspot_settings_page() {
         <th>Attempts</th>
         <th>Type</th>
         <th>Mission</th>
-        <th>Trade</th>
+        <th>Domain</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -49,7 +51,7 @@ function pano_hotspot_settings_page() {
                 <td><?php echo $current_hotspot->get_attempts(); ?></td>
                 <td><?php echo $current_hotspot->get_type_name(); ?></td>
                 <td><?php echo $current_hotspot->get_mission_name(); ?></td>
-                <td><?php echo $current_hotspot->get_trade_name(); ?></td>
+                <td><?php echo $current_hotspot->get_domain_name(); ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_hotspot_url ?>&id=<?php echo $current_hotspot->get_id(); ?>" style="padding: 7px">Edit</a></td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_hotspot_form<?php echo $current_hotspot->get_id(); ?>">
@@ -64,7 +66,10 @@ function pano_hotspot_settings_page() {
         <?php endforeach; ?>
     </tbody>
 </table>
-<a class="ui blue icon button" href="<?php echo $new_hotspot_url ?>" style="padding: 7px">New Hotspot</a>
+<form method="POST" action="<?=$pano_editor?>&">
+    <!-- word processing hook -->
+    <input type="submit" class="ui blue icon button" value="Create_Hotspot" style="padding: 7px" >
+</form>
 <a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
 </div>
 

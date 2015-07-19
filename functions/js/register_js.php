@@ -26,18 +26,18 @@ function return_registration_script(){
         // Create variables for the drop downs
         $registration_script .= "var color_field = document.getElementById('field_12');\n";
         $registration_script .= "var tool_field = document.getElementById('field_2');\n";
-        $registration_script .= "var trade_field = document.getElementById('field_17');\n";
+        $registration_script .= "var domain_field = document.getElementById('field_17');\n";
 
         // Get the school check
         $registration_script .= build_school_check_function();
         $registration_script .= build_tool_check_function();
         $registration_script .= build_color_check_function();
-        $registration_script .= check_trade();
+        $registration_script .= check_domain();
 
         // Add the on change listeners
         $registration_script .= buld_colour_listener();
         $registration_script .= build_tool_listener();
-        $registration_script .= build_trade_listener();
+        $registration_script .= build_domain_listener();
 
     // END IF username field
     $registration_script .= "}";
@@ -95,7 +95,7 @@ function build_tool_select_options(){
     $script = "<option value=''>----</option>";
     
     foreach ($tools as $tool) {
-        $script .= "<option class='" . $tool->trade_name . 
+        $script .= "<option class='" . $tool->domain_name . 
                    " tool" . // generic class for all tool dropdowns
                    "' value='"       . $tool->name . 
                    "'>"              . $tool->name . 
@@ -124,52 +124,52 @@ function build_tool_listener(){
     return $registration_script;
 }
 
-////// TRADE FUNCTIONS
+////// DOMAIN FUNCTIONS
 
-function build_trade_listener(){
+function build_domain_listener(){
     $registration_script =  "if(window.addEventListener) {\n";
-    $registration_script .=     "trade_field.addEventListener('change', trade_check, false);\n";
+    $registration_script .=     "domain_field.addEventListener('change', domain_check, false);\n";
     $registration_script .= "} else if (window.attachEvent){\n";
-    $registration_script .=     "trade_field.attachEvent(\"onchange\", trade_check);\n";
+    $registration_script .=     "domain_field.attachEvent(\"onchange\", domain_check);\n";
     $registration_script .= "}\n";
     return $registration_script;
 }
 
-function build_trade_select(){
-    $script = "var trade_selector = document.getElementById('field_17');\n";
+function build_domain_select(){
+    $script = "var domain_selector = document.getElementById('field_17');\n";
     
-    $new_elements = build_trade_select_options();
+    $new_elements = build_domain_select_options();
     
-    $script .= 'trade_selector.innerHTML = "' . $new_elements . '";';
+    $script .= 'domain_selector.innerHTML = "' . $new_elements . '";';
     
     return $script;
 }
 
-function build_trade_select_options(){
-    $trades = get_trades();
+function build_domain_select_options(){
+    $domains = get_domains();
     
     $script = "<option value=''>----</option>";
     
-    foreach ($trades as $trade) {
-        $script .= "<option value='" . $trade->name . "'>" . $trade->name . "</option>";
+    foreach ($domains as $domain) {
+        $script .= "<option value='" . $domain->name . "'>" . $domain->name . "</option>";
     }
     
     return $script;
 }
 
-// Check the trades, handle displaying the correct tools
+// Check the domains, handle displaying the correct tools
 
-function check_trade(){
-    $script = "function trade_check(){\n";
+function check_domain(){
+    $script = "function domain_check(){\n";
     
-        $script .= "var trade_selector = document.getElementById('field_17');\n";
+        $script .= "var domain_selector = document.getElementById('field_17');\n";
         $script .= "var tool_options = document.getElementsByClassName('tool');\n";
         
         $script .= "for (var i = tool_options.length - 1; i >= 0; i--) {\n";
         
             $script .= "var class_name = tool_options[i].className;\n";
 
-            $script .= "if (class_name.indexOf(trade_selector.value) > -1){";
+            $script .= "if (class_name.indexOf(domain_selector.value) > -1){";
             $script .=    "tool_options[i].style.display='block';";
             $script .= "} else {";
             $script .=    "tool_options[i].style.display='none';";

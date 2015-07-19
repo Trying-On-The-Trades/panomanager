@@ -3,7 +3,7 @@
 class quest{
 
 	protected $id, $pano_id, $description,
-			  $name, $language_code, $trade_id,
+			  $name, $language_code, $domain_id,
 		      $missions = array();
 
 	public	  $exists   = 0;
@@ -25,7 +25,7 @@ class quest{
 			$this->exists        = 1;
 			$this->id            = $quest_row->quest_id;
 			$this->pano_id       = $quest_row->panno_id;
-			$this->trade_id	     = $quest_row->trade_id;
+			$this->domain_id	 = $quest_row->domain_id;
 			$this->name          = $quest_row->name;
 			$this->description   = $quest_row->description;
 			$this->language_code = $quest_row->language_code;
@@ -46,8 +46,8 @@ class quest{
 		return $this->pano_id;
 	}
 
-	function get_trade_id(){
-		return $this->trade_id;
+	function get_domain_id(){
+		return $this->domain_id;
 	}
 
 	function get_name(){

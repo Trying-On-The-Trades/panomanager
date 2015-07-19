@@ -5,11 +5,11 @@ class mission{
 	protected $id, $pano_id, $description, 
                   $name, $language_code,
                   $xml, $points, $quest_id,
-				  $trade_id, $trade_name,
+				  $domain_id, $domain_name,
                   $hotspots = array(),
 		  $exists   = 0;
 	
-	function __construct($id = 1){
+	function __construct($id){
 
 		// Get the Quest (Skill) based on the id
 		if (is_numeric($id)){
@@ -27,13 +27,13 @@ class mission{
 				$this->language_code = $mission_row->language_code;
 				$this->quest_id      = $mission_row->quest_id;
 				$this->pano_id       = $mission_row->pano_id;
-				$this->trade_id      = $mission_row->trade_id;
+				$this->domain_id     = $mission_row->domain_id;
                 $this->points        = $mission_row->points;
                 $this->xml           = $mission_row->mission_xml;
 
                 // Build the hotspots for this mission
                 $this->build_hotspots();
-				$this->build_trade();
+				$this->build_domain();
             }
 	}
 
@@ -42,10 +42,10 @@ class mission{
 		$this->hotspots = get_hotspot_ids($this->id);
 	}
 
-	function build_trade(){
-		// Gets the trade name associated with the mission
-		$trade = get_trade($this->trade_id);
-		$this->trade_name = $trade->name;
+	function build_domain(){
+		// Gets the domain name associated with the mission
+		$domain = get_domain($this->domain_id);
+		$this->domain_name = $domain->name;
 	}
         
 	function get_id(){
@@ -80,12 +80,12 @@ class mission{
 		return $this->pano_id;
 	}
 
-	function get_trade_id(){
-		return $this->trade_id;
+	function get_domain_id(){
+		return $this->domain_id;
 	}
 
-	function get_trade_name(){
-		return $this->trade_name;
+	function get_domain_name(){
+		return $this->domain_name;
 	}
 
 	function get_points(){

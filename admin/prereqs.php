@@ -14,40 +14,25 @@ function prereq_settings_page() {
     $prereqs = get_pano_prereqs($pano_id);
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-    <h2>Create a new pano!</h2>
+    <h2>Create a new prereq!</h2>
     <hr>
-    <style type="text/css">
-        #wpfooter{
-            display: none;
-        }
-
-        #file_input {
-            border: 1px solid #cccccc;
-            padding: 5px;
-        }
-
-        .new_pano_form{
-            width:85%;
-            margin: 0px auto;
-        }
-    </style>
     <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
         <div class="updated"><p>Settings updated successfully.</p></div>
     <?php endif ?>
     <table class="ui table segment">
       <tr>
         <th>Prereq Points</th>
-        <th>Prereq Trade</th>
+        <th>Prereq Domain</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
       <?php foreach ($prereqs as $prereq): ?>
 
-            <?php $trade = get_trade($prereq->prereq_trade_id) ?>
+            <?php $domain = get_domain($prereq->prereq_domain_id) ?>
 
             <tr>
                 <td><?php echo $prereq->prereq_pts ?></td>
-                <td><?php echo $trade->name ?></td>
+                <td><?php echo $domain->name ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_prereq_url ?>&id=<?php echo $prereq->id ?>" style="padding: 7px">Edit</a></td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_prereq_form<?php echo $prereq->id ?>">
