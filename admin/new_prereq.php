@@ -18,13 +18,6 @@ function prereq_new_settings_page() {
     <input type="hidden" name="action" value="create_new_prereq" />
     <input type="hidden" name="pano_id" value="<?php echo $pano_id ?>" />
     <div class="ui form segment new_prereq_form">
-
-        <div class="ui form">
-	      <div class="field">
-	        	<label for="prereq_desc">Prereq Description</label>
-	    		<textarea name="prereq_desc" id="prereq_desc"  required ></textarea>
-	      </div>
-	    </div>
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
@@ -42,6 +35,12 @@ function prereq_new_settings_page() {
                      <option value="<?php echo $domain->id ?>"><?php echo $domain->name ?></option>
                  <?php endforeach; ?>
 			</select>
+	      </div>
+	    </div>
+        <div class="ui form">
+	      <div class="field">
+	        	<label for="prereq_desc">Prereq Description</label>
+	    		<textarea name="prereq_desc" id="prereq_desc"  required ></textarea>
 	      </div>
 	    </div>
 	    <?php submit_button(); ?>

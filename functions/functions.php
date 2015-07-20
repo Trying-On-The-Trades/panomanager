@@ -552,7 +552,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($game_type == "website" || $game_type == "image"){
+    if($game_type == "website" || $game_type == "image" || $game_type == "video"){
         $url = $_POST['hotspot_url'];
     }
 
@@ -564,6 +564,8 @@ function process_new_hotspot_ajax(){
     $hotspot_modal_url   = '';
 
     $deck_id = $_POST['deck_id'];
+    $item_id = $_POST['item_id'];
+
 
     // Get the id
     $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
@@ -581,11 +583,20 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
-    }else{
+    }elseif($game_type == "video"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+        'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
+        '</action>';
+    }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
+    }else{
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
+            '</action>';
     }
+
 
     update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
         $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);

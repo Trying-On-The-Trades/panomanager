@@ -21,12 +21,6 @@ function prereq_edit_settings_page() {
     <input type="hidden" name="id" value="<?php echo $prereq->id ?>" />
     <input type="hidden" name="pano_id" value="<?php echo $prereq->pano_id ?>" />
     <div class="ui form segment new_prereq_form">
-    	<div class="ui form">
-	      <div class="field">
-	        	<label for="prereq_desc">Prereq Description</label>
-	    		<textarea name="prereq_desc" id="prereq_desc" required ><?php echo $prereq->prereq_desc ?></textarea>
-	      </div>
-	    </div>
 	    <div class="ui form">
 	      <div class="field">
 	        	<label for="prereq_pts">Prereq Points</label>
@@ -42,6 +36,12 @@ function prereq_edit_settings_page() {
                     <option value="<?php echo $domain->id ?>" <?php echo ($domain->id === $prereq->prereq_domain_id) ? "selected" : "" ?>><?php echo $domain->name ?></option>
                  <?php endforeach; ?>
 			</select>
+	      </div>
+	    </div>
+        <div class="ui form">
+	      <div class="field">
+	        	<label for="prereq_desc">Prereq Description</label>
+	    		<textarea name="prereq_desc" id="prereq_desc" required ><?php echo $prereq->prereq_desc ?></textarea>
 	      </div>
 	    </div>
 	    <?php submit_button(); ?>
