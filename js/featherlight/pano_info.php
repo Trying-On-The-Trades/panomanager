@@ -22,9 +22,9 @@ function get_pano_description(){
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results(
-        "SELECT wpp.id, wppt.description FROM " . $pano_table_name . " wpp " .
+        "SELECT wppt.description FROM " . $pano_table_name . " wpp " .
         "INNER JOIN " . $text_table_name . " wppt ON " .
-        "wppt.pano_id = " . $pano_id .
+        "wppt.pano_id = " . "'" . $pano_id . "'" .
         "WHERE wppt.language_code = " . $language_code, ARRAY_A);
 
     return $panos;
@@ -37,11 +37,10 @@ $pano_desc = get_pano_description();
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="./wallet.css">
 </head>
 <body>
 <div id="wrapper">
-    <p><?= $pano_desc ?></p>
+    <h1><?= $pano_desc[0]['description'] ?></h1>
 </div>
 </body>
 </html>
