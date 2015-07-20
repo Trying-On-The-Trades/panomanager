@@ -1254,6 +1254,14 @@ function get_purchases(){
     return $purchases;
 }
 
+function get_purchases_by_user($user_id){
+  global $wpdb;
+  $purchases_table = get_purchases_table_name();
+  $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = " . $user_id);
+
+  return $purchases;
+}
+
 function get_purchase($id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
