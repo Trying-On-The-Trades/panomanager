@@ -89,7 +89,8 @@ require('db.php');
                 <div class="field">
                     <label for="url_type">Type of url</label>
                     <input type="radio" name="url_type" value="website">Website<br>
-                    <input type="radio" name="url_type" value="image">Image
+                    <input type="radio" name="url_type" value="image">Image<br>
+                    <input type="radio" name="url_type" value="video">Video
                 </div>
             </div>
 
