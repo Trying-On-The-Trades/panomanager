@@ -39,7 +39,7 @@ function prereq_new_settings_page() {
 	    </div>
         <div class="ui form">
 	      <div class="field">
-	        	<label for="prereq_desc">Prereq Description</label>
+	        	<label for="prereq_desc">Prereq Info</label>
 	    		<textarea name="prereq_desc" id="prereq_desc"  required ></textarea>
 	      </div>
 	    </div>
