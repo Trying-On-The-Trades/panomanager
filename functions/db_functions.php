@@ -1262,6 +1262,26 @@ function get_purchase($id){
     return $purchase;
 }
 
+function get_purchases_by_user($user){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = {$user}");
+
+    return $purchases;
+}
+
+function get_purchases_by_item($item){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+    $query = "SELECT * FROM " . $purchases_table . " p " .
+        " INNER JOIN " . $line_items_table . " l ON p.id = l.purchase_id " .
+        " WHERE l.item_id = " . $item;
+    $purchases = $wpdb->get_results($query);
+
+    return $purchases;
+}
+
 function get_purchase_items($id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
