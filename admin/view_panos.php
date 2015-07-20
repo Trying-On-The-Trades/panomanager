@@ -5,6 +5,7 @@ function view_panos_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $pano_editor = WP_PLUGIN_URL . '../pano_editor/';
     $game_id = $_POST['game_id'];
+    $item_id = $_POST['item_id'];
     $panos = get_pano_title();
 
     ?>
@@ -15,17 +16,14 @@ function view_panos_settings_page() {
 <form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
     <input type="hidden" name="action" value="create_new_spotgame" />
     <div class="ui form segment new_word_form">
-
        <div class="ui form">
         <div class="field">
             <label>Choose a deck:</label>
             <select name="panos" id="pano_id">
 				 <option value="NA">Select a Pano</option>
 
-                 <?php foreach($panos as $pano):  ?>
-
-                        <option value="<?= $pano->id ?>"><?= $pano['title']  ?></option>
-
+                <?php foreach($panos as $pano):  ?>
+                    <option value="<?= $pano['id'] ?>"><?= $pano['title']  ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -45,10 +43,15 @@ function view_panos_settings_page() {
         if(user_selected_one_pano(selected)){
             document.getElementById("pano_not_selected").style.display = "none";
             var game_id = "<?php echo $game_id ?>";
-            if(game_id == "" || game_id == null){
+            var item_id = "<?php echo $item_id ?>";
+            if((game_id == "" || game_id == null)&&(item_id == "" || item_id == null)){
                 window.location.href = "<?php echo $pano_editor ?>" + "/?pano_id=" + selected;
             }else{
-                window.location.href = "<?php echo $pano_editor ?>" + "/?game_id=<?php echo $game_id ?>&pano_id=" + selected;
+                <?php if(isset($game_id)): ?>
+                    window.location.href = "<?php echo $pano_editor ?>" + "/?game_id=<?php echo $game_id ?>&pano_id=" + selected;
+                <?php elseif(isset($item_id)): ?>
+                    window.location.href = "<?php echo $pano_editor ?>" + "/?item_id=<?php echo $item_id ?>&pano_id=" + selected;
+                <?php endif; ?>
             }
 
         }else{
