@@ -102,7 +102,19 @@ allowNewAttempt = function(hot_id){
   Displays the hotspot information message in a featherlight pop-up.
 */
 function displayInfoMessage(message){
-  $.featherlight("<p style=\"white-space: pre;\">           " + message + "</p>", null, false);
+  var returnMessage = '';
+  var limitSize = 50;
+  var messageSize = message.length;
+  var breaks = Math.floor(messageSize / limitSize);
+  var currentBreak = 50;
+  var initialBreak = 0;
+  for(var i = 0; i <= breaks; i++){
+    returnMessage += message.substring(initialBreak, currentBreak);
+    returnMessage += '<br/>';
+    initialBreak += 50;
+    currentBreak += 50;
+  }
+  $.featherlight("<p> " + returnMessage + "</p>", null, false);
 }
 
 /*
