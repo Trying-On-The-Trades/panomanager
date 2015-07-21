@@ -207,6 +207,7 @@ function get_current_pano_id(){
     return check_pano_id($pano_id);
 }
 
+
 function get_hotspot_menu_objects($quest){
 
     $user_id = get_current_user_id();
