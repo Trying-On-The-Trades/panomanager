@@ -48,6 +48,9 @@ $currency = get_currency_available($user);
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./wallet.css">
+    <script type="text/javascript" src="http://http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="featherlight.js"></script>
+    <script type="text/javascript" src="featherlight-functions.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -55,6 +58,7 @@ $currency = get_currency_available($user);
     <h2>Your current balance is:</h2>
     <img src="./wallet-icon.png" alt="wallet icon" />
     <p class="<?= $currency_class ?>"><?= $symbol ?> <?= $currency ?></p>
+    <p id="history" style="cursor: pointer;" onclick="window.location.replace('purchases.php');">View Purchase History</p>
 </div>
 </body>
 </html>
