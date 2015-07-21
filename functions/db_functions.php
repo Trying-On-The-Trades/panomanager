@@ -80,6 +80,7 @@ function get_pano_title(){
     return $panos;
 }
 
+
 function get_pano_desc(){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
@@ -95,7 +96,6 @@ function get_pano_desc(){
 
     return $panos;
 }
-
 
 function get_pano_ids(){
     global $wpdb;
