@@ -27,7 +27,7 @@ function new_pano_settings_page() {
 	      	<div class="ui left labeled icon input">
 	        	<label for="pano_name">Pano Name</label>
                 <input type="hidden" name="pano_name" id="pano_name" />
-	    		<input name="pano_name" id="pano_name" placeholder="Cool Pano" required />
+
      	 	</div>
 	      </div>
 	    </div>

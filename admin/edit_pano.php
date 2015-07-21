@@ -46,6 +46,7 @@ function edit_pano_settings_page() {
 	        	<label for="pano_title">Pano Title</label>
                 <input type="hidden" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
 	    		<input name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
+
      	 	</div>
 	      </div>
 	    </div>

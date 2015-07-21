@@ -106,15 +106,17 @@ function displayInfoMessage(message){
   var limitSize = 50;
   var messageSize = message.length;
   var breaks = Math.floor(messageSize / limitSize);
-  var currentBreak = 49;
+
+  var currentBreak = 50;
   var initialBreak = 0;
-  for(var i = 0; i < breaks; i++){
-    returnMessage += message.substring(currentBreak);
+  for(var i = 0; i <= breaks; i++){
+    returnMessage += message.substring(initialBreak, currentBreak);
     returnMessage += '<br/>';
     initialBreak += 50;
     currentBreak += 50;
   }
-  $.featherlight("<p style=\"white-space: pre;\">  " + returnMessage + "</p>", null, false);
+
+  $.featherlight("<p> " + returnMessage + "</p>", null, false);
 }
 
 /*

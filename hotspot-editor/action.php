@@ -99,6 +99,7 @@
         }
 
         function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url) {
+<<<<<<< HEAD
 
             $.ajax({
                 type: 'POST',
@@ -126,6 +127,7 @@
                 }
             });
 
+
         }
 
         <?php if(is_numeric($deck_id)): ?>
@@ -134,6 +136,7 @@
             add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
         <?php else : ?>
         add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+
         <?php endif; ?>
     </script>
 </head>

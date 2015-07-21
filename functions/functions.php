@@ -584,10 +584,12 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
+
     }elseif($game_type == "video"){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
         'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
         '</action>';
+
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
