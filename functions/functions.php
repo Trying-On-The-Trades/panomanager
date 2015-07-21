@@ -540,6 +540,7 @@ function process_new_hotspot_ajax(){
     $hotspot_icon        = $_POST['hotspot_icon'];
     $hotspot_menu        = $_POST['hotspot_menu'];
     $game_type           = $_POST['game_type'];
+    $oppia_id            = $_POST['oppia_id'];
 
     if($hotspot_icon == 'true'){
         $image = 'url="info.png"';
@@ -594,7 +595,12 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
-    }else{
+    }elseif(is_numeric($oppia_id)) {
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadOppia(' . $hotspot_id . ', ' . $oppia_id . '));' .
+            '</action>';
+    }
+    else{
         $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
             'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
             '</action>';
