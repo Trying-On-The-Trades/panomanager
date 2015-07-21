@@ -27,7 +27,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var url               = document.location.origin + "/wordpress/wp-admin/admin-post.php";
+        var url               = document.location.origin + "/wp-admin/admin-post.php";
         var mission           = '';
         var domain            = '';
         var description       = '';
@@ -89,7 +89,7 @@
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
-                    window.location.href = document.location.origin + '/wordpress/pano/?pano_id=<?=$pano_id?>';
+                    window.location.href = document.location.origin + '/pano/?pano_id=<?=$pano_id?>';
                 },
                 error: function (d) {
                     alert('Hotspot Fail!');
@@ -99,6 +99,7 @@
         }
 
         function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url) {
+<<<<<<< HEAD
 
             $.ajax({
                 type: 'POST',
@@ -119,12 +120,13 @@
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
-                    window.location.href = document.location.origin + '/wordpress/pano/?pano_id=<?=$pano_id?>';
+                    window.location.href = document.location.origin + '/pano/?pano_id=<?=$pano_id?>';
                 },
                 error: function (d) {
                     alert('Hotspot Fail!');
                 }
             });
+
 
         }
 
@@ -132,6 +134,9 @@
             add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
         <?php elseif(is_numeric($item_id)): ?>
             add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+        <?php else : ?>
+        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+
         <?php endif; ?>
     </script>
 </head>

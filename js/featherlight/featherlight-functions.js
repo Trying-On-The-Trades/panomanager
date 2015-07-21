@@ -106,6 +106,7 @@ function displayInfoMessage(message){
   var limitSize = 50;
   var messageSize = message.length;
   var breaks = Math.floor(messageSize / limitSize);
+
   var currentBreak = 50;
   var initialBreak = 0;
   for(var i = 0; i <= breaks; i++){
@@ -114,6 +115,7 @@ function displayInfoMessage(message){
     initialBreak += 50;
     currentBreak += 50;
   }
+
   $.featherlight("<p> " + returnMessage + "</p>", null, false);
 }
 
