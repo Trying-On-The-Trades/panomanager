@@ -5,6 +5,7 @@ require_once('../../../../../wp-includes/pluggable.php');
 
 $user_id = wp_get_current_user()->ID;
 $purchases = get_purchases_by_user_reverse($user_id);
+$symbol = get_points_symbol();
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +16,7 @@ $purchases = get_purchases_by_user_reverse($user_id);
   </head>
   <body>
     <div id="content">
+      <h4>Purchases</h4>
       <table>
         <thead>
           <tr>
@@ -31,7 +33,7 @@ $purchases = get_purchases_by_user_reverse($user_id);
              <tr>
                <td><?= date('F j, Y', strtotime($purchase->date)) ?></td>
                <td><?= $item->name ?></td>
-               <td><?= $item->price ?></td>
+               <td><?= $symbol ?> <?= $item->price ?></td>
              </tr>
              <?php endforeach; ?>
            <?php endforeach; ?>
