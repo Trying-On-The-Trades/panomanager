@@ -37,6 +37,7 @@ $pano_desc = get_pano_description();
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./pano_info.css">
 </head>
 <body>
 <div id="wrapper">
