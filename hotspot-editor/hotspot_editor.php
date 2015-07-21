@@ -84,17 +84,25 @@ require('db.php');
 
             <div class="ui form">
                 <div class="field">
-                    <label for="hotspot_url">Hotspot Url</label>
-                    <input type="text" name="hotspot_url" required />
+                    <label for="url_type">Type of url</label>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="website" value="website">Website<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="image" value="image">Image<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="video" value="video">Video<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="oppia" value="oppia">Oppia
                 </div>
             </div>
 
             <div class="ui form">
                 <div class="field">
-                    <label for="url_type">Type of url</label>
-                    <input type="radio" name="url_type" value="website">Website<br>
-                    <input type="radio" name="url_type" value="image">Image<br>
-                    <input type="radio" name="url_type" value="video">Video
+                    <label for="hotspot_url">Hotspot Url</label>
+                    <input type="text" name="hotspot_url"  />
+                </div>
+            </div>
+
+            <div class="ui form">
+                <div class="field">
+                    <label for="oppia_id">Oppia ID</label>
+                    <input type="text" name="oppia_id"  />
                 </div>
             </div>
 
@@ -126,5 +134,20 @@ require('db.php');
         </div>
 </form>
 </div>
+<script type="text/javascript">
+
+    function checkOption() {
+        if (document.getElementById('oppia').checked) {
+            document.getElementById('oppia_id').style.display = 'block';
+            document.getElementById('hotspot_url').style.display = 'none';
+        }
+        else {
+            document.getElementById('oppia_id').style.display = 'none';
+            document.getElementById('hotspot_url').style.display = 'block';
+        }
+
+    }
+
+</script>
 </body>
 </html>
