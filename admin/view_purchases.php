@@ -1,10 +1,14 @@
 <?php
 
 function purchases_settings_page(){
-    if(isset($_POST['item']) && is_numeric($_POST['item'])){
-        $purchases = get_purchases_by_item($_POST['item']);
-    } elseif(isset($_POST['user']) && is_numeric($_POST['user'])){
-        $purchases = get_purchases_by_user($_POST['user']);;
+    if(isset($_POST['item'])){
+        if(is_numeric($_POST['item']) && is_numeric($_POST['user'])){
+            $purchases = get_purchases_by_user_and_item($_POST['user'], $_POST['item']);
+        } elseif(is_numeric($_POST['item']) && !is_numeric($_POST['user'])) {
+            $purchases = get_purchases_by_item($_POST['item']);
+        } elseif(!is_numeric($_POST['item']) && is_numeric($_POST['user'])) {
+            $purchases = get_purchases_by_user($_POST['user']);
+        }
     } else {
         $purchases = get_purchases();
     }
