@@ -1257,15 +1257,15 @@ function get_purchases(){
 function get_purchase($id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
-    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = {$id}");
+    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = " . $id);
 
     return $purchase;
 }
 
-function get_purchases_by_user($user){
+function get_purchases_by_user($user_id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
-    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = {$user}");
+    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = " . $user_id);
 
     return $purchases;
 }
