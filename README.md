@@ -2,6 +2,10 @@
 
 Trying on the Trades is a project aimed at bringing the skill trades to school aged children by utilizing spherical panoramas, virtual reaity, augmented reality and gamification to make it fun.
 
+## Road Map & Tracking
+
+View our public Trello: https://trello.com/b/AsFlP1l8/trying-on-the-trades
+
 ## CONTRIBUTORS
 
 TOTT has been developed by a collection of individuals and organizations based out of Winnipeg Maniotba. The project was originally developed by Red River College and Daniel Blair. The project was then picked up by Bold Commerce, and eventually transfered over to Bit Space Development Ltd.
