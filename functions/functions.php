@@ -207,6 +207,7 @@ function get_current_pano_id(){
     return check_pano_id($pano_id);
 }
 
+
 function get_hotspot_menu_objects($quest){
 
     $user_id = get_current_user_id();
@@ -552,7 +553,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($game_type == "website" || $game_type == "image"){
+    if($game_type == "website" || $game_type == "image" || $game_type == "video"){
         $url = $_POST['hotspot_url'];
     }
 
@@ -583,6 +584,12 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
+
+    }elseif($game_type == "video"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+        'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
+        '</action>';
+
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
