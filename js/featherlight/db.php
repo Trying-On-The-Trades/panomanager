@@ -1,9 +1,8 @@
 <?php
-	define('DB_HOST','10.132.18.49');
+    define('DB_HOST','10.132.18.49');
     define('DB_USER','dev1_usr');
     define('DB_PASS','bsd_dev_2015');
     define('DB_NAME','dev1');
-
     function database_connection()
     {
     	return new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
