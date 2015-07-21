@@ -4,7 +4,7 @@ require_once('../../../../../wp-includes/wp-db.php');
 require_once('../../../../../wp-includes/pluggable.php');
 
 $user_id = wp_get_current_user()->ID;
-$purchases = get_purchases_by_user($user_id);
+$purchases = get_purchases_by_user_reverse($user_id);
 ?>
 
 <!DOCTYPE html>
@@ -28,9 +28,9 @@ $purchases = get_purchases_by_user($user_id);
              <?php $items = get_purchase_items($purchase->id); ?>
              <?php foreach($items as $key => $item): ?>
              <tr>
-               <th><?= $purchase->date ?></th>
-               <th><?= $item->name ?></th>
-               <th><?= $item->price ?></th>
+               <td><?= $purchase->date ?></td>
+               <td><?= $item->name ?></td>
+               <td><?= $item->price ?></td>
              </tr>
              <?php endforeach; ?>
            <?php endforeach; ?>

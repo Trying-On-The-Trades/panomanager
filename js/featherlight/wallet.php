@@ -48,9 +48,6 @@ $currency = get_currency_available($user);
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./wallet.css">
-    <script type="text/javascript" src="http://http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="featherlight.js"></script>
-    <script type="text/javascript" src="featherlight-functions.js"></script>
 </head>
 <body>
 <div id="wrapper">

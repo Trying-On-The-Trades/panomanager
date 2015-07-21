@@ -1270,6 +1270,14 @@ function get_purchases_by_user($user_id){
     return $purchases;
 }
 
+function get_purchases_by_user_reverse($user_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = " . $user_id . " ORDER BY id DESC");
+
+    return $purchases;
+}
+
 function get_purchases_by_item($item){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
