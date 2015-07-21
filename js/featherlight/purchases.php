@@ -28,7 +28,7 @@ $purchases = get_purchases_by_user($user_id);
              <?php $items = get_purchase_items($purchase->id); ?>
              <?php foreach($items as $key => $item): ?>
              <tr>
-               <th>Date here</th>
+               <th><?= $purchase->date ?></th>
                <th><?= $item->name ?></th>
                <th><?= $item->price ?></th>
              </tr>
@@ -39,4 +39,6 @@ $purchases = get_purchases_by_user($user_id);
       </table>
     </div>
   </body>
+</html>
+
 </html>
