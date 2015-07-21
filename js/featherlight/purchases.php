@@ -11,6 +11,7 @@ $purchases = get_purchases_by_user_reverse($user_id);
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./purchases.css">
   </head>
   <body>
     <div id="content">
@@ -28,7 +29,7 @@ $purchases = get_purchases_by_user_reverse($user_id);
              <?php $items = get_purchase_items($purchase->id); ?>
              <?php foreach($items as $key => $item): ?>
              <tr>
-               <td><?= $purchase->date ?></td>
+               <td><?= date('F j, Y', strtotime($purchase->date)) ?></td>
                <td><?= $item->name ?></td>
                <td><?= $item->price ?></td>
              </tr>
@@ -39,6 +40,4 @@ $purchases = get_purchases_by_user_reverse($user_id);
       </table>
     </div>
   </body>
-</html>
-
 </html>

@@ -1,0 +1,17 @@
+#content{
+  position: relative;
+  margin: 0px auto;
+}
+
+table{
+  position: relative;
+  border: 2px solid #0099FF;
+  border-radius: 5%;
+  background-color: #DDDDDD;
+  position: relative;
+  margin: 2em auto;
+}
+
+table tr:nth-child(even){
+  background-color: #CCCCCC;
+}

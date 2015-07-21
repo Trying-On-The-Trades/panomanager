@@ -51,7 +51,7 @@ function purchases_settings_page(){
   <tr>
     <th>User</th>
     <th>Date</th>
-    <th>View</th>
+    <th>View Details</th>
   </tr>
   <?php foreach($purchases as $purchase): ?>
     <tr>
