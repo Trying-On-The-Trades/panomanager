@@ -1,8 +1,8 @@
 <?php
-   define('DB_HOST','10.132.18.49');
-    define('DB_USER','dev1_usr');
-    define('DB_PASS','bsd_dev_2015');
-    define('DB_NAME','dev1');
+   define('DB_HOST','localhost:8888');
+    define('DB_USER','root');
+    define('DB_PASS','root');
+    define('DB_NAME','wordpress2');
 
 function database_connection()
 {
