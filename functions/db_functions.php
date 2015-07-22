@@ -948,6 +948,14 @@ function create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc){
     return $prereq_id;
 }
 
+function create_prereq_item($prereq_id, $item_id){
+    global $wpdb;
+    $prereq_items_table_name = get_prereq_items_table_name();
+
+    $wpdb->insert( $prereq_items_table_name, array( 'prereq_id' => $prereq_id,
+                                                    'item_id'   => $item_id));
+}
+
 function create_quest($pano_id){
     global $wpdb;
     $quest_table_name      = get_quest_table_name();
