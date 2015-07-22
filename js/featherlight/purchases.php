@@ -16,7 +16,7 @@ $symbol = get_points_symbol();
   </head>
   <body>
     <div id="content">
-      <h4>Purchases</h4>
+      <h2>Purchases</h2>
       <table>
         <thead>
           <tr>
