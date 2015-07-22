@@ -137,7 +137,7 @@ function add_nav_script($quest, $pano_id){
     $script .=  "var defaultVar = 1;\n";
     $script .= "var magnificPopup;";
 
-    $script .= build_launch_message();
+    $script .= build_launch_message($pano_id);
     $script .= build_find_array();
     $script .= build_get_scene_name();
 
@@ -213,7 +213,12 @@ function build_ids_array(){
     return $script;
 }
 
-function build_launch_message(){
+function build_launch_message($pano_id){
+        
+        
+        $prereq = get_prereq(2);
+        
+    
         $script =  "function launchMsg(msg){\n";
         $script .= "    if(msg == getSceneName()){\n";
         $script .= "        $.magnificPopup.open({\n";
@@ -250,7 +255,7 @@ function build_launch_message(){
 
         $script .= "                        $.magnificPopup.open({\n";
         $script .= "                            items: {\n";
-        $script .= "                                src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',\n";
+        $script .= "                                src: '<div class=\"white-popup\">" . $prereq->prereq_desc . $pano_id . "</div>',\n";
         $script .= "                                type: 'inline',\n";
         $script .= "                                callbacks: {\n";
         $script .= "                                    close: function() {\n";

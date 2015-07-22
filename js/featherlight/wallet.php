@@ -55,6 +55,7 @@ $currency = get_currency_available($user);
     <h2>Your current balance is:</h2>
     <img src="./wallet-icon.png" alt="wallet icon" />
     <p class="<?= $currency_class ?>"><?= $symbol ?> <?= $currency ?></p>
+    <p id="purchases" style="cursor: pointer;" onclick="window.location.replace('purchases.php');">View Purchase History</p>
 </div>
 </body>
 </html>

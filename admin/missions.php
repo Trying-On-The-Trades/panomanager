@@ -23,7 +23,7 @@ function pano_mission_settings_page() {
     <thead>
       <tr>
         <th>Mission</th>
-        <th>Description</th>
+        <th>Mission Info</th>
         <th>Language Code</th>
         <th>Pano</th>
         <th>Domain</th>
