@@ -24,7 +24,7 @@ function pano_settings_page() {
     <thead>
       <tr>
           <th>Title</th>
-          <th>Description</th>
+          <th>Pano Info</th>
           <th>Prereqs Points</th>
           <th>Edit</th>
           <th>Delete</th>

@@ -52,7 +52,7 @@ function edit_pano_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label>Pano Description</label>
+	        <label>Pano Info</label>
 	        <textarea name="pano_description" required ><?php echo $pano->get_description(); ?></textarea>
 	      </div>
 	    </div>
