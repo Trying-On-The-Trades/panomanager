@@ -39,6 +39,7 @@
       body{
         overflow-x: hidden;
         overflow-y: hidden;
+        -webkit-overflow-scrolling: auto;
       }
     </style>
     <script src="oppia-player.min.js"></script>
