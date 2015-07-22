@@ -28,6 +28,7 @@ function pano_install () {
     $tool_sql            = build_tools_sql();
     $school_sql          = build_school_sql();
     $domain_sql          = build_domains_sql();
+      $prereq_item_sql   = build_prereq_item_sql();
     $ads_sql             = build_ads_sql();
     $ads_text_sql        = build_ads_text_sql();
     $points_info_sql     = build_points_info_sql();
@@ -57,6 +58,7 @@ function pano_install () {
     dbDelta( $tool_sql           );
     dbDelta( $school_sql         );
     dbDelta( $domain_sql         );
+      dbDelta( $prereq_item_sql  );
     dbDelta( $ads_sql            );
     dbDelta( $ads_text_sql       );
     dbDelta( $points_info_sql    );

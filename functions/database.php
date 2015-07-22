@@ -47,6 +47,11 @@ function get_user_skill_bonus_pts_table_name(){
     return $wpdb->prefix . "pano_user_skill_bonus_pts";
 }
 
+function get_prereq_items_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_prereq_items";
+}
+
 function get_hotspot_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_hotspot";
@@ -360,6 +365,21 @@ function build_prereq_sql(){
       `prereq_desc` varchar(255) DEFAULT NULL,
       PRIMARY KEY (`id`)
     );';
+
+    return $sql;
+}
+
+function build_prereq_item_sql(){
+    $table_name = get_prereq_items_table_name();
+
+    $sql = 'CREATE TABLE `' . $table_name . '` (
+    `prereq_id` int(10) NOT NULL,
+    `item_id` int(10) NOT NULL,
+    PRIMARY KEY (prereq_id, item_id),
+    FOREIGN KEY (prereq_id) REFERENCES ' . get_prereq_table_name() . '(id) ON DELETE CASCADE,
+
+    FOREIGN KEY (item_id) REFERENCES ' . get_items_table_name() . '(id) ON DELETE CASCADE
+    )ENGINE=MyISAM DEFAULT CHARSET=latin1;';
 
     return $sql;
 }
