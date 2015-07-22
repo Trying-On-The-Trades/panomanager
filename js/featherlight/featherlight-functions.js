@@ -303,7 +303,6 @@ function loadImage(hot_id, img){
   For bonus points, set timer to true.
   Parameters:
   - hot_id (Hotspot id)
-  - frm (Location of load-oppia.php)
   - oppia_id (Oppia unique id)
   - award_points (Award points) [Default value: 'none']
   - base_points (Base points to be awarded)
@@ -311,9 +310,12 @@ function loadImage(hot_id, img){
   - bonus_points (Bonus points)
   - time_limit (Time limit to be awarded with bonus points)
 */
-function loadOppia(hot_id, frm, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
+function loadOppia(hot_id, oppia_id, award_points, base_points, timer, bonus_points, time_limit){
   updateLastHotspot(hot_id);
   var frame_address = '';
+  var postUrlStr = getPostUrl();
+  var postUrl = postUrlStr.split('wp-admin');
+  var frm = postUrl[0] + 'wp-content/plugins/panomanager/js/featherlight/load-oppia.php';
   if(award_points == null){
     award_points = 'none';
   }
