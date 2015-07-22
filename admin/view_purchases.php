@@ -8,6 +8,8 @@ function purchases_settings_page(){
             $purchases = get_purchases_by_item($_POST['item']);
         } elseif(!is_numeric($_POST['item']) && is_numeric($_POST['user'])) {
             $purchases = get_purchases_by_user($_POST['user']);
+        } else {
+            $purchases = get_purchases();
         }
     } else {
         $purchases = get_purchases();

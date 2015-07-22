@@ -29,7 +29,7 @@ function pano_hotspot_settings_page() {
       <tr>
         <th>Hotspot</th>
         <th>Menu Name</th>
-        <th>Description</th>
+        <th>Hotspot Info</th>
         <th>Points</th>
         <th>Attempts</th>
         <th>Type</th>

@@ -27,7 +27,7 @@
     <table class="ui table segment">
         <tr>
             <th>Item</th>
-            <th>Description</th>
+            <th>Item Info</th>
             <th>Image</th>
             <th>Price</th>
             <th>Item Type</th>
