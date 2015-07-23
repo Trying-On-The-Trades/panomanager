@@ -80,6 +80,7 @@ function get_pano_title(){
     return $panos;
 }
 
+
 function get_pano_desc(){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
@@ -88,14 +89,13 @@ function get_pano_desc(){
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results(
-        "SELECT wpp.id, wppt.desc FROM " . $pano_table_name . " wpp " .
+        "SELECT wpp.id, wppt.description FROM " . $pano_table_name . " wpp " .
         "INNER JOIN " . $text_table_name . " wppt ON " .
         "wppt.pano_id = wpp.id " .
         "WHERE wppt.language_code = " . $language_code, ARRAY_A);
 
     return $panos;
 }
-
 
 function get_pano_ids(){
     global $wpdb;
@@ -948,6 +948,14 @@ function create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc){
     return $prereq_id;
 }
 
+function create_prereq_item($prereq_id, $item_id){
+    global $wpdb;
+    $prereq_items_table_name = get_prereq_items_table_name();
+
+    $wpdb->insert( $prereq_items_table_name, array( 'prereq_id' => $prereq_id,
+                                                    'item_id'   => $item_id));
+}
+
 function create_quest($pano_id){
     global $wpdb;
     $quest_table_name      = get_quest_table_name();
@@ -1270,9 +1278,50 @@ function get_purchases(){
 function get_purchase($id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
-    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = {$id}");
+    $purchase = $wpdb->get_row("SELECT * FROM " . $purchases_table . " WHERE id = " . $id);
 
     return $purchase;
+}
+
+function get_purchases_by_user($user_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = " . $user_id);
+
+    return $purchases;
+}
+
+function get_purchases_by_user_reverse($user_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $purchases = $wpdb->get_results("SELECT * FROM " . $purchases_table . " WHERE user_id = " . $user_id . " ORDER BY id DESC");
+
+    return $purchases;
+}
+
+function get_purchases_by_item($item){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+    $query = "SELECT * FROM " . $purchases_table . " p " .
+        " INNER JOIN " . $line_items_table . " l ON p.id = l.purchase_id " .
+        " WHERE l.item_id = " . $item;
+    $purchases = $wpdb->get_results($query);
+
+    return $purchases;
+}
+
+function get_purchases_by_user_and_item($user, $item){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $query = "SELECT * FROM " . $purchases_table . " p " .
+            " INNER JOIN " . $line_items_table . " l ON p.id = l.purchase_id " .
+            " WHERE l.item_id = " . $item . " AND p.user_id = " . $user;
+    $purchases = $wpdb->get_results($query);
+
+    return $purchases;
 }
 
 function get_purchase_items($id){
@@ -1328,10 +1377,10 @@ function get_items(){
     return $items;
 }
 
-function get_item($id){
+function get_item($item_id){
     global $wpdb;
     $items_table = get_items_table_name();
-    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = {$id}");
+    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = " . $item_id);
 
     return $item;
 }

@@ -74,7 +74,7 @@ function edit_mission_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="misison_description">Mission Description</label>
+	        <label for="misison_description">Mission Info</label>
 	        <textarea name="mission_description" required ><?php echo $mission->get_description() ?></textarea>
 	      </div>
 	    </div>

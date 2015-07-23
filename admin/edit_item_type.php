@@ -48,7 +48,7 @@ function edit_item_type_settings_page() {
 	    <div class="ui form">
 	      <div class="field">
 	      	<div class="ui left labeled icon input">
-	        	<label for="item_type_description">Item Type Description</label>
+	        	<label for="item_type_description">Item Type Info</label>
 	    		<input name="item_type_description" id="description" placeholder="Description" value="<?php echo $item_type->get_description(); ?>" required />
      	 	</div>
 	      </div>

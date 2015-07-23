@@ -42,15 +42,17 @@ function edit_pano_settings_page() {
     <div class="ui form segment new_pano_form">
 	    <div class="ui form">
 	      <div class="field">
-	      	<div class="ui left labeled icon input">
-	        	<label for="pano_name">Pano Name</label>
-	    		<input name="pano_name" id="pano_name" placeholder="Cool Pano" required value="<?php echo $pano->get_name(); ?>"/>
+              <div class="ui left labeled icon input">
+	        	<label for="pano_title">Pano Title</label>
+                <input type="hidden" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
+	    		<input name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
+
      	 	</div>
 	      </div>
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label>Pano Description</label>
+	        <label>Pano Info</label>
 	        <textarea name="pano_description" required ><?php echo $pano->get_description(); ?></textarea>
 	      </div>
 	    </div>

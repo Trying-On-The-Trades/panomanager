@@ -24,7 +24,7 @@ require('db.php');
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </head>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
@@ -68,7 +68,7 @@ require('db.php');
 
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_description">Hotspot Description</label>
+	        <label for="hotspot_description">Hotspot Info</label>
 	        <textarea rows="4" name="hotspot_description" required ></textarea>
 	      </div>
 	    </div>
@@ -84,16 +84,25 @@ require('db.php');
 
             <div class="ui form">
                 <div class="field">
-                    <label for="hotspot_url">Hotspot Url</label>
-                    <input type="text" name="hotspot_url" required />
+                    <label for="url_type">Type of url</label>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="website" value="website">Website<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="image" value="image">Image<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="video" value="video">Video<br>
+                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="oppia" value="oppia">Oppia
                 </div>
             </div>
 
             <div class="ui form">
                 <div class="field">
-                    <label for="url_type">Type of url</label>
-                    <input type="radio" name="url_type" value="website">Website<br>
-                    <input type="radio" name="url_type" value="image">Image
+                    <label for="hotspot_url">Hotspot Url</label>
+                    <input type="text" name="hotspot_url"  />
+                </div>
+            </div>
+
+            <div class="ui form">
+                <div class="field">
+                    <label for="oppia_id">Oppia ID</label>
+                    <input type="text" name="oppia_id"  />
                 </div>
             </div>
 
@@ -125,5 +134,6 @@ require('db.php');
         </div>
 </form>
 </div>
+<script type="text/javascript" src="./hotspot_editor.js"></script>
 </body>
 </html>

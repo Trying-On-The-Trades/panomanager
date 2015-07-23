@@ -207,6 +207,7 @@ function get_current_pano_id(){
     return check_pano_id($pano_id);
 }
 
+
 function get_hotspot_menu_objects($quest){
 
     $user_id = get_current_user_id();
@@ -466,8 +467,14 @@ function process_new_prereq(){
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
     $prereq_desc     = $_POST['prereq_desc'];
 
+    $prereq_items = $_POST['items'];
+
     // Get the id
     $id = create_prereq($pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
+
+    foreach($prereq_items as $item){
+        create_prereq_item($id, $item);
+    }
 
     wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id=' . $pano_id ) );
 }
@@ -539,6 +546,7 @@ function process_new_hotspot_ajax(){
     $hotspot_icon        = $_POST['hotspot_icon'];
     $hotspot_menu        = $_POST['hotspot_menu'];
     $game_type           = $_POST['game_type'];
+    $oppia_id            = $_POST['oppia_id'];
 
     if($hotspot_icon == 'true'){
         $image = 'url="info.png"';
@@ -552,7 +560,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($game_type == "website" || $game_type == "image"){
+    if($game_type == "website" || $game_type == "image" || $game_type == "video"){
         $url = $_POST['hotspot_url'];
     }
 
@@ -583,13 +591,24 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
+
+    }elseif($game_type == "video"){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+        'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
+        '</action>';
+
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
-    }else{
-        $hotspot_action_xml = '<action namme="function_' . $hotspot_id . '">' .
-            'js(loadShopItem(' . $item_id . '));' .
+    }elseif(strlen(trim($oppia_id)) > 0) {
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadOppia(' . $hotspot_id . ', ' . $oppia_id . '));' .
+            '</action>';
+    }
+    else{
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
             '</action>';
     }
 
