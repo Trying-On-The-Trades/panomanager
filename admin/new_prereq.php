@@ -45,6 +45,7 @@ function prereq_new_settings_page() {
     </div>
     <div class="ui form">
       <div class="field">
+        <label>Items</label>
         <ul>
           <?php foreach($items as $item): ?>
           <li class="games_form">

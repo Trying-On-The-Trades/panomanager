@@ -6,13 +6,21 @@ function prereq_edit_settings_page() {
   $domains   = get_domains();
 
   $prereq = null;
+  $prereq_id = null;
   if(isset($_GET['id']) && is_numeric($_GET['id'])){
     $prereq = get_prereq($_GET['id']);
+    $prereq_id = $_GET['id'];
   }
 
+  $items = get_items();
+  $prereq_items = get_prereq_items($prereq_id);
+  $selected_items = array();
+  foreach($prereq_items as $selected_item){
+    array_push($selected_items, $selected_item->item_id);
+  }
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Create a new Prereq!</h2>
+<h2>Edit your Prereqs!</h2>
 <hr>
 
 <form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
@@ -42,6 +50,26 @@ function prereq_edit_settings_page() {
       <div class="field">
         <label for="prereq_desc">Prereq Info</label>
         <textarea name="prereq_desc" id="prereq_desc" required ><?php echo $prereq->prereq_desc ?></textarea>
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <label>Items</label>
+        <ul>
+          <?php foreach($items as $item): ?>
+            <?php if(in_array($item->id, $selected_items)): ?>
+            <li class="games_form">
+              <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>" checked>
+              <label for="<?= $item->id ?>"><?= $item->name ?></label>
+            </li>
+            <?php else: ?>
+            <li class="games_form">
+              <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>">
+              <label for="<?= $item->id ?>"><?= $item->name ?></label>
+            </li>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </ul>
       </div>
     </div>
     <?php submit_button(); ?>
