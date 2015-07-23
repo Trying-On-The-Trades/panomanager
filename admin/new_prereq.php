@@ -47,7 +47,7 @@ function prereq_new_settings_page() {
       <div class="field">
         <ul>
           <?php foreach($items as $item): ?>
-          <li>
+          <li class="games_form">
             <input type="checkbox" id="<?= $item->id ?>" value="<?= $item->id ?>">
             <label for="<?= $item->id ?>"><?= $item->name ?></label>
           </li>
