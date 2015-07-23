@@ -601,7 +601,7 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
-    }elseif(is_numeric($oppia_id)) {
+    }elseif(strlen(trim($oppia_id)) > 0) {
         $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
             'js(loadOppia(' . $hotspot_id . ', ' . $oppia_id . '));' .
             '</action>';
