@@ -1377,10 +1377,10 @@ function get_items(){
     return $items;
 }
 
-function get_item($id){
+function get_item($item_id){
     global $wpdb;
     $items_table = get_items_table_name();
-    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = {$id}");
+    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = " . $item_id);
 
     return $item;
 }
