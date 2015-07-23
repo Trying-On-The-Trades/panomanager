@@ -4,6 +4,7 @@
 function prereq_new_settings_page() {
   $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
   $domains   = get_domains();
+  $items = get_items();
   $pano_id = null;
   if(isset($_GET['pano_id']) && is_numeric($_GET['pano_id'])){
     $pano_id = $_GET['pano_id'];
@@ -40,6 +41,18 @@ function prereq_new_settings_page() {
       <div class="field">
         <label for="prereq_desc">Prereq Info</label>
         <textarea name="prereq_desc" id="prereq_desc"  required ></textarea>
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <ul>
+          <?php foreach($items as $item): ?>
+          <li>
+            <input type="checkbox" id="<?= $item->id ?>" value="<?= $item->id ?>">
+            <label for="<?= $item->id ?>"><?= $item->name ?></label>
+          </li>
+          <?php endforeach; ?>
+        </ul>
       </div>
     </div>
     <?php submit_button(); ?>
