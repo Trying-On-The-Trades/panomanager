@@ -213,62 +213,56 @@ function build_ids_array(){
     return $script;
 }
 
-function build_launch_message(){
-        $script =  "function launchMsg(msg){\n";
-        $script .= "    if(msg == getSceneName()){\n";
-        $script .= "        $.magnificPopup.open({\n";
-        $script .= "            items: {\n";
-        $script .= "            src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
-        $script .= "            type: 'inline',\n";
-        $script .= "            callbacks: {\n";
-        $script .= "                close: function() {\n";
-        $script .= "                    console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-        $script .= "                    magnificPopup.close(); \n";
-        $script .= "                }\n";
-        $script .= "            }\n";
-        $script .= "        }\n";
-        $script .= "        });\n";
+function build_launch_message($pano_id){
 
-        $script .= "        magnificPopup = $.magnificPopup.instance; \n";
-        $script .= "    } else {\n";
-        $script .= "        var pano_id = 1;\n";
-        $script .= "        $.each(panoPointer, function(key, value){\n";
-        $script .= "            if(msg == panoPointer[key].name){\n";
-        $script .= "                pano_id = panoPointer[key].id;\n";
-        $script .= "                return false;\n";
-        $script .= "            }\n";
-        $script .= "        });\n";
 
-        $script .= "        $.ajax({\n";
-        $script .= "            type: 'GET',\n";
-        $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
-        $script .= "            data: { action:  'check_user_progress',\n";
-        $script .= "                    pano_id: pano_id },\n";
-        $script .= "            success: function(d){\n";
+    $prereq = get_prereq(2);
+    $prereq_url = WP_PLUGIN_URL . '/prereq_info/prereq_info.php';
 
-        $script .= "                    if(d == 'restricted'){\n";
+    $script =  "function launchMsg(msg){\n";
+    $script .= "    if(msg == getSceneName()){\n";
+    $script .= "        $.magnificPopup.open({\n";
+    $script .= "            items: {\n";
+    $script .= "            src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
+    $script .= "            type: 'inline',\n";
+    $script .= "            callbacks: {\n";
+    $script .= "                close: function() {\n";
+    $script .= "                    console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script .= "                    magnificPopup.close(); \n";
+    $script .= "                }\n";
+    $script .= "            }\n";
+    $script .= "        }\n";
+    $script .= "        });\n";
 
-        $script .= "                        $.magnificPopup.open({\n";
-        $script .= "                            items: {\n";
-        $script .= "                                src: '<div class=\"white-popup\">You do not have access to this level. Click anything to close this message</div>',\n";
-        $script .= "                                type: 'inline',\n";
-        $script .= "                                callbacks: {\n";
-        $script .= "                                    close: function() {\n";
-        $script .= "                                        console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-        $script .= "                                        magnificPopup.close();\n";
-        $script .= "                                    }\n";
-        $script .= "                                }\n";
-        $script .= "                            }\n";
-        $script .= "                        });\n";
-        $script .= "                        magnificPopup = $.magnificPopup.instance;\n";
+    $script .= "        magnificPopup = $.magnificPopup.instance; \n";
+    $script .= "    } else {\n";
+    $script .= "        var pano_id = 1;\n";
+    $script .= "        $.each(panoPointer, function(key, value){\n";
+    $script .= "            if(msg == panoPointer[key].name){\n";
+    $script .= "                pano_id = panoPointer[key].id;\n";
+    $script .= "                return false;\n";
+    $script .= "            }\n";
+    $script .= "        });\n";
 
-        $script .= "                    } else {\n";
-        $script .= "                        window.location = siteAdr + pano_id;\n";
-        $script .= "                    }\n";
-        $script .= "            }\n";
-        $script .= "        });\n";
-        $script .= "  }\n";
-        $script .= "}\n";
+    $script .= "        $.ajax({\n";
+    $script .= "            type: 'GET',\n";
+    $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "            data: { action:  'check_user_progress',\n";
+    $script .= "                    pano_id: pano_id },\n";
+    $script .= "            success: function(d){\n";
+
+    $script .= "                    if(d == 'restricted'){\n";
+
+    $script .= "                        var url = '$prereq_url'";
+    $script .= "                        $.featherlight(url, null, false);\n";
+
+    $script .= "                    } else {\n";
+    $script .= "                        window.location = siteAdr + pano_id;\n";
+    $script .= "                    }\n";
+    $script .= "            }\n";
+    $script .= "        });\n";
+    $script .= "  }\n";
+    $script .= "}\n";
 
     return $script;
 }
