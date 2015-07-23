@@ -203,6 +203,7 @@ function build_pano_text_sql(){
       `title` varchar(255) NOT NULL DEFAULT "",
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
+      `show_desc_onload` TINYINT DEFAULT 0,
       PRIMARY KEY (`id`)
     );';
 

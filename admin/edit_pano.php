@@ -64,10 +64,16 @@ function edit_pano_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label>Autopan - speed</label>
+	        <label>Change autopan speed to</label>
 	        <input type="number" name="autopan" id="autopan" placeholder="0" required />
 	      </div>
 	    </div>
+	    <div class="ui form">
+          <div class="field">
+            <input type="checkbox" id="pano_onload" name="pano_onload" checked="<?= ($pano->get_show_desc_onload() == "0") ? false : true ?>"/>
+            <label for="pano_onload">Show the pano info everytime the user loads it</label>
+          </div>
+        </div>
 	    <a class="ui blue icon button" href="<?php echo $upload_zip_url ?>&id=<?php echo $pano->get_id() ?>" style="padding: 7px">Upload Zip File</a>
 	    <a class="ui blue icon button" href="<?php echo $prereqs_url ?>&pano_id=<?php echo $pano->get_id() ?>" style="padding: 7px">Manage Prereqs</a>
 	    <?php submit_button(); ?>

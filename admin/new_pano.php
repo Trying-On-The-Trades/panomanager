@@ -49,6 +49,12 @@ function new_pano_settings_page() {
 	        <input type="number" name="autopan" id="autopan" placeholder="0" required />
 	      </div>
 	    </div>
+	    <div class="ui form">
+          <div class="field">
+            <input type="checkbox" id="pano_onload" name="pano_onload"/>
+            <label for="pano_onload">Show the pano info everytime the user loads it</label>
+          </div>
+        </div>
 	    <?php submit_button(); ?>
 	</div>
 </form>

@@ -708,7 +708,7 @@ function get_pano_ads($quest_id){
 //				    Updating Panos
 // ***********************************************************
 
-function update_pano($pano_id, $pano_xml, $pano_title, $pano_description){
+function update_pano($pano_id, $pano_xml, $pano_title, $pano_description, $show_desc_onload){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -722,9 +722,10 @@ function update_pano($pano_id, $pano_xml, $pano_title, $pano_description){
 
         $wpdb->update( $text_table_name,
             array(
-                'language_code' => $language_code,
-                'title'         => $pano_title,
-                'description'   => $pano_description
+                'language_code'    => $language_code,
+                'title'            => $pano_title,
+                'description'      => $pano_description,
+                'show_desc_onload' => $show_desc_onload
             ),
             array('pano_id' => $pano_id));
 
@@ -910,7 +911,7 @@ function update_points_initial_bonus($quantity){
 //				    Creating New Panos
 // ***********************************************************
 
-function create_pano($pano_xml, $pano_title, $pano_description){
+function create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -924,10 +925,11 @@ function create_pano($pano_xml, $pano_title, $pano_description){
     $pano_id = $wpdb->insert_id;
 
     // Insert the pano_text
-    $wpdb->insert( $text_table_name, array( 'pano_id'       => $pano_id,
-                                            'language_code' => $language_code,
-                                            'title'         => $pano_title,
-                                            'description'   => $pano_description));
+    $wpdb->insert( $text_table_name, array( 'pano_id'          => $pano_id,
+                                            'language_code'    => $language_code,
+                                            'title'            => $pano_title,
+                                            'description'      => $pano_description,
+                                            'show_desc_onload' => $show_desc_onload));
 
     return $pano_id;
 }
