@@ -1385,6 +1385,14 @@ function get_item($item_id){
     return $item;
 }
 
+function get_prereq_items($prereq_id){
+  global $wpdb;
+  $prereq_items_table_name = get_prereq_items_table_name();
+  $items = $wpdb->get_results("SELECT item_id FROM " . $prereq_items_table_name . " WHERE prereq_id = " . $prereq_id);
+
+  return $items;
+}
+
 function delete_purchase($id){
     global $wpdb;
 
