@@ -6,7 +6,13 @@ require_once('../../../../wp-includes/pluggable.php');
 $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
 
+$pano_id = $_GET['pano_id'];
 
+$prereq = get_pano_prereq($pano_id);
+
+$currency = get_points_symbol();
+
+//$items = get_prereq_items($prereq[0]->prereq_id);
 
 ?>
 
@@ -20,8 +26,8 @@ $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 </head>
 <body>
 <h1>Pano Requirements</h1>
-<p><?php echo "To access this pano you need:"?>
-    <?php echo "2000 points and the following items:"?></p>
+<p><?php echo "To access this pano you need:"?></p>
+<p><?php echo $prereq[0]->prereq_pts . " points and the following items:"?></p>
 
 <div class="ui form">
     <div class="field">
