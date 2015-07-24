@@ -30,10 +30,10 @@ function load_pano($pano_id){
         //TODO I'd suggest to break the code here, return a error page with redirection.
     }
 
-	$pano  = build_pano($id);
+	$pano  = build_pano($pano_id);
     $quest = build_quest($id);
 
-	$javascript = build_pano_javascript($id, $pano, $quest);
+	$javascript = build_pano_javascript($pano_id, $pano, $quest);
 
 	return $javascript;
 }
