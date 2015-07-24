@@ -27,7 +27,7 @@ $currency = get_points_symbol();
 <body>
 <h1>Pano Requirements</h1>
 <p><?php echo "To access this pano you need:"?></p>
-<p><?php echo $prereq[0]->prereq_pts . " points and the following items:"?></p>
+<p><?php echo $prereq->prereq_pts . " " . $currency . " and the following items:"?></p>
 
 <div class="ui form">
     <div class="field">
