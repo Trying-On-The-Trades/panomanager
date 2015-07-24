@@ -456,6 +456,8 @@ function process_new_pano(){
 
     create_quest($pano_id);
 
+    cretae_prereq($pano_id, 0, NULL , NULL);
+
     wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
 }
 
@@ -717,9 +719,9 @@ function process_edit_prereq(){
     }
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&prereq-settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_menu&error') );
     }
 }
 
