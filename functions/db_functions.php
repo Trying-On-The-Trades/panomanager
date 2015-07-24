@@ -1080,6 +1080,14 @@ function delete_prereq($prereq_id){
     $wpdb->delete( $prereq_table_name, array( 'id' => $prereq_id ) );
 }
 
+function delete_prereq_items($prereq_id){
+    global $wpdb;
+
+    $prereq_items_table_name = get_prereq_items_table_name();
+
+    $wpdb->delete( $prereq_items_table_name, array( 'prereq_id' => $prereq_id) );
+}
+
 function delete_quest($pano_id){
     global $wpdb;
     $quest_table_name = get_quest_table_name();

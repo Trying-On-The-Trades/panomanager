@@ -705,9 +705,16 @@ function process_edit_prereq(){
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
     $prereq_desc     = $_POST['prereq_desc'];
+    $prereq_items    = $_POST['items'];
 
     // Get the id
     $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
+
+    delete_prereq_items($id);
+
+    foreach($prereq_items as $item){
+        create_prereq_item($id, $item);
+    }
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
