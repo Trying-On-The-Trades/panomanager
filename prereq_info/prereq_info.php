@@ -6,7 +6,7 @@ require_once('../../../../wp-includes/pluggable.php');
 $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
 
 
-
+echo $_GET['pano_id'];
 
 ?>
 

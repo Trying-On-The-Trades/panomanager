@@ -137,7 +137,7 @@ function add_nav_script($quest, $pano_id){
     $script .=  "var defaultVar = 1;\n";
     $script .= "var magnificPopup;";
 
-    $script .= build_launch_message();
+    $script .= build_launch_message($pano_id);
     $script .= build_find_array();
     $script .= build_get_scene_name();
 
@@ -216,8 +216,8 @@ function build_ids_array(){
 function build_launch_message($pano_id){
 
 
-    $prereq = get_prereq(2);
-    $prereq_url = WP_PLUGIN_URL . '/prereq_info/prereq_info.php';
+    $prereq = get_prereq($pano_id);
+    $prereq_url = WP_PLUGIN_URL . '/prereq_info/prereq_info.php?pano_id=';
 
     $script =  "function launchMsg(msg){\n";
     $script .= "    if(msg == getSceneName()){\n";
@@ -253,7 +253,7 @@ function build_launch_message($pano_id){
 
     $script .= "                    if(d == 'restricted'){\n";
 
-    $script .= "                        var url = '$prereq_url'";
+    $script .= "                        var url = '" . $prereq_url . "' + pano_id\n";
     $script .= "                        $.featherlight(url, null, false);\n";
 
     $script .= "                    } else {\n";
