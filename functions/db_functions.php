@@ -1170,6 +1170,15 @@ function get_bonus_points_for_mission_tab($id){
   return $bonus_points;
 }
 
+function get_prereq($prereq_id){
+    global $wpdb;
+    $prereq_table_name = get_prereq_table_name();
+
+    $prereq = $wpdb->get_row("SELECT * FROM " . $prereq_table_name . "WHERE id = " . $prereq_id );
+
+    return $prereq;
+}
+
 function get_prereq_item($prereq_id, $item_id){
     global $wpdb;
     $prereq_items_table_name = get_prereq_items_table_name();
