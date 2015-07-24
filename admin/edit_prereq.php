@@ -8,9 +8,9 @@ function prereq_edit_settings_page() {
   $item_types = get_item_types();
   $prereq = null;
   $prereq_id = null;
-  if(isset($_GET['id']) && is_numeric($_GET['id'])){
-    $prereq = get_prereq($_GET['id']);
-    $prereq_id = $_GET['id'];
+  if(isset($_GET['pano_id']) && is_numeric($_GET['pano_id'])){
+    $prereq = get_pano_prereq($_GET['pano_id']);
+    $prereq_id = $prereq->id;
   }
   $prereq_items = get_prereq_items($prereq_id);
   $selected_items = array();
