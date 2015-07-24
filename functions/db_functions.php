@@ -369,6 +369,18 @@ function get_pano_prereq($pano_id){
 	return $prereq;
 }
 
+function check_if_user_has_item($user_id, $item_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $items = $wpdb->get_var("SELECT COUNT(*) FROM " . $purchases_table . " p INNER JOIN " .
+                                 $line_items_table . " l ON p.id = l.purchase_id WHERE p.user_id = " .
+                                  $user_id . " AND l.item_id = " . $item_id);
+
+    return ($items > 0) ? true : false ;
+}
+
 function get_db_prereq($prereq_id){
     global $wpdb;
 
