@@ -362,9 +362,9 @@ function get_pano_prereq($pano_id){
 	$prereq_table_name = get_prereq_table_name();
 	$domain_table_name  = get_domain_table_name();
 
-	$prereq = $wpdb->get_results(
+	$prereq = $wpdb->get_row(
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
-		"WHERE wppr.`pano_id` = " . $pano_id);
+		"WHERE wppr.`pano_id` = " . $pano_id . "LIMIT 1");
 
 	return $prereq;
 }
@@ -1170,14 +1170,6 @@ function get_bonus_points_for_mission_tab($id){
   return $bonus_points;
 }
 
-function get_prereq($prereq_id){
-    global $wpdb;
-    $prereq_table_name = get_prereq_table_name();
-
-    $prereq = $wpdb->get_row("SELECT * FROM " . $prereq_table_name . "WHERE id = " . $prereq_id );
-
-    return $prereq;
-}
 
 function get_prereq_item($prereq_id, $item_id){
     global $wpdb;
