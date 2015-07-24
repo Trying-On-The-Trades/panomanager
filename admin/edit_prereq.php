@@ -4,15 +4,13 @@
 function prereq_edit_settings_page() {
   $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
   $domains   = get_domains();
-
+  $items = get_items();
   $prereq = null;
   $prereq_id = null;
   if(isset($_GET['id']) && is_numeric($_GET['id'])){
     $prereq = get_prereq($_GET['id']);
     $prereq_id = $_GET['id'];
   }
-
-  $items = get_items();
   $prereq_items = get_prereq_items($prereq_id);
   $selected_items = array();
   foreach($prereq_items as $selected_item){
