@@ -364,7 +364,7 @@ function get_pano_prereq($pano_id){
 
 	$prereq = $wpdb->get_row(
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
-		"WHERE wppr.`pano_id` = " . $pano_id . "LIMIT 1");
+		"WHERE wppr.`pano_id` = " . $pano_id . " LIMIT 1");
 
 	return $prereq;
 }

@@ -11,7 +11,7 @@ function prereq_settings_page() {
         $pano_id = $_GET['pano_id'];
     }
 
-    $prereqs = get_pano_prereqs($pano_id);
+    $prereqs = get_pano_prereq($pano_id);
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
     <h2>Create a new prereq!</h2>

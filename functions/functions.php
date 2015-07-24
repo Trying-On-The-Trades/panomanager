@@ -51,7 +51,7 @@ function check_user_progress($pano_id){
     $user_id = get_current_user_id();
 
 	// Check if the pano has a prereq
-	$prereqs = get_pano_prereqs($pano_id);
+	$prereqs = get_pano_prereq($pano_id);
 
 	// if it does make sure the user has completed
 	// enough skills and missions
@@ -105,11 +105,6 @@ function check_user_progress_ajax(){
     } else {
         echo "restricted";
     }
-}
-
-function get_pano_prereqs($pano_id){
-    $prereq = get_pano_prereq($pano_id);
-    return $prereq;
 }
 
 function get_prereq($prereq_id = 1){
@@ -456,6 +451,8 @@ function process_new_pano(){
 
     create_quest($pano_id);
 
+    create_prereq($pano_id, 0, NULL , NULL);
+
     wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
 }
 
@@ -717,9 +714,9 @@ function process_edit_prereq(){
     }
 
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&prereq-settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_menu&error') );
     }
 }
 
