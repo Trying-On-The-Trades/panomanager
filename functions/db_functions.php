@@ -1398,6 +1398,14 @@ function get_items(){
     return $items;
 }
 
+function get_items_by_item_type($item_type){
+  global $wpdb;
+  $items_table = get_items_table_name();
+  $items = $wpdb->get_results("SELECT * FROM " . $items_table . " WHERE type_id = " . $item_type);
+
+  return $items;
+}
+
 function get_item($item_id){
     global $wpdb;
     $items_table = get_items_table_name();
