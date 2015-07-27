@@ -12,7 +12,9 @@ $prereq = get_pano_prereq($pano_id);
 
 $currency = get_points_symbol();
 
-//$items = get_prereq_items($prereq[0]->prereq_id);
+$items = get_prereq_items($prereq->id);
+
+
 
 ?>
 
@@ -32,61 +34,24 @@ $currency = get_points_symbol();
 <div class="ui form">
     <div class="field">
         <ul>
-            <li class="games_form">
 
-                <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
+            <?php foreach($items as $item): ?>
+                <li class="games_form">
+                    <?php if(check_if_user_has_item(get_current_user()->ID, $item->item_id)): ?>
+                        <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
+                    <?php else: ?>
+                        <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
+                    <?php endif;?>
 
-                <label class="cat0" for="1">
+                    <label class="cat0" for="1">
 
-                    Hammer
+                        <?php echo get_item($item->item_id)->name?>
 
-                </label>
+                    </label>
 
-            </li>
-            <li class="games_form">
+                </li>
+            <?php endforeach; ?>
 
-                <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
-
-                <label class="cat0" for="1">
-
-                    Helmet
-
-                </label>
-
-            </li>
-            <li class="games_form">
-
-                <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
-
-                <label class="cat0" for="1">
-
-                    Boots
-
-                </label>
-
-            </li>
-            <li class="games_form">
-
-                <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
-
-                <label class="cat0" for="1">
-
-                    Goggles
-
-                </label>
-
-            </li>
-            <li class="games_form">
-
-                <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
-
-                <label class="cat0" for="1">
-
-                    Gloves
-
-                </label>
-
-            </li>
             <li class="games_form">
                 <p>
                 <div class="square_blue"></div>Got already
