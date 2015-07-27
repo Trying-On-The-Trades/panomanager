@@ -107,6 +107,20 @@ function check_user_progress_ajax(){
     }
 }
 
+function check_description_onload_ajax(){
+    $pano_id = $_GET['pano_id'];
+
+    $pano = get_pano($pano_id);
+
+    $result = $pano->show_desc_onload;
+
+    if($result == 0){
+        echo 'false';
+    } else {
+        echo 'true';
+    }
+}
+
 function get_pano_prereqs($pano_id){
     $prereq = get_pano_prereq($pano_id);
     return $prereq;
