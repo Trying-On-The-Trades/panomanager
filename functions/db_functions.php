@@ -362,11 +362,23 @@ function get_pano_prereq($pano_id){
 	$prereq_table_name = get_prereq_table_name();
 	$domain_table_name  = get_domain_table_name();
 
-	$prereq = $wpdb->get_results(
+	$prereq = $wpdb->get_row(
 		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
-		"WHERE wppr.`pano_id` = " . $pano_id);
+		"WHERE wppr.`pano_id` = " . $pano_id . " LIMIT 1");
 
 	return $prereq;
+}
+
+function check_if_user_has_item($user_id, $item_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $items = $wpdb->get_var("SELECT COUNT(*) FROM " . $purchases_table . " p INNER JOIN " .
+                                 $line_items_table . " l ON p.id = l.purchase_id WHERE p.user_id = " .
+                                  $user_id . " AND l.item_id = " . $item_id);
+
+    return ($items > 0) ? true : false ;
 }
 
 function get_db_prereq($prereq_id){
@@ -1082,6 +1094,14 @@ function delete_prereq($prereq_id){
     $wpdb->delete( $prereq_table_name, array( 'id' => $prereq_id ) );
 }
 
+function delete_prereq_items($prereq_id){
+    global $wpdb;
+
+    $prereq_items_table_name = get_prereq_items_table_name();
+
+    $wpdb->delete( $prereq_items_table_name, array( 'prereq_id' => $prereq_id) );
+}
+
 function delete_quest($pano_id){
     global $wpdb;
     $quest_table_name = get_quest_table_name();
@@ -1163,6 +1183,7 @@ function get_bonus_points_for_mission_tab($id){
 
   return $bonus_points;
 }
+
 
 function get_prereq_item($prereq_id, $item_id){
     global $wpdb;
@@ -1379,12 +1400,28 @@ function get_items(){
     return $items;
 }
 
-function get_item($id){
+function get_items_by_item_type($item_type){
+  global $wpdb;
+  $items_table = get_items_table_name();
+  $items = $wpdb->get_results("SELECT * FROM " . $items_table . " WHERE type_id = " . $item_type);
+
+  return $items;
+}
+
+function get_item($item_id){
     global $wpdb;
     $items_table = get_items_table_name();
-    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = {$id}");
+    $item = $wpdb->get_row("SELECT * FROM " . $items_table . " WHERE id = " . $item_id);
 
     return $item;
+}
+
+function get_prereq_items($prereq_id){
+  global $wpdb;
+  $prereq_items_table_name = get_prereq_items_table_name();
+  $items = $wpdb->get_results("SELECT item_id FROM " . $prereq_items_table_name . " WHERE prereq_id = " . $prereq_id);
+
+  return $items;
 }
 
 function delete_purchase($id){

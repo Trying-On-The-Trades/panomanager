@@ -51,7 +51,7 @@ function check_user_progress($pano_id){
     $user_id = get_current_user_id();
 
 	// Check if the pano has a prereq
-	$prereqs = get_pano_prereqs($pano_id);
+	$prereqs = get_pano_prereq($pano_id);
 
 	// if it does make sure the user has completed
 	// enough skills and missions
@@ -471,6 +471,8 @@ function process_new_pano(){
 
     create_quest($pano_id);
 
+    create_prereq($pano_id, 0, NULL , NULL);
+
     wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
 }
 
@@ -616,7 +618,7 @@ function process_new_hotspot_ajax(){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
             '</action>';
-    }elseif(is_numeric($oppia_id)) {
+    }elseif(strlen(trim($oppia_id)) > 0) {
         $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
             'js(loadOppia(' . $hotspot_id . ', ' . $oppia_id . '));' .
             '</action>';
@@ -721,14 +723,21 @@ function process_edit_prereq(){
     $prereq_pts      = $_POST['prereq_pts'];
     $prereq_domain_id = ($_POST['prereq_domain_id'] == "NA") ? null : $_POST['prereq_domain_id'];
     $prereq_desc     = $_POST['prereq_desc'];
+    $prereq_items    = $_POST['items'];
 
     // Get the id
     $return = update_prereq($id, $pano_id, $prereq_pts, $prereq_domain_id, $prereq_desc);
 
+    delete_prereq_items($id);
+
+    foreach($prereq_items as $item){
+        create_prereq_item($id, $item);
+    }
+
     if($return){
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&pano_id='. $pano_id .'&settings-saved') );
+        wp_redirect( admin_url( 'admin.php?page=edit_pano_settings&id=' . $pano_id . '&prereq-settings-saved') );
     } else {
-        wp_redirect( admin_url( 'admin.php?page=prereq_setting&error') );
+        wp_redirect( admin_url( 'admin.php?page=pano_menu&error') );
     }
 }
 

@@ -24,7 +24,7 @@ require('db.php');
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </head>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
@@ -68,7 +68,7 @@ require('db.php');
 
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_description">Hotspot Description</label>
+	        <label for="hotspot_description">Hotspot Info</label>
 	        <textarea rows="4" name="hotspot_description" required ></textarea>
 	      </div>
 	    </div>
@@ -134,20 +134,6 @@ require('db.php');
         </div>
 </form>
 </div>
-<script type="text/javascript">
-
-    function checkOption() {
-        if (document.getElementById('oppia').checked) {
-            document.getElementById('oppia_id').style.display = 'block';
-            document.getElementById('hotspot_url').style.display = 'none';
-        }
-        else {
-            document.getElementById('oppia_id').style.display = 'none';
-            document.getElementById('hotspot_url').style.display = 'block';
-        }
-
-    }
-
-</script>
+<script type="text/javascript" src="./hotspot_editor.js"></script>
 </body>
 </html>

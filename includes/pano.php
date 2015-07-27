@@ -42,7 +42,7 @@ class pano{
 	}
 
 	function build_prereqs(){
-		return $this->prereqs = get_pano_prereqs($this->id);
+		return $this->prereqs = get_pano_prereq($this->id);
 	}
         
 	function get_prereq(){

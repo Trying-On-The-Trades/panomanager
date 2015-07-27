@@ -4,7 +4,7 @@
 function edit_pano_settings_page() {
     $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $upload_zip_url  = admin_url() . "admin.php?page=upload_zip_setting";
-    $prereqs_url     = admin_url() . "admin.php?page=prereq_setting";
+    $prereqs_url     = admin_url() . "admin.php?page=prereq_edit_setting";
     $pano = null;
 
     if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
@@ -15,6 +15,11 @@ function edit_pano_settings_page() {
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2>Edit Pano</h2>
 <hr>
+
+<?php if ( isset( $_GET[ 'prereq-settings-saved' ] ) ): ?>
+    <div class="updated"><p>Settings updated successfully.</p></div>
+<?php endif ?>
+
 <style type="text/css">
 	#wpfooter{
 		display: none;
