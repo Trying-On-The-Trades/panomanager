@@ -214,11 +214,8 @@ function build_ids_array(){
 }
 
 function build_launch_message($pano_id){
-
-
     $prereq = get_prereq($pano_id);
-    $prereq_url = WP_PLUGIN_URL . '/prereq_info/prereq_info.php?pano_id=';
-
+    $prereq_url = WP_PLUGIN_URL . '/panomanager/prereq_info/prereq_info.php?pano_id=';
     $script =  "function launchMsg(msg){\n";
     $script .= "    if(msg == getSceneName()){\n";
     $script .= "        $.magnificPopup.open({\n";
@@ -233,7 +230,6 @@ function build_launch_message($pano_id){
     $script .= "            }\n";
     $script .= "        }\n";
     $script .= "        });\n";
-
     $script .= "        magnificPopup = $.magnificPopup.instance; \n";
     $script .= "    } else {\n";
     $script .= "        var pano_id = 1;\n";
@@ -243,19 +239,15 @@ function build_launch_message($pano_id){
     $script .= "                return false;\n";
     $script .= "            }\n";
     $script .= "        });\n";
-
     $script .= "        $.ajax({\n";
     $script .= "            type: 'GET',\n";
     $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
     $script .= "            data: { action:  'check_user_progress',\n";
     $script .= "                    pano_id: pano_id },\n";
     $script .= "            success: function(d){\n";
-
     $script .= "                    if(d == 'restricted'){\n";
-
-    $script .= "                        var url = '" . $prereq_url . "' + pano_id\n";
-    $script .= "                        $.featherlight(url, null, false);\n";
-
+    $script .= "                        var url = '" . $prereq_url . "' + pano_id;\n";
+    $script .= "                        $.featherlight({iframe: url, iframeWidth: 400, iframeHeight: 500}, null, false);\n";
     $script .= "                    } else {\n";
     $script .= "                        window.location = siteAdr + pano_id;\n";
     $script .= "                    }\n";
