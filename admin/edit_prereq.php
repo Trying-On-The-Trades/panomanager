@@ -34,17 +34,7 @@ function prereq_edit_settings_page() {
         <input type="number" name="prereq_pts" id="prereq_pts" placeholder="100" value="<?php echo $prereq->prereq_pts ?>"required />
       </div>
     </div>
-    <div class="ui form">
-      <div class="field">
-        <label for="prereq_domain_id">Select a Prereq Domain</label>
-        <select name="prereq_domain_id">
-          <option value="NA">...</option>
-          <?php foreach($domains as $domain): ?>
-          <option value="<?php echo $domain->id ?>" <?php echo ($domain->id === $prereq->prereq_domain_id) ? "selected" : "" ?>><?php echo $domain->name ?></option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-    </div>
+    <input type="hidden" name="prereq_domain_id" value="NA" />
     <div class="ui form">
       <div class="field">
         <label for="prereq_desc">Prereq Info</label>
