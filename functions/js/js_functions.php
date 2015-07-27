@@ -253,6 +253,17 @@ function build_launch_message($pano_id){
     $script .= "                    }\n";
     $script .= "            }\n";
     $script .= "        });\n";
+    $script .= "        $.ajax({\n";
+    $script .= "            type: 'GET',\n";
+    $script .= "            url: '" . get_admin_url() . "admin-post.php ',\n";
+    $script .= "            data: { action: 'description_onload',\n";
+    $script .= "                    pano_id: pano_id },\n";
+    $script .= "            success: function(data){\n";
+    $script .= "            if(data){\n";
+    $script .= "                loadFrame(0, 'pano-info.php');\n";
+    $script .= "            }\n";
+    $script .= "        }\n";
+    $script .= "    });\n";
     $script .= "  }\n";
     $script .= "}\n";
 
