@@ -14,7 +14,7 @@ $currency = get_points_symbol();
 
 $items = get_prereq_items($prereq->id);
 
-
+$user_id = get_current_user_id();
 
 ?>
 
@@ -37,7 +37,7 @@ $items = get_prereq_items($prereq->id);
 
             <?php foreach($items as $item): ?>
                 <li class="games_form">
-                    <?php if(check_if_user_has_item(get_current_user()->ID, $item->item_id)): ?>
+                    <?php if(check_if_user_has_item($user_id, $item->item_id)): ?>
                         <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
                     <?php else: ?>
                         <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
