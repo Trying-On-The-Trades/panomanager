@@ -58,12 +58,12 @@ function prereq_edit_settings_page() {
         <ul>
           <?php foreach($items as $item): ?>
             <?php if(in_array($item->id, $selected_items)): ?>
-            <li class="games_form item">
+            <li class="games_form item <?= $item->type_id ?>">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>" checked>
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
             <?php else: ?>
-            <li class="games_form item">
+            <li class="games_form item <?= $item->type_id ?>">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>">
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
@@ -86,8 +86,14 @@ function prereq_edit_settings_page() {
         jQuery(this).show();
       });
     } else {
+      var typeId = jQuery('#item_type').val();
       jQuery('.item').each(function(){
         jQuery(this).hide();
+      });
+      jQuery('.item').each(function(){
+        jQuery('.' + typeId).each(function(){
+          jQuery(this).show();
+        });
       });
     }
   }
