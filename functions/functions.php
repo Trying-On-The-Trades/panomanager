@@ -7,14 +7,14 @@
 // The function that actually handles replacing the short code
 function pano_handler($incomingfrompost) {
 
-  $script_text;
+    $script_text;
 
-  $incomingfrompost=shortcode_atts(array(
-    "headingstart" => $script_text
-  ), $incomingfrompost);
+    $incomingfrompost=shortcode_atts(array(
+        "headingstart" => $script_text
+    ), $incomingfrompost);
 
-  $pano_output = pano_script_output($incomingfrompost);
-  return $pano_output;
+    $pano_output = pano_script_output($incomingfrompost);
+    return $pano_output;
 }
 
 // function that can be called from a page template
@@ -25,23 +25,23 @@ function load_pano($pano_id){
     // Check if the user is aloud to see it
     if(check_user_progress($pano_id)){
         // Make sure the pano exists before trying to load it
-	    $id = check_pano_id($pano_id);
+        $id = check_pano_id($pano_id);
     } else {
         //TODO I'd suggest to break the code here, return a error page with redirection.
     }
 
-	$pano  = build_pano($id);
+    $pano  = build_pano($pano_id);
     $quest = build_quest($id);
 
-	$javascript = build_pano_javascript($id, $pano, $quest);
+    $javascript = build_pano_javascript($pano_id, $pano, $quest);
 
-	return $javascript;
+    return $javascript;
 }
 
 function check_user_progress($pano_id){
-	// Check the user's progress before allowing
-	// the user to see the pano
-	$allowed      = true;
+    // Check the user's progress before allowing
+    // the user to see the pano
+    $allowed      = true;
     $flag_not_set = true;
 
     $accumulated_points = 0;
@@ -50,50 +50,47 @@ function check_user_progress($pano_id){
 
     $user_id = get_current_user_id();
 
-	// Check if the pano has a prereq
-	$prereqs = get_pano_prereq($pano_id);
-
-	// if it does make sure the user has completed
-	// enough skills and missions
+    // Check if the pano has a prereq
+    $prereqs = get_pano_prereq($pano_id);
+    // if it does make sure the user has completed
+    // enough skills and missions
     if(count($prereqs) > 0){
-        foreach($prereqs as $prereq){
-            if (is_null($prereq->prereq_domain_id) || $prereq->prereq_domain_id == 0){
-                // Get the accumulated points
-                $accumulated_points = get_user_accumulated_points($user_id);
+        if (is_null(v) || $prereqs->prereq_domain_id == 0){
+            // Get the accumulated points
+            $accumulated_points = get_user_accumulated_points($user_id);
 
-                // Get the bonus points
-                $bonus_points = get_user_accumulated_bonus_pts($user_id);
-            } else {
-                // Get the accumulated points based on the prereq domain
-                $accumulated_points = get_user_accumulated_points_for_prereq($user_id, $prereq->prereq_domain_id);
+            // Get the bonus points
+            $bonus_points = get_user_accumulated_bonus_pts($user_id);
+        } else {
+            // Get the accumulated points based on the prereq domain
+            $accumulated_points = get_user_accumulated_points_for_prereq($user_id, $prereqs->prereq_domain_id);
 
-                // Get the bonus points
-                $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereq->prereq_domain_id);
-            }
+            // Get the bonus points
+            $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereqs->prereq_domain_id);
+        }
 
-            // Ensures the values are not null
-            $accumulated_points = $accumulated_points ? $accumulated_points : 0;
-            $bonus_points       = $bonus_points ? $bonus_points : 0;
+        // Ensures the values are not null
+        $accumulated_points = $accumulated_points ? $accumulated_points : 0;
+        $bonus_points       = $bonus_points ? $bonus_points : 0;
 
-            // Add up the points
-            $total_points = $accumulated_points->points + $bonus_points->bonus_points;
+        // Add up the points
+        $total_points = $accumulated_points->points + $bonus_points->bonus_points;
 
-            // check if they are enough for the prereq
-            if ($total_points < $prereq->prereq_pts){
-                if($flag_not_set){
-                    $allowed      = false;
-                    $flag_not_set = false;
-                }
+        // check if they are enough for the prereq
+        if ($total_points < $prereqs->prereq_pts){
+            if($flag_not_set){
+                $allowed      = false;
+                $flag_not_set = false;
             }
         }
     }
 
-	// If they have, return the pano else return default id
-	if ($allowed){
-		return true;
-	} else {
-		return false;
-	}
+    // If they have, return the pano else return default id
+    if ($allowed){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function check_user_progress_ajax(){
@@ -101,7 +98,7 @@ function check_user_progress_ajax(){
     $pano_id = $_GET['pano_id'];
 
     if(check_user_progress($pano_id)){
-        echo "allowed";
+        echo "allowed2";
     } else {
         echo "restricted";
     }
@@ -134,10 +131,10 @@ function get_prereq($prereq_id = 1){
 
 function build_pano($pano_id = 1){
 
-	// Make a new pano object from the supplied id
-	$pano = new pano($pano_id);
+    // Make a new pano object from the supplied id
+    $pano = new pano($pano_id);
 
-  	return $pano;
+    return $pano;
 }
 
 function build_quest($quest_id = 1){
@@ -187,31 +184,31 @@ function build_purchase($purchase_id){
 
 // Get the user's prefered language
 function get_user_language(){
-	// placeholder
-	return "'EN'";
+    // placeholder
+    return "'EN'";
 }
 
 // build the script to replace the short code
 function pano_script_output($incomingfromhandler) {
-  $pano_output = "";
-  return $pano_output;
+    $pano_output = "";
+    return $pano_output;
 }
 
 function check_pano_id($pano_id){
-        // Get the allowed pano ids
-	$existing_panos = get_pano_ids();
-	$existing_ids   = array();
+    // Get the allowed pano ids
+    $existing_panos = get_pano_ids();
+    $existing_ids   = array();
 
-	// Get the ids from the array of arrays
-	foreach ($existing_panos as $ex) {
-		array_push($existing_ids, $ex['id']);
-	}
+    // Get the ids from the array of arrays
+    foreach ($existing_panos as $ex) {
+        array_push($existing_ids, $ex['id']);
+    }
 
-	if (in_array($pano_id, array_values($existing_ids))){
-		return $pano_id;
-	} else {
-		return 1;
-	}
+    if (in_array($pano_id, array_values($existing_ids))){
+        return $pano_id;
+    } else {
+        return 1;
+    }
 }
 
 function get_current_pano_id(){
@@ -311,58 +308,58 @@ function get_hotspot_objects($quest){
 // ***********************************************************
 
 function allow_new_attempt(){
-  $hotspot_id = 0;
-  if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
-    $hotspot_id = $_POST['hotspot'];
-  }
-  $attempt_allowed = false;
-  $maximum_attempts = get_maximum_attempts($hotspot_id);
-  $number_of_attempts = get_number_of_attemts($hotspot_id);
-  if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
-    $attempt_allowed = true;
-  }
+    $hotspot_id = 0;
+    if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
+        $hotspot_id = $_POST['hotspot'];
+    }
+    $attempt_allowed = false;
+    $maximum_attempts = get_maximum_attempts($hotspot_id);
+    $number_of_attempts = get_number_of_attemts($hotspot_id);
+    if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
+        $attempt_allowed = true;
+    }
 
-  echo $attempt_allowed;
+    echo $attempt_allowed;
 
-  die();
+    die();
 }
 
 function update_pano_user_progress() {
-        // Get the user id and hotspot id
-        $user_id  = get_current_user_id();
-        $points = 0;
-        $points_allowed = false;
+    // Get the user id and hotspot id
+    $user_id  = get_current_user_id();
+    $points = 0;
+    $points_allowed = false;
 
-        // Make sure a numeric id is supplied
-        if (is_numeric($_POST['hotspot'])){
-            $hotspot_id = $_POST['hotspot'];
-        } else {
-            $hotspot_id = 0;
+    // Make sure a numeric id is supplied
+    if (is_numeric($_POST['hotspot'])){
+        $hotspot_id = $_POST['hotspot'];
+    } else {
+        $hotspot_id = 0;
+    }
+
+    if (is_numeric($_POST['domain_id'])){
+        $domain_id = $_POST['domain_id'];
+    } else {
+        $domain_id = 0;
+    }
+
+    // Update the user progress
+    if ($user_id == 0){
+        // maybe do session stuff?
+    } else {
+        // Check if the user is allowed to get points
+        $points_allowed = check_points($user_id, $hotspot_id);
+
+        // If yes, give them points
+        if ($points_allowed){
+            $points = add_user_progress($user_id, $hotspot_id, $domain_id);
         }
+    }
 
-        if (is_numeric($_POST['domain_id'])){
-            $domain_id = $_POST['domain_id'];
-        } else {
-            $domain_id = 0;
-        }
+    // Return the points associated to flash on the screen
+    echo $points;
 
-        // Update the user progress
-        if ($user_id == 0){
-            // maybe do session stuff?
-        } else {
-            // Check if the user is allowed to get points
-            $points_allowed = check_points($user_id, $hotspot_id);
-
-            // If yes, give them points
-            if ($points_allowed){
-                $points = add_user_progress($user_id, $hotspot_id, $domain_id);
-            }
-        }
-
-	// Return the points associated to flash on the screen
-        echo $points;
-
-	die(); // this is required to terminate immediately and return a proper response
+    die(); // this is required to terminate immediately and return a proper response
 }
 
 function update_pano_user_progress_with_bonus() {
@@ -460,7 +457,7 @@ function calculate_total_user_points(){
 
 function process_new_pano(){
 
-	// Create a new pano using the post data
+    // Create a new pano using the post data
     $pano_xml         = stripslashes($_POST['pano_xml']);
     $pano_title       = $_POST['pano_title'];
     $pano_description = $_POST['pano_description'];
@@ -468,6 +465,7 @@ function process_new_pano(){
 
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload);
+
 
     create_quest($pano_id);
 
@@ -611,8 +609,8 @@ function process_new_hotspot_ajax(){
 
     }elseif($game_type == "video"){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-        'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
-        '</action>';
+            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
 
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
@@ -1084,8 +1082,8 @@ function process_upload_zip(){
 
 // Function for checking if the directory exists
 function check_file($file){
-	if (file_exists($file))
-		return true;
+    if (file_exists($file))
+        return true;
 
     return false;
 }
@@ -1096,65 +1094,65 @@ function get_hotspot_info(){
     $hotspot = get_hotspot($hotspot_id);
 
     echo $hotspot->hotspot_info;
-  }
+}
 
 function get_points_name_plural_post(){
-  $points_name_plural = '';
+    $points_name_plural = '';
 
-  $points_name_plural = get_points_name_plural();
+    $points_name_plural = get_points_name_plural();
 
-  echo $points_name_plural;
-  die();
+    echo $points_name_plural;
+    die();
 }
 
 function get_points_name_singular_post(){
-  $points_name_singular = '';
+    $points_name_singular = '';
 
-  $points_name_singular = get_points_name_singular();
+    $points_name_singular = get_points_name_singular();
 
-  echo $points_name_singular;
-  die();
+    echo $points_name_singular;
+    die();
 }
 
 function set_points_info(){
-  $symbol = '';
-  $singular = '';
-  $plural = '';
+    $symbol = '';
+    $singular = '';
+    $plural = '';
 
-  if(isset($_POST['symbol'])){
-    $symbol = $_POST['symbol'];
-  }
+    if(isset($_POST['symbol'])){
+        $symbol = $_POST['symbol'];
+    }
 
-  if(isset($_POST['singular'])){
-    $singular = $_POST['singular'];
-  }
+    if(isset($_POST['singular'])){
+        $singular = $_POST['singular'];
+    }
 
-  if(isset($_POST['plural'])){
-    $plural = $_POST['plural'];
-  }
+    if(isset($_POST['plural'])){
+        $plural = $_POST['plural'];
+    }
 
-  $status = update_points_info($symbol, $singular, $plural);
+    $status = update_points_info($symbol, $singular, $plural);
 
-  if($status){
-    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&settings-saved=true' ) );
-  } else {
-    wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&error=true' ) );
-  }
+    if($status){
+        wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&settings-saved=true' ) );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=edit_points_info_settings&error=true' ) );
+    }
 
 }
 
 function update_initial_points(){
 
-  if(isset($_POST['quantity'])){
-    $quantity = $_POST['quantity'];
-  }
+    if(isset($_POST['quantity'])){
+        $quantity = $_POST['quantity'];
+    }
 
-  $status = update_points_initial_bonus($quantity);
+    $status = update_points_initial_bonus($quantity);
 
-  if($status){
-    wp_redirect( admin_url( 'admin.php?page=edit_initial_points_settings&settings-saved=true' ) );
-  } else {
-    wp_redirect( admin_url( 'admin.php?page=eedit_initial_points_settings&error=true' ) );
-  }
+    if($status){
+        wp_redirect( admin_url( 'admin.php?page=edit_initial_points_settings&settings-saved=true' ) );
+    } else {
+        wp_redirect( admin_url( 'admin.php?page=eedit_initial_points_settings&error=true' ) );
+    }
 
 }
