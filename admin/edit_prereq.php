@@ -34,17 +34,7 @@ function prereq_edit_settings_page() {
         <input type="number" name="prereq_pts" id="prereq_pts" placeholder="100" value="<?php echo $prereq->prereq_pts ?>"required />
       </div>
     </div>
-    <div class="ui form">
-      <div class="field">
-        <label for="prereq_domain_id">Select a Prereq Domain</label>
-        <select name="prereq_domain_id">
-          <option value="NA">...</option>
-          <?php foreach($domains as $domain): ?>
-          <option value="<?php echo $domain->id ?>" <?php echo ($domain->id === $prereq->prereq_domain_id) ? "selected" : "" ?>><?php echo $domain->name ?></option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-    </div>
+    <input type="hidden" name="prereq_domain_id" value="NA" />
     <div class="ui form">
       <div class="field">
         <label for="prereq_desc">Prereq Info</label>
@@ -55,7 +45,7 @@ function prereq_edit_settings_page() {
       <div class="field">
         <label for="item_type">Filter by Item Type</label>
         <select name="item_type" id="item_type" class="ui dropdown">
-          <option value="">All items</option>
+          <option value="NA">All items</option>
           <?php foreach($item_types as $item_type): ?>
           <option value="<?= $item_type->id ?>"><?= $item_type->name ?></option>
           <?php endforeach; ?>
@@ -68,12 +58,12 @@ function prereq_edit_settings_page() {
         <ul>
           <?php foreach($items as $item): ?>
             <?php if(in_array($item->id, $selected_items)): ?>
-            <li class="games_form">
+            <li class="games_form item <?= $item->type_id ?>">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>" checked>
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
             <?php else: ?>
-            <li class="games_form">
+            <li class="games_form item <?= $item->type_id ?>">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>">
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
@@ -85,4 +75,27 @@ function prereq_edit_settings_page() {
     <?php submit_button(); ?>
   </div>
 </form>
+<script type="text/javascript">
+  jQuery('#item_type').change(function(){
+    filterTypes();
+  });
+
+  function filterTypes(){
+    if(jQuery('#item_type').val() == 'NA'){
+      jQuery('.item').each(function(){
+        jQuery(this).show();
+      });
+    } else {
+      var typeId = jQuery('#item_type').val();
+      jQuery('.item').each(function(){
+        jQuery(this).hide();
+      });
+      jQuery('.item').each(function(){
+        jQuery('.' + typeId).each(function(){
+          jQuery(this).show();
+        });
+      });
+    }
+  }
+</script>
 <?php }
