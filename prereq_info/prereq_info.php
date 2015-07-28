@@ -16,6 +16,8 @@ $items = get_prereq_items($prereq->id);
 
 $user_id = get_current_user_id();
 
+$items_size = sizeof($items);
+
 ?>
 
 
@@ -34,35 +36,36 @@ $user_id = get_current_user_id();
 <div class="ui form">
     <div class="field">
         <ul>
+            <?php if($items_size > 0): ?>
+                <?php foreach($items as $item): ?>
+                    <li class="games_form">
+                        <?php if(check_if_user_has_item($user_id, $item->item_id)): ?>
+                            <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
+                        <?php else: ?>
+                            <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
+                        <?php endif;?>
 
-            <?php foreach($items as $item): ?>
+                        <label class="cat0" for="1">
+
+                            <?php echo get_item($item->item_id)->name?>
+
+                        </label>
+
+                    </li>
+                <?php endforeach; ?>
+
                 <li class="games_form">
-                    <?php if(check_if_user_has_item($user_id, $item->item_id)): ?>
-                        <input id="1" class="cat0" type="checkbox" value="1" name="words[]" checked disabled></input>
-                    <?php else: ?>
-                        <input id="1" class="cat0" type="checkbox" value="1" name="words[]" disabled></input>
-                    <?php endif;?>
-
-                    <label class="cat0" for="1">
-
-                        <?php echo get_item($item->item_id)->name?>
-
-                    </label>
+                    <p>
+                        <div class="square_blue"></div>Got already
+                    </p>
+                    <p>
+                        <div class="square_grey"></div>Have to get
+                    </p>
 
                 </li>
-            <?php endforeach; ?>
-
-            <li class="games_form">
-                <p>
-                <div class="square_blue"></div>Got already
-
-                </p>
-                <p>
-                <div class="square_grey"></div>Have to get
-
-                </p>
-
-            </li>
+            <?php else: ?>
+                <p>No items required</p>
+            <?php endif;?>
         </ul>
     </div>
 </div>
