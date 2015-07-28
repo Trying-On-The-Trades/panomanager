@@ -45,7 +45,7 @@ function prereq_edit_settings_page() {
       <div class="field">
         <label for="item_type">Filter by Item Type</label>
         <select name="item_type" id="item_type" class="ui dropdown">
-          <option value="">All items</option>
+          <option value="NA">All items</option>
           <?php foreach($item_types as $item_type): ?>
           <option value="<?= $item_type->id ?>"><?= $item_type->name ?></option>
           <?php endforeach; ?>
@@ -58,12 +58,12 @@ function prereq_edit_settings_page() {
         <ul>
           <?php foreach($items as $item): ?>
             <?php if(in_array($item->id, $selected_items)): ?>
-            <li class="games_form">
+            <li class="games_form item">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>" checked>
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
             <?php else: ?>
-            <li class="games_form">
+            <li class="games_form item">
               <input type="checkbox" id="<?= $item->id ?>" name="items[]" value="<?= $item->id ?>">
               <label for="<?= $item->id ?>"><?= $item->name ?></label>
             </li>
@@ -75,4 +75,21 @@ function prereq_edit_settings_page() {
     <?php submit_button(); ?>
   </div>
 </form>
+<script type="text/javascript">
+  jQuery('#item_type').change(function(){
+    filterTypes();
+  });
+
+  function filterTypes(){
+    if(jQuery('#item_type').val() == 'NA'){
+      jQuery('.item').each(function(){
+        jQuery(this).show();
+      });
+    } else {
+      jQuery('.item').each(function(){
+        jQuery(this).hide();
+      });
+    }
+  }
+</script>
 <?php }
