@@ -101,15 +101,12 @@ require('db.php');
 
             <div class="ui form">
                 <div class="field">
-<<<<<<< HEAD
                     <label for="oppia_id">Oppia ID</label>
                     <input type="text" name="oppia_id"  />
-=======
                     <label for="url_type">Type of url</label>
                     <input type="radio" name="url_type" value="website">Website<br>
                     <input type="radio" name="url_type" value="image">Image<br>
                     <input type="radio" name="url_type" value="video">Video
->>>>>>> 85c4196dcc4c74a372b55d617e547d6d42b86260
                 </div>
             </div>
 
