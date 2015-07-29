@@ -69,6 +69,16 @@ function check_user_progress($pano_id){
             $bonus_points = get_user_accumulated_bonus_pts_for_prereq($user_id, $prereqs->prereq_domain_id);
         }
 
+        $items = get_prereq_items($prereqs->id);
+        $user_items_count = 0;
+        $prereq_items_count = sizeof($items);
+
+        foreach($items as $item){
+            if(check_if_user_has_item(get_current_user_id(), $item->item_id)){
+                $user_items_count++;
+            }
+        }
+
         // Ensures the values are not null
         $accumulated_points = $accumulated_points ? $accumulated_points : 0;
         $bonus_points       = $bonus_points ? $bonus_points : 0;
@@ -77,7 +87,10 @@ function check_user_progress($pano_id){
         $total_points = $accumulated_points->points + $bonus_points->bonus_points;
 
         // check if they are enough for the prereq
-        if ($total_points < $prereqs->prereq_pts){
+        if (($total_points > $prereqs->prereq_pts) && ($user_items_count == $prereq_items_count)){
+            $allowed      = true;
+            $flag_not_set = true;
+        }else{
             if($flag_not_set){
                 $allowed      = false;
                 $flag_not_set = false;
