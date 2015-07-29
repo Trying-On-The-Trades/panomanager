@@ -42,7 +42,7 @@ function new_item_settings_page(){
             <div class="ui form ">
                 <div class="field">
                     <div class="ui left labeled icon input">
-                        <label for="description">Item Descriptioon</label>
+                        <label for="description">Item Description</label>
                         <input name="item_description" id="description" placeholder="Description" required />
                     </div>
                 </div>
