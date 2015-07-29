@@ -18,7 +18,14 @@ function get_pano_description(){
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
     $language_code = get_user_language();
-    $pano_id = get_current_pano_id();
+
+    $url = $_SERVER['HTTP_REFERER'];
+    $parts = explode('?pano_id=', $url);
+    $pano_id = $parts[1];
+
+    if ($pano_id == NULL){
+        $pano_id = 1;
+    }
 
     // DB query joining the pano table and the pano text table
     $panos = $wpdb->get_results(
