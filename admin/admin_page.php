@@ -2,7 +2,7 @@
 
 // Build the settings page
 function pano_settings_page() {
-  
+
     $panos = get_panos();
     // Create urls
     $semantic      = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
@@ -25,7 +25,7 @@ function pano_settings_page() {
       <tr>
           <th>Title</th>
           <th>Pano Info</th>
-          <th>Prereqs Points</th>
+          <th>Prereq Points</th>
           <th>Edit</th>
           <th>Delete</th>
       </tr>
@@ -33,14 +33,12 @@ function pano_settings_page() {
 
     <tbody>
         <?php foreach ($panos as $pano): ?>
-            <?php $prereqs = get_pano_prereq($pano->id); ?>
+            <?php $prereq = get_pano_prereq($pano->id); ?>
             <tr>
                 <td><?php echo $pano->title ?></td>
                 <td><?php echo $pano->description ?></td>
                 <td>
-                   <?php foreach ($prereqs as $prereq): ?>
-                        <?php echo $prereq->prereq_pts; ?>
-                    <?php endforeach; ?>
+                    <?php echo $prereq->prereq_pts; ?>
                 </td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->pano_id ?>" style="padding: 7px">Edit</a></td>
                 <td>

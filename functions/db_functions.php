@@ -362,9 +362,9 @@ function get_pano_prereq($pano_id){
     $prereq_table_name = get_prereq_table_name();
     $domain_table_name  = get_domain_table_name();
 
-    $prereq = $wpdb->get_row(
-        "SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
-        "WHERE wppr.`pano_id` = " . $pano_id . " LIMIT 1");
+	  $prereq = $wpdb->get_row(
+		"SELECT wppr.* FROM " . $prereq_table_name . " wppr " .
+		"WHERE wppr.`pano_id` = " . $pano_id . " LIMIT 1");
 
     return $prereq;
 }
@@ -377,6 +377,18 @@ function check_if_user_has_item($user_id, $item_id){
     $items = $wpdb->get_var("SELECT COUNT(*) FROM " . $purchases_table . " p INNER JOIN " .
         $line_items_table . " l ON p.id = l.purchase_id WHERE p.user_id = " .
         $user_id . " AND l.item_id = " . $item_id);
+
+    return ($items > 0) ? true : false ;
+}
+
+function check_if_user_has_item($user_id, $item_id){
+    global $wpdb;
+    $purchases_table = get_purchases_table_name();
+    $line_items_table = get_line_items_table_name();
+
+    $items = $wpdb->get_var("SELECT COUNT(*) FROM " . $purchases_table . " p INNER JOIN " .
+                                 $line_items_table . " l ON p.id = l.purchase_id WHERE p.user_id = " .
+                                  $user_id . " AND l.item_id = " . $item_id);
 
     return ($items > 0) ? true : false ;
 }
@@ -967,7 +979,7 @@ function create_prereq_item($prereq_id, $item_id){
     $prereq_items_table_name = get_prereq_items_table_name();
 
     $wpdb->insert( $prereq_items_table_name, array( 'prereq_id' => $prereq_id,
-        'item_id'   => $item_id));
+                                                    'item_id'   => $item_id));
 }
 
 function create_quest($pano_id){
@@ -1198,6 +1210,20 @@ function get_prereq_item($prereq_id, $item_id){
     return $prereq_item;
 }
 
+
+function get_prereq_item($prereq_id, $item_id){
+    global $wpdb;
+    $prereq_items_table_name = get_prereq_items_table_name();
+
+    $prereq_item = $wpdb->get_row( $wpdb->prepare(
+        "SELECT * FROM " . $prereq_items_table_name . " wpt " .
+        "WHERE wpt.prereq_id =" . $prereq_id . "AND" .
+              "wpt.item_id =" . $item_id)
+    );
+
+    return $prereq_item;
+}
+
 function get_user_name($id){
     global $wpdb;
 
@@ -1401,11 +1427,11 @@ function get_items(){
 }
 
 function get_items_by_item_type($item_type){
-    global $wpdb;
-    $items_table = get_items_table_name();
-    $items = $wpdb->get_results("SELECT * FROM " . $items_table . " WHERE type_id = " . $item_type);
+  global $wpdb;
+  $items_table = get_items_table_name();
+  $items = $wpdb->get_results("SELECT * FROM " . $items_table . " WHERE type_id = " . $item_type);
 
-    return $items;
+  return $items;
 }
 
 function get_item($item_id){
@@ -1417,11 +1443,11 @@ function get_item($item_id){
 }
 
 function get_prereq_items($prereq_id){
-    global $wpdb;
-    $prereq_items_table_name = get_prereq_items_table_name();
-    $items = $wpdb->get_results("SELECT item_id FROM " . $prereq_items_table_name . " WHERE prereq_id = " . $prereq_id);
+  global $wpdb;
+  $prereq_items_table_name = get_prereq_items_table_name();
+  $items = $wpdb->get_results("SELECT item_id FROM " . $prereq_items_table_name . " WHERE prereq_id = " . $prereq_id);
 
-    return $items;
+  return $items;
 }
 
 function delete_purchase($id){
