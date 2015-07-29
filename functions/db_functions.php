@@ -1524,3 +1524,19 @@ function update_item($id, $name, $description, $image = null, $price, $type_id){
 
     $wpdb->update($item_table, $params, array('id' => $id));
 }
+
+function create_hotspot_completed($hotspot_id, $user_id){
+    global $wpdb;
+
+    $hotspot_completed_table = get_hotspot_completed_table_name();
+
+    $wpdb->insert($hotspot_completed_table, array('hotspot_id' => $hotspot_id, 'user_id' => $user_id));
+}
+
+function delete_hotspot_completed($hotspot_id, $user_id){
+    global $wpdb;
+
+    $hotspot_completed_table = get_hotspot_completed_table_name();
+
+    $wpdb->delete($hotspot_completed_table, array('hotspot_id' => $hotspot_id, 'user_id' => $user_id));
+}

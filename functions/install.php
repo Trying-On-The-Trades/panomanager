@@ -37,6 +37,7 @@ function pano_install () {
     $items_sql           = build_items_sql();
     $line_items_sql      = build_line_items_sql();
     $points_initial_sql  = build_points_initial_bonus_sql();
+    $hotspot_completed_sql = build_hotspot_completed_sql();
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -66,6 +67,7 @@ function pano_install () {
     dbDelta( $items_sql          );
     dbDelta( $line_items_sql     );
     dbDelta( $points_initial_sql );
+    dbDelta( $hotspot_completed_sql);
 
     update_option( "pano_db_version", PANO_DB_VERSION );
     // create_first_row();

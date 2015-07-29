@@ -127,6 +127,16 @@ function get_items_table_name(){
   return $wpdb->prefix . "pano_items";
 }
 
+function get_hotspot_completed_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "hotspot_completed";
+}
+
+function get_user_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "users";
+}
+
 function build_points_initial_bonus_sql(){
   global $wpdb;
   $table_name = get_points_initial_bonus_table_name();
@@ -515,4 +525,20 @@ function build_item_types_sql(){
     );";
 
   return $sql;
+}
+
+function build_hotspot_completed_sql(){
+    $table_name = get_hotspot_completed_table_name();
+    $hotspot_table = get_hotspot_table_name();
+    $user_table = get_user_table_name();
+
+    $sql = "CREATE TABLE {$table_name} (
+    `hotspot_id` int(10) NOT NULL,
+    `user_id` int(10) NOT NULL,
+    FOREIGN KEY(`hotspot_id`) REFERENCES {$hotspot_table}(`id`),
+    FOREIGN KEY(`user_id`)    REFERENCES {$user_table}(`id`),
+    PRIMARY KEY(`hotspot_id`, `user_id`)
+    );";
+
+    return $sql;
 }
