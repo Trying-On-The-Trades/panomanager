@@ -717,12 +717,13 @@ function process_edit_pano(){
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
     $pano_xml         = trim(stripslashes($_POST['pano_xml']));
-    $pano_title        = $_POST['pano_title'];
+    $pano_name        = $_POST(['pano_name']);
+    $pano_title       = $_POST['pano_title'];
     $pano_description = trim($_POST['pano_description']);
     $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
 
     // Get the id
-    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_description, $show_desc_onload);
+    $return = update_pano($pano_id, $pano_xml, $pano_name, $pano_title, $pano_description, $show_desc_onload);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_menu&settings-saved') );

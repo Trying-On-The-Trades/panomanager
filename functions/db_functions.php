@@ -720,7 +720,7 @@ function get_pano_ads($quest_id){
 //				    Updating Panos
 // ***********************************************************
 
-function update_pano($pano_id, $pano_xml, $pano_title, $pano_description, $show_desc_onload){
+function update_pano($pano_id, $pano_xml, $pano_name, $pano_title, $pano_description, $show_desc_onload){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -736,6 +736,7 @@ function update_pano($pano_id, $pano_xml, $pano_title, $pano_description, $show_
             array(
                 'language_code'    => $language_code,
                 'title'            => $pano_title,
+                'name'             => $pano_name,
                 'description'      => $pano_description,
                 'show_desc_onload' => $show_desc_onload
             ),
