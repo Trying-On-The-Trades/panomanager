@@ -13,9 +13,11 @@ function new_pano_settings_page() {
     margin: 0px auto;
   }
 </style>
+
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
 <div class="updated"><p>Settings updated successfully.</p></div>
 <?php endif ?>
+
 <form id="pano_form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
   <!-- pano processing hook -->
   <input type="hidden" name="action" value="create_new_pano" />
