@@ -923,7 +923,7 @@ function update_points_initial_bonus($quantity){
 //				    Creating New Panos
 // ***********************************************************
 
-function create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload){
+function create_pano($pano_xml, $pano_name, $pano_title, $pano_description, $show_desc_onload){
     global $wpdb;
     $pano_table_name = get_pano_table_name();
     $text_table_name = get_pano_text_table_name();
@@ -940,6 +940,7 @@ function create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onloa
     $wpdb->insert( $text_table_name, array( 'pano_id'          => $pano_id,
                                             'language_code'    => $language_code,
                                             'title'            => $pano_title,
+                                            'name'             => $pano_name,
                                             'description'      => $pano_description,
                                             'show_desc_onload' => $show_desc_onload));
 
