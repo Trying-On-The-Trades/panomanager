@@ -93,28 +93,28 @@ function create_sub_menus(){
 					 "edit_quest_settings_page");
 
 	// Create the sub menu item for missions
-	add_submenu_page("pano_menu",
-					 "Missions",
-					 "Missions",
-					 "administrator",
-					 "pano_mission_settings",
-					 "pano_mission_settings_page");
-
-	// Create the sub menu item for missions
-	add_submenu_page(null,
-					 "New Mission",
-					 "New Mission",
-					 "administrator",
-					 "new_mission_settings",
-					 "new_mission_settings_page");
-
-	// Create the sub menu item for editng missions
-	add_submenu_page(null,
-					"Edit Mission",
-					"Edit Mission",
-					"administrator",
-					"edit_mission_settings",
-					"edit_mission_settings_page");
+//	add_submenu_page("pano_menu",
+//					 "Missions",
+//					 "Missions",
+//					 "administrator",
+//					 "pano_mission_settings",
+//					 "pano_mission_settings_page");
+//
+//	// Create the sub menu item for missions
+//	add_submenu_page(null,
+//					 "New Mission",
+//					 "New Mission",
+//					 "administrator",
+//					 "new_mission_settings",
+//					 "new_mission_settings_page");
+//
+//	// Create the sub menu item for editng missions
+//	add_submenu_page(null,
+//					"Edit Mission",
+//					"Edit Mission",
+//					"administrator",
+//					"edit_mission_settings",
+//					"edit_mission_settings_page");
 
 	// Create the sub menu item for hotspots
 	add_submenu_page("pano_menu",

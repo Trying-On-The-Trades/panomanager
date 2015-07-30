@@ -479,8 +479,12 @@ function process_new_pano(){
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload);
 
+    $quest_id = create_quest($pano_id);
 
-    create_quest($pano_id);
+    create_mission( $pano_title , $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, 1, $quest_id, 0);
+
+
+
 
     create_prereq($pano_id, 0, NULL , NULL);
 
