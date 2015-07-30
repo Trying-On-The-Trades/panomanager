@@ -135,7 +135,7 @@ function add_nav_script($quest, $pano_id){
     // The default pointer
     $script .=  "var pointer = 0;\n";
     $script .=  "var defaultVar = 1;\n";
-    if(get_pano($pano_id)->show_desc_onload == 1){
+    if(get_pano($pano_id)->show_desc_onload == 1 && window.location.href.indexOf('pano_editor') == -1){
         $script .= "loadFrame(0, 'wp-content/plugins/panomanager/js/featherlight/pano_info.php');\n";
     }
     $script .= "var magnificPopup;";
