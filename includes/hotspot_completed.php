@@ -1,7 +1,7 @@
 <?php
 
 class hotspot_completed{
-    protected $hotspot_id, $user_id, $price;
+    protected $hotspot_id, $user_id;
 
     function __construct($id){
         if(is_numeric($id)){
