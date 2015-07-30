@@ -23,9 +23,8 @@ function pano_hotspot_type_settings_page() {
 </div>
 <table class="ui table segment">
   <tr>
-    <th>Hotspot Type</th>
-    <th>Description</th>
-    <th>JS Function</th>
+    <th>Type</th>
+    <th>Info</th>
     <th>Edit</th>
     <th>Delete</th>
   </tr>
@@ -34,7 +33,6 @@ function pano_hotspot_type_settings_page() {
     <tr>
         <td><?php echo $hotspot_type->name ?></td>
         <td><?php echo $hotspot_type->description ?></td>
-        <td><?php echo $hotspot_type->js_function ?></td>
         <td><a class="ui blue icon button" href="<?php echo $edit_hotspot_type_url ?>&id=<?php echo $hotspot_type->id ?>" style="padding: 7px">Edit</a></td>
         <td>
             <form method="post" action="admin-post.php" id="delete_hotspot_type_form<?php echo $hotspot_type->id ?>">
