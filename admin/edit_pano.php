@@ -46,7 +46,7 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
     <input type="hidden" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
     <div class="ui form">
       <div class="field">
-        <label for="pano_title">Pano title</label>
+        <label for="pano_title">Pano Title</label>
         <input type="text" name="pano_title" id="pano_title" value="<?php echo $pano->get_title(); ?>"/>
       </div>
     </div>
