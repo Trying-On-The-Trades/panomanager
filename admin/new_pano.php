@@ -30,7 +30,7 @@ function new_pano_settings_page() {
     </div>
     <div class="ui form">
       <div class="field">
-        <label>Pano Description</label>
+        <label>Pano Info</label>
         <textarea name="pano_description" required ></textarea>
       </div>
     </div>
