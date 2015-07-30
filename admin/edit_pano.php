@@ -47,8 +47,8 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
       <div class="field">
         <div class="ui left labeled icon input">
           <label for="pano_title">Pano Name</label>
-          <input type="hidden" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
-          <input name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
+          <input type="text" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
+          <input type="hidden" name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
         </div>
       </div>
     </div>
@@ -58,12 +58,7 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
         <textarea name="pano_description" required ><?php echo $pano->get_description(); ?></textarea>
       </div>
     </div>
-    <div class="ui form">
-      <div class="field">
-        <label>Pano XML</label>
-        <textarea name="pano_xml" id="pano_xml" required ><?php echo $pano->get_xml(); ?></textarea>
-      </div>
-    </div>
+    <textarea style="display: none;" name="pano_xml" id="pano_xml" required ><?php echo $pano->get_xml(); ?></textarea>
     <div class="ui form">
       <div class="field">
         <label>Change autopan speed to</label>
@@ -73,7 +68,7 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
     <div class="ui form">
       <div class="field">
         <input type="checkbox" id="pano_onload" name="pano_onload" checked="<?= ($pano->get_show_desc_onload() == "0") ? false : true ?>"/>
-        <label for="pano_onload">Show the pano info everytime the user loads it</label>
+        <label style="display: inline-block;" for="pano_onload">Show the pano info everytime the user loads it</label>
       </div>
     </div>
     <a class="ui blue icon button" href="<?php echo $upload_zip_url ?>&id=<?php echo $pano->get_id() ?>" style="padding: 7px">Upload Zip File</a>
