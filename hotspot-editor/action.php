@@ -28,7 +28,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var url               = document.location.origin + "wordpress2/wp-admin/admin-post.php";
+        var url               = document.location.origin + "/wp-admin/admin-post.php";
         var mission           = '';
         var domain            = '';
         var description       = '';
@@ -93,7 +93,7 @@
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
-                    window.location.href = document.location.origin + 'wordpress2/pano/?pano_id=<?=$pano_id?>';
+                    window.location.href = document.location.origin + '/pano/?pano_id=<?=$pano_id?>';
                 },
                 error: function (d) {
                     alert('Hotspot Fail!');
@@ -123,7 +123,7 @@
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
-                    window.location.href = document.location.origin + 'wordpress2/pano/?pano_id=<?=$pano_id?>';
+                    window.location.href = document.location.origin + '/pano/?pano_id=<?=$pano_id?>';
                 },
                 error: function (d) {
                     alert('Hotspot Fail!');
