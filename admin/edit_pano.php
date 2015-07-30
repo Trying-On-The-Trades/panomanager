@@ -67,7 +67,7 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
     </div>
     <div class="ui form">
       <div class="field">
-        <input type="checkbox" id="pano_onload" name="pano_onload" checked="<?= ($pano->get_show_desc_onload() == "0") ? false : true ?>"/>
+        <input type="checkbox" id="pano_onload" name="pano_onload" <?= ($pano->get_show_desc_onload() == '1')? 'checked' : '' ?>  />
         <label style="display: inline-block;" for="pano_onload">Show the pano info everytime the user loads it</label>
       </div>
     </div>
