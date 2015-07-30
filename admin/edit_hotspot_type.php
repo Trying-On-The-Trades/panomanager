@@ -41,24 +41,14 @@ function edit_hotspot_type_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-	        <label for="hotspot_type_description">Hotspot Type Description</label>
+	        <label for="hotspot_type_description">Hotspot Type Info</label>
 	        <textarea name="hotspot_type_description" required ><?php echo $hotspot_type->get_description(); ?></textarea>
 	      </div>
 	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_type_xml">Hotspot Type XML</label>
-	        <textarea name="hotspot_type_xml" required ><?php echo $hotspot_type->get_xml(); ?></textarea>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_type_js_function">Hotspot Type JS Function</label>
-	        <input type="text" name="hotspot_type_js_function" id="hotspot_type_js_function" placeholder="launchImage" value="<?php echo $hotspot_type->get_type_js_function(); ?>" required />
-	      </div>
-	    </div>
+      <textarea style="display: none;" name="hotspot_type_xml" ><?php echo $hotspot_type->get_xml(); ?></textarea>
+      <input style="display: none;" type="text" name="hotspot_type_js_function" id="hotspot_type_js_function" placeholder="launchImage" value="<?php echo $hotspot_type->get_type_js_function(); ?>" />
 	    <?php submit_button(); ?>
 	</div>
 </form>
-</div>
+
 <?php }

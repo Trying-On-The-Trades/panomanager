@@ -472,6 +472,7 @@ function process_new_pano(){
 
     // Create a new pano using the post data
     $pano_xml         = stripslashes($_POST['pano_xml']);
+    $pano_name        = $_POST['pano_name'];
     $pano_title       = $_POST['pano_title'];
     $pano_description = $_POST['pano_description'];
     $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
@@ -716,7 +717,7 @@ function process_edit_pano(){
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
     $pano_xml         = trim(stripslashes($_POST['pano_xml']));
-    $pano_title        = $_POST['pano_title'];
+    $pano_title       = $_POST['pano_title'];
     $pano_description = trim($_POST['pano_description']);
     $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
 
