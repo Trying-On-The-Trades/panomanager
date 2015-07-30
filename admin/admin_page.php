@@ -22,6 +22,7 @@ function pano_settings_page() {
   <thead>
     <tr>
       <th>Pano Name</th>
+      <th>Pano Title</th>
       <th>Pano Info</th>
       <th>Prereq Points</th>
       <th>Edit</th>
@@ -33,6 +34,7 @@ function pano_settings_page() {
     <?php $prereq = get_pano_prereq($pano->id); ?>
     <tr>
       <td><?php echo $pano->name ?></td>
+      <td><?php echo $pano->title ?></td>
       <td><?php echo $pano->description ?></td>
       <td><?php echo $prereq->prereq_pts; ?></td>
       <td><a class="ui blue icon button" href="<?php echo $edit_pano_url ?>&id=<?php echo $pano->pano_id ?>" style="padding: 7px">Edit</a></td>

@@ -45,11 +45,14 @@ if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
   <div class="ui form segment new_pano_form">
     <div class="ui form">
       <div class="field">
-        <div class="ui left labeled icon input">
-          <label for="pano_title">Pano Name</label>
-          <input type="text" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
-          <input type="hidden" name="pano_title" id="pano_title" required value="<?php echo $pano->get_title(); ?>"/>
-        </div>
+        <label for="pano_name">Pano Name</label>
+        <input type="text" name="pano_name" id="pano_name" value="<?php echo $pano->get_name(); ?>"/>
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <label for="pano_title">Pano title</label>
+        <input type="text" name="pano_title" id="pano_title" value="<?php echo $pano->get_title(); ?>"/>
       </div>
     </div>
     <div class="ui form">
