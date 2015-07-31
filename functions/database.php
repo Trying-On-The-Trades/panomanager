@@ -549,15 +549,13 @@ function build_item_types_sql(){
 
 function build_hotspot_completed_sql(){
     $table_name = get_hotspot_completed_table_name();
-    $hotspot_table = get_hotspot_table_name();
     $user_table = get_user_table_name();
 
     $sql = "CREATE TABLE {$table_name} (
-    `hotspot_id` int(10) NOT NULL,
-    `user_id` int(10) NOT NULL,
-    FOREIGN KEY(`hotspot_id`) REFERENCES {$hotspot_table}(`id`),
-    FOREIGN KEY(`user_id`)    REFERENCES {$user_table}(`id`),
-    PRIMARY KEY(`hotspot_id`, `user_id`)
+    `hotspot_id` int(11) unsigned NOT NULL,
+    `user_id` bigint(20) unsigned NOT NULL,
+    PRIMARY KEY(`hotspot_id`, `user_id`),
+    FOREIGN KEY(`user_id`)    REFERENCES {$user_table}(`ID`)
     );";
 
     return $sql;
