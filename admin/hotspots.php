@@ -33,8 +33,6 @@ function pano_hotspot_settings_page() {
         <th>Points</th>
         <th>Attempts</th>
         <th>Type</th>
-        <th>Mission</th>
-        <th>Domain</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -50,8 +48,6 @@ function pano_hotspot_settings_page() {
                 <td><?php echo $current_hotspot->get_points(); ?></td>
                 <td><?php echo $current_hotspot->get_attempts(); ?></td>
                 <td><?php echo $current_hotspot->get_type_name(); ?></td>
-                <td><?php echo $current_hotspot->get_mission_name(); ?></td>
-                <td><?php echo $current_hotspot->get_domain_name(); ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_hotspot_url ?>&id=<?php echo $current_hotspot->get_id(); ?>" style="padding: 7px">Edit</a></td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_hotspot_form<?php echo $current_hotspot->get_id(); ?>">
@@ -72,7 +68,6 @@ function pano_hotspot_settings_page() {
 </form>
 <br/>
 <a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
-</div>
 
 <script>
     jQuery(document).ready(function(){
