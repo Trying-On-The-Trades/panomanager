@@ -56,15 +56,15 @@ function edit_hotspot_settings_page() {
             <input type="text" name="hotspot_menu_name" id="name" placeholder="Find Hotspot" value="<?php echo $hotspot->get_menu_name() ?>" required />
 	      </div>
 	    </div>
-        <textarea name="hotspot_description" display="none" required > <?php echo $hotspot->get_description() ?> </textarea>
+        <textarea style="display:none;" name="hotspot_description" > <?php echo $hotspot->get_description() ?> </textarea>
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_info">Hotspot Info</label>
 	        <textarea name="hotspot_info" required > <?php echo $hotspot->get_hotspot_info() ?> </textarea>
 	      </div>
 	    </div>
-        <textarea name="hotspot_xml" required display="none"> <?php echo $hotspot->get_xml() ?> </textarea>
-        <textarea name="hotspot_action_xml" required display="none"> <?php echo $hotspot->get_action_xml() ?></textarea>
+        <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
+        <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
 	    <div class="ui form">
 	      <div class="field">
             <label for="hotspot_points">Points</label>
