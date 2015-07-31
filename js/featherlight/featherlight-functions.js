@@ -374,6 +374,19 @@ function loadVideo(hot_id, url){
 }
 
 /*
+  Plays a sound (usually .wav or .mp3).
+  Parameters:
+  - sound (Filename as found in audio folder)
+*/
+function playSound(sound){
+  var audioElement = document.createElement('audio');
+  audioElement.setAttribute('src', 'wp-content/plugins/panomanager/audio/' + sound);
+  audioElement.setAttribute('autoplay', 'autoplay');
+  audioElement.load();
+  audioElement.play();
+}
+
+/*
   Returns the verb according to the amount of points.
   Returns:
   - verb [earned - if positive] [lost - if negative]
