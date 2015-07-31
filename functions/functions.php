@@ -117,6 +117,25 @@ function check_user_progress_ajax(){
     }
 }
 
+function check_description_onload_ajax(){
+    $pano_id = $_GET['pano_id'];
+
+    $pano = get_pano($pano_id);
+
+    $result = $pano->show_desc_onload;
+
+    if($result == 0){
+        echo 'false';
+    } else {
+        echo 'true';
+    }
+}
+
+function get_pano_prereqs($pano_id){
+    $prereq = get_pano_prereq($pano_id);
+    return $prereq;
+}
+
 function get_prereq($prereq_id = 1){
     $prereq = get_db_prereq($prereq_id);
 
@@ -453,13 +472,20 @@ function process_new_pano(){
 
     // Create a new pano using the post data
     $pano_xml         = stripslashes($_POST['pano_xml']);
+    $pano_name        = $_POST['pano_name'];
     $pano_title       = $_POST['pano_title'];
     $pano_description = $_POST['pano_description'];
+    $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
 
-    // Get the id
-    $pano_id = create_pano($pano_xml, $pano_title, $pano_description);
+	// Get the id
+    $pano_id = create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload);
 
-    create_quest($pano_id);
+    $quest_id = create_quest($pano_id);
+
+    create_mission( $pano_title , $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, 1, $quest_id, 0);
+
+
+
 
     create_prereq($pano_id, 0, NULL , NULL);
 
@@ -691,11 +717,12 @@ function process_edit_pano(){
     // Create a new pano using the post data
     $pano_id          = $_POST['pano_id'];
     $pano_xml         = trim(stripslashes($_POST['pano_xml']));
-    $pano_title        = $_POST['pano_title'];
+    $pano_title       = $_POST['pano_title'];
     $pano_description = trim($_POST['pano_description']);
+    $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
 
     // Get the id
-    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_description);
+    $return = update_pano($pano_id, $pano_xml, $pano_title, $pano_description, $show_desc_onload);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_menu&settings-saved') );

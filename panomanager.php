@@ -99,6 +99,7 @@ add_action( 'admin_post_get_points_name_singular', 'get_points_name_singular_pos
 add_action( 'admin_post_nopriv_get_points_name_singular', 'get_points_name_singular_post' );
 add_action( 'admin_post_update_points_info', 'set_points_info' );
 add_action( 'admin_post_update_initial_points', 'update_initial_points');
+add_action( 'admin_post_description_onload', 'check_description_onload_ajax' );
 
 // Activation hook to install the DB
 register_activation_hook( __FILE__, 'pano_install' );

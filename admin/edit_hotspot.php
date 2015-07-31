@@ -43,16 +43,7 @@ function edit_hotspot_settings_page() {
     <input type="hidden" name="action" value="edit_hotspot" />
     <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
     <div class="ui form segment new_pano_form">
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="mission_id">Select a Mission</label>
-	        <select name="mission_id">
-                 <?php foreach($missions as $mission): ?>
-                     <option value="<?php echo $mission->mission_id ?>" <?php echo ($mission->mission_id === $hotspot->get_mission_id()) ? "selected" : "" ?>><?php echo $mission->name ?></option>
-                 <?php endforeach; ?>
-            </select>
-	      </div>
-	    </div>
+        <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
 	    <div class="ui form">
 	      <div class="field">
             <label for="hotspot_name">Hotspot Name</label>
@@ -65,30 +56,15 @@ function edit_hotspot_settings_page() {
             <input type="text" name="hotspot_menu_name" id="name" placeholder="Find Hotspot" value="<?php echo $hotspot->get_menu_name() ?>" required />
 	      </div>
 	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_description">Hotspot Description</label>
-	        <textarea name="hotspot_description" required > <?php echo $hotspot->get_description() ?> </textarea>
-	      </div>
-	    </div>
+        <textarea style="display:none;" name="hotspot_description" > <?php echo $hotspot->get_description() ?> </textarea>
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_info">Hotspot Info</label>
 	        <textarea name="hotspot_info" required > <?php echo $hotspot->get_hotspot_info() ?> </textarea>
 	      </div>
 	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_xml">Hotspot XML</label>
-	        <textarea name="hotspot_xml" required > <?php echo $hotspot->get_xml() ?> </textarea>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_action_xml">Hotspot Action XMl</label>
-	        <textarea name="hotspot_action_xml" required > <?php echo $hotspot->get_action_xml() ?></textarea>
-	      </div>
-	    </div>
+        <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
+        <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
 	    <div class="ui form">
 	      <div class="field">
             <label for="hotspot_points">Points</label>
@@ -97,37 +73,17 @@ function edit_hotspot_settings_page() {
 	    </div>
 	    <div class="ui form">
 	      <div class="field">
-            <label for="hotspot_attempts">Attempts</label>
+            <label for="hotspot_attempts">Maximum Attempts (0 means unlimited attempts): </label>
             <input type="number" name="hotspot_attempts" id="hotspot_attempts" placeholder="1" value="<?php echo $hotspot->get_attempts() ?>" required />
 	      </div>
 	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="type_id">Select a Type</label>
-	        <select name="type_id">
-                 <?php foreach($types as $type): ?>
-					 <option value="<?php echo $type->id ?>" <?php echo ($type->id === $hotspot->get_type_id()) ? "selected" : "" ?>><?php echo $type->name ?></option>
-				 <?php endforeach; ?>
-			</select>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_domain_id">Select a domain</label>
-	        <select name="hotspot_domain_id">
-				 <option value="NA">...</option>
-                 <?php foreach($domains as $domain): ?>
-					<option value="<?php echo $domain->id ?>"  <?php echo ($domain->id === $hotspot->get_domain_id()) ? "selected" : "" ?>><?php echo $domain->name ?></option>
-				 <?php endforeach; ?>
-			</select>
-	      </div>
-	    </div>
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_modal_url">Hotspot Modal Url</label>
-	        <input type="text" name="hotspot_modal_url" id="hotspot_modal_url" placeholder="" value="<?php echo $hotspot->get_modal_url(); ?>" required />
-	      </div>
-	    </div>
+
+        <input type="hidden" name="type_id" value="<?= $hotspot->get_type_id() ?>"/>
+
+        <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
+
+        <input type="hidden" name="hotspot_modal_url" id="hotspot_modal_url" value="<?php echo $hotspot->get_modal_url(); ?>" />
+
 		<?php submit_button(); ?>
 	</div>
 </form>
