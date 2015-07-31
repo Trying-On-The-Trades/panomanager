@@ -15141,6 +15141,10 @@ div#wpfooter {
     width: 50%;
 }
 
+li{
+    list-style: none;
+}
+
 .games_form input[type="checkbox"]{
     display: none;
 }
@@ -30367,4 +30371,24 @@ div#wpfooter {
     margin-top: 1em;
 }
 
+.games_form label{
+    margin: 10px;
+}
+
+.square_blue{
+    width: 20px;
+    height: 20px;
+    background-color: #0192E1;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.square_grey{
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border: solid 1px #000;
+    display: inline-block;
+    margin-right: 10px;
+}
 

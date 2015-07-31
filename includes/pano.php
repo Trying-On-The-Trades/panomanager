@@ -7,6 +7,7 @@ class pano{
 				  $quest_id,
                   $prereqs = array(),
                   $exists = 0,
+                  $show_desc_onload = 0,
                   $xml;
 
 	function __construct($id){
@@ -24,11 +25,12 @@ class pano{
 		// Load the data if the id exists
 		if ($pano_row->id > 0){
 			$this->exists      = 1;
-			$this->xml         = $pano_row->pano_xml;
-			$this->id          = $pano_row->pano_id;
-			$this->title       = $pano_row->title;
-			$this->name        = $pano_row->name;
-			$this->description = $pano_row->description;
+			$this->xml              = $pano_row->pano_xml;
+			$this->id               = $pano_row->pano_id;
+			$this->title            = $pano_row->title;
+			$this->name             = $pano_row->name;
+			$this->description      = $pano_row->description;
+            $this->show_desc_onload = $pano_row->show_desc_onload;
 
 			$this->build_quest_id();
 			$this->build_prereqs();
@@ -40,7 +42,7 @@ class pano{
 	}
 
 	function build_prereqs(){
-		return $this->prereqs = get_pano_prereqs($this->id);
+		return $this->prereqs = get_pano_prereq($this->id);
 	}
         
 	function get_prereq(){
@@ -70,6 +72,10 @@ class pano{
 	function get_xml(){
 		return $this->xml;
 	}
+
+    function get_show_desc_onload(){
+        return $this->show_desc_onload;
+    }
 
 	function get_quest_id(){
 		return $this->id;

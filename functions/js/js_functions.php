@@ -6,24 +6,24 @@
 // Build the javascript needed to load the pano into the div
 function build_pano_javascript($pano_id, $pano, $quest){
 
-        $pano_directory = content_url() . "/panos/" . $pano_id;
-        $pano_swf_location = $pano_directory . "/tour.swf";
-        $pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
+    $pano_directory = content_url() . "/panos/" . $pano_id;
+    $pano_swf_location = $pano_directory . "/tour.swf";
+    $pano_php_location = WP_PLUGIN_URL . "/panomanager.php?return_the_pano=" . $pano_id;
 
-        //Add the styles and javascript
-        register_scripts($pano_directory);
-        $script = "<style>" . build_popup_styles() . "</style>";
+    //Add the styles and javascript
+    register_scripts($pano_directory);
+    $script = "<style>" . build_popup_styles() . "</style>";
 
-        // Get the menu nav
-        $script .= build_menu_nav($quest);
+    // Get the menu nav
+    $script .= build_menu_nav($quest);
 
-        // Get the scripts to build the navigation menu first
-        $script .= add_nav_script($quest, $pano_id);
+    // Get the scripts to build the navigation menu first
+    $script .= add_nav_script($quest, $pano_id);
 
-        // Get the embed script
-        $script .= build_embed_script($pano_swf_location, $pano_php_location);
+    // Get the embed script
+    $script .= build_embed_script($pano_swf_location, $pano_php_location);
 
-	return $script;
+    return $script;
 }
 
 function register_scripts($pano_directory){
@@ -103,12 +103,12 @@ function build_embed_script($pano_swf_location, $pano_php_location){
     $script = '<script type="text/javascript">';
     $script .= 'embedpano({';
 
-            // Script that loads the pano
-            $script .= 'swf:"' . $pano_swf_location . '"';
-            $script .= ',xml:"' . $pano_php_location . '"';
-            $script .= ',target:"panoDIV"';
-            $script .= ',html5:"prefer"';
-            $script .= ',passQueryParameters:true';
+    // Script that loads the pano
+    $script .= 'swf:"' . $pano_swf_location . '"';
+    $script .= ',xml:"' . $pano_php_location . '"';
+    $script .= ',target:"panoDIV"';
+    $script .= ',html5:"prefer"';
+    $script .= ',passQueryParameters:true';
 
     $script .= '});';
 
@@ -124,17 +124,21 @@ function add_nav_script($quest, $pano_id){
     $script = "\n<script type='text/javascript'>\n";
 
     $script .= "var krpano;\n";
-    $script .=	"var siteAdr = '" .  get_permalink() . "?pano_id=';\n";
+    $script .=  "var siteAdr = '" .  get_permalink() . "?pano_id=';\n";
 
     // Build the array of names
     $script .= build_names_array();
 
     // Build the array of ids
-    $script .=	build_ids_array();
+    $script .=  build_ids_array();
 
     // The default pointer
-    $script .=	"var pointer = 0;\n";
+    $script .=  "var pointer = 0;\n";
     $script .=  "var defaultVar = 1;\n";
+    if(get_pano($pano_id)->show_desc_onload == 1){
+        $script .= "if(window.location.href.indexOf('pano_editor') == -1){\n";
+        $script .= "loadFrame(0, 'wp-content/plugins/panomanager/js/featherlight/pano_info.php');}\n";
+    }
     $script .= "var magnificPopup;";
 
     $script .= build_launch_message($pano_id);
@@ -142,13 +146,13 @@ function add_nav_script($quest, $pano_id){
     $script .= build_get_scene_name();
 
     //MY SCRIPTS ////////////////////////
-	$script .= build_launch_hairstyling($quest);
-	$script .= build_launch_image($quest);
-	$script .= build_launch_game($quest);
-	// $script .= build_manage_lightbox($quest, $current_pano_url);
-	$script .= build_launch_quizlet($quest);
-	$script .= build_launch_khan($quest);
-	$script .= build_launch_hazard($quest);
+    $script .= build_launch_hairstyling($quest);
+    $script .= build_launch_image($quest);
+    $script .= build_launch_game($quest);
+    // $script .= build_manage_lightbox($quest, $current_pano_url);
+    $script .= build_launch_quizlet($quest);
+    $script .= build_launch_khan($quest);
+    $script .= build_launch_hazard($quest);
 
     $script .= "$(document).ready(function() {\n";
     $script .= "$('#my-menu').mmenu({ slidingSubmenus: false });\n";
@@ -214,84 +218,65 @@ function build_ids_array(){
 }
 
 function build_launch_message($pano_id){
-        
-        
-        $prereq = get_prereq(2);
-        
-    
-        $script =  "function launchMsg(msg){\n";
-        $script .= "    if(msg == getSceneName()){\n";
-        $script .= "        $.magnificPopup.open({\n";
-        $script .= "            items: {\n";
-        $script .= "            src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
-        $script .= "            type: 'inline',\n";
-        $script .= "            callbacks: {\n";
-        $script .= "                close: function() {\n";
-        $script .= "                    console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-        $script .= "                    magnificPopup.close(); \n";
-        $script .= "                }\n";
-        $script .= "            }\n";
-        $script .= "        }\n";
-        $script .= "        });\n";
-
-        $script .= "        magnificPopup = $.magnificPopup.instance; \n";
-        $script .= "    } else {\n";
-        $script .= "        var pano_id = 1;\n";
-        $script .= "        $.each(panoPointer, function(key, value){\n";
-        $script .= "            if(msg == panoPointer[key].name){\n";
-        $script .= "                pano_id = panoPointer[key].id;\n";
-        $script .= "                return false;\n";
-        $script .= "            }\n";
-        $script .= "        });\n";
-
-        $script .= "        $.ajax({\n";
-        $script .= "            type: 'GET',\n";
-        $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
-        $script .= "            data: { action:  'check_user_progress',\n";
-        $script .= "                    pano_id: pano_id },\n";
-        $script .= "            success: function(d){\n";
-
-        $script .= "                    if(d == 'restricted'){\n";
-
-        $script .= "                        $.magnificPopup.open({\n";
-        $script .= "                            items: {\n";
-        $script .= "                                src: '<div class=\"white-popup\">" . $prereq->prereq_desc . $pano_id . "</div>',\n";
-        $script .= "                                type: 'inline',\n";
-        $script .= "                                callbacks: {\n";
-        $script .= "                                    close: function() {\n";
-        $script .= "                                        console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-        $script .= "                                        magnificPopup.close();\n";
-        $script .= "                                    }\n";
-        $script .= "                                }\n";
-        $script .= "                            }\n";
-        $script .= "                        });\n";
-        $script .= "                        magnificPopup = $.magnificPopup.instance;\n";
-
-        $script .= "                    } else {\n";
-        $script .= "                        window.location = siteAdr + pano_id;\n";
-        $script .= "                    }\n";
-        $script .= "            }\n";
-        $script .= "        });\n";
-        $script .= "  }\n";
-        $script .= "}\n";
+    $prereq = get_prereq($pano_id);
+    $prereq_url = WP_PLUGIN_URL . '/panomanager/prereq_info/prereq_info.php?pano_id=';
+    $script =  "function launchMsg(msg){\n";
+    $script .= "    if(msg == getSceneName()){\n";
+    $script .= "        $.magnificPopup.open({\n";
+    $script .= "            items: {\n";
+    $script .= "            src: '<div class=\"white-popup msg\">You are already on this level.</div>',\n";
+    $script .= "            type: 'inline',\n";
+    $script .= "            callbacks: {\n";
+    $script .= "                close: function() {\n";
+    $script .= "                    console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script .= "                    magnificPopup.close(); \n";
+    $script .= "                }\n";
+    $script .= "            }\n";
+    $script .= "        }\n";
+    $script .= "        });\n";
+    $script .= "        magnificPopup = $.magnificPopup.instance; \n";
+    $script .= "    } else {\n";
+    $script .= "        var pano_id = 1;\n";
+    $script .= "        $.each(panoPointer, function(key, value){\n";
+    $script .= "            if(msg == panoPointer[key].name){\n";
+    $script .= "                pano_id = panoPointer[key].id;\n";
+    $script .= "                return false;\n";
+    $script .= "            }\n";
+    $script .= "        });\n";
+    $script .= "        $.ajax({\n";
+    $script .= "            type: 'GET',\n";
+    $script .= "            url: '" . get_admin_url() . "admin-post.php',\n";
+    $script .= "            data: { action:  'check_user_progress',\n";
+    $script .= "                    pano_id: pano_id },\n";
+    $script .= "            success: function(d){\n";
+    $script .= "                    if(d == 'restricted'){\n";
+    $script .= "                        var url = '" . $prereq_url . "' + pano_id;\n";
+    $script .= "                        $.featherlight({iframe: url, iframeWidth: 400, iframeHeight: 500}, null, false);\n";
+    $script .= "                    } else {\n";
+    $script .= "                        window.location = siteAdr + pano_id;\n";
+    $script .= "                    }\n";
+    $script .= "            }\n";
+    $script .= "        });\n";
+    $script .= "  }\n";
+    $script .= "}\n";
 
     return $script;
 }
 
 // The function that finds the id in the array
 function build_find_array(){
-    $script =	"function findArray(input)";
-    $script .=	"{\n";
-        $script .=	"var checker = false;\n";
-        $script .=	"for(var i = 0; i < panoArray.length; i++)";
-        $script .=	"{\n";
-        $script .=	"if(input == panoArray[i])";
-        $script .=	"{\n";
-            $script .=	"checker = true;\n";
-            $script .=	"pointer = i;\n";
-            $script .=	"}\n";
-        $script .=	"}\n";
-        $script .=	"return checker;\n";
+    $script =   "function findArray(input)";
+    $script .=  "{\n";
+    $script .=  "var checker = false;\n";
+    $script .=  "for(var i = 0; i < panoArray.length; i++)";
+    $script .=  "{\n";
+    $script .=  "if(input == panoArray[i])";
+    $script .=  "{\n";
+    $script .=  "checker = true;\n";
+    $script .=  "pointer = i;\n";
+    $script .=  "}\n";
+    $script .=  "}\n";
+    $script .=  "return checker;\n";
     $script .= "}\n";
 
     return $script;
@@ -347,7 +332,7 @@ function build_leader_launch(){
 
     $script .= "}\n";
 
-return $script;
+    return $script;
 }
 
 function build_login_button(){
@@ -361,14 +346,14 @@ function build_manage_lightbox($quest, $current_pano_url){
 
     $menu_missions = get_hotspot_menu_objects($quest);    // Build the menu
 
-	$script  = "function launchLogin(){\n";
-	$script .= "window.location.replace('" . get_site_url() . "/login');\n";
-	$script .= "}\n";
+    $script  = "function launchLogin(){\n";
+    $script .= "window.location.replace('" . get_site_url() . "/login');\n";
+    $script .= "}\n";
 
-	$script  = "function manageLightbox(srcName)\n";
-	$script  .= "{\n";
-	$script  .=		"switch(srcName)\n";
-	$script  .=		"{\n";
+    $script  = "function manageLightbox(srcName)\n";
+    $script  .= "{\n";
+    $script  .=     "switch(srcName)\n";
+    $script  .=     "{\n";
 
     // Builds the switch jscase
     foreach ($menu_missions as $item){
@@ -378,223 +363,223 @@ function build_manage_lightbox($quest, $current_pano_url){
         if ($item->is_default()) {
             // some action
         } elseif($item->is_home()){
-            $script  .=	"   addPts(0,10);\n";
+            $script  .= "   addPts(0,10);\n";
             $script  .= "   setInterval(function(){ window.location = '" . $current_pano_url ."'; }, 2000);\n";
         } else {
-            $script  .=	$item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_domain_id() . ");\n";
+            $script  .= $item->get_type_js_function() . "('" . $item->get_modal_url() . "', '" . $item->get_menu_name() . "', " . $item->get_id() . ",  " . $item->get_points() . ", " . $item->get_domain_id() . ");\n";
         }
 
-        $script  .=	"break;\n";
+        $script  .= "break;\n";
     }
 
-	$script  .=			"default:\n";
-	$script  .=				"launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'speaker');\n";
-	$script  .=		"}\n";
-	$script  .=	"}\n";
+    $script  .=         "default:\n";
+    $script  .=             "launchHairstyling('http://109.73.239.136/~eapprent/tott/Hardhat-game/stylehat.1.2.html', 'speaker');\n";
+    $script  .=     "}\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 
 function build_launch_image($quest)
 {
 
-	$script  = "function launchImage(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
+    $script  = "function launchImage(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
     $script  .=             build_ad_message($quest);
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	$script  .=				"src: '<div class=\"hotspot_img_popup\"><div class=\"ad_message\">' + message + '</div><img src=\"' + msgUrl + '\"></div>'\n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'inline',\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId, points, domainId); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    $script  .=             "src: '<div class=\"hotspot_img_popup\"><div class=\"ad_message\">' + message + '</div><img src=\"' + msgUrl + '\"></div>'\n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'inline',\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                     "addPts(mnuId, points, domainId); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_launch_hairstyling($quest)
 {
-	$script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
+    $script  = "function launchHairstyling(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
     $script  .=             build_ad_message($quest);
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	$script  .=				"src: msgUrl\n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'iframe',\n";
-	$script  .=				"retina: { \n";
-	$script  .=				"ratio: 3 // can also be function that should retun this number \n";
-	$script  .=				"} ,\n";
-	$script  .=				"iframe: { \n";
-	$script  .=					"markup: '<div class=\"mfp-iframe-scaler hotspot_hairstyling hairClass\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, domainId); \n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    $script  .=             "src: msgUrl\n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'iframe',\n";
+    $script  .=             "retina: { \n";
+    $script  .=             "ratio: 3 // can also be function that should retun this number \n";
+    $script  .=             "} ,\n";
+    $script  .=             "iframe: { \n";
+    $script  .=                 "markup: '<div class=\"mfp-iframe-scaler hotspot_hairstyling hairClass\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "addPts(mnuId, points, domainId); \n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_launch_hazard($quest)
 {
-	$script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
-        //$script  .=             build_ad_message($quest);
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	$script  .=				"src: msgUrl\n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'iframe',\n";
-	$script  .=				"retina: { \n";
-	$script  .=				"ratio: 3 // can also be function that should retun this number \n";
-	$script  .=				"} ,\n";
-	$script  .=				"iframe: { \n";
-	$script  .=					"markup: '<div class=\"mfp-iframe-scaler hotspot_hazard hazardClass\"><div class=\"mfp-close\"></div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=				"verticalFit: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"addPts(mnuId, points, domainId); \n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  = "function launchHazard(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
+    //$script  .=             build_ad_message($quest);
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    $script  .=             "src: msgUrl\n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'iframe',\n";
+    $script  .=             "retina: { \n";
+    $script  .=             "ratio: 3 // can also be function that should retun this number \n";
+    $script  .=             "} ,\n";
+    $script  .=             "iframe: { \n";
+    $script  .=                 "markup: '<div class=\"mfp-iframe-scaler hotspot_hazard hazardClass\"><div class=\"mfp-close\"></div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=             "verticalFit: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "addPts(mnuId, points, domainId); \n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_launch_game($quest)
 {
-	$script  = "function launchGame(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
+    $script  = "function launchGame(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
     $script  .=             build_ad_message($quest);
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	$script  .=				"src: msgUrl\n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'iframe',\n";
-	$script  .=				"iframe: { \n";
-	$script  .=					"markup: '<div class=\"mfp-iframe-scaler hotpot_game your-special-css-class\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');\n";
-	$script  .=						"var contents = iframe.contents();\n";
-	$script  .=						"var bonusPts = $(contents).find('#points').html();\n";
-	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    $script  .=             "src: msgUrl\n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'iframe',\n";
+    $script  .=             "iframe: { \n";
+    $script  .=                 "markup: '<div class=\"mfp-iframe-scaler hotpot_game your-special-css-class\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "var iframe = $('.mfp-iframe');\n";
+    $script  .=                     "var contents = iframe.contents();\n";
+    $script  .=                     "var bonusPts = $(contents).find('#points').html();\n";
+    $script  .=                     "bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                     "addBonusPts(mnuId, bonusPts, domainId); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_launch_quizlet($quest)
 {
-	$script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	$script  .=				"src: msgUrl\n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'iframe',\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');\n";
-	$script  .=						"var contents = iframe.contents();\n";
-	$script  .=						"var bonusPts = $(contents).find('#scorevalue').html();\n";
-	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  = "function launchQuizlet(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    $script  .=             "src: msgUrl\n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'iframe',\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "var iframe = $('.mfp-iframe');\n";
+    $script  .=                     "var contents = iframe.contents();\n";
+    $script  .=                     "var bonusPts = $(contents).find('#scorevalue').html();\n";
+    $script  .=                     "bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                     "addBonusPts(mnuId, bonusPts, domainId); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_launch_Khan($quest)
 {
 
-	$script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, domainId)\n";
-	$script  .=	"{\n";
+    $script  = "function launchKhan(msgUrl, cnslCode, mnuId, points, domainId)\n";
+    $script  .= "{\n";
     $script  .=             build_ad_message($quest);
-	$script  .=		"$.magnificPopup.open({\n";
-	$script  .=			"items: {\n";
-	//$script  .=				"src: 'http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:absolute_value_equations' \n";
-	$script  .=				"src: msgUrl \n";
-	//$script  .=				"src: '<div class=\"white-popup mfp-hide\"><script type=\"text/javascript\" src=\"http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/embed.js?static:absolute_value_equations\"></script><\div>' \n";
-	$script  .=				"},\n";
-	$script  .=			      "type: 'iframe',\n";
-	$script  .=				"iframe: { \n";
-	$script  .=					"markup: '</div><div class=\"mfp-iframe-scaler khanClass ad_message_close\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
-	$script  .=			      "titleSrc: cnslCode,\n";
-	$script  .=			      "closeOnBgClick: true,\n";
-	$script  .=			      "closeBtnInside: true,\n";
-	$script  .=			      "callbacks: {\n";
-	$script  .=					"close: function() {\n";
-	$script  .=						"console.log('Popup removal initiated (after removalDelay timer finished)');\n";
-	$script  .=						"var iframe = $('.mfp-iframe');\n";
-	$script  .=						"var contents = iframe.contents();\n";
-	$script  .=						"var khanFrame = $(contents).find('.mfp-iframe').contents();\n";
-	$script  .=						"var bonusPts = $(khanFrame).find('#points').html();\n";
-	$script  .=						"bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addBonusPts(mnuId, bonusPts, domainId); \n";
-	$script  .=						"magnificPopup.close(); \n";
-	$script  .=						"addPts(mnuId,points, domainId); \n";
-	$script  .=					"}\n";
-	$script  .=			     " }\n";
-	$script  .=		"});\n";
-	$script  .=		"magnificPopup = $.magnificPopup.instance; \n";
-	$script  .=		"console.log(cnslCode);\n";
-	$script  .=	"}\n";
+    $script  .=     "$.magnificPopup.open({\n";
+    $script  .=         "items: {\n";
+    //$script  .=               "src: 'http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/khan-exercises/indirect/?ity_ef_format=iframe&ity_ef_slug=static:absolute_value_equations' \n";
+    $script  .=             "src: msgUrl \n";
+    //$script  .=               "src: '<div class=\"white-popup mfp-hide\"><script type=\"text/javascript\" src=\"http://tott.e-apprentice.ca/wp-content/plugins/khan-exercises/embed.js?static:absolute_value_equations\"></script><\div>' \n";
+    $script  .=             "},\n";
+    $script  .=               "type: 'iframe',\n";
+    $script  .=             "iframe: { \n";
+    $script  .=                 "markup: '</div><div class=\"mfp-iframe-scaler khanClass ad_message_close\"><div class=\"mfp-close\"></div><div class=\"ad_message\">' + message + '</div><iframe class=\"mfp-iframe\" frameborder=\"0\" allowfullscreen></iframe></div>'},\n";
+    $script  .=               "titleSrc: cnslCode,\n";
+    $script  .=               "closeOnBgClick: true,\n";
+    $script  .=               "closeBtnInside: true,\n";
+    $script  .=               "callbacks: {\n";
+    $script  .=                 "close: function() {\n";
+    $script  .=                     "console.log('Popup removal initiated (after removalDelay timer finished)');\n";
+    $script  .=                     "var iframe = $('.mfp-iframe');\n";
+    $script  .=                     "var contents = iframe.contents();\n";
+    $script  .=                     "var khanFrame = $(contents).find('.mfp-iframe').contents();\n";
+    $script  .=                     "var bonusPts = $(khanFrame).find('#points').html();\n";
+    $script  .=                     "bonusPts = bonusPts.replace ( /[^\d.]/g, '' );\n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                     "addBonusPts(mnuId, bonusPts, domainId); \n";
+    $script  .=                     "magnificPopup.close(); \n";
+    $script  .=                     "addPts(mnuId,points, domainId); \n";
+    $script  .=                 "}\n";
+    $script  .=              " }\n";
+    $script  .=     "});\n";
+    $script  .=     "magnificPopup = $.magnificPopup.instance; \n";
+    $script  .=     "console.log(cnslCode);\n";
+    $script  .= "}\n";
 
-	return $script;
+    return $script;
 }
 
 function build_ad_message($quest){
@@ -609,7 +594,7 @@ function build_ad_message($quest){
         }
         $script  .= "];\n";
 
-        $script  .=	"message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
+        $script  .= "message = ad_messages[ Math.floor(Math.random() * " . count($messages) . ") ];\n";
     }
 
     return $script;
@@ -664,11 +649,11 @@ function get_mission_tasks($quest){
             $completed_state = ($item->get_completed_state()) ? "hotspot_done" : "";
 
             $missions .= "<li id='" .
-                     $item->get_id() . "_menu_item' class='" . $completed_state . "'>" .
-                     "<a href='#' class='hotspot_tooltip' title='" . $item->get_description() . "'>" .
-                     "<span class='hotspot_name'>" . $item->get_menu_name() . "</span>" .
-                     "<span class='hotspot_points'>" . $item->get_points() . "</span>" .
-                     "</a></li>";
+                $item->get_id() . "_menu_item' class='" . $completed_state . "'>" .
+                "<a href='#' class='hotspot_tooltip' title='" . $item->get_description() . "'>" .
+                "<span class='hotspot_name'>" . $item->get_menu_name() . "</span>" .
+                "<span class='hotspot_points'>" . $item->get_points() . "</span>" .
+                "</a></li>";
         }
     }
 
@@ -677,52 +662,52 @@ function get_mission_tasks($quest){
 
 /////////// LEADERBOARD FUNCTIONS
 function build_leaderboard_div(){
-  $board = '<div id="leaderboard" class="white-popup">';
+    $board = '<div id="leaderboard" class="white-popup">';
 
-  $board .= '<table>';
-  $board .= '  <thead>';
-  $board .= '    <tr>';
-  $board .= '      <th colspan="3" class="table-title">Leaderboard</th>';
-  $board .= '    </tr>';
-  $board .= '    <tr>';
-  $board .= '      <th>#</th>';
-  $board .= '      <th>Name</th>';
-  $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
-  $board .= '    </tr>';
-  $board .= '  </thead>';
-  $board .= '  <tbody>';
+    $board .= '<table>';
+    $board .= '  <thead>';
+    $board .= '    <tr>';
+    $board .= '      <th colspan="3" class="table-title">Leaderboard</th>';
+    $board .= '    </tr>';
+    $board .= '    <tr>';
+    $board .= '      <th>#</th>';
+    $board .= '      <th>Name</th>';
+    $board .= '      <th>Total ' . get_points_name_plural() . '</th>';
+    $board .= '    </tr>';
+    $board .= '  </thead>';
+    $board .= '  <tbody>';
 
-  $users = get_all_users();
+    $users = get_all_users();
 
-  $names = array();
-  $scores = array();
-  foreach($users as $user){
-    $total_points = 0;
-    $total_points += get_regular_points_for_mission_tab($user->id);
-    $total_points += get_bonus_points_for_mission_tab($user->id);
-    $user_name = get_user_name($user->id);
-    array_push($names, $user_name);
-    array_push($scores, $total_points);
-  }
-
-  array_multisort($scores, SORT_DESC, $names);
-
-  $pos = 1;
-  for($i = 0; $i < count($scores); $i++){
-    if(($scores[$i] > 0) && ($pos < 11)){
-      $board .= '    <tr>';
-      $board .= '      <td>' . $pos . '</td>';
-      $board .= '      <td>' . $names[$i] . '</td>';
-      $board .= '      <td>' . $scores[$i] . '</td>';
-      $board .= '    </tr>';
-      $pos++;
+    $names = array();
+    $scores = array();
+    foreach($users as $user){
+        $total_points = 0;
+        $total_points += get_regular_points_for_mission_tab($user->id);
+        $total_points += get_bonus_points_for_mission_tab($user->id);
+        $user_name = get_user_name($user->id);
+        array_push($names, $user_name);
+        array_push($scores, $total_points);
     }
-  }
 
-  $board .= '  </tbody>';
-  $board .= '</table>';
-  $board .= '</div>';
-  return $board;
+    array_multisort($scores, SORT_DESC, $names);
+
+    $pos = 1;
+    for($i = 0; $i < count($scores); $i++){
+        if(($scores[$i] > 0) && ($pos < 11)){
+            $board .= '    <tr>';
+            $board .= '      <td>' . $pos . '</td>';
+            $board .= '      <td>' . $names[$i] . '</td>';
+            $board .= '      <td>' . $scores[$i] . '</td>';
+            $board .= '    </tr>';
+            $pos++;
+        }
+    }
+
+    $board .= '  </tbody>';
+    $board .= '</table>';
+    $board .= '</div>';
+    return $board;
 }
 
 function build_school_table(){
@@ -808,22 +793,22 @@ function build_popup_styles(){
 
 ///////////  Points Callback Functions
 function build_points_callback_function(){
-  $script =  "function addPts(pts){\n";
-  $script .= "  // Only go through function if pts > 0\n";
-  $script .= "  if(pts > 0){\n";
-  $script .= "    // 1. Update total user points from page\n";
-  $script .= "\n";
-  $script .= "    // 2. Get total user points from page\n";
-  $script .= "    var totalPoints = $('#displayed_points').text();\n";
-  $script .= "    // 3. Update database with points\n";
-  $script .= "\n";
-  $script .= "    // 4. Update page with points\n";
-  $script .= "    totalPoints = totalPoints + pts;\n";
-  $script .= "    // 5. Toast\n";
-  $script .= "    $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');\n";
-  $script .= "  }\n";
-  $script .= "}\n";
-  return $script;
+    $script =  "function addPts(pts){\n";
+    $script .= "  // Only go through function if pts > 0\n";
+    $script .= "  if(pts > 0){\n";
+    $script .= "    // 1. Update total user points from page\n";
+    $script .= "\n";
+    $script .= "    // 2. Get total user points from page\n";
+    $script .= "    var totalPoints = $('#displayed_points').text();\n";
+    $script .= "    // 3. Update database with points\n";
+    $script .= "\n";
+    $script .= "    // 4. Update page with points\n";
+    $script .= "    totalPoints = totalPoints + pts;\n";
+    $script .= "    // 5. Toast\n";
+    $script .= "    $().toastmessage('showSuccessToast', 'You earned ' + pts + ' points!');\n";
+    $script .= "  }\n";
+    $script .= "}\n";
+    return $script;
 }
 
 function build_bonus_points_callback_function(){

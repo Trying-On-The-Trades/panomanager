@@ -47,6 +47,11 @@ function get_user_skill_bonus_pts_table_name(){
     return $wpdb->prefix . "pano_user_skill_bonus_pts";
 }
 
+function get_prereq_items_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "pano_prereq_items";
+}
+
 function get_hotspot_table_name(){
   global $wpdb;
   return $wpdb->prefix . "pano_hotspot";
@@ -127,6 +132,16 @@ function get_items_table_name(){
   return $wpdb->prefix . "pano_items";
 }
 
+function get_hotspot_completed_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "hotspot_completed";
+}
+
+function get_user_table_name(){
+    global $wpdb;
+    return $wpdb->prefix . "users";
+}
+
 function build_points_initial_bonus_sql(){
   global $wpdb;
   $table_name = get_points_initial_bonus_table_name();
@@ -198,6 +213,7 @@ function build_pano_text_sql(){
       `title` varchar(255) NOT NULL DEFAULT "",
       `name` varchar(255) NOT NULL DEFAULT "",
       `description` text,
+      `show_desc_onload` TINYINT DEFAULT 0,
       PRIMARY KEY (`id`)
     );';
 
@@ -364,6 +380,21 @@ function build_prereq_sql(){
     return $sql;
 }
 
+function build_prereq_item_sql(){
+    $table_name = get_prereq_items_table_name();
+
+    $sql = 'CREATE TABLE `' . $table_name . '` (
+    `prereq_id` int(10) NOT NULL,
+    `item_id` int(10) NOT NULL,
+    PRIMARY KEY (prereq_id, item_id),
+    FOREIGN KEY (prereq_id) REFERENCES ' . get_prereq_table_name() . '(id) ON DELETE CASCADE,
+
+    FOREIGN KEY (item_id) REFERENCES ' . get_items_table_name() . '(id) ON DELETE CASCADE
+    )ENGINE=MyISAM DEFAULT CHARSET=latin1;';
+
+    return $sql;
+}
+
 function build_activation_code_sql(){
     $table_name = get_activation_code_table_name();
 
@@ -515,4 +546,18 @@ function build_item_types_sql(){
     );";
 
   return $sql;
+}
+
+function build_hotspot_completed_sql(){
+    $table_name = get_hotspot_completed_table_name();
+    $user_table = get_user_table_name();
+
+    $sql = "CREATE TABLE {$table_name} (
+    `hotspot_id` int(11) unsigned NOT NULL,
+    `user_id` bigint(20) unsigned NOT NULL,
+    PRIMARY KEY(`hotspot_id`, `user_id`),
+    FOREIGN KEY(`user_id`)    REFERENCES {$user_table}(`ID`)
+    );";
+
+    return $sql;
 }

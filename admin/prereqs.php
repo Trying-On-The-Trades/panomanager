@@ -11,7 +11,7 @@ function prereq_settings_page() {
         $pano_id = $_GET['pano_id'];
     }
 
-    $prereqs = get_pano_prereqs($pano_id);
+    $prereqs = get_pano_prereq($pano_id);
     ?>
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
     <h2>Create a new prereq!</h2>
@@ -24,6 +24,7 @@ function prereq_settings_page() {
         <th>Prereq Points</th>
         <th>Prereq Domain</th>
         <th>Prereq Info</th>
+        <th>Prereq Item Qty</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -35,6 +36,7 @@ function prereq_settings_page() {
                 <td><?php echo $prereq->prereq_pts ?></td>
                 <td><?php echo $domain->name ?></td>
                 <td><?php echo $prereq->prereq_desc ?></td>
+                <td><?php echo count(get_prereq_items($prereq->id)) ?></td>
                 <td><a class="ui blue icon button" href="<?php echo $edit_prereq_url ?>&id=<?php echo $prereq->id ?>" style="padding: 7px">Edit</a></td>
                 <td>
                     <form method="post" action="admin-post.php" id="delete_prereq_form<?php echo $prereq->id ?>">
