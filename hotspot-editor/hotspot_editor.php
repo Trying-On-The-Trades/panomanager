@@ -26,14 +26,29 @@ require('db.php');
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script style="display: none;" type="text/javascript">
+jQuery('#form').ready(function(){
+  jQuery('#oppia_input').hide();
+});
 
+jQuery('.url_type').change(function(){
+    if(jQuery('#oppia').is(':checked')){
+      jQuery('#oppia_input').show();
+      jQuery('#website_input').hide();
+    } else {
+      jQuery('#oppia_input').hide();
+      jQuery('#website_input').show();
+    }
+  }
+);
+</script>
 </head>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2 class="title" >Create a new hotspot!</h2>
 <hr>
 
 <body>
-<form method="post" enctype="multipart/form-data" action="../wp-content/plugins/panomanager/hotspot-editor/action.php">
+<form id="form" method="post" enctype="multipart/form-data" action="../wp-content/plugins/panomanager/hotspot-editor/action.php">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_hotspot" />
     <input type="hidden" name="point_x" value="<?=$point_x?>" />
@@ -64,21 +79,21 @@ require('db.php');
             <div class="ui form">
                 <div class="field">
                     <label for="url_type">Type of url</label>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="website" value="website">Website<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="image" value="image">Image<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="video" value="video">Video<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="oppia" value="oppia">Oppia
+                    <input type="radio" class="url_type" name="url_type" id="website" value="website">Website<br>
+                    <input type="radio" class="url_type" name="url_type" id="image" value="image">Image<br>
+                    <input type="radio" class="url_type" name="url_type" id="video" value="video">Video<br>
+                    <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia">Oppia
                 </div>
             </div>
 
-            <div class="ui form">
+            <div id="website_input" class="ui form">
                 <div class="field">
                     <label for="hotspot_url">Hotspot Url</label>
                     <input type="text" name="hotspot_url"  />
                 </div>
             </div>
 
-            <div class="ui form">
+            <div id="oppia_input" class="ui form">
                 <div class="field">
                     <label for="oppia_id">Oppia ID</label>
                     <input type="text" name="oppia_id"  />
@@ -113,6 +128,5 @@ require('db.php');
         </div>
 </form>
 </div>
-<script type="text/javascript" src="./hotspot_editor.js"></script>
 </body>
 </html>
