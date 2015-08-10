@@ -9,7 +9,7 @@ require('db.php');
     $point_y    = $_GET['point_y'];
     $deck_id    = $_GET['deck_id'];
     $item_id    = $_GET['item_id'];
-    $mission_id = get_first_mission_id();
+    $mission_id = $mission_id;
 
     if($deck_id){
         $game_type = get_deck_type($db, $deck_id);
@@ -43,19 +43,8 @@ require('db.php');
     <input type="hidden" name="item_id" value="<?= $item_id ?>" />
     <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
     <input type="hidden" name="mission_id" value="<?= $mission_id ?>" />
+    <input type="hidden" name="hotspot_domain_id" value="NA" />
     <div class="ui form segment new_pano_form">
-        <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_domain_id">Select a Domain</label>
-	        <select name="hotspot_domain_id">
-				 <option value="NA">Select a domain</option>
-                 <?php foreach($domains as $domain): ?>
-                    <option value="<?php echo $domain['id'] ?>"><?php echo $domain['name'] ?></option>
-                <?php endforeach; ?>
-			</select>
-	      </div>
-	    </div>
-
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_description">Hotspot Info</label>
