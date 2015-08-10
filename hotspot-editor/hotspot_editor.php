@@ -1,14 +1,15 @@
 <?php
 require('db.php');
-    $db        = database_connection();
-    $pano_id   = $_GET['pano_id'];
-    $missions  = get_missions($db, $pano_id);
-    $domains   = get_domains($db);
-    $semantic  = "../wp-content/plugins/panomanager/css/semantic.css";
-    $point_x   = $_GET['point_x'];
-    $point_y   = $_GET['point_y'];
-    $deck_id   = $_GET['deck_id'];
-    $item_id   = $_GET['item_id'];
+    $db         = database_connection();
+    $pano_id    = $_GET['pano_id'];
+    $missions   = get_missions($db, $pano_id);
+    $domains    = get_domains($db);
+    $semantic   = "../wp-content/plugins/panomanager/css/semantic.css";
+    $point_x    = $_GET['point_x'];
+    $point_y    = $_GET['point_y'];
+    $deck_id    = $_GET['deck_id'];
+    $item_id    = $_GET['item_id'];
+    $mission_id = $mission_id;
 
     if($deck_id){
         $game_type = get_deck_type($db, $deck_id);
@@ -25,14 +26,29 @@ require('db.php');
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script style="display: none;" type="text/javascript">
+jQuery('#form').ready(function(){
+  jQuery('#oppia_input').hide();
+});
 
+jQuery('.url_type').change(function(){
+    if(jQuery('#oppia').is(':checked')){
+      jQuery('#oppia_input').show();
+      jQuery('#website_input').hide();
+    } else {
+      jQuery('#oppia_input').hide();
+      jQuery('#website_input').show();
+    }
+  }
+);
+</script>
 </head>
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
 <h2 class="title" >Create a new hotspot!</h2>
 <hr>
 
 <body>
-<form method="post" enctype="multipart/form-data" action="../wp-content/plugins/panomanager/hotspot-editor/action.php">
+<form id="form" method="post" enctype="multipart/form-data" action="../wp-content/plugins/panomanager/hotspot-editor/action.php">
     <!-- pano processing hook -->
     <input type="hidden" name="action" value="create_new_hotspot" />
     <input type="hidden" name="point_x" value="<?=$point_x?>" />
@@ -41,31 +57,9 @@ require('db.php');
     <input type="hidden" name="game_type" value="<?=$game_type?>" />
     <input type="hidden" name="item_id" value="<?= $item_id ?>" />
     <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
+    <input type="hidden" name="mission_id" value="<?= $mission_id ?>" />
+    <input type="hidden" name="hotspot_domain_id" value="NA" />
     <div class="ui form segment new_pano_form">
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="mission_id">Select a Mission</label>
-	        <select name="mission_id">
-                <option value="NA">Select a mission</option>
-                 <?php foreach($missions as $mission): ?>
-                    <option value="<?php echo $mission['id'] ?>"><?php echo $mission['name']  ?></option>
-                 <?php endforeach; ?>
-            </select>
-	      </div>
-	    </div>
-
-        <div class="ui form">
-	      <div class="field">
-	        <label for="hotspot_domain_id">Select a Domain</label>
-	        <select name="hotspot_domain_id">
-				 <option value="NA">Select a domain</option>
-                 <?php foreach($domains as $domain): ?>
-                    <option value="<?php echo $domain['id'] ?>"><?php echo $domain['name'] ?></option>
-                <?php endforeach; ?>
-			</select>
-	      </div>
-	    </div>
-
 	    <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_description">Hotspot Info</label>
@@ -85,21 +79,21 @@ require('db.php');
             <div class="ui form">
                 <div class="field">
                     <label for="url_type">Type of url</label>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="website" value="website">Website<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="image" value="image">Image<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="video" value="video">Video<br>
-                    <input type="radio" onclick="javascript:checkOption();" name="url_type" id="oppia" value="oppia">Oppia
+                    <input type="radio" class="url_type" name="url_type" id="website" value="website">Website<br>
+                    <input type="radio" class="url_type" name="url_type" id="image" value="image">Image<br>
+                    <input type="radio" class="url_type" name="url_type" id="video" value="video">Video<br>
+                    <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia">Oppia
                 </div>
             </div>
 
-            <div class="ui form">
+            <div id="website_input" class="ui form">
                 <div class="field">
                     <label for="hotspot_url">Hotspot Url</label>
                     <input type="text" name="hotspot_url"  />
                 </div>
             </div>
 
-            <div class="ui form">
+            <div id="oppia_input" class="ui form">
                 <div class="field">
                     <label for="oppia_id">Oppia ID</label>
                     <input type="text" name="oppia_id"  />
@@ -134,6 +128,5 @@ require('db.php');
         </div>
 </form>
 </div>
-<script type="text/javascript" src="./hotspot_editor.js"></script>
 </body>
 </html>
