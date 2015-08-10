@@ -95,4 +95,13 @@ function get_deck_type($db, $deck_id){
     return $final;
 }
 
+function get_first_mission_id(){
+  global $wpdb;
+  $mission_table_name = 'wp_pano_mission';
+
+  $mission_id = $wpdb->get_var("SELECT id FROM " . $mission_table_name . " ORDER BY id LIMIT 1");
+
+  return $mission_id;
+}
+
 ?>

@@ -1,14 +1,15 @@
 <?php
 require('db.php');
-    $db        = database_connection();
-    $pano_id   = $_GET['pano_id'];
-    $missions  = get_missions($db, $pano_id);
-    $domains   = get_domains($db);
-    $semantic  = "../wp-content/plugins/panomanager/css/semantic.css";
-    $point_x   = $_GET['point_x'];
-    $point_y   = $_GET['point_y'];
-    $deck_id   = $_GET['deck_id'];
-    $item_id   = $_GET['item_id'];
+    $db         = database_connection();
+    $pano_id    = $_GET['pano_id'];
+    $missions   = get_missions($db, $pano_id);
+    $domains    = get_domains($db);
+    $semantic   = "../wp-content/plugins/panomanager/css/semantic.css";
+    $point_x    = $_GET['point_x'];
+    $point_y    = $_GET['point_y'];
+    $deck_id    = $_GET['deck_id'];
+    $item_id    = $_GET['item_id'];
+    $mission_id = get_first_mission_id();
 
     if($deck_id){
         $game_type = get_deck_type($db, $deck_id);
@@ -41,19 +42,8 @@ require('db.php');
     <input type="hidden" name="game_type" value="<?=$game_type?>" />
     <input type="hidden" name="item_id" value="<?= $item_id ?>" />
     <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
+    <input type="hidden" name="mission_id" value="<?= $mission_id ?>" />
     <div class="ui form segment new_pano_form">
-	    <div class="ui form">
-	      <div class="field">
-	        <label for="mission_id">Select a Mission</label>
-	        <select name="mission_id">
-                <option value="NA">Select a mission</option>
-                 <?php foreach($missions as $mission): ?>
-                    <option value="<?php echo $mission['id'] ?>"><?php echo $mission['name']  ?></option>
-                 <?php endforeach; ?>
-            </select>
-	      </div>
-	    </div>
-
         <div class="ui form">
 	      <div class="field">
 	        <label for="hotspot_domain_id">Select a Domain</label>
