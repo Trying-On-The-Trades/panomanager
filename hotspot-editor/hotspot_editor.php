@@ -24,6 +24,7 @@ if($deck_id){
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title style="display: none;">Hotspot Editor</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
     <style style="display: none;">
@@ -126,7 +127,7 @@ if($deck_id){
         <div class="ui form">
           <div class="field">
             <label for="hotspot_icon">
-              <input type="checkbox" id="hotspot_icon" name="hotspot_icon" checked="true" />
+              <input type="checkbox" id="hotspot_icon" name="hotspot_icon" checked />
               <span>Apply image to hotspot</span>
             </label>
           </div>
@@ -134,7 +135,7 @@ if($deck_id){
         <div class="ui form">
           <div class="field">
             <label for="hotspot_menu">
-              <input type="checkbox" id="hotspot_menu" name="hotspot_menu" checked="true" />
+              <input type="checkbox" id="hotspot_menu" name="hotspot_menu" checked />
               <span>Show hotspot on the menu</span>
             </label>
           </div>
