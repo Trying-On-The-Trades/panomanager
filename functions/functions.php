@@ -584,9 +584,25 @@ function process_new_hotspot_ajax(){
     $oppia_id            = $_POST['oppia_id'];
 
     if($hotspot_icon == 'true'){
-        $image = 'url="info.png"';
+        if($game_type == "website"){
+          $image = 'url="../../plugins/panomanager/images/website.png"';
+        }
+        else if($game_type == "image"){
+          $image = 'url="../../plugins/panomanager/images/image.png"';
+        }
+        else if($game_type == "video"){
+          $image = 'url="../../plugins/panomanager/images/video.png"';
+        }
+        else{
+          if(!empty($oppia_id)){
+            $image = 'url="../../plugins/panomanager/images/oppia.png"';
+          }
+          else{
+            $image = 'url="../../plugins/panomanager/images/info.png"';
+          }
+        }
     }else{
-        $image = 'url="Blank.png"';
+        $image = 'url="../../plugins/panomanager/images/blank.png"';
     }
 
     if($hotspot_menu == 'true'){
