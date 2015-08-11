@@ -83,7 +83,7 @@ if($deck_id){
         </div>
 
         <?php if($game_type == "url"): ?>
-        <p>Type of url</p>
+        <p>Type of URL</p>
         <div class="ui form">
           <label for="website">
             <input type="radio" class="url_type" name="url_type" id="website" value="website" />
@@ -105,7 +105,7 @@ if($deck_id){
         <br>
         <div id="website_input" class="ui form">
           <div class="field">
-            <label for="hotspot_url">Hotspot Url</label>
+            <label for="hotspot_url">Hotspot URL</label>
             <input type="text" id="hotspot_url" name="hotspot_url" />
           </div>
         </div>
