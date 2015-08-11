@@ -38,19 +38,33 @@ if($deck_id){
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script style="display: none;" type="text/javascript">
+    // Hiding oppia id on startup
     jQuery('#form').ready(function(){
       jQuery('#oppia_input').hide();
     });
 
+    // Displaying oppia id or hotspot url input
+    //  according to radio button selection
     jQuery('.url_type').change(function(){
       if(jQuery('#oppia').is(':checked')){
+        jQuery('#hotspot_url').val('');
         jQuery('#website_input').hide();
         jQuery('#oppia_input').show();
         jQuery('#oppia_id').focus();
       } else {
+        jQuery('#oppia_id').val('');
         jQuery('#oppia_input').hide();
         jQuery('#website_input').show();
         jQuery('#hotspot_url').focus();
+      }
+    });
+
+    jQuery('#hotspot_icon').change(function(){
+      if(jQuery(this).is(':checked')){
+        jQuery('#zoom_input').show();
+      } else {
+        jQuery('#hotspot_zoom').prop('checked', false);
+        jQuery('#zoom_input').hide();
       }
     });
     </script>
@@ -129,6 +143,14 @@ if($deck_id){
             <label for="hotspot_icon">
               <input type="checkbox" id="hotspot_icon" name="hotspot_icon" checked />
               <span>Make hotspot icon visible</span>
+            </label>
+          </div>
+        </div>
+        <div id="zoom_input" class="ui form">
+          <div class="field">
+            <label for="hotspot_zoom">
+              <input type="checkbox" id="hotspot_zoom" name="hotspot_zoom" checked />
+              <span>Hotspot icon zoom with panorama</span>
             </label>
           </div>
         </div>
