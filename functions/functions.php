@@ -582,6 +582,13 @@ function process_new_hotspot_ajax(){
     $hotspot_menu        = $_POST['hotspot_menu'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
+    $hotspot_zoom        = $_POST['hotspot_zoom'];
+
+    if(isset($hotspot_zoom) && $hotspot_zoom == 'true'){
+        $zoom = 'true';
+    } else {
+        $zoom = 'false';
+    }
 
     if($hotspot_icon == 'true'){
         if($game_type == "website"){
@@ -631,7 +638,7 @@ function process_new_hotspot_ajax(){
 
     $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
-        ' width="150" height="128" scale="0.425" zoom="true"'	.
+        ' width="150" height="128" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
     if($game_type == "website"){
