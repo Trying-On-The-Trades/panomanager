@@ -128,7 +128,7 @@ if($deck_id){
           <div class="field">
             <label for="hotspot_icon">
               <input type="checkbox" id="hotspot_icon" name="hotspot_icon" checked />
-              <span>Apply image to hotspot</span>
+              <span>Make hotspot icon visible</span>
             </label>
           </div>
         </div>
