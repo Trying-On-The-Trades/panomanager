@@ -485,7 +485,8 @@ function process_new_pano(){
     $mission_exists = get_mission($pano_id);
 
     if(!isset($mission_exists)) {
-        create_mission($pano_title, $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, "NA", $quest_id, 0);
+        $id = create_mission($pano_title, $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, "NA", $quest_id, 0);
+        fix_mission_id($id, $pano_id);
     }
 
     create_prereq($pano_id, 0, NULL , NULL);
