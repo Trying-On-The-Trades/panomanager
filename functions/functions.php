@@ -587,7 +587,7 @@ function process_new_hotspot_ajax(){
     if(isset($_POST['hotspot_zoom'])){
         $zoom = $_POST['hotspot_zoom'];
     } else {
-        $zoom = 'false3';
+        $zoom = 'false';
     }
 
     if($hotspot_icon == 'true'){

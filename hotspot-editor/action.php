@@ -19,12 +19,12 @@
 
     if(isset($_POST['hotspot_zoom'])) {
         $hotspot_zoom = $_POST['hotspot_zoom'];
-        if($hotspot_zoom == 'true'){
+        if($hotspot_zoom == 'on'){
             $hotspot_zoom = 'true';
-        } elseif($hotspot_zoom == 'false') {
-            $hotspot_zoom = 'false1';
+        } elseif($hotspot_zoom == 'off') {
+            $hotspot_zoom = 'false';
         } else {
-            $hotspot_zoom = 'false2';
+            $hotspot_zoom = 'false';
         }
     }
 
