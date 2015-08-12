@@ -584,6 +584,17 @@ function process_new_hotspot_ajax(){
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];
 
+    if($size == 1) {
+        $width = 75;
+        $height = 64;
+    } elseif($size == 2) {
+        $width = 150;
+        $height = 128;
+    } elseif($size == 3) {
+        $width = 227;
+        $height = 192;
+    }
+
     if(isset($_POST['hotspot_zoom'])){
         $zoom = $_POST['hotspot_zoom'];
     } else {
@@ -632,13 +643,16 @@ function process_new_hotspot_ajax(){
     $deck_id = $_POST['deck_id'];
     $item_id = $_POST['item_id'];
 
+    //75, 150, 225
+    //64, 128, 192
+
 
     // Get the id
     $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
     $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
-        ' width="150" height="128" scale="0.425" zoom="' . $zoom . '"'	.
+        ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
     if($game_type == "website"){
