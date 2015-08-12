@@ -582,7 +582,7 @@ function process_new_hotspot_ajax(){
     $hotspot_menu        = $_POST['hotspot_menu'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
-    $hotspot_zoom        = $_POST['hotspot_zoom'];
+    $size                = $_POST['size'];
 
     if(isset($_POST['hotspot_zoom'])){
         $zoom = $_POST['hotspot_zoom'];
