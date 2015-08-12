@@ -15,7 +15,19 @@
     $item_id           = $_POST['item_id'];
     $hotspot_url       = $_POST['hotspot_url'];
     $oppia_id          = $_POST['oppia_id'];
-    $hotspot_zoom      = $_POST['hotspot_zoom'];
+
+    if(isset($_POST['hotspot_zoom'])) {
+        $hotspot_zoom = $_POST['hotspot_zoom'];
+        if($hotspot_zoom == 'true'){
+            $hotspot_zoom = 'true';
+        } elseif($hotspot_zoom == 'false') {
+            $hotspot_zoom = 'false1';
+        } else {
+            $hotspot_zoom = 'false2';
+        }
+    }
+
+
 
     if($game_type == "url"){
         $game_type = $_POST['url_type'];
