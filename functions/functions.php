@@ -584,7 +584,7 @@ function process_new_hotspot_ajax(){
     $oppia_id            = $_POST['oppia_id'];
     $hotspot_zoom        = $_POST['hotspot_zoom'];
 
-    if(isset($hotspot_zoom) && $hotspot_zoom == 'true'){
+    if($hotspot_zoom == 'true'){
         $zoom = 'true';
     } else {
         $zoom = 'false';
