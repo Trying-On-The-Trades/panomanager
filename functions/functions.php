@@ -583,16 +583,17 @@ function process_new_hotspot_ajax(){
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];
+    $max_attempts        = $_POST['max_attempts'];
 
     if($size == 1) {
-        $width = 75;
+        $width = 64;
         $height = 64;
-    } elseif($size == 2) {
-        $width = 150;
-        $height = 128;
     } elseif($size == 3) {
-        $width = 227;
+        $width = 192;
         $height = 192;
+    } else {
+        $width = 128;
+        $height = 128;
     }
 
     if(isset($_POST['hotspot_zoom'])){
@@ -636,7 +637,6 @@ function process_new_hotspot_ajax(){
     $hotspot_xml = "";
     $hotspot_action_xml = "";
     $hotspot_points      = $_POST['hotspot_points'];
-    $hotspot_attempts    = '0';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
     $hotspot_modal_url   = '';
 
@@ -648,7 +648,7 @@ function process_new_hotspot_ajax(){
 
 
     // Get the id
-    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
+    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
     $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
@@ -686,7 +686,7 @@ function process_new_hotspot_ajax(){
 
 
     update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
-        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     echo $hotspot_id;
 

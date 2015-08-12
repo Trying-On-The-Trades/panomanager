@@ -146,6 +146,14 @@ if($deck_id){
             </label>
           </div>
         </div>
+        <div id="size_input" class="ui form">
+          <div class="field">
+            <label for="hotspot_size">
+              <span>Hotspot size</span>
+              <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="3" step="1" />
+            </label>
+          </div>
+        </div>
         <div id="zoom_input" class="ui form">
           <div class="field">
             <label for="hotspot_zoom">
@@ -160,6 +168,12 @@ if($deck_id){
               <input type="checkbox" id="hotspot_menu" name="hotspot_menu" checked />
               <span>Show hotspot on the menu</span>
             </label>
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
+            <label for="hotspot_points">Maximun number of attempts (0 means infinite):</label>
+            <input type="text" id="max_attempts" name="max_attempts" value="0" required />
           </div>
         </div>
         <div class="ui form">
