@@ -59,13 +59,23 @@ if($deck_id){
       }
     });
 
+    // Displaying hotspot zoom if user chooses
+    //  visible hotspot
     jQuery('#hotspot_icon').change(function(){
       if(jQuery(this).is(':checked')){
         jQuery('#zoom_input').show();
+        jQuery('#size_input').show();
       } else {
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
+        jQuery('#size_value').val(250);
+        jQuery('#size_input').hide();
       }
+    });
+
+    // Updating hotspot size value according to slide
+    jQuery('#hotspot_size').on('input', function(){
+      jQuery('#size_value').val(jQuery(this).val());
     });
     </script>
   </head>
@@ -150,7 +160,9 @@ if($deck_id){
           <div class="field">
             <label for="hotspot_size">
               <span>Hotspot size</span>
-              <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="3" step="1" />
+              <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" />
+              <output for="hotspot_size" id="size_value">250</output>
+              <span> px</span>
             </label>
           </div>
         </div>
@@ -172,7 +184,7 @@ if($deck_id){
         </div>
         <div class="ui form">
           <div class="field">
-            <label for="hotspot_points">Maximun number of attempts (0 means infinite):</label>
+            <label for="hotspot_points">Maximun number of attempts (0 for unlimited)</label>
             <input type="text" id="max_attempts" name="max_attempts" value="0" required />
           </div>
         </div>
