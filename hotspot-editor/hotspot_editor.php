@@ -64,9 +64,12 @@ if($deck_id){
     jQuery('#hotspot_icon').change(function(){
       if(jQuery(this).is(':checked')){
         jQuery('#zoom_input').show();
+        jQuery('#size_input').show();
       } else {
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
+        jQuery('#size_value').val(250);
+        jQuery('#size_input').hide();
       }
     });
 
@@ -181,7 +184,7 @@ if($deck_id){
         </div>
         <div class="ui form">
           <div class="field">
-            <label for="hotspot_points">Maximun number of attempts (0 means infinite):</label>
+            <label for="hotspot_points">Maximun number of attempts (0 for unlimited)</label>
             <input type="text" id="max_attempts" name="max_attempts" value="0" required />
           </div>
         </div>
