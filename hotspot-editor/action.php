@@ -4,6 +4,7 @@
     $domain            = $_POST['hotspot_domain_id'];
     $description       = $_POST['hotspot_description'];
     $hotspot_menu_name = $_POST['hotspot_menu_name'];
+    $hotspot_name      = $_POST['hotspot_name'];
     $hotspot_points    = $_POST['hotspot_points'];
     $point_x           = $_POST['point_x'];
     $point_y           = $_POST['point_y'];
@@ -52,6 +53,7 @@
         var hotspot_icon      = '';
         var deck_id           = '';
         var game_type         = '';
+        var hotspot_name      = '';
         var hotspot_menu_name = '';
         var hotspot_points    = '';
         var hotspot_menu      = '';
@@ -70,6 +72,7 @@
         hotspot_icon      = '<?=$hotspot_icon?>';
         deck_id           = '<?=$deck_id?>';
         game_type         = '<?=$game_type?>';
+        hotspot_name      = '<?=$hotspot_name ?>';
         hotspot_menu_name = '<?=$hotspot_menu_name?>';
         hotspot_points    = '<?=$hotspot_points?>';
         hotspot_menu      = '<?=$hotspot_menu?>';
@@ -92,7 +95,7 @@
         }
 
         function add_new_hotspot(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, deck_id,
-                                 game_type, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url,
+                                 game_type, url, hotspot_name, hotspot_menu_name, hotspot_points, hotspot_menu, hotspot_url,
                                  oppia_id, hotspot_zoom, size, max_attempts) {
 
             $.ajax({
@@ -106,6 +109,7 @@
                     hotspot_icon: hotspot_icon,
                     hotspot_menu: hotspot_menu,
                     hotspot_name: hotspot_name,
+                    hotspot_menu_name, hotspot_menu_name,
                     hotspot_points: hotspot_points,
                     hotspot_x: x,
                     hotspot_y: y,
@@ -129,7 +133,8 @@
         }
 
         function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url,
-                              hotspot_name, hotspot_points, hotspot_menu, hotspot_url, hotspot_zoom, size, max_attempts) {
+                              hotspot_name, hotspot_menu_name, hotspot_points, hotspot_menu, hotspot_url,
+                              hotspot_zoom, size, max_attempts) {
 
             $.ajax({
                 type: 'POST',
@@ -142,6 +147,7 @@
                     hotspot_icon: hotspot_icon,
                     hotspot_menu: hotspot_menu,
                     hotspot_name: hotspot_name,
+                    hotspot_menu_name: hotspot_menu_name,
                     hotspot_points: hotspot_points,
                     hotspot_x: x,
                     hotspot_y: y,
@@ -164,11 +170,11 @@
         }
 
         <?php if(is_numeric($deck_id)): ?>
-            add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
+            add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_name, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
         <?php elseif(is_numeric($item_id)): ?>
-            add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, hotspot_zoom, size, max_attempts);
+            add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_name, hotspot_menu_name, hotspot_points, menu, hotspot_url, hotspot_zoom, size, max_attempts);
         <?php else : ?>
-        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
+        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_name, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
 
         <?php endif; ?>
     </script>
