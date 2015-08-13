@@ -79,7 +79,7 @@
         hotspot_url       = '<?=$hotspot_url?>';
         item_id           = '<?=$item_id ?>';
         oppia_id          = '<?=$oppia_id ?>';
-        hotspot_zoom      = '<?= $hotspot_zoom ?>';
+        hotspot_zoom      = '<?=$hotspot_zoom ?>';
         size              = '<?=$size ?>';
         max_attempts      = '<?=$max_attempts ?>';
 

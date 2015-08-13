@@ -583,6 +583,7 @@ function process_new_hotspot_ajax(){
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];
+    $hotspot_zoom        = $_POST['hotspot_zoom'];
     $max_attempts        = $_POST['max_attempts'];
 
     if(!empty($size)){
@@ -593,10 +594,10 @@ function process_new_hotspot_ajax(){
       $heith = 125;
     }
 
-    if(isset($_POST['hotspot_zoom'])){
-        $zoom = $_POST['hotspot_zoom'];
+    if(empty($hotspot_zoom)){
+      $zoom = 'false';
     } else {
-        $zoom = 'false';
+      $zoom = $hotspot_zoom;
     }
 
     if($hotspot_icon == 'true'){
@@ -639,10 +640,6 @@ function process_new_hotspot_ajax(){
 
     $deck_id = $_POST['deck_id'];
     $item_id = $_POST['item_id'];
-
-    //75, 150, 225
-    //64, 128, 192
-
 
     // Get the id
     $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
