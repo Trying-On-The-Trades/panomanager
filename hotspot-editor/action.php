@@ -15,6 +15,21 @@
     $item_id           = $_POST['item_id'];
     $hotspot_url       = $_POST['hotspot_url'];
     $oppia_id          = $_POST['oppia_id'];
+    $size              = $_POST['hotspot_size'];
+    $max_attempts      = $_POST['max_attempts'];
+
+    if(isset($_POST['hotspot_zoom'])) {
+        $hotspot_zoom = $_POST['hotspot_zoom'];
+        if($hotspot_zoom == 'on'){
+            $hotspot_zoom = 'true';
+        } elseif($hotspot_zoom == 'off') {
+            $hotspot_zoom = 'false';
+        } else {
+            $hotspot_zoom = 'false';
+        }
+    }
+
+
 
     if($game_type == "url"){
         $game_type = $_POST['url_type'];
@@ -43,6 +58,9 @@
         var hotspot_url       = '';
         var item_id           = '';
         var oppia_id          = '';
+        var hotspot_zoom      = '';
+        var size              = '';
+        var max_attempts      = '';
 
         mission           = <?=$mission?>;
         domain            = '<?=$domain?>';
@@ -58,6 +76,9 @@
         hotspot_url       = '<?=$hotspot_url?>';
         item_id           = '<?=$item_id ?>';
         oppia_id          = '<?=$oppia_id ?>';
+        hotspot_zoom      = '<?= $hotspot_zoom ?>';
+        size              = '<?=$size ?>';
+        max_attempts      = '<?=$max_attempts ?>';
 
         var icon = false;
         var menu = false;
@@ -70,7 +91,9 @@
             menu = true;
         }
 
-        function add_new_hotspot(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, deck_id, game_type, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url, oppia_id) {
+        function add_new_hotspot(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, deck_id,
+                                 game_type, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url,
+                                 oppia_id, hotspot_zoom, size, max_attempts) {
 
             $.ajax({
                 type: 'POST',
@@ -89,7 +112,10 @@
                     deck_id: deck_id,
                     game_type: game_type,
                     hotspot_url: hotspot_url,
-                    oppia_id: oppia_id
+                    oppia_id: oppia_id,
+                    hotspot_zoom: hotspot_zoom,
+                    size: size,
+                    max_attempts: max_attempts
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
@@ -102,7 +128,8 @@
 
         }
 
-        function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url, hotspot_name, hotspot_points, hotspot_menu, hotspot_url) {
+        function add_new_shop(domain_id, mission_id, hotspot_description, hotspot_icon, x, y, item_id, url,
+                              hotspot_name, hotspot_points, hotspot_menu, hotspot_url, hotspot_zoom, size, max_attempts) {
 
             $.ajax({
                 type: 'POST',
@@ -119,7 +146,10 @@
                     hotspot_x: x,
                     hotspot_y: y,
                     item_id: item_id,
-                    hotspot_url: hotspot_url
+                    hotspot_url: hotspot_url,
+                    hotspot_zoom: hotspot_zoom,
+                    size: size,
+                    max_attempts: max_attempts
                 },
                 success: function (d) {
                     //alert('Hotspot Added!' + d);
@@ -134,11 +164,11 @@
         }
 
         <?php if(is_numeric($deck_id)): ?>
-            add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id);
+            add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
         <?php elseif(is_numeric($item_id)): ?>
-            add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url);
+            add_new_shop(domain, mission, description, icon, point_x, point_y, item_id, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, hotspot_zoom, size, max_attempts);
         <?php else : ?>
-        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id);
+        add_new_hotspot(domain, mission, description, icon, point_x, point_y, deck_id, game_type, url, hotspot_menu_name, hotspot_points, menu, hotspot_url, oppia_id, hotspot_zoom, size, max_attempts);
 
         <?php endif; ?>
     </script>

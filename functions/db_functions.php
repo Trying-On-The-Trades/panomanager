@@ -1540,3 +1540,11 @@ function delete_hotspot_completed($hotspot_id, $user_id){
 
     $wpdb->delete($hotspot_completed_table, array('hotspot_id' => $hotspot_id, 'user_id' => $user_id));
 }
+
+function fix_mission_id($id, $new_id){
+    global $wpdb;
+
+    $mission_table = get_mission_table_name();
+
+    $wpdb->update($mission_table, array('id' => $new_id), array('id' => $id));
+}
