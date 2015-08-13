@@ -14,7 +14,6 @@ function pano_hotspot_settings_page() {
 
 <!-- style sheet so our admin page looks nice -->
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<p>Manage your missions!</p>
 <hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
@@ -27,6 +26,7 @@ function pano_hotspot_settings_page() {
 <table id="hostpotTable" class="ui table segment tablesorter">
     <thead>
       <tr>
+        <th>Pano</th>
         <th>Hotspot</th>
         <th>Menu Name</th>
         <th>Hotspot Info</th>
@@ -42,9 +42,10 @@ function pano_hotspot_settings_page() {
         <?php foreach ($hotspots as $hotspot): ?>
             <?php $current_hotspot = build_hotspot($hotspot->id); ?>
             <tr>
+                <td><?php echo get_pano($hotspot->pano_id)->title; ?></td>
                 <td><?php echo $current_hotspot->get_name(); ?></td>
                 <td><?php echo $current_hotspot->get_menu_name(); ?></td>
-                <td><?php echo $current_hotspot->get_hotspot_info(); ?></td>
+                <td><?php echo substr($current_hotspot->get_hotspot_info(), 0, 20) . "..."; ?></td>
                 <td><?php echo $current_hotspot->get_points(); ?></td>
                 <td><?php echo $current_hotspot->get_attempts(); ?></td>
                 <td><?php echo $current_hotspot->get_type_name(); ?></td>
@@ -64,10 +65,9 @@ function pano_hotspot_settings_page() {
 </table>
 <form method="POST" action="<?=$pano_editor?>&">
     <!-- word processing hook -->
-    <input type="submit" class="ui blue icon button" value="Create_Hotspot" style="padding: 7px;" />
+    <input type="submit" class="ui blue icon button" value="Create Hotspot" style="padding: 7px;" />
 </form>
 <br/>
-<a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
 
 <script>
     jQuery(document).ready(function(){

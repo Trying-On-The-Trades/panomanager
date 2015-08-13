@@ -237,13 +237,15 @@ function get_hotspots(){
     $hotspot_table_name      = get_hotspot_table_name();
     $hotspot_type_table_name = get_type_table_name();
     $mission_text_table_name = get_mission_text_table_name();
+    $mission_table_name      = get_mission_table_name();
 
     // DB query
     $hotspots = $wpdb->get_results(
-        "SELECT wph.*, wpmt.name as mission_name, wpht.name as type_name FROM " . $hotspot_table_name . " wph " .
+        "SELECT wph.*, wpmt.name as mission_name, wpht.name as type_name, wpm.pano_id FROM " . $hotspot_table_name . " wph " .
         "INNER JOIN " . $hotspot_type_table_name . " wpht ON wpht.id = wph.type_id " .
         "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id " .
-        " ORDER BY id ASC");
+        "INNER JOIN " . $mission_table_name . " wpm ON wpm.id  = wph.mission_id " .
+        " ORDER BY wpm.pano_id, wph.id ASC");
 
     // Return
     return $hotspots;
