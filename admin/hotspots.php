@@ -3,6 +3,7 @@
 // Build the settings page
 function pano_hotspot_settings_page() {
     $hotspots = get_hotspots();
+    $panos = get_panos();
 
     $semantic         = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $hotspot_types    = admin_url() . "admin.php?page=pano_hotspot_type_settings";
@@ -22,6 +23,13 @@ function pano_hotspot_settings_page() {
 
 <div>
     <h2>Hotspots</h2>
+    <label>Filter by Pano: </label>
+    <select id="pano_select">
+        <option value="NA">Select a pano</option>
+        <?php foreach($panos as $pano): ?>
+            <option value="<?= $pano->id ?>"><?= $pano->title ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 <table id="hostpotTable" class="ui table segment tablesorter">
     <thead>
@@ -41,7 +49,7 @@ function pano_hotspot_settings_page() {
     <tbody>
         <?php foreach ($hotspots as $hotspot): ?>
             <?php $current_hotspot = build_hotspot($hotspot->id); ?>
-            <tr>
+            <tr class="hotspot pano<?= $hotspot->pano_id ?>">
                 <td><?php echo get_pano($hotspot->pano_id)->title; ?></td>
                 <td><?php echo $current_hotspot->get_name(); ?></td>
                 <td><?php echo $current_hotspot->get_menu_name(); ?></td>
@@ -72,6 +80,16 @@ function pano_hotspot_settings_page() {
 <script>
     jQuery(document).ready(function(){
         jQuery("#hostpotTable").tablesorter();
+        jQuery("#pano_select").change( function() {
+            var pano = jQuery("#pano_select").prop("value");
+            if(pano != "NA") {
+                jQuery(".hotspot").hide();
+                jQuery(".pano" + pano).show();
+            } else {
+                jQuery(".hotspot").show();
+            }
+
+        });
     })
 </script>
 
