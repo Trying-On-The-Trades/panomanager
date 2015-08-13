@@ -73,6 +73,17 @@ if($deck_id){
       }
     });
 
+    // Displaying hotspot menu name input
+    //  if user chooses to be visible
+    jQuery('#hotspot_menu').change(function(){
+      if(jQuery(this).is(':checked')){
+        jQuery('#menu_name_input').show();
+      } else{
+        jQuery('#hotspot_menu_name').val('');
+        jQuery('#menu_name_input').hide();
+      }
+    });
+
     // Updating hotspot size value according to slide
     jQuery('#hotspot_size').on('input', function(){
       jQuery('#size_value').val(jQuery(this).val());
@@ -96,14 +107,28 @@ if($deck_id){
       <div class="ui form segment new_pano_form">
         <div class="ui form">
           <div class="field">
+            <label for="hotspot_name">Hotspot Name</label>
+            <input type="text" id="hotspot_name" name="hotspot_name" required />
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
             <label for="hotspot_description">Hotspot Info</label>
             <textarea rows="4" id="hotspot_description" name="hotspot_description" required ></textarea>
           </div>
         </div>
         <div class="ui form">
           <div class="field">
+            <label for="hotspot_menu">
+              <input type="checkbox" id="hotspot_menu" name="hotspot_menu" checked />
+              <span>Show hotspot on the menu</span>
+            </label>
+          </div>
+        </div>
+        <div id="menu_name_input" class="ui form">
+          <div class="field">
             <label for="hotspot_menu_name">Hotspot Menu Text</label>
-            <input type="text" id="hotspot_menu_name" name="hotspot_menu_name" required />
+            <input type="text" id="hotspot_menu_name" name="hotspot_menu_name" />
           </div>
         </div>
 
@@ -171,14 +196,6 @@ if($deck_id){
             <label for="hotspot_zoom">
               <input type="checkbox" id="hotspot_zoom" name="hotspot_zoom" checked />
               <span>Hotspot icon zoom with panorama</span>
-            </label>
-          </div>
-        </div>
-        <div class="ui form">
-          <div class="field">
-            <label for="hotspot_menu">
-              <input type="checkbox" id="hotspot_menu" name="hotspot_menu" checked />
-              <span>Show hotspot on the menu</span>
             </label>
           </div>
         </div>
