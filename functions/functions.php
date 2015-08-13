@@ -575,7 +575,7 @@ function process_new_hotspot_ajax(){
     $hotspot_y           = $_POST['hotspot_y'];
     $type_id             = '3';
     $hotspot_name        = $_POST['hotspot_name'];
-    $hotspot_menu_name   = $_POST['hotspot_name'];
+    $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_description']);
     $hotspot_icon        = $_POST['hotspot_icon'];
