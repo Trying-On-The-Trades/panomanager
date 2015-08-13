@@ -68,7 +68,7 @@ if($deck_id){
       } else {
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
-        jQuery('#size_value').val(250);
+        jQuery('#size_value').val(125);
         jQuery('#size_input').hide();
       }
     });
@@ -160,8 +160,8 @@ if($deck_id){
           <div class="field">
             <label for="hotspot_size">
               <span>Hotspot size</span>
-              <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" />
-              <output for="hotspot_size" id="size_value">250</output>
+              <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" value="125" />
+              <output for="hotspot_size" id="size_value">125</output>
               <span> px</span>
             </label>
           </div>

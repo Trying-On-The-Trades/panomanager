@@ -585,15 +585,12 @@ function process_new_hotspot_ajax(){
     $size                = $_POST['size'];
     $max_attempts        = $_POST['max_attempts'];
 
-    if($size == 1) {
-        $width = 64;
-        $height = 64;
-    } elseif($size == 3) {
-        $width = 192;
-        $height = 192;
+    if(!empty($size)){
+      $width = $size;
+      $height = $size;
     } else {
-        $width = 128;
-        $height = 128;
+      $width = 125;
+      $heith = 125;
     }
 
     if(isset($_POST['hotspot_zoom'])){
