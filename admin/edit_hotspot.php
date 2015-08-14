@@ -10,6 +10,8 @@
   if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
     $hotspot = build_hotspot($_GET['id']);
   }
+
+  $hotspot_menu = $hotspot->is_menu_item();
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
@@ -52,13 +54,7 @@
     <div class="ui form">
       <div class="field">
         <label for="hotspot_name">Hotspot Name</label>
-        <input type="text" name="hotspot_name" id="name" placeholder="Fun Hotspot" value="<?php echo $hotspot->get_name() ?>" required />
-      </div>
-    </div>
-    <div class="ui form">
-      <div class="field">
-        <label for="hotspot_menu_name">Hotspot Menu Name</label>
-        <input type="text" name="hotspot_menu_name" id="name" placeholder="Find Hotspot" value="<?php echo $hotspot->get_menu_name() ?>" required />
+        <input type="text" name="hotspot_name" id="name" value="<?php echo $hotspot->get_name() ?>" required />
       </div>
     </div>
     <div class="ui form">
@@ -69,14 +65,28 @@
     </div>
     <div class="ui form">
       <div class="field">
-        <label for="hotspot_points">Points</label>
-        <input type="number" name="hotspot_points" id="hotspot_points" placeholder="10" value="<?php echo $hotspot->get_points() ?>" required />
+        <label for="hotspot_menu">
+          <input type="checkbox" id="hotspot_menu" name="hotspot_menu" <?= ($hotspot_menu)? 'checked' : '' ?> />
+          <span>Show hotspot on the menu</span>
+        </label>
       </div>
     </div>
     <div class="ui form">
       <div class="field">
-        <label for="hotspot_attempts">Maximum Attempts (0 means unlimited attempts): </label>
-        <input type="number" name="hotspot_attempts" id="hotspot_attempts" placeholder="1" value="<?php echo $hotspot->get_attempts() ?>" required />
+        <label for="hotspot_menu_name">Hotspot Menu Text</label>
+        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" required />
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <label for="hotspot_points">Hotspot Points</label>
+        <input type="number" name="hotspot_points" id="hotspot_points" value="<?php echo $hotspot->get_points() ?>" required />
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <label for="hotspot_attempts">Maximum number of attempts (0 for unlimited): </label>
+        <input type="number" name="hotspot_attempts" id="hotspot_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
       </div>
     </div>
     <?php submit_button(); ?>
