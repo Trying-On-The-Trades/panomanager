@@ -580,6 +580,7 @@ function process_new_hotspot_ajax(){
     $hotspot_info        = trim($_POST['hotspot_description']);
     $hotspot_icon        = $_POST['hotspot_icon'];
     $hotspot_menu        = $_POST['hotspot_menu'];
+    $hotspot_type        = $_POST['hotspot_type'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];

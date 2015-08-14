@@ -1,23 +1,27 @@
 <?php
 require('db.php');
 
-$db         = database_connection();
-$pano_id    = $_GET['pano_id'];
-$missions   = get_missions($db, $pano_id);
-$domains    = get_domains($db);
-$semantic   = "../wp-content/plugins/panomanager/css/semantic.css";
-$point_x    = $_GET['point_x'];
-$point_y    = $_GET['point_y'];
-$deck_id    = $_GET['deck_id'];
-$item_id    = $_GET['item_id'];
-$mission_id = $pano_id;
+$db           = database_connection();
+$pano_id      = $_GET['pano_id'];
+$missions     = get_missions($db, $pano_id);
+$domains      = get_domains($db);
+$semantic     = "../wp-content/plugins/panomanager/css/semantic.css";
+$point_x      = $_GET['point_x'];
+$point_y      = $_GET['point_y'];
+$deck_id      = $_GET['deck_id'];
+$item_id      = $_GET['item_id'];
+$mission_id   = $pano_id;
+$hotspot_type = "";
 
 if($deck_id){
   $game_type = get_deck_type($db, $deck_id);
+  $hotspot_type = "game";
 }else if($item_id) {
   $game_type = "item";
+  $hotspot_type = "item";
 }else{
   $game_type = "url";
+  $hotspot_type = "url";
 }
 ?>
 
@@ -56,6 +60,25 @@ if($deck_id){
         jQuery('#oppia_input').hide();
         jQuery('#website_input').show();
         jQuery('#hotspot_url').focus();
+      }
+    });
+
+    // Changing hotspot type value
+    //  according to user selection
+    jQuery('.url_type').change(function(){
+      if(jQuery('#website').is(':checked')){
+        jQuery('#hotspot_type').val('website');
+      }
+      else if(jQuery('#image').is(':checked')){
+        jQuery('#hotspot_type').val('image');
+      }
+      else if(jQuery('#video').is(':checked')){
+        jQuery('#hotspot_type').val('video');
+      }
+      else if(jQuery('#oppia').is(':checked')){
+        jQuery('#hotspot_type').val('oppia');
+      } else {
+        jQuery('#hotspot_type').val('url');
       }
     });
 
@@ -104,6 +127,7 @@ if($deck_id){
       <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
       <input type="hidden" name="mission_id" value="<?= $mission_id ?>" />
       <input type="hidden" name="hotspot_domain_id" value="NA" />
+      <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
       <div class="ui form segment new_pano_form">
         <div class="ui form">
           <div class="field">
