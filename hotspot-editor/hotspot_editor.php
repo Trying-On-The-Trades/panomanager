@@ -32,85 +32,85 @@ if($deck_id){
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
     <style style="display: none;">
-    h2, hr, p, span{
-      color: #555;
-    }
-    form .ui label{
-      display: block;
-      cursor: pointer;
-    }
+      h2, hr, p, span{
+        color: #555;
+      }
+      form .ui label{
+        display: block;
+        cursor: pointer;
+      }
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script style="display: none;" type="text/javascript">
-    // Hiding oppia id on startup
-    jQuery('#form').ready(function(){
-      jQuery('#oppia_input').hide();
-    });
-
-    // Displaying oppia id or hotspot url input
-    //  according to radio button selection
-    jQuery('.url_type').change(function(){
-      if(jQuery('#oppia').is(':checked')){
-        jQuery('#hotspot_url').val('');
-        jQuery('#website_input').hide();
-        jQuery('#oppia_input').show();
-        jQuery('#oppia_id').focus();
-      } else {
-        jQuery('#oppia_id').val('');
+      // Hiding oppia id on startup
+      jQuery('#form').ready(function(){
         jQuery('#oppia_input').hide();
-        jQuery('#website_input').show();
-        jQuery('#hotspot_url').focus();
-      }
-    });
+      });
 
-    // Changing hotspot type value
-    //  according to user selection
-    jQuery('.url_type').change(function(){
-      if(jQuery('#website').is(':checked')){
-        jQuery('#hotspot_type').val('website');
-      }
-      else if(jQuery('#image').is(':checked')){
-        jQuery('#hotspot_type').val('image');
-      }
-      else if(jQuery('#video').is(':checked')){
-        jQuery('#hotspot_type').val('video');
-      }
-      else if(jQuery('#oppia').is(':checked')){
-        jQuery('#hotspot_type').val('oppia');
-      } else {
-        jQuery('#hotspot_type').val('url');
-      }
-    });
+      // Displaying oppia id or hotspot url input
+      //  according to radio button selection
+      jQuery('.url_type').change(function(){
+        if(jQuery('#oppia').is(':checked')){
+          jQuery('#hotspot_url').val('');
+          jQuery('#website_input').hide();
+          jQuery('#oppia_input').show();
+          jQuery('#oppia_id').focus();
+        } else {
+          jQuery('#oppia_id').val('');
+          jQuery('#oppia_input').hide();
+          jQuery('#website_input').show();
+          jQuery('#hotspot_url').focus();
+        }
+      });
 
-    // Displaying hotspot zoom if user chooses
-    //  visible hotspot
-    jQuery('#hotspot_icon').change(function(){
-      if(jQuery(this).is(':checked')){
-        jQuery('#zoom_input').show();
-        jQuery('#size_input').show();
-      } else {
-        jQuery('#hotspot_zoom').prop('checked', false);
-        jQuery('#zoom_input').hide();
-        jQuery('#size_value').val(125);
-        jQuery('#size_input').hide();
-      }
-    });
+      // Changing hotspot type value
+      //  according to user selection
+      jQuery('.url_type').change(function(){
+        if(jQuery('#website').is(':checked')){
+          jQuery('#hotspot_type').val('website');
+        }
+        else if(jQuery('#image').is(':checked')){
+          jQuery('#hotspot_type').val('image');
+        }
+        else if(jQuery('#video').is(':checked')){
+          jQuery('#hotspot_type').val('video');
+        }
+        else if(jQuery('#oppia').is(':checked')){
+          jQuery('#hotspot_type').val('oppia');
+        } else {
+          jQuery('#hotspot_type').val('url');
+        }
+      });
 
-    // Displaying hotspot menu name input
-    //  if user chooses to be visible
-    jQuery('#hotspot_menu').change(function(){
-      if(jQuery(this).is(':checked')){
-        jQuery('#menu_name_input').show();
-      } else{
-        jQuery('#hotspot_menu_name').val('');
-        jQuery('#menu_name_input').hide();
-      }
-    });
+      // Displaying hotspot zoom if user chooses
+      //  visible hotspot
+      jQuery('#hotspot_icon').change(function(){
+        if(jQuery(this).is(':checked')){
+          jQuery('#zoom_input').show();
+          jQuery('#size_input').show();
+        } else {
+          jQuery('#hotspot_zoom').prop('checked', false);
+          jQuery('#zoom_input').hide();
+          jQuery('#size_value').val(125);
+          jQuery('#size_input').hide();
+        }
+      });
 
-    // Updating hotspot size value according to slide
-    jQuery('#hotspot_size').on('input', function(){
-      jQuery('#size_value').val(jQuery(this).val());
-    });
+      // Displaying hotspot menu name input
+      //  if user chooses to be visible
+      jQuery('#hotspot_menu').change(function(){
+        if(jQuery(this).is(':checked')){
+          jQuery('#menu_name_input').show();
+        } else{
+          jQuery('#hotspot_menu_name').val('');
+          jQuery('#menu_name_input').hide();
+        }
+      });
+
+      // Updating hotspot size value according to slide
+      jQuery('#hotspot_size').on('input', function(){
+        jQuery('#size_value').val(jQuery(this).val());
+      });
     </script>
   </head>
   <body>

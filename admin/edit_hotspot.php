@@ -6,17 +6,24 @@
   $types	  = get_types();
   $domains	  = get_domains();
   $hotspot  = null;
+  $show_type_edit = false;
 
   if (isset($_GET['id']) && is_numeric( $_GET['id']) ) {
     $hotspot = build_hotspot($_GET['id']);
   }
 
   $hotspot_menu = $hotspot->is_menu_item();
+  $hotspot_type_id = $hotspot->get_type_id();
+  $hotspot_type_row = get_hotspot_type($hotspot_type_id);
+  $hotspot_type = $hotspot_type_row->name;
+
+  if(($hotspot_type == "website") || ($hotspot_type == "image") || ($hotspot_type == "video") || ($hotspot_type == "oppia")){
+    $show_type_edit = true;
+  }
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<h2>Edit a Hotspot!</h2>
-<hr>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <style type="text/css">
   #wpfooter{
     display: none;
@@ -32,6 +39,30 @@
     margin: 0px auto;
   }
 </style>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    // Changing hotspot type value
+    //  according to user selection
+    jQuery('.url_type').change(function(){
+      if(jQuery('#website').is(':checked')){
+        jQuery('#hotspot_type').val('website');
+      }
+      else if(jQuery('#image').is(':checked')){
+        jQuery('#hotspot_type').val('image');
+      }
+      else if(jQuery('#video').is(':checked')){
+        jQuery('#hotspot_type').val('video');
+      }
+      else if(jQuery('#oppia').is(':checked')){
+        jQuery('#hotspot_type').val('oppia');
+      } else {
+        jQuery('#hotspot_type').val('url');
+      }
+    });
+  });
+</script>
+<h2>Edit a Hotspot!</h2>
+<hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
 <div class="updated"><p>Hotspot updated successfully.</p></div>
@@ -44,9 +75,9 @@
   <input type="hidden" name="action" value="edit_hotspot" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
-  <input type="hidden" name="type_id" value="<?= $hotspot->get_type_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
   <input type="hidden" name="hotspot_modal_url" id="hotspot_modal_url" value="<?php echo $hotspot->get_modal_url(); ?>" />
+  <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
   <textarea style="display:none;" name="hotspot_description" > <?php echo $hotspot->get_description() ?> </textarea>
   <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
   <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
@@ -77,6 +108,31 @@
         <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" required />
       </div>
     </div>
+
+    <?php if($show_type_edit): ?>
+    <p>Type of URL</p>
+    <div class="ui form">
+      <div class="field">
+        <label for="website">
+          <input type="radio" class="url_type" name="url_type" id="website" value="website" <?= ($hotspot_type == 'website')? 'checked' : '' ?> />
+          <span>Website</span>
+        </label>
+        <label for="image">
+          <input type="radio" class="url_type" name="url_type" id="image" value="image" <?= ($hotspot_type == 'image')? 'checked' : '' ?> />
+          <span>Image</span>
+        </label>
+        <label for="video">
+          <input type="radio" class="url_type" name="url_type" id="video" value="video" <?= ($hotspot_type == 'video')? 'checked' : '' ?> />
+          <span>Video</span>
+        </label>
+        <label for="oppia">
+          <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia" <?= ($hotspot_type == 'oppia')? 'checked' : '' ?> />
+          <span>Oppia</span>
+        </label>
+      </div>
+    </div>
+    <?php endif; ?>
+
     <div class="ui form">
       <div class="field">
         <label for="hotspot_points">Hotspot Points</label>

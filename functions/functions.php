@@ -838,9 +838,9 @@ function process_edit_hotspot(){
 
     // Create a new hotspot using the post data
     $mission_id          = $_POST['mission_id'];
-    $type_id             = $_POST['type_id'];
     $hotspot_id          = $_POST['hotspot_id'];
     $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_type        = $_POST['hotspot_type'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_info']);
@@ -848,8 +848,10 @@ function process_edit_hotspot(){
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_domain_id    = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
+    $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
     $hotspot_modal_url   = $_POST['hotspot_modal_url'];
+
+    $type_id = get_hotspot_type_id($hotspot_type);
 
     // Get the id
     $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
