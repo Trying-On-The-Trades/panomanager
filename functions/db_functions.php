@@ -342,6 +342,21 @@ function get_hotspot_type($hotspot_type_id){
     return $hotspot_type;
 }
 
+function get_hotspot_type_id($hotspot_type){
+  global $wpdb;
+  $hotspot_type_table_name = get_type_table_name();
+
+  $hotspot_type_id = $wpdb->get_var(
+    "SELECT id FROM ". $hotspot_type_table_name . " WHERE name LIKE '" . "$hotspot_type' LIMIT 1"
+);
+
+  if(empty($hotspot_type_id)){
+    $hotspot_type_id = '1';
+  }
+
+  return $hotspot_type_id;
+}
+
 function get_domain($domain_id){
     global $wpdb;
     $domain_table_name = get_domain_table_name();

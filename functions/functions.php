@@ -573,7 +573,6 @@ function process_new_hotspot_ajax(){
     $mission_id          = $_POST['mission_id'];
     $hotspot_x           = $_POST['hotspot_x'];
     $hotspot_y           = $_POST['hotspot_y'];
-    $type_id             = '3';
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_description = trim($_POST['hotspot_description']);
@@ -586,6 +585,8 @@ function process_new_hotspot_ajax(){
     $size                = $_POST['size'];
     $hotspot_zoom        = $_POST['hotspot_zoom'];
     $max_attempts        = $_POST['max_attempts'];
+
+    $type_id = get_hotspot_type_id($hotspot_type);
 
     if(!empty($size)){
       $width = $size;
