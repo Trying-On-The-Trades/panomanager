@@ -159,24 +159,25 @@ if($deck_id){
         <?php if($game_type == "url"): ?>
         <p>Type of URL</p>
         <div class="ui form">
-          <label for="website">
-            <input type="radio" class="url_type" name="url_type" id="website" value="website" />
-            <span>Website</span>
-          </label>
-          <label for="image">
-            <input type="radio" class="url_type" name="url_type" id="image" value="image" />
-            <span>Image</span>
-          </label>
-          <label for="video">
-            <input type="radio" class="url_type" name="url_type" id="video" value="video" />
-            <span>Video</span>
-          </label>
-          <label for="oppia">
-            <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia" />
-            <span>Oppia</span>
-          </label>
+          <div class="field">
+            <label for="website">
+              <input type="radio" class="url_type" name="url_type" id="website" value="website" />
+              <span>Website</span>
+            </label>
+            <label for="image">
+              <input type="radio" class="url_type" name="url_type" id="image" value="image" />
+              <span>Image</span>
+            </label>
+            <label for="video">
+              <input type="radio" class="url_type" name="url_type" id="video" value="video" />
+              <span>Video</span>
+            </label>
+            <label for="oppia">
+              <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia" />
+              <span>Oppia</span>
+            </label>
+          </div>
         </div>
-        <br>
         <div id="website_input" class="ui form">
           <div class="field">
             <label for="hotspot_url">Hotspot URL</label>
