@@ -308,7 +308,7 @@ function get_hotspot($hotspot_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare(
-        "SELECT wph.*, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
+        "SELECT wph.*, wpht.id type_id, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
         $hotspot_table_name . " wph " .
         "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
         " wph.`type_id` = wpht.`id` " .
