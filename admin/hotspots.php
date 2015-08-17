@@ -3,6 +3,8 @@
 // Build the settings page
 function pano_hotspot_settings_page() {
     $hotspots = get_hotspots();
+    $panos = get_panos();
+    $types = get_types();
 
     $semantic         = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
     $hotspot_types    = admin_url() . "admin.php?page=pano_hotspot_type_settings";
@@ -14,7 +16,6 @@ function pano_hotspot_settings_page() {
 
 <!-- style sheet so our admin page looks nice -->
 <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<p>Manage your missions!</p>
 <hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
@@ -23,10 +24,27 @@ function pano_hotspot_settings_page() {
 
 <div>
     <h2>Hotspots</h2>
+    <p>Filter hotspots by:</p>
+    <label>Pano </label>
+    <select id="pano_select">
+        <option value="NA">Select a pano</option>
+        <?php foreach($panos as $pano): ?>
+            <option value="<?= $pano->id ?>"><?= $pano->title ?></option>
+        <?php endforeach; ?>
+    </select>
+
+    <label>Hotspot Type </label>
+    <select id="type_select">
+        <option value="NA">Select a type</option>
+        <?php foreach($types as $type): ?>
+            <option value="<?= $type->id ?>"><?= $type->name ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 <table id="hostpotTable" class="ui table segment tablesorter">
     <thead>
       <tr>
+        <th>Pano</th>
         <th>Hotspot</th>
         <th>Menu Name</th>
         <th>Hotspot Info</th>
@@ -41,10 +59,11 @@ function pano_hotspot_settings_page() {
     <tbody>
         <?php foreach ($hotspots as $hotspot): ?>
             <?php $current_hotspot = build_hotspot($hotspot->id); ?>
-            <tr>
+            <tr class="hotspot pano<?= $hotspot->pano_id ?> type<?= $hotspot->type_id ?>">
+                <td><?php echo get_pano($hotspot->pano_id)->title; ?></td>
                 <td><?php echo $current_hotspot->get_name(); ?></td>
                 <td><?php echo $current_hotspot->get_menu_name(); ?></td>
-                <td><?php echo $current_hotspot->get_hotspot_info(); ?></td>
+                <td><?php echo substr($current_hotspot->get_hotspot_info(), 0, 20) . "..."; ?></td>
                 <td><?php echo $current_hotspot->get_points(); ?></td>
                 <td><?php echo $current_hotspot->get_attempts(); ?></td>
                 <td><?php echo $current_hotspot->get_type_name(); ?></td>
@@ -64,14 +83,42 @@ function pano_hotspot_settings_page() {
 </table>
 <form method="POST" action="<?=$pano_editor?>&">
     <!-- word processing hook -->
-    <input type="submit" class="ui blue icon button" value="Create_Hotspot" style="padding: 7px;" />
+    <input type="submit" class="ui blue icon button" value="Create Hotspot" style="padding: 7px;" />
 </form>
 <br/>
-<a class="ui blue icon button" href="<?php echo $hotspot_types ?>" style="padding: 7px">Manage Hotspot Type</a>
 
 <script>
     jQuery(document).ready(function(){
         jQuery("#hostpotTable").tablesorter();
+
+
+        jQuery("#pano_select").change( function() {
+            filter_hotspots();
+        });
+
+        jQuery("#type_select").change( function(){
+            filter_hotspots();
+        });
+
+        function filter_hotspots() {
+            var pano = jQuery("#pano_select").prop("value");
+
+            var type = jQuery("#type_select").prop("value");
+
+
+            if (pano == "NA" && type == "NA") {
+                jQuery(".hotspot").show();
+            } else if (pano == "NA" && type != "NA") {
+                jQuery(".hotspot").hide();
+                jQuery(".type" + type).show();
+            } else if (pano != "NA" && type == "NA") {
+                jQuery(".hotspot").hide();
+                jQuery(".pano" + pano).show();
+            } else {
+                jQuery(".hotspot").hide();
+                jQuery(".pano" + pano + ".type" + type).show();
+            }
+        }
     })
 </script>
 
