@@ -40,7 +40,26 @@
   }
 </style>
 <script type="text/javascript">
-  jQuery(document).ready(function(){
+  jQuery('#form').ready(function(){
+    // Hiding oppia id on startup
+    jQuery('#oppia_input').hide();
+
+    // Displaying oppia id or hotspot url input
+    //  according to radio button selection
+    jQuery('.url_type').change(function(){
+      if(jQuery('#oppia').is(':checked')){
+        jQuery('#hotspot_url').val('');
+        jQuery('#website_input').hide();
+        jQuery('#oppia_input').show();
+        jQuery('#oppia_id').focus();
+      } else {
+        jQuery('#oppia_id').val('');
+        jQuery('#oppia_input').hide();
+        jQuery('#website_input').show();
+        jQuery('#hotspot_url').focus();
+      }
+    });
+
     // Changing hotspot type value
     //  according to user selection
     jQuery('.url_type').change(function(){
@@ -59,6 +78,36 @@
         jQuery('#hotspot_type').val('url');
       }
     });
+
+    // Displaying hotspot zoom if user chooses
+    //  visible hotspot
+    jQuery('#hotspot_icon').change(function(){
+      if(jQuery(this).is(':checked')){
+        jQuery('#zoom_input').show();
+        jQuery('#size_input').show();
+      } else {
+        jQuery('#hotspot_zoom').prop('checked', false);
+        jQuery('#zoom_input').hide();
+        jQuery('#size_value').val(125);
+        jQuery('#size_input').hide();
+      }
+    });
+
+    // Displaying hotspot menu name input
+    //  if user chooses to be visible
+    jQuery('#hotspot_menu').change(function(){
+      if(jQuery(this).is(':checked')){
+        jQuery('#menu_name_input').show();
+      } else{
+        jQuery('#hotspot_menu_name').val('');
+        jQuery('#menu_name_input').hide();
+      }
+    });
+
+    // Updating hotspot size value according to slide
+    jQuery('#hotspot_size').on('input', function(){
+      jQuery('#size_value').val(jQuery(this).val());
+    });
   });
 </script>
 <h2>Edit a Hotspot!</h2>
@@ -70,7 +119,7 @@
 <div class="error"><p>Error updating hotspot.</p></div>
 <?php endif; ?>
 
-<form method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
+<form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
   <!-- pano processing hook -->
   <input type="hidden" name="action" value="edit_hotspot" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
@@ -131,6 +180,18 @@
         </label>
       </div>
     </div>
+    <div id="website_input" class="ui form">
+      <div class="field">
+        <label for="hotspot_url">Hotspot URL</label>
+        <input type="text" id="hotspot_url" name="hotspot_url" />
+      </div>
+    </div>
+    <div id="oppia_input" class="ui form">
+      <div class="field">
+        <label for="oppia_id">Oppia ID</label>
+        <input type="text" id="oppia_id" name="oppia_id" />
+      </div>
+    </div>
     <?php endif; ?>
 
     <div class="ui form">
@@ -141,7 +202,33 @@
     </div>
     <div class="ui form">
       <div class="field">
-        <label for="hotspot_attempts">Maximum number of attempts (0 for unlimited): </label>
+        <label for="hotspot_icon">
+          <input type="checkbox" id="hotspot_icon" name="hotspot_icon" checked />
+          <span>Make hotspot icon visible</span>
+        </label>
+      </div>
+    </div>
+    <div id="size_input" class="ui form">
+      <div class="field">
+        <label for="hotspot_size">
+          <span>Hotspot size</span>
+          <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" value="125" />
+          <output for="hotspot_size" id="size_value">125</output>
+          <span> px</span>
+        </label>
+      </div>
+    </div>
+    <div id="zoom_input" class="ui form">
+      <div class="field">
+        <label for="hotspot_zoom">
+          <input type="checkbox" id="hotspot_zoom" name="hotspot_zoom" checked />
+          <span>Hotspot icon zoom with panorama</span>
+        </label>
+      </div>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <label for="hotspot_attempts">Maximum number of attempts (0 for unlimited)</label>
         <input type="number" name="hotspot_attempts" id="hotspot_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
       </div>
     </div>
