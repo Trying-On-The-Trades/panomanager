@@ -125,9 +125,7 @@
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
-  <input type="hidden" name="hotspot_modal_url" id="hotspot_modal_url" value="<?php echo $hotspot->get_modal_url(); ?>" />
   <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
-  <textarea style="display:none;" name="hotspot_description" > <?php echo $hotspot->get_description() ?> </textarea>
   <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
   <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
   <div class="ui form segment new_pano_form">

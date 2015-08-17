@@ -137,8 +137,8 @@ if($deck_id){
         </div>
         <div class="ui form">
           <div class="field">
-            <label for="hotspot_description">Hotspot Info</label>
-            <textarea rows="4" id="hotspot_description" name="hotspot_description" required ></textarea>
+            <label for="hotspot_info">Hotspot Info</label>
+            <textarea rows="4" id="hotspot_info" name="hotspot_info" required ></textarea>
           </div>
         </div>
         <div class="ui form">
