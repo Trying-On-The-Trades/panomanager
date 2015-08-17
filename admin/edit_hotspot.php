@@ -226,8 +226,8 @@
     </div>
     <div class="ui form">
       <div class="field">
-        <label for="hotspot_attempts">Maximum number of attempts (0 for unlimited)</label>
-        <input type="number" name="hotspot_attempts" id="hotspot_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
+        <label for="max_attempts">Maximum number of attempts (0 for unlimited)</label>
+        <input type="number" name="max_attempts" id="max_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
       </div>
     </div>
     <?php submit_button(); ?>

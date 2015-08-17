@@ -846,7 +846,7 @@ function process_edit_hotspot(){
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
-    $hotspot_attempts    = $_POST['hotspot_attempts'];
+    $max_attempts        = $_POST['max_attempts'];
     $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
     $hotspot_description = '';
     $hotspot_modal_url   = '';
@@ -854,7 +854,7 @@ function process_edit_hotspot(){
     $type_id = get_hotspot_type_id($hotspot_type);
 
     // Get the id
-    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&settings-saved') );
