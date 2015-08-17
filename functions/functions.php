@@ -482,10 +482,12 @@ function process_new_pano(){
 
     $quest_id = create_quest($pano_id);
 
-    create_mission( $pano_title , $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, 1, $quest_id, 0);
+    $mission_exists = get_mission($pano_id);
 
-
-
+    if(!isset($mission_exists)) {
+        $id = create_mission($pano_title, $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, "NA", $quest_id, 0);
+        fix_mission_id($id, $pano_id);
+    }
 
     create_prereq($pano_id, 0, NULL , NULL);
 
@@ -571,20 +573,55 @@ function process_new_hotspot_ajax(){
     $mission_id          = $_POST['mission_id'];
     $hotspot_x           = $_POST['hotspot_x'];
     $hotspot_y           = $_POST['hotspot_y'];
-    $type_id             = '3';
     $hotspot_name        = $_POST['hotspot_name'];
-    $hotspot_menu_name   = $_POST['hotspot_name'];
-    $hotspot_description = trim($_POST['hotspot_description']);
-    $hotspot_info        = trim($_POST['hotspot_description']);
+    $hotspot_menu_name   = $_POST['hotspot_menu_name'];
+    $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_icon        = $_POST['hotspot_icon'];
     $hotspot_menu        = $_POST['hotspot_menu'];
+    $hotspot_type        = $_POST['hotspot_type'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
+    $size                = $_POST['size'];
+    $hotspot_zoom        = $_POST['hotspot_zoom'];
+    $max_attempts        = $_POST['max_attempts'];
+    $hotspot_description = '';
+
+    $type_id = get_hotspot_type_id($hotspot_type);
+
+    if(!empty($size)){
+      $width = $size;
+      $height = $size;
+    } else {
+      $width = 125;
+      $heith = 125;
+    }
+
+    if(empty($hotspot_zoom)){
+      $zoom = 'false';
+    } else {
+      $zoom = $hotspot_zoom;
+    }
 
     if($hotspot_icon == 'true'){
-        $image = 'url="info.png"';
+        if($game_type == "website"){
+          $image = 'url="../../plugins/panomanager/images/website.png"';
+        }
+        else if($game_type == "image"){
+          $image = 'url="../../plugins/panomanager/images/image.png"';
+        }
+        else if($game_type == "video"){
+          $image = 'url="../../plugins/panomanager/images/video.png"';
+        }
+        else{
+          if(!empty($oppia_id)){
+            $image = 'url="../../plugins/panomanager/images/oppia.png"';
+          }
+          else{
+            $image = 'url="../../plugins/panomanager/images/info.png"';
+          }
+        }
     }else{
-        $image = 'url="Blank.png"';
+        $image = 'url="../../plugins/panomanager/images/blank.png"';
     }
 
     if($hotspot_menu == 'true'){
@@ -600,20 +637,18 @@ function process_new_hotspot_ajax(){
     $hotspot_xml = "";
     $hotspot_action_xml = "";
     $hotspot_points      = $_POST['hotspot_points'];
-    $hotspot_attempts    = '0';
     $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
     $hotspot_modal_url   = '';
 
     $deck_id = $_POST['deck_id'];
     $item_id = $_POST['item_id'];
 
-
     // Get the id
-    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
+    $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
     $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
-        ' width="150" height="128" scale="0.425" zoom="true"'	.
+        ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
     if($game_type == "website"){
@@ -647,7 +682,7 @@ function process_new_hotspot_ajax(){
 
 
     update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info,
-        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+        $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     echo $hotspot_id;
 
@@ -803,21 +838,23 @@ function process_edit_hotspot(){
 
     // Create a new hotspot using the post data
     $mission_id          = $_POST['mission_id'];
-    $type_id             = $_POST['type_id'];
     $hotspot_id          = $_POST['hotspot_id'];
     $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_type        = $_POST['hotspot_type'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
-    $hotspot_description = trim($_POST['hotspot_description']);
     $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
     $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
-    $hotspot_attempts    = $_POST['hotspot_attempts'];
-    $hotspot_domain_id    = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
-    $hotspot_modal_url   = $_POST['hotspot_modal_url'];
+    $max_attempts        = $_POST['max_attempts'];
+    $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
+    $hotspot_description = '';
+    $hotspot_modal_url   = '';
+
+    $type_id = get_hotspot_type_id($hotspot_type);
 
     // Get the id
-    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $hotspot_attempts, $hotspot_domain_id, $hotspot_modal_url);
+    $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url);
 
     if($return){
         wp_redirect( admin_url( 'admin.php?page=pano_hotspot_settings&settings-saved') );

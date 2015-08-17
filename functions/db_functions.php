@@ -237,13 +237,15 @@ function get_hotspots(){
     $hotspot_table_name      = get_hotspot_table_name();
     $hotspot_type_table_name = get_type_table_name();
     $mission_text_table_name = get_mission_text_table_name();
+    $mission_table_name      = get_mission_table_name();
 
     // DB query
     $hotspots = $wpdb->get_results(
-        "SELECT wph.*, wpmt.name as mission_name, wpht.name as type_name FROM " . $hotspot_table_name . " wph " .
+        "SELECT wph.*, wpmt.name as mission_name, wpht.name as type_name, wpm.pano_id FROM " . $hotspot_table_name . " wph " .
         "INNER JOIN " . $hotspot_type_table_name . " wpht ON wpht.id = wph.type_id " .
         "INNER JOIN " . $mission_text_table_name . " wpmt ON wpmt.mission_id = wph.mission_id " .
-        " ORDER BY id ASC");
+        "INNER JOIN " . $mission_table_name . " wpm ON wpm.id  = wph.mission_id " .
+        " ORDER BY wpm.pano_id, wph.id ASC");
 
     // Return
     return $hotspots;
@@ -306,7 +308,7 @@ function get_hotspot($hotspot_id){
 
     // DB query
     $mission = $wpdb->get_row( $wpdb->prepare(
-        "SELECT wph.*, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
+        "SELECT wph.*, wpht.id type_id, wpht.name type_name, wpht.description type_description, wpht.js_function type_js_function FROM " .
         $hotspot_table_name . " wph " .
         "INNER JOIN " . $hotspot_type_table_name . " wpht ON " .
         " wph.`type_id` = wpht.`id` " .
@@ -338,6 +340,21 @@ function get_hotspot_type($hotspot_type_id){
     );
 
     return $hotspot_type;
+}
+
+function get_hotspot_type_id($hotspot_type){
+  global $wpdb;
+  $hotspot_type_table_name = get_type_table_name();
+
+  $hotspot_type_id = $wpdb->get_var(
+    "SELECT id FROM ". $hotspot_type_table_name . " WHERE name LIKE '" . "$hotspot_type' LIMIT 1"
+);
+
+  if(empty($hotspot_type_id)){
+    $hotspot_type_id = '1';
+  }
+
+  return $hotspot_type_id;
 }
 
 function get_domain($domain_id){
@@ -1539,4 +1556,12 @@ function delete_hotspot_completed($hotspot_id, $user_id){
     $hotspot_completed_table = get_hotspot_completed_table_name();
 
     $wpdb->delete($hotspot_completed_table, array('hotspot_id' => $hotspot_id, 'user_id' => $user_id));
+}
+
+function fix_mission_id($id, $new_id){
+    global $wpdb;
+
+    $mission_table = get_mission_table_name();
+
+    $wpdb->update($mission_table, array('id' => $new_id), array('id' => $id));
 }
