@@ -89,6 +89,7 @@
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
         jQuery('#size_value').val(125);
+        jQuery('#hotspot_size').val(125);
         jQuery('#size_input').hide();
       }
     });
@@ -105,8 +106,9 @@
     });
 
     // Updating hotspot size value according to slide
-    jQuery('#hotspot_size').on('input', function(){
+    jQuery('#hotspot_front_size').on('input', function(){
       jQuery('#size_value').val(jQuery(this).val());
+      jQuery('#hotspot_size').val(jQuery(this).val());
     });
   });
 </script>
@@ -126,6 +128,7 @@
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
   <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
+  <input type="hidden" id="hotspot_size" name="hotspot_size" value="125" />
   <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
   <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
   <div class="ui form segment new_pano_form">
@@ -152,7 +155,7 @@
     <div class="ui form">
       <div class="field">
         <label for="hotspot_menu_name">Hotspot Menu Text</label>
-        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" required />
+        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" />
       </div>
     </div>
 
@@ -208,10 +211,10 @@
     </div>
     <div id="size_input" class="ui form">
       <div class="field">
-        <label for="hotspot_size">
+        <label for="hotspot_front_size">
           <span>Hotspot size</span>
-          <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" value="125" />
-          <output for="hotspot_size" id="size_value">125</output>
+          <input type="range" id="hotspot_front_size" name="hotspot_front_size" min="1" max="500" step="1" value="125" />
+          <output for="hotspot_front_size" id="size_value">125</output>
           <span> px</span>
         </label>
       </div>
