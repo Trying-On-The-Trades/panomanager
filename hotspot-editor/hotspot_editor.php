@@ -93,6 +93,7 @@ if($deck_id){
           jQuery('#zoom_input').hide();
           jQuery('#size_value').val(125);
           jQuery('#hotspot_size').val(125);
+          jQuery('#hotspot_front_size').val(125);
           jQuery('#size_input').hide();
         }
       });
