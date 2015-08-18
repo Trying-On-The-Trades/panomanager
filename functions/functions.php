@@ -613,18 +613,23 @@ function process_new_hotspot_ajax(){
         if($hotspot_type == 'website'){
           $image = 'url="../../plugins/panomanager/images/website.png"';
         }
-        else if($hotspot_type == 'image'){
+        elseif($hotspot_type == 'image'){
           $image = 'url="../../plugins/panomanager/images/image.png"';
         }
-        else if($hotspot_type == 'video'){
+        elseif($hotspot_type == 'video'){
           $image = 'url="../../plugins/panomanager/images/video.png"';
         }
+        elseif($hotspot_type == 'oppia'){
+          $image = 'url="../../plugins/panomanager/images/oppia.png"';
+        }
+        elseif($hotspot_type == 'item'){
+          $image = 'url="../../plugins/panomanager/images/item.png"';
+        }
+        elseif($hotspot_type == 'game'){
+          $image = 'url="../../plugins/panomanager/images/game.png"';
+        }
         else {
-          if(!empty($oppia_id)){
-            $image = 'url="../../plugins/panomanager/images/oppia.png"';
-          } else {
-            $image = 'url="../../plugins/panomanager/images/info.png"';
-          }
+          $image = 'url="../../plugins/panomanager/images/info.png"';
         }
     } else {
         $image = 'url="../../plugins/panomanager/images/blank.png"';
@@ -876,22 +881,27 @@ function process_edit_hotspot(){
       if($hotspot_type == 'website'){
         $image = 'url="../../plugins/panomanager/images/website.png"';
       }
-      else if($hotspot_type == 'image'){
+      elseif($hotspot_type == 'image'){
         $image = 'url="../../plugins/panomanager/images/image.png"';
       }
-      else if($hotspot_type == 'video'){
+      elseif($hotspot_type == 'video'){
         $image = 'url="../../plugins/panomanager/images/video.png"';
       }
-      else {
-        if(!empty($oppia_id)){
-          $image = 'url="../../plugins/panomanager/images/oppia.png"';
-        } else {
-          $image = 'url="../../plugins/panomanager/images/info.png"';
-        }
+      elseif($hotspot_type == 'oppia'){
+        $image = 'url="../../plugins/panomanager/images/oppia.png"';
       }
-    } else {
+      elseif($hotspot_type == 'item'){
+        $image = 'url="../../plugins/panomanager/images/item.png"';
+      }
+      elseif($hotspot_type == 'game'){
+        $image = 'url="../../plugins/panomanager/images/game.png"';
+      }
+      else {
+        $image = 'url="../../plugins/panomanager/images/info.png"';
+      }
+  } else {
       $image = 'url="../../plugins/panomanager/images/blank.png"';
-    }
+  }
 
     if($hotspot_menu == 'true'){
       $menu_item = '1';
