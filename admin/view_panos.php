@@ -18,7 +18,6 @@ function view_panos_settings_page() {
     <div class="ui form segment new_word_form">
        <div class="ui form">
         <div class="field">
-            <label>Choose a deck:</label>
             <select name="panos" id="pano_id">
 				 <option value="NA">Select a Pano</option>
 
