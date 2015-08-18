@@ -60,45 +60,7 @@
       }
     });
 
-      // Get string xml and convert
-      var xml_hotspot_string    = jQuery('#hotspot_xml').val();
-      var xml_hotspot_Doc       = jQuery.parseXML(xml_hotspot_string);
-
-      var xml_action_string    = jQuery('#hotspot_action_xml').val();
-      var xml_action_Doc       = jQuery.parseXML(xml_action_string);
-
-      // Get action tag
-      var hotspot       = xml_hotspot_Doc.getElementsByTagName("hotspot")[0];
-      var hotspot_zoom  = hotspot.getAttribute("zoom");
-
-      if(hotspot_zoom == null || hotspot_zoom == ""){
-          hotspot_zoom = true;
-      }
-
-      $("#hotspot_zoom").prop('checked', hotspot_zoom);
-
-      var hotspot_size  = hotspot.getAttribute("width");
-
-      var action       = xml_action_Doc.getElementsByTagName("action")[0];
-
-      // Get action tag content
-      var action_cotent = action.innerHTML;
-
-      var url     = action_cotent.substr(3);
-      url = url.substr(url.indexOf("(") + 1);
-      url = url.substr(url.indexOf(",") + 1);
-      url = url.substr(0, url.indexOf(')'));
-
-      var reg       = new RegExp('"', 'g');
-      var reg_space = new RegExp(' ', 'g');
-
-      url = url.replace(reg, '');
-      url = url.replace(reg_space, '');
-
-      $("#hotspot_url").val(url);
-
-
-      // Changing hotspot type value
+    // Changing hotspot type value
     //  according to user selection
     jQuery('.url_type').change(function(){
       if(jQuery('#website').is(':checked')){
@@ -127,6 +89,8 @@
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
         jQuery('#size_value').val(125);
+        jQuery('#hotspot_size').val(125);
+        jQuery('#hotspot_front_size').val(125);
         jQuery('#size_input').hide();
       }
     });
@@ -143,8 +107,9 @@
     });
 
     // Updating hotspot size value according to slide
-    jQuery('#hotspot_size').on('input', function(){
+    jQuery('#hotspot_front_size').on('input', function(){
       jQuery('#size_value').val(jQuery(this).val());
+      jQuery('#hotspot_size').val(jQuery(this).val());
     });
   });
 </script>
@@ -164,8 +129,9 @@
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
   <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
-  <textarea style="display:none;" name="hotspot_xml" id="hotspot_xml"> <?php echo $hotspot->get_xml() ?> </textarea>
-  <textarea style="display:none;" name="hotspot_action_xml" id="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
+  <input type="hidden" id="hotspot_size" name="hotspot_size" value="125" />
+  <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
+  <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
   <div class="ui form segment new_pano_form">
     <div class="ui form">
       <div class="field">
@@ -190,7 +156,7 @@
     <div class="ui form">
       <div class="field">
         <label for="hotspot_menu_name">Hotspot Menu Text</label>
-        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" required />
+        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" />
       </div>
     </div>
 
@@ -246,10 +212,10 @@
     </div>
     <div id="size_input" class="ui form">
       <div class="field">
-        <label for="hotspot_size">
+        <label for="hotspot_front_size">
           <span>Hotspot size</span>
-          <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" value="125" />
-          <output for="hotspot_size" id="size_value">125</output>
+          <input type="range" id="hotspot_front_size" name="hotspot_front_size" min="1" max="500" step="1" value="125" />
+          <output for="hotspot_front_size" id="size_value">125</output>
           <span> px</span>
         </label>
       </div>
@@ -264,8 +230,8 @@
     </div>
     <div class="ui form">
       <div class="field">
-        <label for="hotspot_attempts">Maximum number of attempts (0 for unlimited)</label>
-        <input type="number" name="hotspot_attempts" id="hotspot_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
+        <label for="max_attempts">Maximum number of attempts (0 for unlimited)</label>
+        <input type="number" name="max_attempts" id="max_attempts" value="<?php echo $hotspot->get_attempts() ?>" required />
       </div>
     </div>
     <?php submit_button(); ?>
