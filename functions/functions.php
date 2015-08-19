@@ -877,7 +877,7 @@ function process_edit_hotspot(){
       $zoom = 'true';
     }
 
-    if($hotspot_icon == 'true'){
+    if($hotspot_icon == 'on'){
       if($hotspot_type == 'website'){
         $image = 'url="../../plugins/panomanager/images/website.png"';
       }
