@@ -850,7 +850,7 @@ function process_edit_hotspot(){
     $max_attempts        = $_POST['max_attempts'];
     $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == 'NA') ? null : $_POST['hotspot_domain_id'];
     $hotspot_icon        = $_POST['hotspot_icon'];
-    $size                = $_POST['size'];
+    $size                = $_POST['hotspot_front_size'];
     $hotspot_zoom        = $_POST['hotspot_zoom'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];

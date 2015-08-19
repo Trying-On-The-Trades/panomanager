@@ -91,6 +91,7 @@
 
       jQuery('#hotspot_size').val(hotspot_size);
       jQuery('#hotspot_front_size').val(hotspot_size);
+      jQuery('#size_value').val(hotspot_size);
 
       var action       = xml_action_Doc.getElementsByTagName("action")[0];
 
@@ -140,9 +141,9 @@
       } else {
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
-        jQuery('#size_value').val(125);
-        jQuery('#hotspot_size').val(125);
-        jQuery('#hotspot_front_size').val(125);
+//        jQuery('#size_value').val(125);
+//        jQuery('#hotspot_size').val(125);
+//        jQuery('#hotspot_front_size').val(125);
         jQuery('#size_input').hide();
       }
     });
@@ -184,7 +185,6 @@
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
   <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
-  <input type="hidden" id="hotspot_size" name="hotspot_size" value="125" />
   <textarea style="display:none;" name="hotspot_xml" id="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
   <textarea style="display:none;" name="hotspot_action_xml" id="hotspot_action_xml"> <?php echo $hotspot->get_action_xml() ?></textarea>
   <div class="ui form segment new_pano_form">
