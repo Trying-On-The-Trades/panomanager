@@ -386,6 +386,16 @@ function get_pano_prereq($pano_id){
     return $prereq;
 }
 
+function get_pano_info($pano_id){
+  global $wpdb;
+
+  $pano_text_table_name = get_pano_text_table_name();
+
+  $pano_info = $wpdb->get_var("SELECT description FROM " . $pano_text_table_name . " WHERE pano_id = " . $pano_id);
+
+  return $pano_info;
+}
+
 function check_if_user_has_item($user_id, $item_id){
     global $wpdb;
     $purchases_table = get_purchases_table_name();
