@@ -412,3 +412,7 @@ function updateLastHotspot(hot_id){
     lastHotspot = hot_id;
   }
 }
+
+function loadPanoInfo(){
+    $.featherlight('../wp-content/plugins/panomanager/js/featherlight/pano_info.php', null, false);
+}
