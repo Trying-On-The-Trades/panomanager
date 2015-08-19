@@ -856,6 +856,8 @@ function process_edit_hotspot(){
     $oppia_id            = $_POST['oppia_id'];
     $deck_id             = $_POST['deck_id'];
     $item_id             = $_POST['item_id'];
+    $hotspot_x             = $_POST['hotspot_x'];
+    $hotspot_y             = $_POST['hotspot_y'];
     $hotspot_xml         = '';
     $hotspot_action_xml  = '';
     $hotspot_description = '';

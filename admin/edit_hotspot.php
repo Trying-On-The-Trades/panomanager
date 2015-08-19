@@ -87,6 +87,8 @@
           hotspot_size = 125;
       }
 
+      $("#size").val(hotspot_size);
+
       jQuery('#hotspot_size').val(hotspot_size);
       jQuery('#hotspot_front_size').val(hotspot_size);
 
@@ -177,6 +179,7 @@
   <input type="hidden" name="action" value="edit_hotspot" />
     <input type="hidden" name="hotspot_x" id="hotspot_x" value="" />
     <input type="hidden" name="hotspot_y" id="hotspot_y" value="" />
+    <input type="hidden" name="size" id="size" value="" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
