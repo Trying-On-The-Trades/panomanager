@@ -71,11 +71,15 @@
       var hotspot       = xml_hotspot_Doc.getElementsByTagName("hotspot")[0];
       var hotspot_zoom  = hotspot.getAttribute("zoom");
 
-      if(hotspot_zoom == null || hotspot_zoom == ""){
-          hotspot_zoom = true;
-      }
+      hotspot_zoom = (hotspot_zoom == "false" ? false : true);
 
       $("#hotspot_zoom").prop('checked', hotspot_zoom);
+
+      var hotspot_x     = hotspot.getAttribute("ath");
+      $("#hotspot_x").val(hotspot_x);
+
+      var hotspot_y     = hotspot.getAttribute("atv");
+      $("#hotspot_y").val(hotspot_y);
 
       var hotspot_size  = hotspot.getAttribute("width");
 
@@ -171,6 +175,8 @@
 <form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
   <!-- pano processing hook -->
   <input type="hidden" name="action" value="edit_hotspot" />
+    <input type="hidden" name="hotspot_x" id="hotspot_x" value="" />
+    <input type="hidden" name="hotspot_y" id="hotspot_y" value="" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
