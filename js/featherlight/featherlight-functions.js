@@ -335,6 +335,22 @@ function loadOppia(hot_id, oppia_id, award_points, base_points, timer, bonus_poi
 }
 
 /*
+  Opens a pop-up with the panorama information, hiding the inside info button.
+*/
+function loadPanoInfo(){
+  var panoInfoPath = '../wp-content/plugins/panomanager/js/featherlight/pano_info.php';
+  var size = getClientBrowserSize();
+  var width = parseInt(size[0] * 0.8);
+  var height = parseInt(size[1] * 0.8);
+
+  hideInfoIcon = function(){
+    jQuery('#info_hotspot').hide();
+  }
+
+  $.featherlight({iframe: panoInfoPath, iframeWidth: width, iframeHeight: height, afterOpen: hideInfoIcon});
+}
+
+/*
   Opens a pop-up with the item to be sold. If purchase is successful, a toast message will be displayed.
   Parameters:
   - hot_id (Hotspot id)
@@ -411,8 +427,4 @@ function updateLastHotspot(hot_id){
   if(hot_id > 0){
     lastHotspot = hot_id;
   }
-}
-
-function loadPanoInfo(){
-    $.featherlight('../wp-content/plugins/panomanager/js/featherlight/pano_info.php', null, false);
 }
