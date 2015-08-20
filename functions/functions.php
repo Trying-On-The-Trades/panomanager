@@ -574,17 +574,24 @@ function process_new_hotspot_ajax(){
     $hotspot_x           = $_POST['hotspot_x'];
     $hotspot_y           = $_POST['hotspot_y'];
     $hotspot_name        = $_POST['hotspot_name'];
+    $hotspot_menu        = $_POST['hotspot_menu'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_info        = trim($_POST['hotspot_info']);
     $hotspot_icon        = $_POST['hotspot_icon'];
-    $hotspot_menu        = $_POST['hotspot_menu'];
     $hotspot_type        = $_POST['hotspot_type'];
+    $hotspot_domain_id = ($_POST['domain_id'] == 'NA') ? null : $_POST['domain_id'];
     $game_type           = $_POST['game_type'];
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];
     $hotspot_zoom        = $_POST['hotspot_zoom'];
+    $hotspot_points      = $_POST['hotspot_points'];
     $max_attempts        = $_POST['max_attempts'];
+    $deck_id             = $_POST['deck_id'];
+    $item_id             = $_POST['item_id'];
+    $hotspot_xml         = '';
+    $hotspot_action_xml  = '';
     $hotspot_description = '';
+    $hotspot_modal_url   = '';
 
     $type_id = get_hotspot_type_id($hotspot_type);
 
@@ -593,74 +600,69 @@ function process_new_hotspot_ajax(){
       $height = $size;
     } else {
       $width = 125;
-      $heith = 125;
+      $height = 125;
     }
 
     if(empty($hotspot_zoom)){
       $zoom = 'false';
     } else {
-      $zoom = $hotspot_zoom;
+      $zoom = 'true';
     }
 
     if($hotspot_icon == 'true'){
-        if($game_type == "website"){
+        if($hotspot_type == 'website'){
           $image = 'url="../../plugins/panomanager/images/website.png"';
         }
-        else if($game_type == "image"){
+        elseif($hotspot_type == 'image'){
           $image = 'url="../../plugins/panomanager/images/image.png"';
         }
-        else if($game_type == "video"){
+        elseif($hotspot_type == 'video'){
           $image = 'url="../../plugins/panomanager/images/video.png"';
         }
-        else{
-          if(!empty($oppia_id)){
-            $image = 'url="../../plugins/panomanager/images/oppia.png"';
-          }
-          else{
-            $image = 'url="../../plugins/panomanager/images/info.png"';
-          }
+        elseif($hotspot_type == 'oppia'){
+          $image = 'url="../../plugins/panomanager/images/oppia.png"';
         }
-    }else{
+        elseif($hotspot_type == 'item'){
+          $image = 'url="../../plugins/panomanager/images/item.png"';
+        }
+        elseif($hotspot_type == 'game'){
+          $image = 'url="../../plugins/panomanager/images/game.png"';
+        }
+        else {
+          $image = 'url="../../plugins/panomanager/images/info.png"';
+        }
+    } else {
         $image = 'url="../../plugins/panomanager/images/blank.png"';
     }
 
     if($hotspot_menu == 'true'){
         $menu_item = '1';
-    }else{
+    } else {
         $menu_item = '0';
     }
 
-    if($game_type == "website" || $game_type == "image" || $game_type == "video"){
+    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
         $url = $_POST['hotspot_url'];
     }
-
-    $hotspot_xml = "";
-    $hotspot_action_xml = "";
-    $hotspot_points      = $_POST['hotspot_points'];
-    $hotspot_domain_id    = ($_POST['domain_id'] == "NA") ? null : $_POST['domain_id'];
-    $hotspot_modal_url   = '';
-
-    $deck_id = $_POST['deck_id'];
-    $item_id = $_POST['item_id'];
 
     // Get the id
     $hotspot_id = create_hotspot_ajax($mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url, $menu_item);
 
-    $hotspot_xml         = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
+    $hotspot_xml = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
         ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
         ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
-    if($game_type == "website"){
+    if($hotspot_type == 'website'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
-    }elseif($game_type == "image"){
+    }elseif($hotspot_type == 'image'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
 
-    }elseif($game_type == "video"){
+    }elseif($hotspot_type == 'video'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
@@ -841,17 +843,111 @@ function process_edit_hotspot(){
     $hotspot_id          = $_POST['hotspot_id'];
     $hotspot_name        = $_POST['hotspot_name'];
     $hotspot_type        = $_POST['hotspot_type'];
+    $hotspot_menu        = $_POST['hotspot_menu'];
     $hotspot_menu_name   = $_POST['hotspot_menu_name'];
     $hotspot_info        = trim($_POST['hotspot_info']);
-    $hotspot_xml         = trim(stripslashes($_POST['hotspot_xml']));
-    $hotspot_action_xml  = trim(stripslashes($_POST['hotspot_action_xml']));
     $hotspot_points      = $_POST['hotspot_points'];
     $max_attempts        = $_POST['max_attempts'];
-    $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == "NA") ? null : $_POST['hotspot_domain_id'];
+    $hotspot_domain_id   = ($_POST['hotspot_domain_id'] == 'NA') ? null : $_POST['hotspot_domain_id'];
+    $hotspot_icon        = $_POST['hotspot_icon'];
+    $size                = $_POST['hotspot_front_size'];
+    $hotspot_zoom        = $_POST['hotspot_zoom'];
+    $game_type           = $_POST['game_type'];
+    $oppia_id            = $_POST['oppia_id'];
+    $deck_id             = $_POST['deck_id'];
+    $item_id             = $_POST['item_id'];
+    $hotspot_x             = $_POST['hotspot_x'];
+    $hotspot_y             = $_POST['hotspot_y'];
+    $hotspot_xml         = '';
+    $hotspot_action_xml  = '';
     $hotspot_description = '';
     $hotspot_modal_url   = '';
 
     $type_id = get_hotspot_type_id($hotspot_type);
+
+    if(!empty($size)){
+      $width = $size;
+      $height = $size;
+    } else {
+      $width = 125;
+      $height = 125;
+    }
+
+    if(empty($hotspot_zoom)){
+      $zoom = 'false';
+    } else {
+      $zoom = 'true';
+    }
+
+    if($hotspot_icon == 'on'){
+      if($hotspot_type == 'website'){
+        $image = 'url="../../plugins/panomanager/images/website.png"';
+      }
+      elseif($hotspot_type == 'image'){
+        $image = 'url="../../plugins/panomanager/images/image.png"';
+      }
+      elseif($hotspot_type == 'video'){
+        $image = 'url="../../plugins/panomanager/images/video.png"';
+      }
+      elseif($hotspot_type == 'oppia'){
+        $image = 'url="../../plugins/panomanager/images/oppia.png"';
+      }
+      elseif($hotspot_type == 'item'){
+        $image = 'url="../../plugins/panomanager/images/item.png"';
+      }
+      elseif($hotspot_type == 'game'){
+        $image = 'url="../../plugins/panomanager/images/game.png"';
+      }
+      else {
+        $image = 'url="../../plugins/panomanager/images/info.png"';
+      }
+  } else {
+      $image = 'url="../../plugins/panomanager/images/blank.png"';
+  }
+
+    if($hotspot_menu == 'true'){
+      $menu_item = '1';
+    } else {
+      $menu_item = '0';
+    }
+
+    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
+      $url = $_POST['hotspot_url'];
+    }
+
+    $hotspot_xml = '<hotspot name="' . $hotspot_name . "_" . $hotspot_id . '" ' . $image .
+        ' ath="'. $hotspot_x .'" atv="' . $hotspot_y . '"' .
+        ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
+        ' onclick="function_' . $hotspot_id . '"/>';
+
+    if($hotspot_type == 'website'){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+    }elseif($hotspot_type == 'image'){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+
+    }elseif($hotspot_type == 'video'){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
+            '</action>';
+
+    }elseif(is_numeric($deck_id)){
+        $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
+            '</action>';
+    }elseif(strlen(trim($oppia_id)) > 0) {
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadOppia(' . $hotspot_id . ', ' . $oppia_id . '));' .
+            '</action>';
+    }
+    else{
+        $hotspot_action_xml = '<action name="function_' . $hotspot_id . '">' .
+            'js(loadShopItem(' . $hotspot_id . ', ' . $item_id . '));' .
+            '</action>';
+    }
 
     // Get the id
     $return = update_hotspot($hotspot_id, $mission_id, $type_id, $hotspot_name, $hotspot_menu_name, $hotspot_description, $hotspot_info, $hotspot_xml, $hotspot_action_xml, $hotspot_points, $max_attempts, $hotspot_domain_id, $hotspot_modal_url);

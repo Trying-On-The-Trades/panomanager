@@ -60,7 +60,60 @@
       }
     });
 
-    // Changing hotspot type value
+      // Get string xml and convert
+      var xml_hotspot_string    = jQuery('#hotspot_xml').val();
+      var xml_hotspot_Doc       = jQuery.parseXML(xml_hotspot_string);
+
+      var xml_action_string    = jQuery('#hotspot_action_xml').val();
+      var xml_action_Doc       = jQuery.parseXML(xml_action_string);
+
+      // Get action tag
+      var hotspot       = xml_hotspot_Doc.getElementsByTagName("hotspot")[0];
+      var hotspot_zoom  = hotspot.getAttribute("zoom");
+
+      hotspot_zoom = (hotspot_zoom == "false" ? false : true);
+
+      $("#hotspot_zoom").prop('checked', hotspot_zoom);
+
+      var hotspot_x     = hotspot.getAttribute("ath");
+      $("#hotspot_x").val(hotspot_x);
+
+      var hotspot_y     = hotspot.getAttribute("atv");
+      $("#hotspot_y").val(hotspot_y);
+
+      var hotspot_size  = hotspot.getAttribute("width");
+
+      if(hotspot_size == null || hotspot_size == ""){
+          hotspot_size = 125;
+      }
+
+      $("#size").val(hotspot_size);
+
+      jQuery('#hotspot_size').val(hotspot_size);
+      jQuery('#hotspot_front_size').val(hotspot_size);
+      jQuery('#size_value').val(hotspot_size);
+
+      var action       = xml_action_Doc.getElementsByTagName("action")[0];
+
+      // Get action tag content
+      var action_cotent = action.innerHTML;
+
+      // Get url
+      var url = action_cotent.substr(3);
+      url     = url.substr(url.indexOf("(") + 1);
+      url     = url.substr(url.indexOf(",") + 1);
+      url     = url.substr(0, url.indexOf(')'));
+
+      var reg       = new RegExp('"', 'g');
+      var reg_space = new RegExp(' ', 'g');
+
+      url = url.replace(reg, '');
+      url = url.replace(reg_space, '');
+
+      $("#hotspot_url").val(url);
+
+
+      // Changing hotspot type value
     //  according to user selection
     jQuery('.url_type').change(function(){
       if(jQuery('#website').is(':checked')){
@@ -88,7 +141,9 @@
       } else {
         jQuery('#hotspot_zoom').prop('checked', false);
         jQuery('#zoom_input').hide();
-        jQuery('#size_value').val(125);
+//        jQuery('#size_value').val(125);
+//        jQuery('#hotspot_size').val(125);
+//        jQuery('#hotspot_front_size').val(125);
         jQuery('#size_input').hide();
       }
     });
@@ -105,8 +160,9 @@
     });
 
     // Updating hotspot size value according to slide
-    jQuery('#hotspot_size').on('input', function(){
+    jQuery('#hotspot_front_size').on('input', function(){
       jQuery('#size_value').val(jQuery(this).val());
+      jQuery('#hotspot_size').val(jQuery(this).val());
     });
   });
 </script>
@@ -122,12 +178,15 @@
 <form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
   <!-- pano processing hook -->
   <input type="hidden" name="action" value="edit_hotspot" />
+    <input type="hidden" name="hotspot_x" id="hotspot_x" value="" />
+    <input type="hidden" name="hotspot_y" id="hotspot_y" value="" />
+    <input type="hidden" name="size" id="size" value="" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
   <input type="hidden" id="hotspot_type" name="hotspot_type" value="<?= $hotspot_type ?>" />
-  <textarea style="display:none;" name="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
-  <textarea style="display:none;" name="hotspot_action_xml" > <?php echo $hotspot->get_action_xml() ?></textarea>
+  <textarea style="display:none;" name="hotspot_xml" id="hotspot_xml" > <?php echo $hotspot->get_xml() ?> </textarea>
+  <textarea style="display:none;" name="hotspot_action_xml" id="hotspot_action_xml"> <?php echo $hotspot->get_action_xml() ?></textarea>
   <div class="ui form segment new_pano_form">
     <div class="ui form">
       <div class="field">
@@ -152,7 +211,7 @@
     <div class="ui form">
       <div class="field">
         <label for="hotspot_menu_name">Hotspot Menu Text</label>
-        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" required />
+        <input type="text" name="hotspot_menu_name" id="name" value="<?php echo $hotspot->get_menu_name() ?>" />
       </div>
     </div>
 
@@ -208,10 +267,10 @@
     </div>
     <div id="size_input" class="ui form">
       <div class="field">
-        <label for="hotspot_size">
+        <label for="hotspot_front_size">
           <span>Hotspot size</span>
-          <input type="range" id="hotspot_size" name="hotspot_size" min="1" max="500" step="1" value="125" />
-          <output for="hotspot_size" id="size_value">125</output>
+          <input type="range" id="hotspot_front_size" name="hotspot_front_size" min="1" max="500" step="1" value="125" />
+          <output for="hotspot_front_size" id="size_value">125</output>
           <span> px</span>
         </label>
       </div>
