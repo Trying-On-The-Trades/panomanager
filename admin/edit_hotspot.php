@@ -41,25 +41,6 @@
 </style>
 <script type="text/javascript">
   jQuery('#form').ready(function(){
-    // Hiding oppia id on startup
-    jQuery('#oppia_input').hide();
-
-    // Displaying oppia id or hotspot url input
-    //  according to radio button selection
-    jQuery('.url_type').change(function(){
-      if(jQuery('#oppia').is(':checked')){
-        jQuery('#hotspot_url').val('');
-        jQuery('#website_input').hide();
-        jQuery('#oppia_input').show();
-        jQuery('#oppia_id').focus();
-      } else {
-        jQuery('#oppia_id').val('');
-        jQuery('#oppia_input').hide();
-        jQuery('#website_input').show();
-        jQuery('#hotspot_url').focus();
-      }
-    });
-
       // Get string xml and convert
       var xml_hotspot_string    = jQuery('#hotspot_xml').val();
       var xml_hotspot_Doc       = jQuery.parseXML(xml_hotspot_string);
@@ -110,8 +91,33 @@
       url = url.replace(reg, '');
       url = url.replace(reg_space, '');
 
-      $("#hotspot_url").val(url);
+      // Adding url to oppia field or url field,
+      //  depending on the hotspot type
+      if(jQuery('#oppia').is(':checked')){
+        jQuery('#hotspot_url').val('');
+        jQuery('#website_input').hide();
+        jQuery('#oppia_id').val(url);
+      } else {
+        jQuery('#oppia_id').val('');
+        jQuery('#oppia_input').hide();
+        jQuery('#hotspot_url').val(url);
+      }
 
+      // Displaying oppia id or hotspot url input
+      //  according to radio button selection
+      jQuery('.url_type').change(function(){
+        if(jQuery('#oppia').is(':checked')){
+          jQuery('#hotspot_url').val('');
+          jQuery('#website_input').hide();
+          jQuery('#oppia_input').show();
+          jQuery('#oppia_id').focus();
+        } else {
+          jQuery('#oppia_id').val('');
+          jQuery('#oppia_input').hide();
+          jQuery('#website_input').show();
+          jQuery('#hotspot_url').focus();
+        }
+      });
 
       // Changing hotspot type value
     //  according to user selection
