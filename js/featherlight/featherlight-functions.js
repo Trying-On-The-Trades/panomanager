@@ -371,6 +371,7 @@ function loadShopItem(hot_id, item_id){
   messageToast = function(){
     if(sMessage != ''){
       $().toastmessage('showSuccessToast', sMessage);
+      playSound('coin_drop.wav');
     }
   }
   $.featherlight({iframe: shopUrl, iframeWidth: width, iframeHeight: height, beforeClose: message, afterClose: messageToast});
