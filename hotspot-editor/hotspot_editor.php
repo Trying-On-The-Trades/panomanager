@@ -12,10 +12,12 @@ $deck_id      = $_GET['deck_id'];
 $item_id      = $_GET['item_id'];
 $mission_id   = $pano_id;
 $hotspot_type = "";
+$game_cat = "";
 
 if($deck_id){
   $game_type = get_deck_type($db, $deck_id);
   $hotspot_type = "game";
+  $game_cat = $game_type;
 }else if($item_id) {
   $game_type = "item";
   $hotspot_type = "item";
@@ -126,6 +128,7 @@ if($deck_id){
       <input type="hidden" name="point_y" value="<?=$point_y?>" />
       <input type="hidden" name="deck_id" value="<?=$deck_id?>" />
       <input type="hidden" name="game_type" value="<?=$game_type?>" />
+      <input type="hidden" name="game_cat" value="<?=$game_cat?>" />
       <input type="hidden" name="item_id" value="<?= $item_id ?>" />
       <input type="hidden" name="pano_id" value="<?=$pano_id?>" />
       <input type="hidden" name="mission_id" value="<?= $mission_id ?>" />
