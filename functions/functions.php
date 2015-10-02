@@ -581,6 +581,7 @@ function process_new_hotspot_ajax(){
     $hotspot_type        = $_POST['hotspot_type'];
     $hotspot_domain_id = ($_POST['domain_id'] == 'NA') ? null : $_POST['domain_id'];
     $game_type           = $_POST['game_type'];
+    $game_cat            = $_POST['game_cat'];
     $oppia_id            = $_POST['oppia_id'];
     $size                = $_POST['size'];
     $hotspot_zoom        = $_POST['hotspot_zoom'];
@@ -626,7 +627,18 @@ function process_new_hotspot_ajax(){
           $image = 'url="../../plugins/panomanager/images/item.png"';
         }
         elseif($hotspot_type == 'game'){
-          $image = 'url="../../plugins/panomanager/images/game.png"';
+          // Check game category
+          if($game_cat == 'flashcard'){
+            $image = 'url="../../plugins/panomanager/images/flascard.png"';
+          }
+          elseif($game_cat == 'hatgame'){
+            $image = 'url="../../plugins/panomanager/images/hatgame.png"';
+          }
+          elseif($game_cat == 'spotgame'){
+            $image = 'url="../../plugins/panomanager/images/spotgame.png"';
+          } else {
+            $image = 'url="../../plugins/panomanager/images/game.png"';
+          }
         }
         else {
           $image = 'url="../../plugins/panomanager/images/info.png"';
