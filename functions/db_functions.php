@@ -1173,10 +1173,10 @@ function get_maximum_attempts($hotspot_id){
     return $maximum_attempts[0]->attempts;
 }
 
-function get_number_of_attempts($hotspot_id){
+function get_number_of_attempts($hotspot_id, $user_id){
     global $wpdb;
     $bonus_pts_table = get_user_skill_bonus_pts_table_name();
-    $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) AS mynumber FROM $bonus_pts_table WHERE skill_id = " . $hotspot_id);
+    $number_of_attempts = $wpdb->get_results("SELECT COUNT(skill_id) AS mynumber FROM $bonus_pts_table WHERE skill_id = " . $hotspot_id . " AND user_id = " . $user_id);
     return $number_of_attempts[0]->mynumber;
 }
 

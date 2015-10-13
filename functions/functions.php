@@ -321,13 +321,14 @@ function get_hotspot_objects($quest){
 // ***********************************************************
 
 function allow_new_attempt(){
+    $user_id = get_current_user_id();
     $hotspot_id = 0;
     if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
         $hotspot_id = $_POST['hotspot'];
     }
     $attempt_allowed = false;
     $maximum_attempts = get_maximum_attempts($hotspot_id);
-    $number_of_attempts = get_number_of_attempts($hotspot_id);
+    $number_of_attempts = get_number_of_attempts($hotspot_id, $user_id);
     if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
         $attempt_allowed = true;
     }
