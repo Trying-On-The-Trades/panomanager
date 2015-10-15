@@ -612,7 +612,10 @@ function process_new_hotspot_ajax(){
     }
 
     if($hotspot_icon == 'true'){
-        if($hotspot_type == 'website'){
+        if($hotspot_type == 'transition'){
+          $image = 'url="../../plugins/panomanager/images/transition.png"';
+        }
+        elseif($hotspot_type == 'website'){
           $image = 'url="../../plugins/panomanager/images/website.png"';
         }
         elseif($hotspot_type == 'image'){
@@ -654,7 +657,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
+    if($hotspot_type == 'transition' || $hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
         $url = $_POST['hotspot_url'];
     }
 
@@ -666,7 +669,11 @@ function process_new_hotspot_ajax(){
         ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
-    if($hotspot_type == 'website'){
+    if($hotspot_type == 'transition'){
+      $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+          'js(redirectPage("' . $url . '"));' .
+          '</action>';
+    }elseif($hotspot_type == 'website'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
@@ -893,7 +900,10 @@ function process_edit_hotspot(){
     }
 
     if($hotspot_icon == 'on'){
-      if($hotspot_type == 'website'){
+      if($hotspot_type == 'transition'){
+        $image = 'url="../../plugins/panomanager/images/transition.png"';
+      }
+      elseif($hotspot_type == 'website'){
         $image = 'url="../../plugins/panomanager/images/website.png"';
       }
       elseif($hotspot_type == 'image'){
@@ -924,7 +934,7 @@ function process_edit_hotspot(){
       $menu_item = '0';
     }
 
-    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
+    if($hotspot_type == 'transition' || $hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
       $url = $_POST['hotspot_url'];
     }
 
@@ -933,7 +943,11 @@ function process_edit_hotspot(){
         ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
-    if($hotspot_type == 'website'){
+    if($hotspot_type == 'transition'){
+      $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+          'js(redirectPage("' . $url . '"));' .
+          '</action>';
+    }elseif($hotspot_type == 'website'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';

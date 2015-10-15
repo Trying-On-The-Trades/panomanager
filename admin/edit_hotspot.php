@@ -17,7 +17,7 @@
   $hotspot_type_row = get_hotspot_type($hotspot_type_id);
   $hotspot_type = $hotspot_type_row->name;
 
-  if(($hotspot_type == "website") || ($hotspot_type == "image") || ($hotspot_type == "video") || ($hotspot_type == "oppia")){
+  if(($hotspot_type == "transition") || ($hotspot_type == "website") || ($hotspot_type == "image") || ($hotspot_type == "video") || ($hotspot_type == "oppia")){
     $show_type_edit = true;
   }
 ?>
@@ -122,7 +122,10 @@
       // Changing hotspot type value
     //  according to user selection
     jQuery('.url_type').change(function(){
-      if(jQuery('#website').is(':checked')){
+      if(jQuery('#transition').is(':checked')){
+        jQuery('#hotspot_type').val(':transition');
+      }
+      else if(jQuery('#website').is(':checked')){
         jQuery('#hotspot_type').val('website');
       }
       else if(jQuery('#image').is(':checked')){
@@ -225,6 +228,10 @@
     <p>Type of URL</p>
     <div class="ui form">
       <div class="field">
+        <label for="transition">
+          <input type="radio" class="url_type" name="url_type" id="transition" value="transition" />
+          <span>Transition</span>
+        </label>
         <label for="website">
           <input type="radio" class="url_type" name="url_type" id="website" value="website" <?= ($hotspot_type == 'website')? 'checked' : '' ?> />
           <span>Website</span>
