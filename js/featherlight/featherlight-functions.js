@@ -420,6 +420,16 @@ function pointsVerb(pts){
 }
 
 /*
+  Redirects the current page to the specified url.
+  Parameters:
+  - url (Page url to redirect to)
+*/
+function redirectPage(url){
+  console.log('here');
+  window.location = url;
+}
+
+/*
   Updates the value of the last hotspot open, in order to have its description shown.
   Parameters:
   - hot_id (Last hotspot id open)
