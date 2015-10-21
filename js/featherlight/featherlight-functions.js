@@ -425,7 +425,6 @@ function pointsVerb(pts){
   - url (Page url to redirect to)
 */
 function redirectPage(url){
-  console.log('here');
   window.location = url;
 }
 
