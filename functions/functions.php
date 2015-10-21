@@ -633,7 +633,7 @@ function process_new_hotspot_ajax(){
         elseif($hotspot_type == 'game'){
           // Check game category
           if($game_cat == 'flashcard'){
-            $image = 'url="../../plugins/panomanager/images/flascard.png"';
+            $image = 'url="../../plugins/panomanager/images/flashcard.png"';
           }
           elseif($game_cat == 'hatgame'){
             $image = 'url="../../plugins/panomanager/images/hatgame.png"';
