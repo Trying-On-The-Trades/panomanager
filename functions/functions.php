@@ -679,9 +679,12 @@ function process_new_hotspot_ajax(){
             '</action>';
     }elseif($hotspot_type == 'image'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-            'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
-            '</action>';
-
+            'js(loadImage(' . $hotspot_id . ', "' . $url . '"';
+            if(!empty($hotspot_points)){
+              $hotspot_action_xml .= ', "reg"));</action>';
+            } else{
+              $hotspot_action_xml .= '));</action>';
+            }
     }elseif($hotspot_type == 'video'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
