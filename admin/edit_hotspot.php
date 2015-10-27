@@ -1,6 +1,6 @@
 <?php
   // Build the settings page
-  function edit_hotspot_settings_page() {
+function edit_hotspot_settings_page() {
   $semantic = WP_PLUGIN_URL . '/panomanager/css/semantic.css';
   $missions = get_missions();
   $types	  = get_types();
@@ -20,27 +20,27 @@
   if(($hotspot_type == "website") || ($hotspot_type == "image") || ($hotspot_type == "video") || ($hotspot_type == "oppia")){
     $show_type_edit = true;
   }
-?>
+  ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<style type="text/css">
-  #wpfooter{
-    display: none;
-  }
+  <link rel="stylesheet" type="text/css" href="<?php echo $semantic ?>"/>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <style type="text/css">
+    #wpfooter{
+      display: none;
+    }
 
-  #file_input {
-    border: 1px solid #cccccc;
-    padding: 5px;
-  }
+    #file_input {
+      border: 1px solid #cccccc;
+      padding: 5px;
+    }
 
-  .new_pano_form{
-    width:85%;
-    margin: 0px auto;
-  }
-</style>
-<script type="text/javascript">
-  jQuery('#form').ready(function(){
+    .new_pano_form{
+      width:85%;
+      margin: 0px auto;
+    }
+  </style>
+  <script type="text/javascript">
+    jQuery('#form').ready(function(){
       // Get string xml and convert
       var xml_hotspot_string    = jQuery('#hotspot_xml').val();
       var xml_hotspot_Doc       = jQuery.parseXML(xml_hotspot_string);
@@ -65,7 +65,7 @@
       var hotspot_size  = hotspot.getAttribute("width");
 
       if(hotspot_size == null || hotspot_size == ""){
-          hotspot_size = 125;
+        hotspot_size = 125;
       }
 
       $("#size").val(hotspot_size);
@@ -82,14 +82,14 @@
       // Get url
       var url = action_cotent.substr(3);
       url     = url.substr(url.indexOf("(") + 1);
-      url     = url.substr(url.indexOf(",") + 1);
-      url     = url.substr(0, url.indexOf(')'));
+        url     = url.substr(url.indexOf(",") + 1);
+        url     = url.substr(0, url.indexOf(')'));
 
-      var reg       = new RegExp('"', 'g');
-      var reg_space = new RegExp(' ', 'g');
+        var reg       = new RegExp('"', 'g');
+        var reg_space = new RegExp(' ', 'g');
 
-      url = url.replace(reg, '');
-      url = url.replace(reg_space, '');
+        url = url.replace(reg, '');
+        url = url.replace(reg_space, '');
 
       // Adding url to oppia field or url field,
       //  depending on the hotspot type
@@ -150,9 +150,9 @@
 //        jQuery('#size_value').val(125);
 //        jQuery('#hotspot_size').val(125);
 //        jQuery('#hotspot_front_size').val(125);
-        jQuery('#size_input').hide();
-      }
-    });
+jQuery('#size_input').hide();
+}
+});
 
     // Displaying hotspot menu name input
     //  if user chooses to be visible
@@ -176,17 +176,17 @@
 <hr>
 
 <?php if ( isset( $_GET[ 'settings-saved' ] ) ): ?>
-<div class="updated"><p>Hotspot updated successfully.</p></div>
+  <div class="updated"><p>Hotspot updated successfully.</p></div>
 <?php elseif ( isset( $_GET[ 'error' ] ) ): ?>
-<div class="error"><p>Error updating hotspot.</p></div>
+  <div class="error"><p>Error updating hotspot.</p></div>
 <?php endif; ?>
 
 <form id="form" method="post" enctype="multipart/form-data" action="<?php echo get_admin_url() . 'admin-post.php' ?>">
   <!-- pano processing hook -->
   <input type="hidden" name="action" value="edit_hotspot" />
-    <input type="hidden" name="hotspot_x" id="hotspot_x" value="" />
-    <input type="hidden" name="hotspot_y" id="hotspot_y" value="" />
-    <input type="hidden" name="size" id="size" value="" />
+  <input type="hidden" name="hotspot_x" id="hotspot_x" value="" />
+  <input type="hidden" name="hotspot_y" id="hotspot_y" value="" />
+  <input type="hidden" name="size" id="size" value="" />
   <input type="hidden" name="hotspot_id" value="<?php echo $hotspot->get_id() ?>" />
   <input type="hidden" name="mission_id" value="<?= $hotspot->get_mission_id() ?>"/>
   <input type="hidden" name="hotspot_domain_id" value="<?= $hotspot->get_domain_id() ?>"/>
@@ -222,39 +222,39 @@
     </div>
 
     <?php if($show_type_edit): ?>
-    <p>Type of URL</p>
-    <div class="ui form">
-      <div class="field">
-        <label for="website">
-          <input type="radio" class="url_type" name="url_type" id="website" value="website" <?= ($hotspot_type == 'website')? 'checked' : '' ?> />
-          <span>Website</span>
-        </label>
-        <label for="image">
-          <input type="radio" class="url_type" name="url_type" id="image" value="image" <?= ($hotspot_type == 'image')? 'checked' : '' ?> />
-          <span>Image</span>
-        </label>
-        <label for="video">
-          <input type="radio" class="url_type" name="url_type" id="video" value="video" <?= ($hotspot_type == 'video')? 'checked' : '' ?> />
-          <span>Video</span>
-        </label>
-        <label for="oppia">
-          <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia" <?= ($hotspot_type == 'oppia')? 'checked' : '' ?> />
-          <span>Oppia</span>
-        </label>
+      <p>Type of URL</p>
+      <div class="ui form">
+        <div class="field">
+          <label for="website">
+            <input type="radio" class="url_type" name="url_type" id="website" value="website" <?= ($hotspot_type == 'website')? 'checked' : '' ?> />
+            <span>Website</span>
+          </label>
+          <label for="image">
+            <input type="radio" class="url_type" name="url_type" id="image" value="image" <?= ($hotspot_type == 'image')? 'checked' : '' ?> />
+            <span>Image</span>
+          </label>
+          <label for="video">
+            <input type="radio" class="url_type" name="url_type" id="video" value="video" <?= ($hotspot_type == 'video')? 'checked' : '' ?> />
+            <span>Video</span>
+          </label>
+          <label for="oppia">
+            <input type="radio" class="url_type" name="url_type" id="oppia" value="oppia" <?= ($hotspot_type == 'oppia')? 'checked' : '' ?> />
+            <span>Oppia</span>
+          </label>
+        </div>
       </div>
-    </div>
-    <div id="website_input" class="ui form">
-      <div class="field">
-        <label for="hotspot_url">Hotspot URL</label>
-        <input type="text" id="hotspot_url" name="hotspot_url" />
+      <div id="website_input" class="ui form">
+        <div class="field">
+          <label for="hotspot_url">Hotspot URL</label>
+          <input type="text" id="hotspot_url" name="hotspot_url" />
+        </div>
       </div>
-    </div>
-    <div id="oppia_input" class="ui form">
-      <div class="field">
-        <label for="oppia_id">Oppia ID</label>
-        <input type="text" id="oppia_id" name="oppia_id" />
+      <div id="oppia_input" class="ui form">
+        <div class="field">
+          <label for="oppia_id">Oppia ID</label>
+          <input type="text" id="oppia_id" name="oppia_id" />
+        </div>
       </div>
-    </div>
     <?php endif; ?>
 
     <div class="ui form">

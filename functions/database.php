@@ -72,11 +72,6 @@ function get_activation_code_table_name(){
     return $wpdb->prefix . "pano_activation_codes";
 }
 
-function get_school_table_name(){
-    global $wpdb;
-    return $wpdb->prefix . "pano_schools";
-}
-
 function get_ads_table_name(){
     global $wpdb;
     return $wpdb->prefix . "pano_ads";
@@ -87,15 +82,6 @@ function get_ads_text_table_name(){
     return $wpdb->prefix . "pano_ads_text";
 }
 
-function get_domain_table_name(){
-    global $wpdb;
-    return $wpdb->prefix . "pano_domains";
-}
-
-function get_tool_table_name(){
-    global $wpdb;
-    return $wpdb->prefix . "pano_tools";
-}
 
 function get_points_info_table_name(){
   global $wpdb;
@@ -409,29 +395,6 @@ function build_activation_code_sql(){
     return $sql;
 }
 
-function build_school_sql(){
-    $table_name = get_school_table_name();
-
-    $sql = 'CREATE TABLE ' .$table_name. ' (
-        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `name` varchar(255) NOT NULL DEFAULT "",
-        PRIMARY KEY (`id`)
-    );';
-
-    return $sql;
-}
-
-function build_domains_sql(){
-    $table_name = get_domain_table_name();
-
-    $sql = 'CREATE TABLE ' .$table_name. ' (
-        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `name` varchar(255) NOT NULL DEFAULT "",
-        PRIMARY KEY (`id`)
-    );';
-
-    return $sql;
-}
 
 function build_ads_sql(){
     $table_name = get_ads_table_name();
@@ -454,19 +417,6 @@ function build_ads_text_sql(){
       `language_code` varchar(2) NOT NULL DEFAULT "",
       `message` text,
       PRIMARY KEY (`id`)
-    );';
-
-    return $sql;
-}
-
-function build_tools_sql(){
-    $table_name = get_tool_table_name();
-
-    $sql = 'CREATE TABLE ' .$table_name. ' (
-        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `domain_id` int(11) NOT NULL,
-        `name` varchar(255) NOT NULL DEFAULT "",
-        PRIMARY KEY (`id`)
     );';
 
     return $sql;
