@@ -301,16 +301,11 @@ function loadImage(hot_id, img, pts){
   if(pts == null){
     $.featherlight(img, {type: 'image'});
   } else {
-    // Checks if user is allowed to open hotspot
-    allowed = function(){
-      var follow = allowNewAttempt(hot_id);
-      return follow;
-    }
     // Adding points to db and toast
     showPts = function(){
-        addRegularPoints(hot_id);
+      addRegularPoints(hot_id);
     }
-    $.featherlight(img, {type: 'image', beforeOpen: allowed, afterClose: showPts});
+    $.featherlight(img, {type: 'image', afterClose: showPts});
   }
 }
 
@@ -399,12 +394,21 @@ function loadShopItem(hot_id, item_id){
   Parameters:
   - hot_id (Hotspot id)
   - url (Video url)
+  - pts (Points) [null] ["reg"]
 */
-function loadVideo(hot_id, url){
+function loadVideo(hot_id, url, pts){
   updateLastHotspot(hot_id);
   var width = 560;
   var height = 315;
-  $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
+  if(pts == null){
+    $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height});
+  } else {
+    // Adding points to db and toast
+    showPts = function(){
+      addRegularPoints(hot_id);
+    }
+    $.featherlight({iframe: url, iframeWidth: width, iframeHeight: height, afterClose: showPts});
+  }
 }
 
 /*

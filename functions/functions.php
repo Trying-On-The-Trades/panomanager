@@ -687,9 +687,12 @@ function process_new_hotspot_ajax(){
             }
     }elseif($hotspot_type == 'video'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
-            '</action>';
-
+            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"';
+            if(!empty($hotspot_points)){
+              $hotspot_action_xml .= ', "reg"));</action>';
+            } else {
+              $hotspot_action_xml .= '));</action>';
+            }
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
