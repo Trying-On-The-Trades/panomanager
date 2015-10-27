@@ -476,6 +476,8 @@ function process_new_pano(){
     $pano_title       = $_POST['pano_title'];
     $pano_description = $_POST['pano_description'];
     $show_desc_onload = ($_POST['pano_onload'] == true) ? 1 : 0;
+    print_r($_FILES);
+    die();
 
 	// Get the id
     $pano_id = create_pano($pano_xml, $pano_title, $pano_description, $show_desc_onload);
@@ -483,6 +485,9 @@ function process_new_pano(){
     $quest_id = create_quest($pano_id);
 
     $mission_exists = get_mission($pano_id);
+
+    // Process Image
+    // process_pano_krpano($pano_id);
 
     if(!isset($mission_exists)) {
         $id = create_mission($pano_title, $pano_description, "<mission>" . $pano_title . "</mission>", $pano_id, "NA", $quest_id, 0);
@@ -492,6 +497,14 @@ function process_new_pano(){
     create_prereq($pano_id, 0, NULL , NULL);
 
     wp_redirect( admin_url( 'admin.php?page=upload_zip_setting&id=' . $pano_id ) );
+}
+
+// Run krpano to process panoramas
+function process_pano_krpano($pano_id, $file){
+    $config_location = "../scripts/krpano/templates/vtour-multires.config";
+    $command = "../scripts/krpano/krpanotools -config=" . $config_location . " " . $file;
+
+    shell_exec($command);
 }
 
 function process_new_prereq(){
