@@ -321,13 +321,14 @@ function get_hotspot_objects($quest){
 // ***********************************************************
 
 function allow_new_attempt(){
+    $user_id = get_current_user_id();
     $hotspot_id = 0;
     if((isset($_POST['hotspot'])) && (is_numeric($_POST['hotspot']))){
         $hotspot_id = $_POST['hotspot'];
     }
     $attempt_allowed = false;
     $maximum_attempts = get_maximum_attempts($hotspot_id);
-    $number_of_attempts = get_number_of_attemts($hotspot_id);
+    $number_of_attempts = get_number_of_attempts($hotspot_id, $user_id);
     if(($number_of_attempts < $maximum_attempts) || ($maximum_attempts == 0)){
         $attempt_allowed = true;
     }
@@ -611,7 +612,10 @@ function process_new_hotspot_ajax(){
     }
 
     if($hotspot_icon == 'true'){
-        if($hotspot_type == 'website'){
+        if($hotspot_type == 'transition'){
+          $image = 'url="../../plugins/panomanager/images/transition.png"';
+        }
+        elseif($hotspot_type == 'website'){
           $image = 'url="../../plugins/panomanager/images/website.png"';
         }
         elseif($hotspot_type == 'image'){
@@ -629,7 +633,7 @@ function process_new_hotspot_ajax(){
         elseif($hotspot_type == 'game'){
           // Check game category
           if($game_cat == 'flashcard'){
-            $image = 'url="../../plugins/panomanager/images/flascard.png"';
+            $image = 'url="../../plugins/panomanager/images/flashcard.png"';
           }
           elseif($game_cat == 'hatgame'){
             $image = 'url="../../plugins/panomanager/images/hatgame.png"';
@@ -653,7 +657,7 @@ function process_new_hotspot_ajax(){
         $menu_item = '0';
     }
 
-    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
+    if($hotspot_type == 'transition' || $hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
         $url = $_POST['hotspot_url'];
     }
 
@@ -665,20 +669,30 @@ function process_new_hotspot_ajax(){
         ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
-    if($hotspot_type == 'website'){
+    if($hotspot_type == 'transition'){
+      $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+          'js(redirectPage("' . $url . '"));' .
+          '</action>';
+    }elseif($hotspot_type == 'website'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
     }elseif($hotspot_type == 'image'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-            'js(loadImage(' . $hotspot_id . ', "' . $url . '"));' .
-            '</action>';
-
+            'js(loadImage(' . $hotspot_id . ', "' . $url . '"';
+            if(!empty($hotspot_points)){
+              $hotspot_action_xml .= ', "reg"));</action>';
+            } else{
+              $hotspot_action_xml .= '));</action>';
+            }
     }elseif($hotspot_type == 'video'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
-            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"));' .
-            '</action>';
-
+            'js(loadVideo(' . $hotspot_id . ', "' . $url . '"';
+            if(!empty($hotspot_points)){
+              $hotspot_action_xml .= ', "reg"));</action>';
+            } else {
+              $hotspot_action_xml .= '));</action>';
+            }
     }elseif(is_numeric($deck_id)){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "../wp-content/plugins/vocabulary-plugin/' . $game_type . '/index.php?id=' . $deck_id . '"' .', "bns"));' .
@@ -892,7 +906,10 @@ function process_edit_hotspot(){
     }
 
     if($hotspot_icon == 'on'){
-      if($hotspot_type == 'website'){
+      if($hotspot_type == 'transition'){
+        $image = 'url="../../plugins/panomanager/images/transition.png"';
+      }
+      elseif($hotspot_type == 'website'){
         $image = 'url="../../plugins/panomanager/images/website.png"';
       }
       elseif($hotspot_type == 'image'){
@@ -923,7 +940,7 @@ function process_edit_hotspot(){
       $menu_item = '0';
     }
 
-    if($hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
+    if($hotspot_type == 'transition' || $hotspot_type == 'website' || $hotspot_type == 'image' || $hotspot_type == 'video'){
       $url = $_POST['hotspot_url'];
     }
 
@@ -932,7 +949,11 @@ function process_edit_hotspot(){
         ' width="' . $width . '" height="' . $height . '" scale="0.425" zoom="' . $zoom . '"'	.
         ' onclick="function_' . $hotspot_id . '"/>';
 
-    if($hotspot_type == 'website'){
+    if($hotspot_type == 'transition'){
+      $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
+          'js(redirectPage("' . $url . '"));' .
+          '</action>';
+    }elseif($hotspot_type == 'website'){
         $hotspot_action_xml  = '<action name="function_' . $hotspot_id . '">' .
             'js(loadFrame(' . $hotspot_id . ', "' . $url . '"));' .
             '</action>';
